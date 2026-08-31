@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { 
   Send, 
   Trash2, 
@@ -15,7 +17,8 @@ import {
   ShieldCheck,
   RefreshCw,
   Lightbulb,
-  ArrowRight
+  ArrowRight,
+  ArrowUp
 } from "lucide-react";
 
 interface Message {
@@ -54,14 +57,31 @@ const SUGGESTED_PROMPTS = [
 ];
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // Lazy state init — reads localStorage during initial render (client only).
+  // Avoids setState inside useEffect which violates the strict lint rule.
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem("alhikmah_chat_messages");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return [];
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [llmStatus, setLlmStatus] = useState<"checking" | "online" | "offline">("checking");
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  // Ref accumulates streamed tokens outside React render cycle — avoids
+  // React compiler's "immutable captured variable" error on reassignment.
+  const assistantContentRef = useRef("");
 
-  const [sessionId, setSessionId] = useState(() => {
+  const [sessionId] = useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("alhikmah_session_id");
       if (stored) return stored;
@@ -72,8 +92,26 @@ export default function ChatPage() {
     return "";
   });
 
+  // Save messages to localStorage when they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem("alhikmah_chat_messages", JSON.stringify(messages));
+    }
+  }, [messages]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleScroll = useCallback(() => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      setShowScrollTop(scrollHeight - scrollTop - clientHeight > 300);
+    }
+  }, []);
+
+  const scrollToTop = () => {
+    chatContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -107,27 +145,87 @@ export default function ChatPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/api/chat`, {
+      // Try streaming first
+      const res = await fetch(`${API_URL}/api/chat/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage, session_id: sessionId }),
       });
 
-      const data = await res.json();
+      if (res.ok && res.headers.get("content-type")?.includes("text/event-stream")) {
+        // SSE streaming — use ref to accumulate tokens without violating
+        // React compiler's immutability rules on local const variables.
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+        assistantContentRef.current = "";
 
-      if (!res.ok) {
-        if (res.status === 503) {
-          throw new Error("LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.");
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: "", timestamp: getCurrentTime() },
+        ]);
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split("\n");
+
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                try {
+                  const data = JSON.parse(line.slice(6));
+                  if (data.type === "token") {
+                    assistantContentRef.current += data.text;
+                    setMessages((prev) => {
+                      const updated = [...prev];
+                      updated[updated.length - 1] = {
+                        ...updated[updated.length - 1],
+                        content: assistantContentRef.current,
+                      };
+                      return updated;
+                    });
+                  } else if (data.type === "error") {
+                    assistantContentRef.current = `Maaf, ${data.message}`;
+                    setMessages((prev) => {
+                      const updated = [...prev];
+                      updated[updated.length - 1] = {
+                        ...updated[updated.length - 1],
+                        content: assistantContentRef.current,
+                      };
+                      return updated;
+                    });
+                  }
+                } catch {}
+              }
+            }
+          }
         }
-        throw new Error(data.detail || "Gagal memproses pesan dari server.");
+      } else {
+        // Fallback to non-streaming
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 503) {
+            throw new Error("LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.");
+          }
+          throw new Error(data.detail || "Gagal memproses pesan dari server.");
+        }
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.response, timestamp: getCurrentTime() },
+        ]);
       }
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.response, timestamp: getCurrentTime() },
-      ]);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan koneksi";
+      // Remove empty assistant message if it exists
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && !last.content) {
+          return prev.slice(0, -1);
+        }
+        return prev;
+      });
       Swal.fire({
         icon: "error",
         title: "Gagal Mengirim",
@@ -142,9 +240,9 @@ export default function ChatPage() {
     }
   };
 
-  const copyToClipboard = (text: string, index: number) => {
+  const copyToClipboard = (text: string, index: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
+    setCopiedIndex(index as unknown as number);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
@@ -164,10 +262,9 @@ export default function ChatPage() {
     }).then((result) => {
       if (result.isConfirmed) {
         setMessages([]);
-        // Generate new session ID to clear backend history
+        localStorage.removeItem("alhikmah_chat_messages");
         const newId = crypto.randomUUID();
         localStorage.setItem("alhikmah_session_id", newId);
-        setSessionId(newId);
       }
     });
   };
@@ -212,7 +309,11 @@ export default function ChatPage() {
       </div>
 
       {/* Main Chat Box Container */}
-      <div className="flex-1 overflow-y-auto rounded-3xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-xl p-4 md:p-6 space-y-6 relative">
+      <div 
+        ref={chatContainerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto rounded-3xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-xl p-4 md:p-6 space-y-6 relative"
+      >
         
         {/* Empty State / Welcome Screen */}
         {messages.length === 0 && (
@@ -301,36 +402,46 @@ export default function ChatPage() {
                   : "bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 rounded-tl-xs border border-slate-200/80 dark:border-slate-700/80 shadow-md"
               }`}
             >
-              {/* Header inside Bubble for AI */}
-              {msg.role === "assistant" && (
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-700/60 text-xs">
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" /> Al-Hikmah Assistant
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(msg.content, i)}
-                    className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
-                    title="Salin Pesan"
-                  >
-                    {copiedIndex === i ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-500" />
-                        <span className="text-[10px] text-emerald-500">Tersalin</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span className="text-[10px]">Salin</span>
-                      </>
-                    )}
-                  </button>
+              {/* Header inside Bubble */}
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-700/60 text-xs">
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  {msg.role === "assistant" ? (
+                    <><Sparkles className="w-3.5 h-3.5" /> Al-Hikmah Assistant</>
+                  ) : (
+                    <><User className="w-3.5 h-3.5" /> Anda</>
+                  )}
+                </span>
+                <button
+                  onClick={() => copyToClipboard(msg.content, `${msg.role}-${i}`)}
+                  className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
+                  title="Salin Pesan"
+                >
+                  {copiedIndex === (`${msg.role}-${i}` as unknown as number) ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-500" />
+                      <span className="text-[10px] text-emerald-500">Tersalin</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span className="text-[10px]">Salin</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Message content — Markdown for AI, plain for user */}
+              {msg.role === "assistant" ? (
+                <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0">
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {msg.content}
+                  </Markdown>
+                </div>
+              ) : (
+                <div className="whitespace-pre-wrap leading-relaxed text-sm md:text-base font-normal">
+                  {msg.content}
                 </div>
               )}
-
-              {/* Message text formatted */}
-              <div className="whitespace-pre-wrap leading-relaxed text-sm md:text-base font-normal">
-                {msg.content}
-              </div>
 
               {/* Timestamp */}
               {msg.timestamp && (
@@ -369,6 +480,16 @@ export default function ChatPage() {
 
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-28 right-6 z-50 w-10 h-10 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 flex items-center justify-center hover:bg-emerald-500 transition-all active:scale-95 cursor-pointer animate-in fade-in"
+        >
+          <ArrowUp className="w-4 h-4" />
+        </button>
+      )}
 
       {/* Input Form Bar */}
       <div className="mt-4">

@@ -9,7 +9,9 @@ import {
   Check, 
   Bookmark, 
   BookmarkCheck, 
-  Shuffle
+  Shuffle,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 interface HadithResult {
@@ -41,7 +43,9 @@ export default function HadithPage() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [fontSize, setFontSize] = useState(2.0); // rem
+  const [fontSize, setFontSize] = useState(2.0);
+  const [showBookmarks, setShowBookmarks] = useState(false);
+  const [bookmarkedHadiths, setBookmarkedHadiths] = useState<HadithResult[]>([]);
 
   const selectedKitab = KITAB_LIST.find((k) => k.id === kitab) || KITAB_LIST[0];
 
@@ -65,7 +69,6 @@ export default function HadithPage() {
 
       setResult(data);
 
-      // Check bookmark status
       const savedBookmarks: string[] = JSON.parse(localStorage.getItem("hadith_bookmarks") || "[]");
       const bookmarkKey = `${targetKitab}:${targetNomor}`;
       setIsBookmarked(savedBookmarks.includes(bookmarkKey));
@@ -92,6 +95,20 @@ export default function HadithPage() {
     fetchHadith(kitab, randomNum);
   };
 
+  const goPrevHadith = () => {
+    if (nomor > 1) {
+      setNomor(nomor - 1);
+      fetchHadith(kitab, nomor - 1);
+    }
+  };
+
+  const goNextHadith = () => {
+    if (nomor < selectedKitab.maxHadith) {
+      setNomor(nomor + 1);
+      fetchHadith(kitab, nomor + 1);
+    }
+  };
+
   const copyHadith = () => {
     if (!result) return;
     const textToCopy = `${result.kitab} - Hadits No. ${result.nomor}\n\n${result.teks_arab}\n\nTerjemahan:\n"${result.terjemahan}"`;
@@ -109,27 +126,40 @@ export default function HadithPage() {
     if (savedBookmarks.includes(bookmarkKey)) {
       updated = savedBookmarks.filter((k) => k !== bookmarkKey);
       setIsBookmarked(false);
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'info',
-        title: 'Hadits dihapus dari bookmark',
-        showConfirmButton: false,
-        timer: 1500
-      });
+      Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Hadits dihapus dari bookmark', showConfirmButton: false, timer: 1500 });
     } else {
       updated = [...savedBookmarks, bookmarkKey];
       setIsBookmarked(true);
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: 'Hadits disimpan ke bookmark!',
-        showConfirmButton: false,
-        timer: 1500
-      });
+      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Hadits disimpan ke bookmark!', showConfirmButton: false, timer: 1500 });
     }
     localStorage.setItem("hadith_bookmarks", JSON.stringify(updated));
+  };
+
+  const loadBookmarks = async () => {
+    const savedKeys: string[] = JSON.parse(localStorage.getItem("hadith_bookmarks") || "[]");
+    if (savedKeys.length === 0) {
+      setBookmarkedHadiths([]);
+      setShowBookmarks(true);
+      return;
+    }
+
+    const hadiths: HadithResult[] = [];
+    for (const key of savedKeys) {
+      const [k, n] = key.split(":");
+      try {
+        const res = await fetch(`${API_URL}/api/hadith`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ kitab: k, nomor: Number(n) }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === "success") hadiths.push(data);
+        }
+      } catch {}
+    }
+    setBookmarkedHadiths(hadiths);
+    setShowBookmarks(true);
   };
 
   return (
@@ -152,16 +182,63 @@ export default function HadithPage() {
             </p>
           </div>
 
-          <button
-            onClick={getRandomHadith}
-            disabled={loading}
-            className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white text-xs font-bold transition-all active:scale-95 shrink-0 cursor-pointer"
-          >
-            <Shuffle className="w-4 h-4 text-teal-300" />
-            <span>Hadits Acak</span>
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={loadBookmarks}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              <Bookmark className="w-4 h-4" /> Bookmark
+            </button>
+            <button
+              onClick={getRandomHadith}
+              disabled={loading}
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white text-xs font-bold transition-all active:scale-95 shrink-0 cursor-pointer"
+            >
+              <Shuffle className="w-4 h-4 text-teal-300" />
+              <span>Hadits Acak</span>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Bookmarks View */}
+      {showBookmarks && (
+        <div className="glass-card rounded-3xl p-6 shadow-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Bookmark className="w-5 h-5 text-amber-500" /> Bookmark Hadits
+            </h2>
+            <button onClick={() => setShowBookmarks(false)} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">
+              Tutup
+            </button>
+          </div>
+          {bookmarkedHadiths.length === 0 ? (
+            <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
+          ) : (
+            <div className="space-y-3">
+              {bookmarkedHadiths.map((h, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setKitab(h.kitab);
+                    setNomor(h.nomor);
+                    setResult(h);
+                    setShowBookmarks(false);
+                  }}
+                  className="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 hover:border-teal-500/50 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 rounded-full bg-teal-600 text-white text-[10px] font-bold">{h.kitab}</span>
+                    <span className="text-[10px] text-slate-500">Hadits #{h.nomor}</span>
+                  </div>
+                  <p className="arabic-text text-right text-lg text-slate-800 dark:text-teal-100 line-clamp-2">{h.teks_arab}</p>
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-1">{h.terjemahan}</p>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Kitab Selector Grid */}
       <div className="space-y-3">
@@ -277,41 +354,16 @@ export default function HadithPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Font Controls */}
               <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-                <button
-                  onClick={() => setFontSize((prev) => Math.max(1.4, prev - 0.2))}
-                  className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer"
-                >
-                  A-
-                </button>
-                <button
-                  onClick={() => setFontSize((prev) => Math.min(3.2, prev + 0.2))}
-                  className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer"
-                >
-                  A+
-                </button>
+                <button onClick={() => setFontSize((prev) => Math.max(1.4, prev - 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer">A-</button>
+                <button onClick={() => setFontSize((prev) => Math.min(3.2, prev + 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer">A+</button>
               </div>
 
-              {/* Copy Action */}
-              <button
-                onClick={copyHadith}
-                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer"
-                title="Salin Teks Hadits"
-              >
+              <button onClick={copyHadith} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Teks Hadits">
                 {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
               </button>
 
-              {/* Bookmark Action */}
-              <button
-                onClick={toggleBookmark}
-                className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
-                  isBookmarked
-                    ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"
-                }`}
-                title="Simpan Bookmark"
-              >
+              <button onClick={toggleBookmark} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title="Simpan Bookmark">
                 {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
               </button>
             </div>
@@ -319,10 +371,7 @@ export default function HadithPage() {
 
           {/* Arabic Hadith Text */}
           <div className="py-6 px-4 bg-teal-50/50 dark:bg-teal-950/40 rounded-2xl border border-teal-500/20 text-right">
-            <p 
-              className="arabic-text text-slate-900 dark:text-teal-100 font-bold leading-loose tracking-wide"
-              style={{ fontSize: `${fontSize}rem`, lineHeight: `${fontSize * 1.7}rem` }}
-            >
+            <p className="arabic-text text-slate-900 dark:text-teal-100 font-bold leading-loose tracking-wide" style={{ fontSize: `${fontSize}rem`, lineHeight: `${fontSize * 1.7}rem` }}>
               {result.teks_arab}
             </p>
           </div>
@@ -335,6 +384,27 @@ export default function HadithPage() {
             <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
               {result.terjemahan}
             </p>
+          </div>
+
+          {/* Prev/Next Navigation */}
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
+            <button
+              onClick={goPrevHadith}
+              disabled={nomor <= 1}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" /> Sebelumnya
+            </button>
+            <span className="text-xs text-slate-500 font-medium">
+              {nomor} / {selectedKitab.maxHadith.toLocaleString()}
+            </span>
+            <button
+              onClick={goNextHadith}
+              disabled={nomor >= selectedKitab.maxHadith}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
+            >
+              Selanjutnya <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
