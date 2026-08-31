@@ -1,0 +1,16 @@
+from pydantic import BaseModel
+from typing import Literal
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+
+class QuranVerseRequest(BaseModel):
+    surah: int
+    ayat: int
+
+
+class HadithRequest(BaseModel):
+    kitab: Literal["bukhari", "muslim", "tirmidzi", "abu-daud", "nasai", "ibnu-majah"]
+    nomor: int
