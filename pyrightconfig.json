@@ -1,0 +1,20 @@
+{
+  "pythonVersion": "3.13",
+  "pythonPath": "C:/laragon/bin/python/python-3.13/python.exe",
+  "extraPaths": [
+    "."
+  ],
+  "include": [
+    "app"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "frontend",
+    "mobile",
+    "app/frontend"
+  ],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": true,
+  "reportMissingModuleSource": true
+}

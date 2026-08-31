@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.LibraryBooks
+import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -37,9 +37,9 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class Screen(val title: String, val icon: ImageVector) {
-    data object Chat : Screen("Chat AI", Icons.Default.Chat)
-    data object Quran : Screen("Al-Qur'an", Icons.Default.MenuBook)
-    data object Hadith : Screen("Hadits", Icons.Default.LibraryBooks)
+    data object Chat : Screen("Chat AI", Icons.AutoMirrored.Filled.Chat)
+    data object Quran : Screen("Al-Qur'an", Icons.AutoMirrored.Filled.MenuBook)
+    data object Hadith : Screen("Hadits", Icons.AutoMirrored.Filled.LibraryBooks)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

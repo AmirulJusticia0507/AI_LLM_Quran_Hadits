@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -151,7 +151,7 @@ fun ChatScreen() {
                 enabled = input.isNotBlank() && !loading,
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = Green500)
             ) {
-                Icon(Icons.Default.Send, "Kirim", tint = White)
+                Icon(Icons.AutoMirrored.Filled.Send, "Kirim", tint = White)
             }
         }
     }

@@ -24,6 +24,12 @@
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
 
+if exist "C:\Users\amiru\.jdks\jbr-21.0.11\bin\java.exe" (
+    set "JAVA_HOME=C:\Users\amiru\.jdks\jbr-21.0.11"
+) else if exist "C:\Program Files\Microsoft\jdk-17.0.20.101-hotspot\bin\java.exe" (
+    set "JAVA_HOME=C:\Program Files\Microsoft\jdk-17.0.20.101-hotspot"
+)
+
 set DIRNAME=%~dp0
 if "%DIRNAME%"=="" set DIRNAME=.
 @rem This is normally unused

@@ -173,7 +173,7 @@ class GeminiLLM:
                         if hasattr(part, "text") and part.text:
                             text = part.text
                             full_text += text
-                            yield json.dumps({"type": "token", "text": text}) + "\n"
+                            yield json.dumps({"type": "token", "text": text})
 
             if not full_text:
                 yield json.dumps({"type": "token", "text": "Maaf, tidak dapat memproses jawaban. Silakan coba pertanyaan lain."}) + "\n"

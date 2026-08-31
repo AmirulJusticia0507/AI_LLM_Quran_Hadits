@@ -332,8 +332,23 @@ npm run dev
 streamlit run app/frontend/streamlit_app.py
 ```
 
-### Android
-Buka project `mobile/` di Android Studio → Run on emulator/device.
+### Android (Mobile Build & Gradle Commands)
+
+Masuk ke direktori `mobile/`:
+```powershell
+cd mobile
+```
+
+| Perintah | Fungsi | Durasi |
+|----------|--------|--------|
+| `.\gradlew.bat assembleDebug` | Build APK Debug (Incremental + Configuration Cache) | **~1-2 Detik** ⚡ |
+| `.\gradlew.bat compileDebugKotlin` | Cek kompilasi kode Kotlin tanpa generate APK | **~2 Detik** |
+| `.\gradlew.bat clean assembleDebug` | Full rebuild dari nol (Menghapus folder `build/` & cache) | **~1-2 Menit** |
+
+> **Catatan Penting Build Cepat:**
+> - Gunakan `.\gradlew.bat assembleDebug` tanpa `clean` untuk pengembangan sehari-hari agar memanfaatkan *Configuration Cache* dan *Incremental Compilation*.
+> - Hindari menggunakan pipe `| Select-Object -Last 15` di PowerShell agar indikator progress Gradle tampil *real-time*.
+> - File `gradlew.bat` telah di-override menggunakan JDK 21 (`jbr-21.0.11`) untuk mencegah error `Unsupported class file major version 69` pada Java 25.
 
 ---
 
