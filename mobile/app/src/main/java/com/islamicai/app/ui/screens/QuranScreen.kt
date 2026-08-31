@@ -3,6 +3,8 @@ package com.islamicai.app.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -148,8 +150,7 @@ fun QuranScreen() {
                 title = { Text("Pilih Surah", fontWeight = FontWeight.Bold, color = Green800) },
                 text = {
                     LazyColumn {
-                        items(IslamicData.surahList.size) { index ->
-                            val s = IslamicData.surahList[index]
+                        items(IslamicData.surahList) { s ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -184,8 +185,4 @@ fun QuranScreen() {
             )
         }
     }
-}
-
-private fun <T> items(list: List<T>, itemContent: @Composable (T) -> Unit) {
-    list.forEach { itemContent(it) }
 }
