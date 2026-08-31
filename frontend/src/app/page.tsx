@@ -58,7 +58,19 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [llmStatus, setLlmStatus] = useState<"checking" | "online" | "offline">("checking");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const [sessionId, setSessionId] = useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("alhikmah_session_id");
+      if (stored) return stored;
+      const newId = crypto.randomUUID();
+      localStorage.setItem("alhikmah_session_id", newId);
+      return newId;
+    }
+    return "";
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -67,6 +79,13 @@ export default function ChatPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, loading]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/health`)
+      .then((res) => res.json())
+      .then((data) => setLlmStatus(data.llm_configured ? "online" : "offline"))
+      .catch(() => setLlmStatus("offline"));
+  }, []);
 
   const getCurrentTime = () => {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -91,12 +110,15 @@ export default function ChatPage() {
       const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: userMessage, session_id: sessionId }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
+        if (res.status === 503) {
+          throw new Error("LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.");
+        }
         throw new Error(data.detail || "Gagal memproses pesan dari server.");
       }
 
@@ -142,6 +164,10 @@ export default function ChatPage() {
     }).then((result) => {
       if (result.isConfirmed) {
         setMessages([]);
+        // Generate new session ID to clear backend history
+        const newId = crypto.randomUUID();
+        localStorage.setItem("alhikmah_session_id", newId);
+        setSessionId(newId);
       }
     });
   };
@@ -158,8 +184,14 @@ export default function ChatPage() {
           <div>
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               Chatbot AI Keislaman
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-800/40">
-                Online
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                llmStatus === "online"
+                  ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40"
+                  : llmStatus === "offline"
+                  ? "bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-800/40"
+                  : "bg-yellow-100 dark:bg-yellow-950/80 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-800/40"
+              }`}>
+                {llmStatus === "online" ? "Online" : llmStatus === "offline" ? "Offline" : "Checking..."}
               </span>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">

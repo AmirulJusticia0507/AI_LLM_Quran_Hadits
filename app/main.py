@@ -1,25 +1,62 @@
+import time
+from collections import defaultdict
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+import os
 
 from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.llm.factory import get_llm
 
+load_dotenv()
+
 app = FastAPI(
     title="AI LLM Qur'an & Hadits",
     description="Sistem Integrasi LLM dengan API Al-Qur'an dan Hadits",
-    version="1.0.0",
+    version="1.1.0",
 )
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+
+class SessionManager:
+    """In-memory session store with TTL auto-cleanup."""
+
+    def __init__(self, ttl_seconds: int = 1800):
+        self.sessions: dict[str, list[dict]] = defaultdict(list)
+        self.last_active: dict[str, float] = {}
+        self.ttl = ttl_seconds
+
+    def get_history(self, session_id: str) -> list[dict]:
+        self._cleanup()
+        return self.sessions[session_id]
+
+    def add_message(self, session_id: str, message: dict):
+        self.sessions[session_id].append(message)
+        self.last_active[session_id] = time.time()
+
+    def clear(self, session_id: str):
+        self.sessions.pop(session_id, None)
+        self.last_active.pop(session_id, None)
+
+    def _cleanup(self):
+        now = time.time()
+        expired = [sid for sid, ts in self.last_active.items() if now - ts > self.ttl]
+        for sid in expired:
+            self.sessions.pop(sid, None)
+            self.last_active.pop(sid, None)
+
+
+session_mgr = SessionManager()
 quran_api = QuranAPI()
 hadith_api = HadithAPI()
 llm = None
@@ -34,11 +71,20 @@ async def startup():
         print(f"Warning: LLM tidak tersedia: {e}")
 
 
+@app.get("/api/health")
+async def health():
+    return {
+        "status": "ok",
+        "llm_configured": llm is not None,
+        "llm_provider": os.getenv("LLM_PROVIDER", "none"),
+    }
+
+
 @app.get("/")
 async def root():
     return {
         "message": "AI LLM Qur'an & Hadits API",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "docs": "/docs",
     }
 
@@ -46,10 +92,14 @@ async def root():
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
     if not llm:
-        raise HTTPException(status_code=503, detail="LLM belum dikonfigurasi")
+        raise HTTPException(
+            status_code=503,
+            detail="LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.",
+        )
     try:
-        response = await llm.chat(req.message)
-        return {"status": "success", "response": response}
+        history = session_mgr.get_history(req.session_id)
+        response = await llm.chat(req.message, history=history, session_id=req.session_id)
+        return {"status": "success", "response": response, "session_id": req.session_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

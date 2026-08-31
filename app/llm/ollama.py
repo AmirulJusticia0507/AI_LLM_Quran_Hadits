@@ -73,7 +73,6 @@ class OllamaLLM:
         self.model = os.getenv("OLLAMA_MODEL", "deepseek-r1:8b")
         self.quran_api = QuranAPI()
         self.hadith_api = HadithAPI()
-        self.history = []
 
     async def _execute_tool(self, function_name: str, arguments: dict) -> dict:
         if function_name == "get_quran_verse":
@@ -86,15 +85,16 @@ class OllamaLLM:
             )
         return {"status": "error", "message": "Unknown function"}
 
-    async def chat(self, user_message: str) -> str:
+    async def chat(self, user_message: str, history: list[dict] = None, session_id: str = None) -> str:
         try:
-            self.history.append({"role": "user", "content": user_message})
+            messages = list(history) if history else []
+            messages.append({"role": "user", "content": user_message})
 
             response = ollama.chat(
                 model=self.model,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    *self.history,
+                    *messages,
                 ],
                 tools=TOOLS,
             )
@@ -105,32 +105,27 @@ class OllamaLLM:
                 for tool_call in message["tool_calls"]:
                     function_name = tool_call["function"]["name"]
                     arguments = tool_call["function"]["arguments"]
-
                     result = await self._execute_tool(function_name, arguments)
-
-                    self.history.append({"role": "assistant", "content": "", "tool_calls": message["tool_calls"]})
-                    self.history.append({
-                        "role": "tool",
-                        "content": str(result),
-                    })
+                    messages.append({"role": "assistant", "content": "", "tool_calls": message["tool_calls"]})
+                    messages.append({"role": "tool", "content": str(result)})
 
                 final_response = ollama.chat(
                     model=self.model,
                     messages=[
                         {"role": "system", "content": SYSTEM_PROMPT},
-                        *self.history,
+                        *messages,
                     ],
                 )
-
                 assistant_message = final_response["message"]["content"]
-                self.history.append({"role": "assistant", "content": assistant_message})
-                return assistant_message
+            else:
+                assistant_message = message["content"]
 
-            assistant_message = message["content"]
-            self.history.append({"role": "assistant", "content": assistant_message})
+            messages.append({"role": "assistant", "content": assistant_message})
 
-            if len(self.history) > 20:
-                self.history = self.history[-20:]
+            # Update caller's history (keep last 20)
+            if history is not None:
+                history.clear()
+                history.extend(messages[-20:])
 
             return assistant_message
 
