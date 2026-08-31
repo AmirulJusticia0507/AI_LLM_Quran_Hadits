@@ -33,15 +33,14 @@ class HadithAPI:
                 )
                 response.raise_for_status()
 
-                data = response.json().get("data", {})
-                contents = data.get("contents", {})
+                data = response.json()
 
                 return {
                     "status": "success",
                     "kitab": data.get("name", kitab.title()),
-                    "nomor": contents.get("number", nomor),
-                    "teks_arab": contents.get("arab", ""),
-                    "terjemahan": contents.get("id", ""),
+                    "nomor": data.get("number", nomor),
+                    "teks_arab": data.get("arab", ""),
+                    "terjemahan": data.get("id", ""),
                 }
 
         except httpx.HTTPError as e:
