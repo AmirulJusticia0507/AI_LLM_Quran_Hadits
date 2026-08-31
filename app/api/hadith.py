@@ -5,12 +5,17 @@ class HadithAPI:
     BASE_URL = "https://hadis-api-id.vercel.app"
 
     AVAILABLE_BOOKS = [
+        "abu-dawud",
+        "ahmad",
         "bukhari",
-        "muslim",
-        "tirmidzi",
-        "abu-daud",
-        "nasai",
+        "darimi",
         "ibnu-majah",
+        "malik",
+        "muslim",
+        "nasai",
+        "nasai-4",
+        "nasai-5",
+        "tirmidzi",
     ]
 
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
@@ -24,7 +29,7 @@ class HadithAPI:
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(
-                    f"{self.BASE_URL}/books/{kitab_lower}/{nomor}"
+                    f"{self.BASE_URL}/hadith/{kitab_lower}/{nomor}"
                 )
                 response.raise_for_status()
 
@@ -55,7 +60,7 @@ class HadithAPI:
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(
-                    f"{self.BASE_URL}/books/{kitab_lower}",
+                    f"{self.BASE_URL}/hadith/{kitab_lower}",
                     params={"range": f"{start}-{end}"},
                 )
                 response.raise_for_status()

@@ -17,9 +17,12 @@ const KITAB_LIST = [
   { id: "bukhari", name: "Shahih Bukhari", maxHadith: 7563 },
   { id: "muslim", name: "Shahih Muslim", maxHadith: 7500 },
   { id: "tirmidzi", name: "Jami' at-Tirmidzi", maxHadith: 3956 },
-  { id: "abu-daud", name: "Sunan Abu Dawud", maxHadith: 5274 },
+  { id: "abu-dawud", name: "Sunan Abu Dawud", maxHadith: 5274 },
   { id: "nasai", name: "Sunan an-Nasa'i", maxHadith: 5761 },
   { id: "ibnu-majah", name: "Sunan Ibnu Majah", maxHadith: 4341 },
+  { id: "ahmad", name: "Musnad Ahmad", maxHadith: 26363 },
+  { id: "malik", name: "Muwatta Malik", maxHadith: 1836 },
+  { id: "darimi", name: "Sunan ad-Darimi", maxHadith: 3573 },
 ];
 
 export default function HadithPage() {

@@ -12,5 +12,5 @@ class QuranVerseRequest(BaseModel):
 
 
 class HadithRequest(BaseModel):
-    kitab: Literal["bukhari", "muslim", "tirmidzi", "abu-daud", "nasai", "ibnu-majah"]
+    kitab: Literal["abu-dawud", "ahmad", "bukhari", "darimi", "ibnu-majah", "malik", "muslim", "nasai", "tirmidzi"]
     nomor: int
