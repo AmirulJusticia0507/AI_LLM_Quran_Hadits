@@ -2,30 +2,89 @@
 
 import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import { 
+  Send, 
+  Trash2, 
+  Sparkles, 
+  Bot, 
+  User, 
+  Copy, 
+  Check, 
+  BookOpen, 
+  ScrollText, 
+  ShieldCheck,
+  RefreshCw,
+  Lightbulb,
+  ArrowRight
+} from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  timestamp?: string;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+const SUGGESTED_PROMPTS = [
+  {
+    title: "Keutamaan Surah Al-Kahfi",
+    prompt: "Apa saja keutamaan membaca Surah Al-Kahfi pada hari Jumat berdasarkan hadits sahih?",
+    category: "Al-Qur'an",
+    icon: BookOpen,
+  },
+  {
+    title: "Hadits Menjaga Lisan",
+    prompt: "Tuliskan hadits tentang pentingnya menjaga lisan dan tutur kata yang baik beserta artinya.",
+    category: "Hadits",
+    icon: ScrollText,
+  },
+  {
+    title: "Tafsir Ringkas Ayat Kursi",
+    prompt: "Jelaskan makna dan keagungan Ayat Kursi (Al-Baqarah: 255) dalam ajaran Islam.",
+    category: "Tafsir",
+    icon: Lightbulb,
+  },
+  {
+    title: "Adab dan Tata Cara Shalat Tahajud",
+    prompt: "Bagaimana tata cara shalat Tahajud, waktu terbaik melaksanakannya, dan doa yang dianjurkan?",
+    category: "Fiqih & Ibadah",
+    icon: ShieldCheck,
+  },
+];
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  };
 
-  const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
 
-    const userMessage = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+  const getCurrentTime = () => {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const handleSend = async (textToSend?: string) => {
+    const query = textToSend || input;
+    if (!query.trim() || loading) return;
+
+    const userMessage = query.trim();
+    if (!textToSend) setInput("");
+
+    const timestamp = getCurrentTime();
+
+    setMessages((prev) => [
+      ...prev, 
+      { role: "user", content: userMessage, timestamp }
+    ]);
     setLoading(true);
 
     try {
@@ -38,108 +97,240 @@ export default function ChatPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.detail || "Gagal memproses pesan");
+        throw new Error(data.detail || "Gagal memproses pesan dari server.");
       }
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.response },
+        { role: "assistant", content: data.response, timestamp: getCurrentTime() },
       ]);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan";
+      const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan koneksi";
       Swal.fire({
         icon: "error",
-        title: "Gagal",
+        title: "Gagal Mengirim",
         text: errorMessage,
-        confirmButtonColor: "#10b981",
+        confirmButtonColor: "#059669",
+        customClass: {
+          popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
+        }
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
   const clearChat = () => {
     Swal.fire({
-      title: "Hapus Percakapan?",
-      text: "Semua pesan akan dihapus",
-      icon: "question",
+      title: "Hapus Riwayat Chat?",
+      text: "Semua pesan dalam sesi percakapan ini akan dihapus.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#10b981",
-      cancelButtonColor: "#ef4444",
-      confirmButtonText: "Ya, Hapus",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Hapus Semua",
       cancelButtonText: "Batal",
+      customClass: {
+        popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         setMessages([]);
-        Swal.fire({
-          icon: "success",
-          title: "Terhapus",
-          timer: 1500,
-          showConfirmButton: false,
-        });
       }
     });
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-emerald-800 dark:text-emerald-400">
-            Chat AI Keislaman
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Tanya tentang Al-Qur&apos;an dan Hadits
-          </p>
+    <div className="flex flex-col h-[calc(100vh-10rem)] max-w-5xl mx-auto">
+      
+      {/* Header Bar */}
+      <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-slate-800/60 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              Chatbot AI Keislaman
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-800/40">
+                Online
+              </span>
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Tanyakan masalah agama, Al-Qur&apos;an, Hadits & Tafsir secara responsif
+            </p>
+          </div>
         </div>
+
         {messages.length > 0 && (
           <button
             onClick={clearChat}
-            className="px-4 py-2 text-sm bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-900/50 transition-all active:scale-95 cursor-pointer"
           >
-            🗑️ Hapus
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Bersihkan Chat</span>
           </button>
         )}
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 space-y-4">
+      {/* Main Chat Box Container */}
+      <div className="flex-1 overflow-y-auto rounded-3xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-xl p-4 md:p-6 space-y-6 relative">
+        
+        {/* Empty State / Welcome Screen */}
         {messages.length === 0 && (
-          <div className="flex items-center justify-center h-full text-gray-400">
-            <div className="text-center">
-              <p className="text-4xl mb-4">🕌</p>
-              <p className="font-medium">Assalamu&apos;alaikum Wr. Wb.</p>
-              <p className="text-sm mt-2">Silakan ajukan pertanyaan Anda</p>
+          <div className="flex flex-col items-center justify-center min-h-[70vh] py-8 text-center max-w-2xl mx-auto space-y-6">
+            <div className="relative">
+              <div className="w-20 h-20 rounded-3xl bg-linear-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white text-4xl shadow-xl shadow-emerald-500/25">
+                🕌
+              </div>
+              <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-emerald-500 text-white shadow-md">
+                <Sparkles className="w-4 h-4 animate-spin-slow" />
+              </div>
+            </div>
+
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 mt-3 tracking-tight">
+                Assalamu&apos;alaikum Wr. Wb.
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed max-w-lg">
+                Selamat datang di <span className="font-semibold text-emerald-600 dark:text-emerald-400">Al-Hikmah AI</span>. Ajukan pertanyaan seputar hukum Islam, ayat Al-Qur&apos;an, hadits sahih, maupun panduan ibadah.
+              </p>
+            </div>
+
+            {/* Quick Prompt Cards Grid */}
+            <div className="w-full pt-4">
+              <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 text-left">
+                💡 Contoh Pertanyaan Populer:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
+                {SUGGESTED_PROMPTS.map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleSend(item.prompt)}
+                      className="group p-4 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all text-left flex items-start gap-3.5 cursor-pointer"
+                    >
+                      <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                            {item.title}
+                          </span>
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                          {item.prompt}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
 
+        {/* Message Bubbles */}
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex items-start gap-3 ${
+              msg.role === "user" ? "flex-row-reverse" : "flex-row"
+            } animate-in fade-in slide-in-from-bottom-2 duration-300`}
           >
+            {/* Avatar */}
             <div
-              className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+              className={`w-9 h-9 rounded-2xl flex items-center justify-center text-sm font-semibold shrink-0 shadow-md ${
                 msg.role === "user"
-                  ? "bg-emerald-600 text-white rounded-br-md"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-md"
+                  ? "bg-linear-to-tr from-emerald-600 to-teal-600 text-white"
+                  : "bg-slate-800 text-emerald-400 border border-emerald-500/30"
               }`}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+            </div>
+
+            {/* Bubble Content */}
+            <div
+              className={`max-w-[85%] md:max-w-[78%] rounded-3xl p-4 md:p-5 relative group ${
+                msg.role === "user"
+                  ? "bg-linear-to-r from-emerald-600 to-teal-600 text-white rounded-tr-xs shadow-lg shadow-emerald-600/15"
+                  : "bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 rounded-tl-xs border border-slate-200/80 dark:border-slate-700/80 shadow-md"
+              }`}
+            >
+              {/* Header inside Bubble for AI */}
+              {msg.role === "assistant" && (
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-700/60 text-xs">
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" /> Al-Hikmah Assistant
+                  </span>
+                  <button
+                    onClick={() => copyToClipboard(msg.content, i)}
+                    className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
+                    title="Salin Pesan"
+                  >
+                    {copiedIndex === i ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-500" />
+                        <span className="text-[10px] text-emerald-500">Tersalin</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span className="text-[10px]">Salin</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Message text formatted */}
+              <div className="whitespace-pre-wrap leading-relaxed text-sm md:text-base font-normal">
+                {msg.content}
+              </div>
+
+              {/* Timestamp */}
+              {msg.timestamp && (
+                <div
+                  className={`text-[10px] mt-2 text-right ${
+                    msg.role === "user"
+                      ? "text-emerald-100/80"
+                      : "text-slate-400 dark:text-slate-500"
+                  }`}
+                >
+                  {msg.timestamp}
+                </div>
+              )}
             </div>
           </div>
         ))}
 
+        {/* Loading Indicator */}
         {loading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-2xl rounded-bl-md">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.1s]" />
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+          <div className="flex items-start gap-3 animate-in fade-in duration-200">
+            <div className="w-9 h-9 rounded-2xl bg-slate-800 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
+              <Bot className="w-4 h-4" />
+            </div>
+            <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 px-5 py-4 rounded-3xl rounded-tl-xs shadow-md flex items-center gap-3">
+              <div className="flex gap-1.5 items-center">
+                <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce" />
+                <span className="w-2.5 h-2.5 bg-teal-500 rounded-full animate-bounce [animation-delay:0.15s]" />
+                <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.3s]" />
               </div>
+              <span className="text-xs text-slate-500 dark:text-slate-400 italic">
+                Al-Hikmah AI sedang memproses jawaban & rujukan...
+              </span>
             </div>
           </div>
         )}
@@ -147,24 +338,43 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="mt-4 flex gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Ketik pertanyaan Anda..."
-          disabled={loading}
-          className="flex-1 px-4 py-3 rounded-xl border border-emerald-200 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={loading || !input.trim()}
-          className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+      {/* Input Form Bar */}
+      <div className="mt-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}
+          className="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-2 shadow-xl focus-within:ring-2 focus-within:ring-emerald-500/50 focus-within:border-emerald-500 transition-all"
         >
-          {loading ? "..." : "Kirim"}
-        </button>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Tanyakan hal tentang Al-Qur'an, Hadits, Fiqih..."
+            disabled={loading}
+            className="flex-1 px-4 py-2.5 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none text-sm md:text-base disabled:opacity-50"
+          />
+
+          <button
+            type="submit"
+            disabled={loading || !input.trim()}
+            className="px-5 py-3 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-medium rounded-xl shadow-lg shadow-emerald-600/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 flex items-center gap-2 text-sm shrink-0 cursor-pointer"
+          >
+            {loading ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <span>Kirim</span>
+                <Send className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </form>
+
+        <p className="text-[11px] text-center text-slate-400 dark:text-slate-500 mt-2">
+          Tekan <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px]">Enter</kbd> untuk mengirim. AI dapat membuat kekeliruan, selalu tabayyun dengan ulama.
+        </p>
       </div>
     </div>
   );
