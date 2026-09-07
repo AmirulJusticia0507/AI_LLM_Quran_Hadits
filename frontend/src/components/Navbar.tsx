@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useSyncExternalStore } from "react";
-import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info } from "lucide-react";
+import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Chat AI", icon: MessageSquare, badge: "AI Assistant" },
   { href: "/quran", label: "Al-Qur'an", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", label: "Hadits", icon: ScrollText, badge: "9 Kitab" },
+  { href: "/tajweed", label: "Tajwid", icon: GraduationCap, badge: "Ghunnah, Idgham, dll" },
   { href: "/about", label: "Tentang", icon: Info, badge: "Info" },
 ];
 
