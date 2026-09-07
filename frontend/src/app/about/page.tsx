@@ -13,7 +13,7 @@ import {
   Heart,
   ArrowRight,
   GitBranch,
-  Linkedin
+  Link2
 } from "lucide-react";
 
 interface Feature {
@@ -280,7 +280,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 transition-colors group"
               >
-                <Linkedin className="w-4 h-4" />
+                <Link2 className="w-4 h-4" />
                 <span>LinkedIn</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </a>
