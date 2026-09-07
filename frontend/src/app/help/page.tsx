@@ -23,7 +23,7 @@ import {
   Zap,
   LifeBuoy,
   Mail,
-  Github,
+  GitBranch,
   ExternalLink
 } from "lucide-react";
 
@@ -337,7 +337,7 @@ export default function HelpPage() {
             className="group p-5 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 hover:border-emerald-500/50 hover:shadow-lg transition-all flex items-center gap-4"
           >
             <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-950/80 transition-colors">
-              <Github className="w-6 h-6" />
+              <GitBranch className="w-6 h-6" />
             </div>
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100">GitHub Issues</h3>
@@ -352,7 +352,7 @@ export default function HelpPage() {
             className="group p-5 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 hover:border-blue-500/50 hover:shadow-lg transition-all flex items-center gap-4"
           >
             <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-950/80 transition-colors">
-              <Github className="w-6 h-6" />
+              <GitBranch className="w-6 h-6" />
             </div>
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100">Profil Pengembang</h3>
