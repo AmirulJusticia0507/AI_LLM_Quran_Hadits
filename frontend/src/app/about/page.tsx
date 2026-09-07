@@ -12,7 +12,7 @@ import {
   Code,
   Heart,
   ArrowRight,
-  Github,
+  GitBranch,
   Linkedin
 } from "lucide-react";
 
@@ -270,7 +270,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-700 transition-colors group"
               >
-                <Github className="w-4 h-4" />
+                <GitBranch className="w-4 h-4" />
                 <span>GitHub</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </a>
