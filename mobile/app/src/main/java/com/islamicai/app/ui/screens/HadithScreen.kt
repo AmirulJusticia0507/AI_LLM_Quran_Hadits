@@ -1,5 +1,9 @@
 package com.islamicai.app.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,11 +11,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -32,9 +42,54 @@ fun HadithScreen() {
     var result by remember { mutableStateOf<HadithResponse?>(null) }
     var loading by remember { mutableStateOf(false) }
     var showPicker by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val selectedKitab = IslamicData.kitabList.find { it.id == kitab }
+
+    val maxHadith = selectedKitab?.maxHadith ?: 7563
+
+    fun copyToClipboard(text: String, message: String) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.primaryClip = ClipData.newPlainText("Hadith", text)
+        showToast(context, message)
+    }
+
+    fun shareHadith(res: HadithResponse) {
+        val shareText = """${res.kitab} - Hadits #${res.nomor}
+
+${res.teks_arab}
+
+${res.terjemahan}"""
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareText)
+        }
+        context.startActivity(Intent.createChooser(intent, "Bagikan Hadits"))
+    }
+
+    fun showToast(ctx: Context, msg: String) {
+        android.widget.Toast.makeText(ctx, msg, android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    fun fetchHadith(targetNomor: Int) {
+        loading = true
+        error = null
+        scope.launch {
+            try {
+                val res = ApiClient.api.getHadith(HadithRequest(kitab, targetNomor))
+                result = res
+                if (res.status == "error") {
+                    error = res.message
+                }
+            } catch (e: Exception) {
+                error = "Error: ${e.message}"
+                result = null
+            }
+            loading = false
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -68,31 +123,23 @@ fun HadithScreen() {
 
                 Text("Nomor Hadits", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Gray700)
                 Spacer(modifier = Modifier.height(6.dp))
-                OutlinedTextField(
-                    value = nomor,
-                    onValueChange = { nomor = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    shape = RoundedCornerShape(12.dp)
-                )
-                if (selectedKitab != null) {
-                    Text("Maks: ${selectedKitab.maxHadith} hadits", fontSize = 11.sp, color = Gray400)
+                Row {
+                    OutlinedTextField(
+                        value = nomor,
+                        onValueChange = { nomor = it.filter { it.isDigit() } },
+                        modifier = Modifier.weight(1f).padding(end = 8.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    if (selectedKitab != null) {
+                        Text("Maks: $maxHadith", fontSize = 12.sp, color = Gray500)
+                            .let { Text(text = it, modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically)) }
+                    }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
-                    onClick = {
-                        loading = true
-                        result = null
-                        scope.launch {
-                            try {
-                                result = ApiClient.api.getHadith(HadithRequest(kitab, nomor.toIntOrNull() ?: 1))
-                            } catch (e: Exception) {
-                                result = HadithResponse("error", "", 0, "", "Error: ${e.message}")
-                            }
-                            loading = false
-                        }
-                    },
+                    onClick = { fetchHadith(nomor.toIntOrNull() ?: 1) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Green500),
                     shape = RoundedCornerShape(12.dp),
@@ -106,36 +153,111 @@ fun HadithScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Error Display
+        error?.let { err ->
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Red50.copy(alpha = 0.1f))
+            ) {
+                Row(modifier = Modifier.padding(12.dp)) {
+                    Icon(Icons.Default.Error, "Error", tint = Red500)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(err, color = Red700, fontSize = 13.sp)
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         // Result
         result?.let { res ->
             if (res.status == "success") {
+                // Navigation Buttons
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = {
+                            val prev = res.nomor - 1
+                            if (prev >= 1) {
+                                nomor = prev.toString()
+                                fetchHadith(prev)
+                            }
+                        },
+                        enabled = res.nomor > 1 && !loading,
+                        colors = ButtonDefaults.tonalButtonColors(containerColor = Green100, contentColor = Green800)
+                    ) {
+                        Row { Icon(Icons.Default.ArrowBack, ""); Spacer(Modifier.width(4.dp)); Text("Sebelumnya") }
+                    }
+                    Button(
+                        onClick = {
+                            val next = res.nomor + 1
+                            if (next <= maxHadith) {
+                                nomor = next.toString()
+                                fetchHadith(next)
+                            }
+                        },
+                        enabled = res.nomor < maxHadith && !loading,
+                        colors = ButtonDefaults.tonalButtonColors(containerColor = Green100, contentColor = Green800)
+                    ) {
+                        Row { Text("Selanjutnya"); Spacer(Modifier.width(4.dp)); Icon(Icons.Default.ArrowForward, "") }
+                    }
+                }
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = White),
                     elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
                 ) {
-                    Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Surface(
-                            shape = RoundedCornerShape(20.dp),
-                            color = Green100
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        // Header with kitab & number
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                "${res.kitab} - Hadits #${res.nomor}",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                                fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Green800
-                            )
+                            Surface(
+                                shape = RoundedCornerShape(20.dp),
+                                color = Green100
+                            ) {
+                                Text(
+                                    "${res.kitab} - Hadits #${res.nomor}",
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                                    fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Green800
+                                )
+                            }
+                            // Action buttons
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                IconButton(onClick = { copyToClipboard(res.teks_arab, "Teks Arab disalin") }) {
+                                    Icon(Icons.Default.ContentCopy, "Salin Arab")
+                                }
+                                IconButton(onClick = { copyToClipboard(res.terjemahan, "Terjemahan disalin") }) {
+                                    Icon(Icons.Default.ContentCopy, "Salin Terjemahan")
+                                }
+                                IconButton(onClick = { shareHadith(res) }) {
+                                    Icon(Icons.Default.Share, "Bagikan")
+                                }
+                            }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
+
+                        // Arabic Text
                         Text(
                             res.teks_arab,
-                            fontSize = 24.sp,
+                            fontSize = 22.sp,
                             textAlign = TextAlign.Right,
                             modifier = Modifier.fillMaxWidth(),
-                            lineHeight = 40.sp,
-                            color = Gray800
+                            lineHeight = 38.sp,
+                            color = Gray800,
+                            fontFamily = androidx.compose.ui.text.font.FontFamily.Default // fallback, can add Amiri font
                         )
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                        // Translation
                         Text(res.terjemahan, fontSize = 14.sp, color = Gray700, lineHeight = 24.sp)
                     }
                 }
@@ -156,6 +278,7 @@ fun HadithScreen() {
                                     .clip(RoundedCornerShape(8.dp))
                                     .clickable {
                                         kitab = k.id
+                                        nomor = "1"
                                         showPicker = false
                                     }
                                     .then(
