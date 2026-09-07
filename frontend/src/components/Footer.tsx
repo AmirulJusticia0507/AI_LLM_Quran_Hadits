@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck } from "lucide-react";
+import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Shield, FileText, LifeBuoy } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -72,11 +72,11 @@ export default function Footer() {
             <span>untuk Ummat Islam</span>
           </div>
           <div className="flex gap-4">
-            <span className="hover:text-emerald-500 transition-colors cursor-pointer">Privasi</span>
+            <Link href="/privacy" className="hover:text-emerald-500 transition-colors">Privasi</Link>
             <span>•</span>
-            <span className="hover:text-emerald-500 transition-colors cursor-pointer">Syarat & Ketentuan</span>
+            <Link href="/terms" className="hover:text-emerald-500 transition-colors">Syarat & Ketentuan</Link>
             <span>•</span>
-            <span className="hover:text-emerald-500 transition-colors cursor-pointer">Bantuan</span>
+            <Link href="/help" className="hover:text-emerald-500 transition-colors">Bantuan</Link>
           </div>
         </div>
       </div>
