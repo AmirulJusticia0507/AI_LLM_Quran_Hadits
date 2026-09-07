@@ -1,6 +1,20 @@
 "use client";
 
+import React from "react";
 import { Shield, FileText, Database, Lock, User, AlertCircle, Mail, Globe } from "lucide-react";
+
+interface SectionItem {
+  text?: string;
+  name?: string;
+  purpose?: string;
+  privacy?: string;
+}
+
+interface Section {
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: SectionItem[];
+}
 
 export default function PrivacyPage() {
   const lastUpdated = "7 September 2026";
@@ -89,15 +103,16 @@ export default function PrivacyPage() {
       <div className="space-y-6">
         {sections.map((section, i) => {
           const Icon = section.icon;
-          if (section.title === "API Eksternal yang Digunakan") {
-            return (
-              <article key={i} className="p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
+          const isApiSection = section.title === "API Eksternal yang Digunakan";
+          return (
+            <article key={i} className="p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
+                  <Icon className="w-5 h-5" />
                 </div>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
+              </div>
+              {isApiSection ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -110,33 +125,24 @@ export default function PrivacyPage() {
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {section.items.map((item, idx) => (
                         <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                          <td className="py-3 px-3 font-medium text-slate-900 dark:text-slate-100">{item.name}</td>
-                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{item.purpose}</td>
-                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{item.privacy}</td>
+                          <td className="py-3 px-3 font-medium text-slate-900 dark:text-slate-100">{typeof item === "object" && item.name ? item.name : ""}</td>
+                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{typeof item === "object" && item.purpose ? item.purpose : ""}</td>
+                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{typeof item === "object" && item.privacy ? item.privacy : ""}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-              </article>
-            );
-          }
-          return (
-            <article key={i} className="p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
-              </div>
-              <ul className="space-y-3 text-slate-600 dark:text-slate-300">
-                {section.items.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
-                    <span className="leading-relaxed">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              ) : (
+                <ul className="space-y-3 text-slate-600 dark:text-slate-300">
+                  {section.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                      <span className="leading-relaxed">{typeof item === "string" ? item : ""}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </article>
           );
         })}

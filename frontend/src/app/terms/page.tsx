@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Shield, AlertCircle, Info, CheckCircle, XCircle, Scale, BookOpen } from "lucide-react";
+import { FileText, Shield, AlertCircle, Info, CheckCircle, XCircle, Scale, BookOpen, Mail } from "lucide-react";
 
 export default function TermsPage() {
   const lastUpdated = "7 September 2026";
