@@ -1,20 +1,6 @@
 "use client";
 
-import React from "react";
-import { Shield, FileText, Database, Lock, User, AlertCircle, Mail, Globe } from "lucide-react";
-
-interface SectionItem {
-  text?: string;
-  name?: string;
-  purpose?: string;
-  privacy?: string;
-}
-
-interface Section {
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  items: SectionItem[];
-}
+import { Shield, FileText, Database, User, AlertCircle, Mail, Globe } from "lucide-react";
 
 export default function PrivacyPage() {
   const lastUpdated = "7 September 2026";
@@ -137,7 +123,7 @@ export default function PrivacyPage() {
                 <ul className="space-y-3 text-slate-600 dark:text-slate-300">
                   {section.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
                       <span className="leading-relaxed">{typeof item === "string" ? item : ""}</span>
                     </li>
                   ))}

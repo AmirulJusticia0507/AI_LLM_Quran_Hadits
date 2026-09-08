@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Shield, FileText, LifeBuoy } from "lucide-react";
+import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (

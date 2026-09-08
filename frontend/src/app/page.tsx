@@ -77,6 +77,7 @@ export default function ChatPage() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   // Ref accumulates streamed tokens outside React render cycle — avoids
   // React compiler's "immutable captured variable" error on reassignment.
   const assistantContentRef = useRef("");
@@ -114,6 +115,18 @@ export default function ChatPage() {
     chatContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const autoResizeTextarea = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 160) + "px";
+  };
+
+  const resetTextareaHeight = () => {
+    const el = textareaRef.current;
+    if (el) el.style.height = "auto";
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, loading]);
@@ -134,7 +147,10 @@ export default function ChatPage() {
     if (!query.trim() || loading) return;
 
     const userMessage = query.trim();
-    if (!textToSend) setInput("");
+    if (!textToSend) {
+      setInput("");
+      resetTextareaHeight();
+    }
 
     const timestamp = getCurrentTime();
 
@@ -281,7 +297,7 @@ export default function ChatPage() {
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 truncate">
               Chatbot AI Keislaman
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 flex-shrink-0 ${
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${
                 llmStatus === "online"
                   ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40"
                   : llmStatus === "offline"
@@ -394,9 +410,9 @@ export default function ChatPage() {
               {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
 
-            {/* Bubble Content */}
+            {/* Bubble Content — w-fit agar lebar mengikuti isi, max-w agar adaptif di layar kecil */}
             <div
-              className={`w-full max-w-[90%] sm:max-w-[85%] md:max-w-[78%] rounded-3xl p-3 sm:p-4 md:p-5 relative group ${
+              className={`w-fit max-w-[92%] sm:max-w-[85%] md:max-w-[78%] min-w-16 rounded-3xl p-3 sm:p-4 md:p-5 relative group ${
                 msg.role === "user"
                   ? "bg-linear-to-r from-emerald-600 to-teal-600 text-white rounded-tr-xs shadow-lg shadow-emerald-600/15"
                   : "bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 rounded-tl-xs border border-slate-200/80 dark:border-slate-700/80 shadow-md"
@@ -432,13 +448,13 @@ export default function ChatPage() {
 
               {/* Message content — Markdown for AI, plain for user */}
               {msg.role === "assistant" ? (
-                <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 overflow-wrap-anywhere break-words">
+                <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none min-w-0 prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 overflow-wrap-anywhere wrap-break-word prose-pre:overflow-x-auto prose-pre:max-w-full prose-pre:text-xs sm:prose-pre:text-sm prose-table:block prose-table:overflow-x-auto prose-table:max-w-full prose-img:max-w-full prose-img:rounded-xl prose-code:wrap-break-word">
                   <Markdown remarkPlugins={[remarkGfm]}>
                     {msg.content}
                   </Markdown>
                 </div>
               ) : (
-                <div className="whitespace-pre-wrap break-words leading-relaxed text-sm md:text-base font-normal">
+                <div className="whitespace-pre-wrap wrap-break-word overflow-wrap-anywhere leading-relaxed text-sm md:text-base font-normal min-w-0">
                   {msg.content}
                 </div>
               )}
@@ -498,15 +514,25 @@ export default function ChatPage() {
             e.preventDefault();
             handleSend();
           }}
-          className="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-2 sm:p-2 shadow-xl focus-within:ring-2 focus-within:ring-emerald-500/50 focus-within:border-emerald-500 transition-all"
+          className="relative flex items-end gap-2 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-2 sm:p-2 shadow-xl focus-within:ring-2 focus-within:ring-emerald-500/50 focus-within:border-emerald-500 transition-all"
         >
-          <input
-            type="text"
+          <textarea
+            ref={textareaRef}
+            rows={1}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Tanyakan hal tentang Al-Qur'an, Hadits, Fiqih..."
+            onChange={(e) => {
+              setInput(e.target.value);
+              autoResizeTextarea();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Tanyakan hal tentang Al-Qur'an, Hadits, Fiqih... (Enter kirim, Shift+Enter baris baru)"
             disabled={loading}
-            className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none text-sm sm:text-base disabled:opacity-50 min-w-0"
+            className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none text-sm sm:text-base disabled:opacity-50 min-w-0 resize-none overflow-y-auto max-h-40 leading-relaxed"
           />
 
           <button
@@ -526,7 +552,7 @@ export default function ChatPage() {
         </form>
 
         <p className="text-[10px] sm:text-[11px] text-center text-slate-400 dark:text-slate-500 mt-2">
-          Tekan <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px] sm:text-[10px]">Enter</kbd> untuk mengirim. AI dapat membuat kekeliruan, selalu tabayyun dengan ulama.
+          Tekan <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px] sm:text-[10px]">Enter</kbd> untuk mengirim, <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px] sm:text-[10px]">Shift+Enter</kbd> baris baru. AI dapat membuat kekeliruan, selalu tabayyun dengan ulama.
         </p>
       </div>
     </div>

@@ -142,7 +142,7 @@ export default function TermsPage() {
                 <ul className="space-y-3 text-slate-600 dark:text-slate-300">
                   {section.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
                       <span className="leading-relaxed">{item}</span>
                     </li>
                   ))}
@@ -178,7 +178,7 @@ export default function TermsPage() {
         <ul className="space-y-2 text-sm text-amber-700 dark:text-amber-300">
           <li>• <strong>AI ≠ Ulama:</strong> Jawaban AI hanya referensi, bukan fatwa hukum</li>
           <li>• <strong>Tabayyun wajib:</strong> Verifikasi ke ulama bersertifikat sebelum mengamalkan</li>
-          <li>• <strong>No warranty:</strong> Layanan "as-is", tidak ada jaminan akurasi 100%</li>
+          <li>• <strong>No warranty:</strong> Layanan &quot;as-is&quot;, tidak ada jaminan akurasi 100%</li>
           <li>• <strong>Privasi lokal:</strong> Riwayat chat di browser Anda, tidak di server kami</li>
           <li>• <strong>Gratis & Open:</strong> Untuk kebaikan umat, non-komersial</li>
         </ul>
