@@ -13,7 +13,8 @@ import {
   Heart,
   ArrowRight,
   GitBranch,
-  Link2
+  Link2,
+  MessageCircle
 } from "lucide-react";
 
 interface Feature {
@@ -81,6 +82,7 @@ const CREATOR_INFO = {
   bio: "Pengembang sistem Al-Hikmah AI dengan latar belakang pengembangan web modern dan minat mendalam pada teknologi AI untuk keislaman. Berkomitmen membangun tools yang bermanfaat untuk umat.",
   github: "https://github.com/AmirulJusticia0507",
   linkedin: "https://linkedin.com/in/amirul-justicia",
+  whatsapp: "https://wa.me/6282134402383",
 };
 
 const AI_MODELS = [
@@ -113,7 +115,7 @@ export default function AboutPage() {
         </h1>
         <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
           Platform AI keislaman terintegrasi yang menggabungkan kecerdasan buatan modern dengan sumber rujukan otentik 
-          Al-Qur'an dan Hadits sahih untuk menjawab pertanyaan keagamaan dengan akurat, terverifikasi, dan bertanggung jawab.
+          Al-Qur&apos;an dan Hadits sahih untuk menjawab pertanyaan keagamaan dengan akurat, terverifikasi, dan bertanggung jawab.
         </p>
         <div className="flex items-center justify-center gap-6 text-sm text-slate-500 dark:text-slate-400 pt-4">
           <span className="flex items-center gap-1.5"><BookOpen className="w-4 h-4" /> 114 Surah</span>
@@ -284,6 +286,16 @@ export default function AboutPage() {
                 <span>LinkedIn</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </a>
+              <a
+                href={CREATOR_INFO.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition-colors group"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>WhatsApp</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </a>
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
@@ -291,7 +303,7 @@ export default function AboutPage() {
                 <Sparkles className="w-5 h-5 text-emerald-600" /> Ucapan Terima Kasih
               </h3>
               <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                <li>• <strong>equran.id</strong> — API Al-Qur'an resmi Indonesia</li>
+                <li>• <strong>equran.id</strong> — API Al-Qur&apos;an resmi Indonesia</li>
                 <li>• <strong>hadis-api-id.vercel.app</strong> — API 9 kitab hadits sahih</li>
                 <li>• <strong>Google Gemini</strong> — Model AI generatif</li>
                 <li>• <strong>Ollama Community</strong> — Local LLM inference engine</li>
@@ -302,7 +314,7 @@ export default function AboutPage() {
 
             <div className="text-center text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-700">
               <p>Dibangun dengan <Heart className="w-4 h-4 inline text-rose-500" /> untuk kemaslahatan umat</p>
-              <p className="mt-1">"Manfaatkan ilmu sebelum hilang, dan sebarkan kebaikan sebelum terlambat"</p>
+              <p className="mt-1">&quot;Manfaatkan ilmu sebelum hilang, dan sebarkan kebaikan sebelum terlambat&quot;</p>
             </div>
           </section>
         )}
