@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck } from "lucide-react";
+import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Clock } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -47,6 +47,12 @@ export default function Footer() {
                 <Link href="/hadith" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <ScrollText className="w-4 h-4 text-emerald-500" />
                   <span>Kumpulan Kitab Hadits</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/jadwal" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-emerald-500" />
+                  <span>Jadwal Shalat & Hijriah</span>
                 </Link>
               </li>
             </ul>

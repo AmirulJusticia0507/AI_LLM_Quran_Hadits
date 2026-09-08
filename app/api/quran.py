@@ -16,6 +16,9 @@ class QuranAPI:
 
                 for item in data.get("ayat", []):
                     if item.get("nomorAyat") == ayat:
+                        # audio: keyed by qari number ("01".."05"); prefer 05 (Misyari Rasyid)
+                        audio_map = item.get("audio", {}) or {}
+                        audio_url = audio_map.get("05") or next(iter(audio_map.values()), "")
                         return {
                             "status": "success",
                             "surah": nama_surah,
@@ -24,9 +27,37 @@ class QuranAPI:
                             "teks_arab": item.get("teksArab", ""),
                             "teks_latin": item.get("teksLatin", ""),
                             "terjemahan": item.get("teksIndonesia", ""),
+                            "audio": audio_url,
                         }
 
                 return {"status": "error", "message": "Ayat tidak ditemukan"}
+
+        except httpx.HTTPError as e:
+            return {"status": "error", "message": f"HTTP error: {str(e)}"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    async def get_tafsir(self, surah: int, ayat: int) -> dict:
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(f"{self.BASE_URL}/tafsir/{surah}")
+                response.raise_for_status()
+
+                data = response.json().get("data", {})
+                nama_surah = data.get("namaLatin", "")
+
+                for item in data.get("tafsir", []):
+                    nomor = item.get("ayat", item.get("nomorAyat"))
+                    if nomor == ayat:
+                        return {
+                            "status": "success",
+                            "surah": nama_surah,
+                            "nomor_surah": surah,
+                            "nomor_ayat": ayat,
+                            "tafsir": item.get("teks", ""),
+                        }
+
+                return {"status": "error", "message": "Tafsir tidak ditemukan"}
 
         except httpx.HTTPError as e:
             return {"status": "error", "message": f"HTTP error: {str(e)}"}

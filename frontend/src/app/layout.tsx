@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Amiri } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -16,12 +16,56 @@ const amiri = Amiri({
   weight: ["400", "700"],
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Al-Hikmah AI - Platform Qur'an & Hadits berbasis AI",
-  description: "Asisten Keislaman Cerdas berbasis AI dengan rujukan otentik Al-Qur'an dan Kitab Hadits Sahih.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Al-Hikmah AI - Platform Qur'an & Hadits berbasis AI",
+    template: "%s | Al-Hikmah AI",
+  },
+  description:
+    "Asisten Keislaman Cerdas berbasis AI dengan rujukan otentik Al-Qur'an dan Kitab Hadits Sahih. Dilengkapi jadwal shalat, murottal audio, tafsir, dan panduan tajwid.",
+  keywords: [
+    "Al-Qur'an",
+    "Hadits",
+    "AI Islam",
+    "tafsir",
+    "jadwal shalat",
+    "tajwid",
+    "chatbot islami",
+  ],
+  authors: [{ name: "Amirul Justicia" }],
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
+    apple: "/icon-192.png",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Al-Hikmah AI",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: "Al-Hikmah AI",
+    title: "Al-Hikmah AI - Platform Qur'an & Hadits berbasis AI",
+    description:
+      "Tanya jawab keislaman dengan AI, rujukan Al-Qur'an & Hadits sahih, jadwal shalat, murottal, dan tafsir.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Al-Hikmah AI - Platform Qur'an & Hadits berbasis AI",
+    description:
+      "Asisten Keislaman Cerdas berbasis AI dengan rujukan otentik Al-Qur'an dan Hadits sahih.",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#059669",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

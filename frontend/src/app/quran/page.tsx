@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Swal from "sweetalert2";
-import { 
-  BookOpen, 
-  Search, 
-  Copy, 
-  Check, 
-  Bookmark, 
+import {
+  BookOpen,
+  Search,
+  Copy,
+  Check,
+  Bookmark,
   BookmarkCheck,
   ChevronLeft,
   ChevronRight,
-  List
+  List,
+  Volume2,
+  Pause,
+  BookOpenText
 } from "lucide-react";
 
 interface QuranVerse {
@@ -22,6 +25,7 @@ interface QuranVerse {
   teks_arab: string;
   teks_latin: string;
   terjemahan: string;
+  audio?: string;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -166,6 +170,11 @@ export default function QuranPage() {
   const [surahVerses, setSurahVerses] = useState<QuranVerse[]>([]);
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [bookmarkedVerses, setBookmarkedVerses] = useState<QuranVerse[]>([]);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [tafsir, setTafsir] = useState<string | null>(null);
+  const [tafsirLoading, setTafsirLoading] = useState(false);
+  const [showTafsir, setShowTafsir] = useState(false);
 
   const selectedSurahInfo = SURAH_LIST.find((s) => s.num === surah);
 
@@ -175,10 +184,53 @@ export default function QuranPage() {
       s.num.toString() === searchQuery.trim()
   );
 
+  const resetMediaState = () => {
+    audioRef.current?.pause();
+    setIsPlaying(false);
+    setTafsir(null);
+    setShowTafsir(false);
+  };
+
+  const toggleAudio = () => {
+    const el = audioRef.current;
+    if (!el || !result?.audio) return;
+    if (isPlaying) {
+      el.pause();
+      setIsPlaying(false);
+    } else {
+      el.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    }
+  };
+
+  const toggleTafsir = async () => {
+    if (showTafsir) {
+      setShowTafsir(false);
+      return;
+    }
+    setShowTafsir(true);
+    if (tafsir || !result) return;
+    setTafsirLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/quran/tafsir`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ surah: result.nomor_surah, ayat: result.nomor_ayat }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Tafsir tidak ditemukan");
+      setTafsir(data.tafsir);
+    } catch {
+      setTafsir("Gagal memuat tafsir. Coba lagi nanti.");
+    } finally {
+      setTafsirLoading(false);
+    }
+  };
+
   const fetchVerse = async (targetSurah = surah, targetAyat = ayat) => {
     setLoading(true);
     setResult(null);
     setCopied(false);
+    resetMediaState();
 
     try {
       const res = await fetch(`${API_URL}/api/quran/verse`, {
@@ -561,6 +613,16 @@ export default function QuranPage() {
                 <button onClick={() => setFontSize((prev) => Math.min(3.5, prev + 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Besarkan Teks Arab">A+</button>
               </div>
 
+              {result.audio ? (
+                <button onClick={toggleAudio} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isPlaying ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isPlaying ? "Jeda Murottal" : "Putar Murottal"}>
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                </button>
+              ) : null}
+
+              <button onClick={toggleTafsir} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${showTafsir ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title="Lihat Tafsir">
+                <BookOpenText className="w-4 h-4" />
+              </button>
+
               <button onClick={copyVerse} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Ayat">
                 {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -588,6 +650,35 @@ export default function QuranPage() {
               {result.terjemahan}
             </p>
           </div>
+
+          {result.audio ? (
+            <audio
+              ref={audioRef}
+              src={result.audio}
+              preload="none"
+              onEnded={() => setIsPlaying(false)}
+              onPause={() => setIsPlaying(false)}
+              className="hidden"
+            />
+          ) : null}
+
+          {showTafsir && (
+            <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+              <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <BookOpenText className="w-3.5 h-3.5" /> Tafsir Ringkas:
+              </span>
+              <div className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed bg-amber-50 dark:bg-amber-950/30 p-5 rounded-2xl border border-amber-200/60 dark:border-amber-800/40 shadow-sm max-h-96 overflow-y-auto">
+                {tafsirLoading ? (
+                  <span className="flex items-center gap-2 text-slate-500">
+                    <span className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                    Memuat tafsir…
+                  </span>
+                ) : (
+                  <p className="whitespace-pre-wrap wrap-break-word">{tafsir}</p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Prev/Next Navigation */}
           <div className="flex items-center justify-between pt-4 border-t border-slate-200/80 dark:border-slate-800/80">

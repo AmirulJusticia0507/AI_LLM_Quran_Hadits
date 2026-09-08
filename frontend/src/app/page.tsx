@@ -1,24 +1,28 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Swal from "sweetalert2";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { 
-  Send, 
-  Trash2, 
-  Sparkles, 
-  Bot, 
-  User, 
-  Copy, 
-  Check, 
-  BookOpen, 
-  ScrollText, 
+import {
+  Send,
+  Trash2,
+  Sparkles,
+  Bot,
+  User,
+  Copy,
+  Check,
+  BookOpen,
+  ScrollText,
   ShieldCheck,
   RefreshCw,
   Lightbulb,
   ArrowRight,
-  ArrowUp
+  ArrowUp,
+  History,
+  Plus,
+  Download,
+  X
 } from "lucide-react";
 
 interface Message {
@@ -56,25 +60,74 @@ const SUGGESTED_PROMPTS = [
   },
 ];
 
-export default function ChatPage() {
-  // Lazy state init — reads localStorage during initial render (client only).
-  // Avoids setState inside useEffect which violates the strict lint rule.
-  const [messages, setMessages] = useState<Message[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const saved = localStorage.getItem("alhikmah_chat_messages");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+interface ChatSession {
+  id: string;
+  title: string;
+  updatedAt: string;
+  messages: Message[];
+}
+
+const SESSIONS_KEY = "alhikmah_chat_sessions";
+
+function sessionTitle(msgs: Message[]): string {
+  const first = msgs.find((m) => m.role === "user")?.content.trim() ?? "";
+  if (!first) return "Percakapan Baru";
+  return first.length > 42 ? first.slice(0, 42) + "…" : first;
+}
+
+function blankSession(): ChatSession {
+  return {
+    id: crypto.randomUUID(),
+    title: "Percakapan Baru",
+    updatedAt: new Date().toISOString(),
+    messages: [],
+  };
+}
+
+// Lazy state init — reads localStorage during initial render (client only).
+// Avoids setState inside useEffect which violates the strict lint rule.
+// Migrates legacy single-history format into the first session.
+function loadSessions(): ChatSession[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const saved = localStorage.getItem(SESSIONS_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    const legacy = localStorage.getItem("alhikmah_chat_messages");
+    const legacyId = localStorage.getItem("alhikmah_session_id") || crypto.randomUUID();
+    if (legacy) {
+      const msgs = JSON.parse(legacy);
+      if (Array.isArray(msgs) && msgs.length > 0) {
+        return [{
+          id: legacyId,
+          title: sessionTitle(msgs),
+          updatedAt: new Date().toISOString(),
+          messages: msgs,
+        }];
       }
-    } catch {}
-    return [];
-  });
+    }
+  } catch {}
+  return [blankSession()];
+}
+
+function persistSessions(next: ChatSession[]) {
+  try {
+    localStorage.setItem(SESSIONS_KEY, JSON.stringify(next));
+  } catch {}
+}
+
+export default function ChatPage() {
+  const [sessions, setSessions] = useState<ChatSession[]>(loadSessions);
+  const [pinnedId, setPinnedId] = useState<string | null>(null);
+  const activeId = pinnedId ?? sessions[0]?.id ?? "";
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [llmStatus, setLlmStatus] = useState<"checking" | "online" | "offline">("checking");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showSessions, setShowSessions] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -82,23 +135,28 @@ export default function ChatPage() {
   // React compiler's "immutable captured variable" error on reassignment.
   const assistantContentRef = useRef("");
 
-  const [sessionId] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("alhikmah_session_id");
-      if (stored) return stored;
-      const newId = crypto.randomUUID();
-      localStorage.setItem("alhikmah_session_id", newId);
-      return newId;
-    }
-    return "";
-  });
+  const activeSession = sessions.find((s) => s.id === activeId) ?? sessions[0];
+  const messages = useMemo(() => activeSession?.messages ?? [], [activeSession]);
+  // Session id doubles as backend session id — history stays per conversation.
+  const sessionId = activeSession?.id ?? "";
 
-  // Save messages to localStorage when they change
-  useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem("alhikmah_chat_messages", JSON.stringify(messages));
-    }
-  }, [messages]);
+  // Single write path: updates active session messages + auto-title + persist.
+  const updateMessages = (updater: (prev: Message[]) => Message[]) => {
+    setSessions((prev) => {
+      const next = prev.map((s) => {
+        if (s.id !== activeId) return s;
+        const msgs = updater(s.messages);
+        return {
+          ...s,
+          messages: msgs,
+          title: s.title === "Percakapan Baru" ? sessionTitle(msgs) : s.title,
+          updatedAt: new Date().toISOString(),
+        };
+      });
+      persistSessions(next);
+      return next;
+    });
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -154,7 +212,7 @@ export default function ChatPage() {
 
     const timestamp = getCurrentTime();
 
-    setMessages((prev) => [
+    updateMessages((prev) => [
       ...prev, 
       { role: "user", content: userMessage, timestamp }
     ]);
@@ -175,7 +233,7 @@ export default function ChatPage() {
         const decoder = new TextDecoder();
         assistantContentRef.current = "";
 
-        setMessages((prev) => [
+        updateMessages((prev) => [
           ...prev,
           { role: "assistant", content: "", timestamp: getCurrentTime() },
         ]);
@@ -194,7 +252,7 @@ export default function ChatPage() {
                   const data = JSON.parse(line.slice(6));
                   if (data.type === "token") {
                     assistantContentRef.current += data.text;
-                    setMessages((prev) => {
+                    updateMessages((prev) => {
                       const updated = [...prev];
                       updated[updated.length - 1] = {
                         ...updated[updated.length - 1],
@@ -204,7 +262,7 @@ export default function ChatPage() {
                     });
                   } else if (data.type === "error") {
                     assistantContentRef.current = `Maaf, ${data.message}`;
-                    setMessages((prev) => {
+                    updateMessages((prev) => {
                       const updated = [...prev];
                       updated[updated.length - 1] = {
                         ...updated[updated.length - 1],
@@ -227,7 +285,7 @@ export default function ChatPage() {
           }
           throw new Error(data.detail || "Gagal memproses pesan dari server.");
         }
-        setMessages((prev) => [
+        updateMessages((prev) => [
           ...prev,
           { role: "assistant", content: data.response, timestamp: getCurrentTime() },
         ]);
@@ -235,7 +293,7 @@ export default function ChatPage() {
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan koneksi";
       // Remove empty assistant message if it exists
-      setMessages((prev) => {
+      updateMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant" && !last.content) {
           return prev.slice(0, -1);
@@ -277,12 +335,86 @@ export default function ChatPage() {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        setMessages([]);
-        localStorage.removeItem("alhikmah_chat_messages");
+        // Reset sesi aktif dengan id backend baru + bersihkan format lama
         const newId = crypto.randomUUID();
-        localStorage.setItem("alhikmah_session_id", newId);
+        setSessions((prev) => {
+          const next = prev.map((s) =>
+            s.id === activeId
+              ? { ...s, id: newId, title: "Percakapan Baru", messages: [], updatedAt: new Date().toISOString() }
+              : s
+          );
+          persistSessions(next);
+          return next;
+        });
+        setPinnedId(newId);
+        try {
+          localStorage.removeItem("alhikmah_chat_messages");
+          localStorage.removeItem("alhikmah_session_id");
+        } catch {}
       }
     });
+  };
+
+  const createSession = () => {
+    const fresh = blankSession();
+    setSessions((prev) => {
+      const next = [fresh, ...prev];
+      persistSessions(next);
+      return next;
+    });
+    setPinnedId(fresh.id);
+    resetTextareaHeight();
+    setShowSessions(false);
+  };
+
+  const deleteSession = (id: string) => {
+    const next = sessions.filter((s) => s.id !== id);
+    const final = next.length > 0 ? next : [blankSession()];
+    persistSessions(final);
+    setSessions(final);
+    if (id === activeId) setPinnedId(final[0]?.id ?? null);
+  };
+
+  const sessionToMarkdown = (s: ChatSession): string => {
+    const lines = [
+      `# ${s.title}`,
+      "",
+      `_Diekspor dari Al-Hikmah AI • ${new Date(s.updatedAt).toLocaleString("id-ID")}_`,
+      "",
+    ];
+    for (const m of s.messages) {
+      const who = m.role === "user" ? "🧑 Anda" : "🤖 Al-Hikmah AI";
+      lines.push(`## ${who}${m.timestamp ? ` • ${m.timestamp}` : ""}`, "", m.content, "");
+    }
+    return lines.join("\n");
+  };
+
+  const exportSession = () => {
+    if (!activeSession || messages.length === 0) return;
+    const blob = new Blob([sessionToMarkdown(activeSession)], {
+      type: "text/markdown;charset=utf-8",
+    });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    const safe = activeSession.title.slice(0, 30).replace(/[^\w\- ]+/g, "").trim() || "chat";
+    a.download = `al-hikmah-${safe}.md`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const copyAllSession = async () => {
+    if (!activeSession || messages.length === 0) return;
+    try {
+      await navigator.clipboard.writeText(sessionToMarkdown(activeSession));
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Seluruh percakapan disalin!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch {}
   };
 
   return (
@@ -313,16 +445,100 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {messages.length > 0 && (
+        <div className="flex items-center gap-2 shrink-0">
           <button
-            onClick={clearChat}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-900/50 transition-all active:scale-95 cursor-pointer shrink-0"
+            onClick={() => setShowSessions((v) => !v)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl border transition-all active:scale-95 cursor-pointer ${
+              showSessions
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20"
+                : "bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700"
+            }`}
+            title="Riwayat percakapan"
           >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Bersihkan Chat</span>
+            <History className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Riwayat ({sessions.length})</span>
           </button>
-        )}
+          <button
+            onClick={createSession}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200 dark:border-emerald-900/50 transition-all active:scale-95 cursor-pointer"
+            title="Mulai percakapan baru"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Chat Baru</span>
+          </button>
+          {messages.length > 0 && (
+            <button
+              onClick={clearChat}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-900/50 transition-all active:scale-95 cursor-pointer"
+              title="Hapus pesan di sesi ini"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Bersihkan</span>
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Sessions Panel */}
+      {showSessions && (
+        <div className="mb-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg p-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="max-h-56 overflow-y-auto space-y-1.5">
+            {sessions.map((s) => {
+              const isActive = s.id === activeId;
+              return (
+                <div
+                  key={s.id}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-left transition-all ${
+                    isActive
+                      ? "bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800"
+                      : "bg-transparent border-transparent hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setPinnedId(s.id);
+                      setShowSessions(false);
+                    }}
+                    className="flex-1 min-w-0 text-left cursor-pointer"
+                  >
+                    <p className={`text-xs font-semibold truncate ${isActive ? "text-emerald-700 dark:text-emerald-300" : "text-slate-800 dark:text-slate-200"}`}>
+                      {s.title}
+                    </p>
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500">
+                      {s.messages.length} pesan • {new Date(s.updatedAt).toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                    </p>
+                  </button>
+                  {sessions.length > 1 && (
+                    <button
+                      onClick={() => deleteSession(s.id)}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer shrink-0"
+                      title="Hapus sesi ini"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          {messages.length > 0 && (
+            <div className="flex gap-2 pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
+              <button
+                onClick={copyAllSession}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all active:scale-95 cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5" /> Salin Semua
+              </button>
+              <button
+                onClick={exportSession}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all active:scale-95 cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" /> Unduh .md
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Main Chat Box Container */}
       <div 

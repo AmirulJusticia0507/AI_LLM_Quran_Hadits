@@ -147,6 +147,14 @@ async def get_quran_verse(req: QuranVerseRequest):
     return result
 
 
+@app.post("/api/quran/tafsir")
+async def get_quran_tafsir(req: QuranVerseRequest):
+    result = await quran_api.get_tafsir(surah=req.surah, ayat=req.ayat)
+    if result["status"] == "error":
+        raise HTTPException(status_code=404, detail=result["message"])
+    return result
+
+
 @app.get("/api/quran/search")
 async def search_quran(q: str):
     result = await quran_api.search_verse(q)
