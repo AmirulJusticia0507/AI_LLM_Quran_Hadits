@@ -22,7 +22,10 @@ import {
   History,
   Plus,
   Download,
-  X
+  X,
+  Mic,
+  ThumbsUp,
+  ThumbsDown
 } from "lucide-react";
 
 interface Message {
@@ -185,6 +188,148 @@ export default function ChatPage() {
     if (el) el.style.height = "auto";
   };
 
+  // --- Chat Pro: provider picker ---
+  interface LlmProvider {
+    id: string;
+    name: string;
+    available: boolean;
+  }
+  const [providers, setProviders] = useState<LlmProvider[]>([]);
+  const [activeProvider, setActiveProvider] = useState("");
+  const [showProviders, setShowProviders] = useState(false);
+
+  const loadProviders = () => {
+    fetch(`${API_URL}/api/llm/providers`)
+      .then((res) => res.json())
+      .then((data) => {
+        setProviders(data.providers ?? []);
+        setActiveProvider(data.active ?? "");
+      })
+      .catch(() => {});
+  };
+
+  const switchProvider = async (id: string) => {
+    if (id === activeProvider) {
+      setShowProviders(false);
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/llm/provider`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Gagal ganti model");
+      setActiveProvider(data.active);
+      setShowProviders(false);
+      setLlmStatus("online");
+    } catch (err: unknown) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Ganti Model",
+        text: err instanceof Error ? err.message : "Terjadi kesalahan",
+        confirmButtonColor: "#059669",
+      });
+    }
+  };
+
+  // --- Chat Pro: voice input (Web Speech API) ---
+  interface SpeechResult {
+    isFinal: boolean;
+    0: { transcript: string };
+  }
+  interface SpeechInstance {
+    lang: string;
+    interimResults: boolean;
+    resultIndex: number;
+    results: ArrayLike<SpeechResult>;
+    onresult: ((ev: SpeechInstance) => void) | null;
+    onend: (() => void) | null;
+    onerror: (() => void) | null;
+    start: () => void;
+    stop: () => void;
+  }
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<SpeechInstance | null>(null);
+
+  const toggleListening = () => {
+    const w = window as unknown as {
+      SpeechRecognition?: new () => SpeechInstance;
+      webkitSpeechRecognition?: new () => SpeechInstance;
+    };
+    const SR = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+    if (!SR) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: "Browser tidak mendukung input suara",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      return;
+    }
+    if (listening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+    const rec = new SR();
+    rec.lang = "id-ID";
+    rec.interimResults = false;
+    rec.onresult = (ev) => {
+      let chunk = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
+        if (ev.results[i].isFinal) chunk += ev.results[i][0].transcript;
+      }
+      if (chunk.trim()) {
+        setInput((prev) => (prev ? prev + " " : "") + chunk.trim());
+        // Tunggu render lalu sesuaikan tinggi
+        setTimeout(() => autoResizeTextarea(), 0);
+      }
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recognitionRef.current = rec;
+    try {
+      rec.start();
+      setListening(true);
+    } catch {}
+  };
+
+  // --- Chat Pro: feedback jawaban AI (tersimpan lokal) ---
+  const [feedback, setFeedback] = useState<Record<string, "up" | "down">>(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      return JSON.parse(localStorage.getItem("alhikmah_feedback") || "{}");
+    } catch {
+      return {};
+    }
+  });
+
+  const giveFeedback = (key: string, value: "up" | "down") => {
+    setFeedback((prev) => {
+      const next = { ...prev };
+      if (next[key] === value) delete next[key];
+      else next[key] = value;
+      try {
+        localStorage.setItem("alhikmah_feedback", JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // --- Chat Pro: jawab ulang pesan terakhir ---
+  const regenerate = () => {
+    if (loading || messages.length === 0) return;
+    const last = messages[messages.length - 1];
+    if (last?.role !== "assistant") return;
+    const prevUser = [...messages].reverse().find((m) => m.role === "user");
+    if (!prevUser) return;
+    updateMessages((prev) => prev.slice(0, -1));
+    handleSend(prevUser.content);
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, loading]);
@@ -194,6 +339,7 @@ export default function ChatPage() {
       .then((res) => res.json())
       .then((data) => setLlmStatus(data.llm_configured ? "online" : "offline"))
       .catch(() => setLlmStatus("offline"));
+    loadProviders();
   }, []);
 
   const getCurrentTime = () => {
@@ -429,15 +575,28 @@ export default function ChatPage() {
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 truncate">
               Chatbot AI Keislaman
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${
-                llmStatus === "online"
-                  ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40"
+              <button
+                onClick={() => {
+                  loadProviders();
+                  setShowProviders((v) => !v);
+                }}
+                title={activeProvider ? `Model: ${activeProvider} — klik untuk ganti` : "Klik untuk pilih model AI"}
+                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 cursor-pointer transition-all active:scale-95 ${
+                  llmStatus === "online"
+                    ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40"
+                    : llmStatus === "offline"
+                    ? "bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-800/40"
+                    : "bg-yellow-100 dark:bg-yellow-950/80 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-800/40"
+                }`}
+              >
+                {llmStatus === "online"
+                  ? activeProvider
+                    ? `● ${activeProvider}`
+                    : "Online"
                   : llmStatus === "offline"
-                  ? "bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-800/40"
-                  : "bg-yellow-100 dark:bg-yellow-950/80 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-800/40"
-              }`}>
-                {llmStatus === "online" ? "Online" : llmStatus === "offline" ? "Offline" : "Checking..."}
-              </span>
+                  ? "Offline"
+                  : "Checking..."}
+              </button>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
               Tanyakan masalah agama, Al-Qur&apos;an, Hadits & Tafsir secara responsif
@@ -537,6 +696,40 @@ export default function ChatPage() {
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Provider Panel */}
+      {showProviders && (
+        <div className="mb-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg p-3 space-y-1.5 animate-in fade-in slide-in-from-top-2 duration-200">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+            Model AI
+          </p>
+          {providers.length === 0 && (
+            <p className="text-xs text-slate-500 px-1 py-1">Memuat daftar model…</p>
+          )}
+          {providers.map((p) => {
+            const isActive = p.id === activeProvider;
+            return (
+              <button
+                key={p.id}
+                onClick={() => switchProvider(p.id)}
+                disabled={!p.available || loading}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl border text-left text-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isActive
+                    ? "bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800"
+                    : "bg-transparent border-transparent hover:bg-slate-100 dark:hover:bg-slate-800"
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full shrink-0 ${p.available ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
+                <span className={`font-semibold flex-1 ${isActive ? "text-emerald-700 dark:text-emerald-300" : "text-slate-700 dark:text-slate-300"}`}>
+                  {p.name}
+                </span>
+                {isActive && <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+                {!p.available && <span className="text-[10px] text-slate-400">butuh API key</span>}
+              </button>
+            );
+          })}
         </div>
       )}
 
@@ -643,23 +836,60 @@ export default function ChatPage() {
                     <><User className="w-3.5 h-3.5" /> Anda</>
                   )}
                 </span>
-                <button
-                  onClick={() => copyToClipboard(msg.content, `${msg.role}-${i}`)}
-                  className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
-                  title="Salin Pesan"
-                >
-                  {copiedIndex === (`${msg.role}-${i}` as unknown as number) ? (
+                <div className="flex items-center gap-0.5">
+                  {msg.role === "assistant" && (
                     <>
-                      <Check className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="text-[10px] text-emerald-500">Tersalin</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span className="text-[10px]">Salin</span>
+                      <button
+                        onClick={() => giveFeedback(`${sessionId}-${i}`, "up")}
+                        className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                          feedback[`${sessionId}-${i}`] === "up"
+                            ? "text-emerald-500"
+                            : "text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                        }`}
+                        title="Jawaban membantu"
+                      >
+                        <ThumbsUp className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => giveFeedback(`${sessionId}-${i}`, "down")}
+                        className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                          feedback[`${sessionId}-${i}`] === "down"
+                            ? "text-rose-500"
+                            : "text-slate-400 hover:text-rose-500"
+                        }`}
+                        title="Jawaban kurang tepat"
+                      >
+                        <ThumbsDown className="w-3.5 h-3.5" />
+                      </button>
+                      {i === messages.length - 1 && !loading && (
+                        <button
+                          onClick={regenerate}
+                          className="p-1.5 rounded-md text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                          title="Jawab ulang"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                     </>
                   )}
-                </button>
+                  <button
+                    onClick={() => copyToClipboard(msg.content, `${msg.role}-${i}`)}
+                    className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
+                    title="Salin Pesan"
+                  >
+                    {copiedIndex === (`${msg.role}-${i}` as unknown as number) ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-500" />
+                        <span className="text-[10px] text-emerald-500">Tersalin</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span className="text-[10px]">Salin</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
               {/* Message content — Markdown for AI, plain for user */}
@@ -750,6 +980,20 @@ export default function ChatPage() {
             disabled={loading}
             className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none text-sm sm:text-base disabled:opacity-50 min-w-0 resize-none overflow-y-auto max-h-40 leading-relaxed"
           />
+
+          <button
+            type="button"
+            onClick={toggleListening}
+            disabled={loading}
+            title={listening ? "Berhenti merekam" : "Input suara"}
+            className={`p-2.5 sm:p-3 rounded-xl transition-all active:scale-95 shrink-0 cursor-pointer disabled:opacity-40 ${
+              listening
+                ? "bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse"
+                : "bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+            }`}
+          >
+            <Mic className="w-4 h-4" />
+          </button>
 
           <button
             type="submit"

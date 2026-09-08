@@ -1,14 +1,14 @@
 from contextlib import asynccontextmanager
 import time
 from collections import defaultdict
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 import json
 import os
 
-from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest
+from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest, ProviderSwitch, HadithSearchRequest
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.llm.factory import get_llm
@@ -16,6 +16,7 @@ from app.llm.factory import get_llm
 load_dotenv()
 
 llm = None
+llm_provider = os.getenv("LLM_PROVIDER", "ollama")
 
 
 @asynccontextmanager
@@ -77,6 +78,24 @@ session_mgr = SessionManager()
 quran_api = QuranAPI()
 hadith_api = HadithAPI()
 
+# --- Rate limiting sederhana (sliding window in-memory, per IP) ---
+RATE_LIMIT = int(os.getenv("CHAT_RATE_LIMIT", "30"))
+RATE_WINDOW = 60
+_rate_store: dict[str, list[float]] = {}
+
+
+async def rate_limit(request: Request):
+    ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    hits = [t for t in _rate_store.get(ip, []) if now - t < RATE_WINDOW]
+    if len(hits) >= RATE_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail="Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.",
+        )
+    hits.append(now)
+    _rate_store[ip] = hits
+
 
 @app.get("/api/health")
 async def health():
@@ -96,7 +115,7 @@ async def root():
     }
 
 
-@app.post("/api/chat")
+@app.post("/api/chat", dependencies=[Depends(rate_limit)])
 async def chat(req: ChatRequest):
     if not llm:
         raise HTTPException(
@@ -111,7 +130,7 @@ async def chat(req: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/chat/stream")
+@app.post("/api/chat/stream", dependencies=[Depends(rate_limit)])
 async def chat_stream(req: ChatRequest):
     if not llm:
         raise HTTPException(
@@ -147,6 +166,43 @@ async def get_quran_verse(req: QuranVerseRequest):
     return result
 
 
+def _gemini_available() -> bool:
+    key = os.getenv("GEMINI_API_KEY", "")
+    return bool(key) and key != "your_api_key_here"
+
+
+@app.get("/api/llm/providers")
+async def list_providers():
+    return {
+        "active": llm_provider,
+        "configured": llm is not None,
+        "providers": [
+            {"id": "ollama", "name": "Ollama (Lokal)", "available": True},
+            {"id": "gemini", "name": "Gemini (Cloud)", "available": _gemini_available()},
+        ],
+    }
+
+
+@app.post("/api/llm/provider")
+async def switch_provider(req: ProviderSwitch):
+    global llm, llm_provider
+    if req.provider == "gemini" and not _gemini_available():
+        raise HTTPException(status_code=400, detail="GEMINI_API_KEY belum diisi di .env")
+    prev = os.getenv("LLM_PROVIDER")
+    os.environ["LLM_PROVIDER"] = req.provider
+    try:
+        new_llm = get_llm()
+    except Exception as e:
+        if prev is None:
+            os.environ.pop("LLM_PROVIDER", None)
+        else:
+            os.environ["LLM_PROVIDER"] = prev
+        raise HTTPException(status_code=400, detail=str(e))
+    llm = new_llm
+    llm_provider = req.provider
+    return {"status": "success", "active": req.provider}
+
+
 @app.post("/api/quran/tafsir")
 async def get_quran_tafsir(req: QuranVerseRequest):
     result = await quran_api.get_tafsir(surah=req.surah, ayat=req.ayat)
@@ -164,6 +220,16 @@ async def search_quran(q: str):
 @app.post("/api/hadith")
 async def get_hadith(req: HadithRequest):
     result = await hadith_api.get_hadith(kitab=req.kitab, nomor=req.nomor)
+    if result["status"] == "error":
+        raise HTTPException(status_code=404, detail=result["message"])
+    return result
+
+
+@app.post("/api/hadith/search", dependencies=[Depends(rate_limit)])
+async def search_hadith(req: HadithSearchRequest):
+    result = await hadith_api.search_hadith(
+        kitab=req.kitab, keyword=req.keyword, max_pages=req.max_pages
+    )
     if result["status"] == "error":
         raise HTTPException(status_code=404, detail=result["message"])
     return result

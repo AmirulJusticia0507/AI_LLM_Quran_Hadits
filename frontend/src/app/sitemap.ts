@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-const ROUTES = ["/", "/quran", "/hadith", "/jadwal", "/tajweed", "/about", "/help", "/privacy", "/terms"];
+const ROUTES = ["/", "/quran", "/hadith", "/jadwal", "/dzikir", "/asmaul", "/doa", "/kiblat", "/tajweed", "/about", "/help", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return ROUTES.map((route) => ({

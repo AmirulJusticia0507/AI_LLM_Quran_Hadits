@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useSyncExternalStore } from "react";
-import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock } from "lucide-react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Chat AI", icon: MessageSquare, badge: "AI Assistant" },
   { href: "/quran", label: "Al-Qur'an", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", label: "Hadits", icon: ScrollText, badge: "9 Kitab" },
-  { href: "/jadwal", label: "Jadwal", icon: Clock, badge: "Shalat" },
   { href: "/tajweed", label: "Tajwid", icon: GraduationCap, badge: "Ghunnah, Idgham, dll" },
   { href: "/about", label: "Tentang", icon: Info, badge: "Info" },
+];
+
+const ibadahItems = [
+  { href: "/jadwal", label: "Jadwal Shalat", icon: Clock, badge: "GPS + Hijriah" },
+  { href: "/dzikir", label: "Dzikir", icon: Fingerprint, badge: "Counter" },
+  { href: "/asmaul", label: "Asmaul Husna", icon: Sparkles, badge: "99 Nama" },
+  { href: "/doa", label: "Doa Harian", icon: HeartHandshake, badge: "14 Doa" },
+  { href: "/kiblat", label: "Arah Kiblat", icon: Compass, badge: "Kompas" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -55,6 +62,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [ibadahOpen, setIbadahOpen] = useState(false);
+  const ibadahRef = useRef<HTMLDivElement>(null);
 
   // isDark comes from DOM class — no React state, no setState in effect.
   // Server snapshot = false, client snapshot = reads classList.
@@ -69,6 +78,19 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Tutup dropdown Ibadah saat klik di luar (setState di event listener = aman)
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ibadahRef.current && !ibadahRef.current.contains(e.target as Node)) {
+        setIbadahOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const ibadahActive = ibadahItems.some((item) => pathname === item.href);
 
   const toggleTheme = () => applyTheme(!isDark);
 
@@ -128,6 +150,49 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Dropdown Ibadah */}
+            <div ref={ibadahRef} className="relative shrink-0">
+              <button
+                onClick={() => setIbadahOpen((v) => !v)}
+                aria-label="Menu ibadah"
+                className={`relative px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                  ibadahActive || ibadahOpen
+                    ? "text-white bg-linear-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/25"
+                    : "text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white/60 dark:hover:bg-slate-800/60"
+                }`}
+              >
+                <Compass className={`w-4 h-4 shrink-0 ${ibadahActive || ibadahOpen ? "text-white" : "text-emerald-600 dark:text-emerald-400"}`} />
+                <span className="whitespace-nowrap">Ibadah</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${ibadahOpen ? "rotate-180" : ""}`} />
+              </button>
+              {ibadahOpen && (
+                <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 shadow-xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 z-50">
+                  {ibadahItems.map((item) => {
+                    const SubIcon = item.icon;
+                    const subActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIbadahOpen(false)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                          subActive
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+                            : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        }`}
+                      >
+                        <SubIcon className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span className="font-medium flex-1">{item.label}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                          {item.badge}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Controls Right */}
@@ -180,6 +245,37 @@ export default function Navbar() {
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                   isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                }`}>
+                  {item.badge}
+                </span>
+              </Link>
+            );
+          })}
+
+          {/* Seksi Ibadah di drawer */}
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-4 pt-2">
+            Ibadah Harian
+          </p>
+          {ibadahItems.map((item) => {
+            const SubIcon = item.icon;
+            const subActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  subActive
+                    ? "bg-linear-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/20"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <SubIcon className={`w-5 h-5 ${subActive ? "text-white" : "text-emerald-500"}`} />
+                  <span>{item.label}</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                  subActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                 }`}>
                   {item.badge}
                 </span>

@@ -46,6 +46,11 @@ export default function HadithPage() {
   const [fontSize, setFontSize] = useState(2.0);
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [bookmarkedHadiths, setBookmarkedHadiths] = useState<HadithResult[]>([]);
+  const [keyword, setKeyword] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<{ number: number; arab: string; id: string }[]>([]);
+  const [searchMeta, setSearchMeta] = useState<{ scanned: number; total: number; partial: boolean } | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const selectedKitab = KITAB_LIST.find((k) => k.id === kitab) || KITAB_LIST[0];
 
@@ -93,6 +98,43 @@ export default function HadithPage() {
     const randomNum = Math.floor(Math.random() * (selectedKitab.maxHadith || 100)) + 1;
     setNomor(randomNum);
     fetchHadith(kitab, randomNum);
+  };
+
+  const searchKeyword = async () => {
+    if (!keyword.trim() || searching) return;
+    setSearching(true);
+    setHasSearched(false);
+    setSearchResults([]);
+    setSearchMeta(null);
+    try {
+      const res = await fetch(`${API_URL}/api/hadith/search`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kitab, keyword: keyword.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Pencarian gagal");
+      setSearchResults(data.matches ?? []);
+      setSearchMeta({ scanned: data.scanned, total: data.total, partial: data.partial });
+      setHasSearched(true);
+    } catch (err: unknown) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: err instanceof Error ? err.message : "Pencarian gagal",
+        confirmButtonColor: "#059669",
+        customClass: {
+          popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
+        }
+      });
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const openSearchResult = (nomorHadits: number) => {
+    setNomor(nomorHadits);
+    fetchHadith(kitab, nomorHadits);
   };
 
   const goPrevHadith = () => {
@@ -276,6 +318,74 @@ export default function HadithPage() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Pencarian Kata Kunci */}
+      <div className="glass-card rounded-3xl p-6 shadow-xl space-y-4 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
+        <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          🔍 Cari Berdasarkan Kata Kunci <span className="normal-case font-normal">(di kitab {selectedKitab.name})</span>
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchKeyword();
+          }}
+          className="flex gap-2"
+        >
+          <input
+            type="text"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            placeholder="mis. niat, shalat, puasa…"
+            disabled={searching}
+            className="flex-1 min-w-0 px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm disabled:opacity-50"
+          />
+          <button
+            type="submit"
+            disabled={searching || !keyword.trim()}
+            className="px-5 py-3 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-95 font-bold text-sm flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            {searching ? (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Search className="w-4 h-4" />
+            )}
+            <span className="hidden sm:inline">{searching ? "Mencari…" : "Cari"}</span>
+          </button>
+        </form>
+
+        {hasSearched && (
+          <div className="space-y-3 animate-in fade-in duration-300">
+            {searchMeta && (
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Ditemukan <span className="font-bold text-emerald-600 dark:text-emerald-400">{searchResults.length}</span> hadits
+                {" "}• dipindai {searchMeta.scanned.toLocaleString("id-ID")} dari {searchMeta.total.toLocaleString("id-ID")}
+                {searchMeta.partial && " (hasil parsial — saring per kitab kecil untuk cakupan penuh)"}
+              </p>
+            )}
+            {searchResults.length === 0 ? (
+              <p className="text-sm text-slate-500 text-center py-4">
+                Tidak ditemukan di {searchMeta?.scanned.toLocaleString("id-ID")} hadits pertama. Coba kata kunci lain atau kitab lain.
+              </p>
+            ) : (
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {searchResults.map((h) => (
+                  <button
+                    key={h.number}
+                    onClick={() => openSearchResult(h.number)}
+                    className="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-500/50 transition-all cursor-pointer"
+                  >
+                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      {selectedKitab.name} • Hadits #{h.number}
+                    </span>
+                    <p className="arabic-text text-right text-lg text-slate-800 dark:text-teal-100 line-clamp-2 mt-1">{h.arab}</p>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{h.id}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Form Controls */}

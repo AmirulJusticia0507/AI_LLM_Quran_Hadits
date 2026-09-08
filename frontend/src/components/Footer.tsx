@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Clock } from "lucide-react";
+import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Clock, Fingerprint, HeartHandshake, Compass } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -53,6 +53,30 @@ export default function Footer() {
                 <Link href="/jadwal" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Clock className="w-4 h-4 text-emerald-500" />
                   <span>Jadwal Shalat & Hijriah</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/dzikir" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Fingerprint className="w-4 h-4 text-emerald-500" />
+                  <span>Dzikir Counter</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/asmaul" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-500" />
+                  <span>Asmaul Husna</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/doa" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <HeartHandshake className="w-4 h-4 text-emerald-500" />
+                  <span>Doa Harian</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/kiblat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Compass className="w-4 h-4 text-emerald-500" />
+                  <span>Arah Kiblat</span>
                 </Link>
               </li>
             </ul>
