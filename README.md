@@ -69,26 +69,30 @@ dark mode, responsif penuh (hamburger hingga breakpoint `lg`).
 
 ## 🚀 Cara Menjalankan
 
-### 1. Backend (FastAPI)
+### Sekali perintah (disarankan)
 
 ```bash
+npm run install:all   # sekali saja: install root + frontend + backend deps
+cp .env.example .env  # lalu isi sesuai kebutuhan
+# buat frontend/.env.local berisi: NEXT_PUBLIC_API_URL=http://localhost:8000
+npm run dev           # backend :8000 + frontend :3000 jalan bersamaan
+```
+
+- Backend: http://localhost:8000 (docs interaktif: `/docs`)
+- Frontend: http://localhost:3000
+
+### Manual (dua terminal, bila perlu)
+
+```bash
+# Terminal 1 — backend
 pip install -r requirements.txt
-cp .env.example .env   # lalu isi sesuai kebutuhan
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Terminal 2 — frontend
+cd frontend && npm install && npm run dev
 ```
 
-Buka dokumentasi interaktif: http://localhost:8000/docs
-
-### 2. Frontend (Next.js)
-
-```bash
-cd frontend
-npm install
-# buat .env.local berisi: NEXT_PUBLIC_API_URL=http://localhost:8000
-npm run dev
-```
-
-Buka http://localhost:3000
+Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run build`.
 
 ### 3. Pilih Otak AI
 

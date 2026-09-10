@@ -23,3 +23,10 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Node (root orchestrator + frontend)
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts

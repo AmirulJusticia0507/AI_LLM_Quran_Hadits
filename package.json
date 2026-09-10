@@ -1,0 +1,16 @@
+{
+  "name": "al-hikmah-ai",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Platform Qur'an & Hadits berbasis AI — orkestrasi dev backend + frontend dalam satu perintah",
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c green,cyan \"uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "install:all": "npm install && npm --prefix frontend install && pip install -r requirements.txt",
+    "build": "npm --prefix frontend run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
