@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import MakhrajGuide from "@/components/MakhrajGuide";
+import Link from "next/link";
 import {
   GraduationCap,
   Search,
@@ -404,7 +406,7 @@ export default function TajweedPage() {
               <GraduationCap className="w-4 h-4" /> Ilmu Tajwid Praktis
             </div>
             <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
-              Panduan Tajwid: Ghunnah, Idgham & Lainnya
+              Ilmu Tajwid & Makhrajul Huruf
             </h1>
             <p className="text-xs sm:text-sm text-emerald-100/80 mt-1 max-w-xl">
               Pelajari hukum nun sukun, mim sukun, mad, qalqalah, ghunnah, tafkhim-tarqiq, dan waqaf
@@ -418,6 +420,13 @@ export default function TajweedPage() {
         </div>
       </div>
 
+      <nav aria-label="Bagian pembelajaran" className="flex flex-wrap gap-4 text-sm text-emerald-700 dark:text-emerald-300 underline">
+        <Link href="/belajar">← Pusat Belajar</Link>
+        <a href="#makhraj">17 Makhraj Huruf</a>
+        <a href="#kaidah">20 Kaidah Tajwid</a>
+      </nav>
+      <MakhrajGuide />
+      <h2 id="kaidah" className="text-2xl font-bold scroll-mt-24">Kaidah Ilmu Tajwid</h2>
       {/* Search & Filter */}
       <div className="rounded-3xl p-4 sm:p-6 shadow-xl space-y-4 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
         <div className="relative">

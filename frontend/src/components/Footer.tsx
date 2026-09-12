@@ -31,6 +31,11 @@ export default function Footer() {
               Navigasi Fitur
             </h3>
             <ul className="space-y-2.5 text-sm">
+              <li><Link href="/belajar" className="text-emerald-700 dark:text-emerald-300 hover:underline">Pusat Belajar Islam</Link></li>
+              <li><Link href="/tazkiyah" className="hover:underline">Tazkiyatun Nafs</Link></li>
+              <li><Link href="/fiqh" className="hover:underline">Fiqh Ibadah</Link></li>
+              <li><Link href="/sirah" className="hover:underline">Siroh Nabawiyah</Link></li>
+              <li><Link href="/tajweed" className="hover:underline">Tajwid & Makhraj Huruf</Link></li>
               <li>
                 <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-emerald-500" />
