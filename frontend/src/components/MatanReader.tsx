@@ -8,7 +8,6 @@ type Entry = { number: number; title: string; arabic: string; translation: strin
 type Book = { id: BookId; title: string; author: string; note: string; source_name: string; source_url: string;
   chapters: { id: number; title: string; arabic?: string }[]; total: number; matched: number; page: number; pages: number; items: Entry[] };
 const BOOKS: { id: BookId; title: string }[] = [{ id: "arbain-nawawi", title: "Arba’in Nawawi" }, { id: "bulughul-maram", title: "Bulughul Maram" }];
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 function MatanEntry({ entry, book, fontSize }: { entry: Entry; book: Book; fontSize: number }) {
   const [copyStatus, setCopyStatus] = useState("");
@@ -40,7 +39,7 @@ export default function MatanReader() {
   const [result, setResult] = useState<{ key: string; data?: Book; error?: string } | null>(null);
   const params = new URLSearchParams({ q: query, page: String(page) });
   if (chapter) params.set("bab", chapter);
-  const url = `${API_URL}/api/matan/${bookId}?${params}`;
+  const url = `/api/matan/${bookId}?${params}`;
   const requestKey = `${url}|${retry}`;
   const loading = result?.key !== requestKey;
   const data = loading ? undefined : result?.data;
@@ -55,7 +54,7 @@ export default function MatanReader() {
       }).then(book => {
         if (!controller.signal.aborted) setResult({ key: requestKey, data: book });
       }).catch(() => {
-        if (!controller.signal.aborted) setResult({ key: requestKey, error: "Kitab belum dapat dimuat dari sumber. Pastikan backend aktif dan coba lagi." });
+        if (!controller.signal.aborted) setResult({ key: requestKey, error: "Kitab belum dapat dimuat. Periksa koneksi internet dan coba lagi dalam beberapa saat." });
       });
     }, 250);
     return () => { clearTimeout(timer); controller.abort(); };

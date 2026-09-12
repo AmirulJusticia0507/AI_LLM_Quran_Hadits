@@ -1,0 +1,18 @@
+{
+  "arbain-nawawi": {
+    "id": "arbain-nawawi",
+    "title": "Arba’in Nawawi",
+    "author": "Imam an-Nawawi",
+    "note": "42 hadits. Teks Arab dan terjemahan Indonesia mengikuti sumber Noor; teks dapat menyertakan perawi serta keterangan riwayat.",
+    "source_name": "Noor — API Arba’in Nawawi",
+    "source_url": "https://ournoor.com/muslim-api/hadits/"
+  },
+  "bulughul-maram": {
+    "id": "bulughul-maram",
+    "title": "Bulughul Maram",
+    "author": "Ibnu Hajar al-Asqalani",
+    "note": "Penomoran mengikuti idInBook dataset v1.2.0, bukan nomor universal semua cetakan. Teks Arab dapat memuat takhrij dan catatan sumber. Terjemahan Indonesia belum tersedia pada edisi ini.",
+    "source_name": "AhmedBaset/hadith-json v1.2.0 — bersumber dari Sunnah.com",
+    "source_url": "https://github.com/AhmedBaset/hadith-json/tree/v1.2.0"
+  }
+}
