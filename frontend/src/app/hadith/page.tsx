@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Swal from "sweetalert2";
+import Link from "next/link";
 import { 
   ScrollText, 
   Search, 
@@ -206,6 +207,10 @@ export default function HadithPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      <Link href="/matan" className="block rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-5 text-emerald-800 dark:text-emerald-200 hover:underline">
+        <span className="block font-bold">Baca Matan Kitab →</span>
+        <span className="block text-sm mt-1">Arba’in Nawawi dan Bulughul Maram, dengan pencarian serta pilihan bagian kitab.</span>
+      </Link>
       
       {/* Banner Header */}
       <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-teal-900 via-emerald-800 to-slate-900 text-white p-6 md:p-8 shadow-xl shadow-teal-950/20">

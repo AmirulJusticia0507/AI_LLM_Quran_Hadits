@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 import time
 from collections import defaultdict
-from fastapi import FastAPI, HTTPException, Request, Depends, Path
+from fastapi import FastAPI, HTTPException, Request, Depends, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
@@ -11,6 +11,7 @@ import os
 from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest, ProviderSwitch, HadithSearchRequest
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
+from app.api.matan import MatanAPI, BookId
 from app.llm.factory import get_llm
 
 load_dotenv()
@@ -78,6 +79,17 @@ class SessionManager:
 session_mgr = SessionManager()
 quran_api = QuranAPI()
 hadith_api = HadithAPI()
+matan_api = MatanAPI()
+
+
+@app.get("/api/matan/{kitab}")
+async def browse_matan(kitab: BookId, q: str = Query("", max_length=150),
+                       bab: int | None = Query(None, ge=1, le=16),
+                       page: int = Query(1, ge=1, le=1000)):
+    try:
+        return await matan_api.browse(kitab, q, bab, page)
+    except Exception:
+        raise HTTPException(status_code=502, detail="Teks kitab belum dapat dimuat dari sumber. Silakan coba lagi.")
 
 # --- Rate limiting sederhana (sliding window in-memory, per IP) ---
 RATE_LIMIT = int(os.getenv("CHAT_RATE_LIMIT", "30"))

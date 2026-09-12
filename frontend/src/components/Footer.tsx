@@ -32,6 +32,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/belajar" className="text-emerald-700 dark:text-emerald-300 hover:underline">Pusat Belajar Islam</Link></li>
+              <li><Link href="/matan" className="hover:underline">Matan Kitab Hadits</Link></li>
               <li><Link href="/tazkiyah" className="hover:underline">Tazkiyatun Nafs</Link></li>
               <li><Link href="/fiqh" className="hover:underline">Fiqh Ibadah</Link></li>
               <li><Link href="/sirah" className="hover:underline">Siroh Nabawiyah</Link></li>
