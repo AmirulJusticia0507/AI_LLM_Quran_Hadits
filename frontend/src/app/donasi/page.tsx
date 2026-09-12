@@ -24,7 +24,7 @@ export default function DonationPage() {
         <section aria-labelledby="transfer-title" className="space-y-5 p-2 sm:p-4">
           <h2 id="transfer-title" className="text-xl font-bold">Cara memberikan dukungan</h2>
           <ol className="list-decimal pl-5 space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300 marker:font-bold marker:text-emerald-600">
-            <li>Salin nomor rekening dan buka aplikasi bank atau layanan transfer yang kamu gunakan.</li>
+            <li>Tekan Lihat nomor rekening, salin nomornya, lalu buka aplikasi bank atau layanan transfer yang kamu gunakan.</li>
             <li>Pilih bank BRI, masukkan nomor rekening, lalu cocokkan nama penerima.</li>
             <li>Masukkan nominal pilihanmu dan selesaikan transfer melalui layanan tersebut.</li>
           </ol>
