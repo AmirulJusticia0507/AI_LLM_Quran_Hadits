@@ -92,6 +92,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-4">
               Informasi
             </h3>
+            <Link href="/masukan" className="inline-block mb-4 text-sm font-semibold text-emerald-700 dark:text-emerald-300 hover:underline">Kirim Masukan via WhatsApp</Link>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
               Dikembangkan untuk memberikan kemudahan dalam mempelajari ajaran Islam. Selalu konfirmasikan hukum dan fatwa mendalam kepada ulama terpercaya.
             </p>
