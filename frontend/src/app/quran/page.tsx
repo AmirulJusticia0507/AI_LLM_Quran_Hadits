@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import { filterSurahs, selectSearchSurah } from "@/lib/surah-search";
 import {
@@ -148,6 +148,30 @@ const SURAH_LIST = [
   { num: 114, name: "An-Nas", verses: 6 },
 ];
 
+const ARABIC_SIZES: Record<string, string> = {
+  "1.5": "text-[1.5rem]!",
+  "1.6": "text-[1.6rem]!",
+  "1.7": "text-[1.7rem]!",
+  "1.8": "text-[1.8rem]!",
+  "1.9": "text-[1.9rem]!",
+  "2.0": "text-[2.0rem]!",
+  "2.1": "text-[2.1rem]!",
+  "2.2": "text-[2.2rem]!",
+  "2.3": "text-[2.3rem]!",
+  "2.4": "text-[2.4rem]!",
+  "2.5": "text-[2.5rem]!",
+  "2.6": "text-[2.6rem]!",
+  "2.7": "text-[2.7rem]!",
+  "2.8": "text-[2.8rem]!",
+  "2.9": "text-[2.9rem]!",
+  "3.0": "text-[3.0rem]!",
+  "3.1": "text-[3.1rem]!",
+  "3.2": "text-[3.2rem]!",
+  "3.3": "text-[3.3rem]!",
+  "3.4": "text-[3.4rem]!",
+  "3.5": "text-[3.5rem]!",
+};
+
 const POPULAR_SURAHS = [
   { num: 1, name: "Al-Fatihah" },
   { num: 18, name: "Al-Kahf" },
@@ -176,6 +200,28 @@ export default function QuranPage() {
   const [tafsir, setTafsir] = useState<string | null>(null);
   const [tafsirLoading, setTafsirLoading] = useState(false);
   const [showTafsir, setShowTafsir] = useState(false);
+
+  // Playback uses the visible Arabic verse as its text alternative.
+  // Audio is controlled by the existing play/pause button, without a hidden media player.
+  const audioUrl = result?.audio;
+  useEffect(() => {
+    if (!audioUrl) return;
+    const audio = new Audio();
+    audio.preload = "none";
+    audio.src = audioUrl;
+    const stop = () => setIsPlaying(false);
+    audio.addEventListener("ended", stop);
+    audio.addEventListener("pause", stop);
+    audioRef.current = audio;
+    return () => {
+      audio.removeEventListener("ended", stop);
+      audio.removeEventListener("pause", stop);
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      audioRef.current = null;
+    };
+  }, [audioUrl]);
 
   const selectedSurahInfo = SURAH_LIST.find((s) => s.num === surah);
 
@@ -429,9 +475,9 @@ export default function QuranPage() {
             <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
           ) : (
             <div className="space-y-3">
-              {bookmarkedVerses.map((v, i) => (
+              {bookmarkedVerses.map((v) => (
                 <button
-                  key={i}
+                  key={`${v.nomor_surah}:${v.nomor_ayat}`}
                   onClick={() => {
                     requestVersion.current += 1;
                     setLoading(false);
@@ -537,7 +583,7 @@ export default function QuranPage() {
 
           {/* Ayat Counter */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+            <label htmlFor="quran-verse-number" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
               Nomor Ayat (Maks: {selectedSurahInfo?.verses || 286})
             </label>
             
@@ -551,6 +597,7 @@ export default function QuranPage() {
               </button>
 
               <input
+                id="quran-verse-number"
                 type="number"
                 min={1}
                 max={selectedSurahInfo?.verses || 286}
@@ -580,7 +627,7 @@ export default function QuranPage() {
             {loading ? (
               <span className="flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Memuat...
+                <span>Memuat...</span>
               </span>
             ) : (
               <>
@@ -642,7 +689,7 @@ export default function QuranPage() {
           </div>
 
           <div className="py-6 px-4 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
-            <p className="arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-loose tracking-wide" style={{ fontSize: `${fontSize}rem`, lineHeight: `${fontSize * 1.6}rem` }}>
+            <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
               {result.teks_arab}
             </p>
           </div>
@@ -659,16 +706,7 @@ export default function QuranPage() {
             </p>
           </div>
 
-          {result.audio ? (
-            <audio
-              ref={audioRef}
-              src={result.audio}
-              preload="none"
-              onEnded={() => setIsPlaying(false)}
-              onPause={() => setIsPlaying(false)}
-              className="hidden"
-            />
-          ) : null}
+
 
           {showTafsir && (
             <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -679,7 +717,7 @@ export default function QuranPage() {
                 {tafsirLoading ? (
                   <span className="flex items-center gap-2 text-slate-500">
                     <span className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                    Memuat tafsir…
+                    <span>Memuat tafsir…</span>
                   </span>
                 ) : (
                   <p className="whitespace-pre-wrap wrap-break-word">{tafsir}</p>
@@ -722,13 +760,13 @@ export default function QuranPage() {
               Kembali ke Pencarian
             </button>
           </div>
-          {surahVerses.map((v, i) => (
-            <div key={i} className="glass-card rounded-3xl p-6 shadow-lg space-y-4 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
+          {surahVerses.map((v) => (
+            <div key={`${v.nomor_surah}:${v.nomor_ayat}`} className="glass-card rounded-3xl p-6 shadow-lg space-y-4 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold">Ayat {v.nomor_ayat}</span>
               </div>
               <div className="py-4 px-3 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
-                <p className="arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-loose tracking-wide" style={{ fontSize: `${fontSize}rem`, lineHeight: `${fontSize * 1.6}rem` }}>
+                <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
                   {v.teks_arab}
                 </p>
               </div>
