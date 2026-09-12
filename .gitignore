@@ -31,3 +31,5 @@ node_modules/
 out/
 *.tsbuildinfo
 next-env.d.ts
+
+data/visits.sqlite3*

@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import VisitorStats from "@/components/VisitorStats";
 import { BookOpen, Sparkles, ScrollText, Heart, ShieldCheck, Clock, Fingerprint, HeartHandshake, Compass } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="mt-16 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md transition-colors duration-300">
       <div className="container mx-auto px-4 py-10 max-w-6xl">
+        <VisitorStats />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">

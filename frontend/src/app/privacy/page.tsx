@@ -13,7 +13,7 @@ export default function PrivacyPage() {
         "Pesan chat yang Anda kirim ke AI Assistant (untuk memproses permintaan dan menyediakan jawaban)",
         "Riwayat percakapan (disimpan lokal di browser via localStorage, tidak dikirim ke server kecuali untuk memproses chat)",
         "Preferensi tema (light/dark mode), ukuran font, dan pengaturan UI lainnya (lokal di browser)",
-        "Data sesi anonim untuk analitik penggunaan dasar (tidak mencakup identitas pribadi)",
+        "Statistik kunjungan menggunakan ID browser acak di localStorage dan ID pembukaan halaman. Server menyimpan total pembukaan serta ID untuk menghitung browser unik per hari WIB; ID hari sebelumnya dibersihkan saat kunjungan hari baru. Statistik ini tidak menyimpan IP, nama, nomor WhatsApp, atau isi pesan.",
       ],
     },
     {

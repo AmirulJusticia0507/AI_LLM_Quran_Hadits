@@ -12,6 +12,7 @@ from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest, Pr
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.api.matan import MatanAPI, BookId
+from app.api.visits import router as visits_router
 from app.llm.factory import get_llm
 
 load_dotenv()
@@ -38,6 +39,7 @@ app = FastAPI(
 )
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+app.include_router(visits_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
