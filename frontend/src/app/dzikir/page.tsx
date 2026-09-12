@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Fingerprint, RotateCcw, CircleCheck } from "lucide-react";
+import WiridHarian from "@/components/WiridHarian";
 
 interface DzikirItem {
   arab: string;
@@ -75,9 +76,9 @@ export default function DzikirPage() {
           <Fingerprint className="w-5 h-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">Dzikir Counter</h1>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Dzikir & Wirid Harian</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-            Tasbih digital • total hari ini: <span className="font-bold text-emerald-600 dark:text-emerald-400">{total}</span>
+            Tasbih digital • total tersimpan: <span className="font-bold text-emerald-600 dark:text-emerald-400">{total}</span>
           </p>
         </div>
         <button
@@ -90,6 +91,9 @@ export default function DzikirPage() {
       </div>
 
       {/* Counter utama */}
+      <WiridHarian />
+      <h2 className="text-lg font-bold mb-2">Tasbih digital</h2>
+      <p className="text-sm text-slate-500 mb-4">Angka target di penghitung ini adalah alat bantu, bukan ketentuan jumlah untuk setiap waktu. Ikuti jumlah pada panduan wirid yang sedang dibaca. Hitungan tersimpan sampai direset.</p>
       <div className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl p-6 text-center space-y-4">
         <p className="arabic-text text-4xl sm:text-5xl font-bold text-slate-900 dark:text-emerald-100 leading-loose">
           {item.arab}
