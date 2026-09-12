@@ -9,10 +9,6 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-10 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2 space-y-3">
-            <Link href="/donasi" className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 px-4 py-2.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors">
-              <HeartHandshake className="w-4 h-4" aria-hidden="true" />
-              <span>Dukung Pengembangan • Donasi / Infaq</span>
-            </Link>
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-xl">
                 🕌
