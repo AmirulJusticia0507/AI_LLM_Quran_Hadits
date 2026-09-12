@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Swal from "sweetalert2";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { readChatStream, type ChatStreamEvent } from "@/lib/chat-stream";
+import { ensureMessageIds, makeMessage, type Message } from "@/lib/chat-message";
 import {
   Send,
   Trash2,
@@ -27,12 +29,6 @@ import {
   ThumbsUp,
   ThumbsDown
 } from "lucide-react";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-  timestamp?: string;
-}
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -96,7 +92,9 @@ function loadSessions(): ChatSession[] {
     const saved = localStorage.getItem(SESSIONS_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map((session: ChatSession) => ({ ...session, messages: ensureMessageIds(session.messages) }));
+      }
     }
     const legacy = localStorage.getItem("alhikmah_chat_messages");
     const legacyId = localStorage.getItem("alhikmah_session_id") || crypto.randomUUID();
@@ -107,7 +105,7 @@ function loadSessions(): ChatSession[] {
           id: legacyId,
           title: sessionTitle(msgs),
           updatedAt: new Date().toISOString(),
-          messages: msgs,
+          messages: ensureMessageIds(msgs),
         }];
       }
     }
@@ -121,13 +119,29 @@ function persistSessions(next: ChatSession[]) {
   } catch {}
 }
 
+function statusClass(status: "checking" | "online" | "offline"): string {
+  if (status === "online") {
+    return "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40";
+  }
+  if (status === "offline") {
+    return "bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-800/40";
+  }
+  return "bg-yellow-100 dark:bg-yellow-950/80 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-800/40";
+}
+
+function statusText(status: "checking" | "online" | "offline", provider: string): string {
+  if (status === "online") return provider ? `● ${provider}` : "Online";
+  if (status === "offline") return "Offline";
+  return "Checking...";
+}
+
 export default function ChatPage() {
   const [sessions, setSessions] = useState<ChatSession[]>(loadSessions);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const activeId = pinnedId ?? sessions[0]?.id ?? "";
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [llmStatus, setLlmStatus] = useState<"checking" | "online" | "offline">("checking");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
@@ -322,7 +336,7 @@ export default function ChatPage() {
   // --- Chat Pro: jawab ulang pesan terakhir ---
   const regenerate = () => {
     if (loading || messages.length === 0) return;
-    const last = messages[messages.length - 1];
+    const last = messages.at(-1);
     if (last?.role !== "assistant") return;
     const prevUser = [...messages].reverse().find((m) => m.role === "user");
     if (!prevUser) return;
@@ -346,101 +360,79 @@ export default function ChatPage() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const handleSend = async (textToSend?: string) => {
-    const query = textToSend || input;
-    if (!query.trim() || loading) return;
+  const appendAssistantMessage = (content: string) => {
+    updateMessages((prev) => {
+      const updated = [...prev];
+      const last = updated.at(-1);
+      if (!last) return prev;
+      updated.splice(-1, 1, { ...last, content });
+      return updated;
+    });
+  };
 
-    const userMessage = query.trim();
+  const handleStreamEvent = (event: ChatStreamEvent) => {
+    if (event.type === "done") return;
+    if (event.type === "error") {
+      assistantContentRef.current = `Maaf, ${event.message}`;
+    } else {
+      assistantContentRef.current += event.text;
+    }
+    appendAssistantMessage(assistantContentRef.current);
+  };
+
+  const handleStream = async (res: Response) => {
+    assistantContentRef.current = "";
+    const placeholder = makeMessage("assistant", "", getCurrentTime());
+    updateMessages((prev) => [...prev, placeholder]);
+    await readChatStream(res, handleStreamEvent);
+  };
+
+  const handleRegularResponse = async (res: Response) => {
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 503) {
+        throw new Error("LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.");
+      }
+      throw new Error(data.detail || "Gagal memproses pesan dari server.");
+    }
+    updateMessages((prev) => [
+      ...prev,
+      makeMessage("assistant", data.response, getCurrentTime()),
+    ]);
+  };
+
+  const handleSend = async (textToSend?: string) => {
+    const userMessage = (textToSend ?? input).trim();
+    if (!userMessage || loading) return;
+
     if (!textToSend) {
       setInput("");
       resetTextareaHeight();
     }
 
-    const timestamp = getCurrentTime();
-
     updateMessages((prev) => [
-      ...prev, 
-      { role: "user", content: userMessage, timestamp }
+      ...prev,
+      makeMessage("user", userMessage, getCurrentTime()),
     ]);
     setLoading(true);
 
     try {
-      // Try streaming first
       const res = await fetch(`${API_URL}/api/chat/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage, session_id: sessionId }),
       });
 
-      if (res.ok && res.headers.get("content-type")?.includes("text/event-stream")) {
-        // SSE streaming — use ref to accumulate tokens without violating
-        // React compiler's immutability rules on local const variables.
-        const reader = res.body?.getReader();
-        const decoder = new TextDecoder();
-        assistantContentRef.current = "";
-
-        updateMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: "", timestamp: getCurrentTime() },
-        ]);
-
-        if (reader) {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split("\n");
-
-            for (const line of lines) {
-              if (line.startsWith("data: ")) {
-                try {
-                  const data = JSON.parse(line.slice(6));
-                  if (data.type === "token") {
-                    assistantContentRef.current += data.text;
-                    updateMessages((prev) => {
-                      const updated = [...prev];
-                      updated[updated.length - 1] = {
-                        ...updated[updated.length - 1],
-                        content: assistantContentRef.current,
-                      };
-                      return updated;
-                    });
-                  } else if (data.type === "error") {
-                    assistantContentRef.current = `Maaf, ${data.message}`;
-                    updateMessages((prev) => {
-                      const updated = [...prev];
-                      updated[updated.length - 1] = {
-                        ...updated[updated.length - 1],
-                        content: assistantContentRef.current,
-                      };
-                      return updated;
-                    });
-                  }
-                } catch {}
-              }
-            }
-          }
-        }
+      const isStreaming = res.ok && res.headers.get("content-type")?.includes("text/event-stream");
+      if (isStreaming) {
+        await handleStream(res);
       } else {
-        // Fallback to non-streaming
-        const data = await res.json();
-        if (!res.ok) {
-          if (res.status === 503) {
-            throw new Error("LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.");
-          }
-          throw new Error(data.detail || "Gagal memproses pesan dari server.");
-        }
-        updateMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: data.response, timestamp: getCurrentTime() },
-        ]);
+        await handleRegularResponse(res);
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan koneksi";
-      // Remove empty assistant message if it exists
       updateMessages((prev) => {
-        const last = prev[prev.length - 1];
+        const last = prev.at(-1);
         if (last?.role === "assistant" && !last.content) {
           return prev.slice(0, -1);
         }
@@ -460,10 +452,10 @@ export default function ChatPage() {
     }
   };
 
-  const copyToClipboard = (text: string, index: string) => {
+  const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedIndex(index as unknown as number);
-    setTimeout(() => setCopiedIndex(null), 2000);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const clearChat = () => {
@@ -530,7 +522,8 @@ export default function ChatPage() {
     ];
     for (const m of s.messages) {
       const who = m.role === "user" ? "🧑 Anda" : "🤖 Al-Hikmah AI";
-      lines.push(`## ${who}${m.timestamp ? ` • ${m.timestamp}` : ""}`, "", m.content, "");
+      const header = m.timestamp ? `## ${who} • ${m.timestamp}` : `## ${who}`;
+      lines.push(header, "", m.content, "");
     }
     return lines.join("\n");
   };
@@ -574,28 +567,16 @@ export default function ChatPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 truncate">
-              Chatbot AI Keislaman
+              <span>Chatbot AI Keislaman</span>
               <button
                 onClick={() => {
                   loadProviders();
                   setShowProviders((v) => !v);
                 }}
                 title={activeProvider ? `Model: ${activeProvider} — klik untuk ganti` : "Klik untuk pilih model AI"}
-                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 cursor-pointer transition-all active:scale-95 ${
-                  llmStatus === "online"
-                    ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300/40 dark:border-emerald-800/40"
-                    : llmStatus === "offline"
-                    ? "bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-800/40"
-                    : "bg-yellow-100 dark:bg-yellow-950/80 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-800/40"
-                }`}
+                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 cursor-pointer transition-all active:scale-95 ${statusClass(llmStatus)}`}
               >
-                {llmStatus === "online"
-                  ? activeProvider
-                    ? `● ${activeProvider}`
-                    : "Online"
-                  : llmStatus === "offline"
-                  ? "Offline"
-                  : "Checking..."}
+                {statusText(llmStatus, activeProvider)}
               </button>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
@@ -770,11 +751,11 @@ export default function ChatPage() {
                 💡 Contoh Pertanyaan Populer:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-                {SUGGESTED_PROMPTS.map((item, idx) => {
+                {SUGGESTED_PROMPTS.map((item) => {
                   const Icon = item.icon;
                   return (
                     <button
-                      key={idx}
+                      key={item.title}
                       onClick={() => handleSend(item.prompt)}
                       className="group p-3 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all text-left flex items-start gap-3 cursor-pointer"
                     >
@@ -803,7 +784,7 @@ export default function ChatPage() {
         {/* Message Bubbles */}
         {messages.map((msg, i) => (
           <div
-            key={i}
+            key={msg.id}
             className={`flex items-start gap-2 sm:gap-3 ${
               msg.role === "user" ? "flex-row-reverse" : "flex-row"
             } animate-in fade-in slide-in-from-bottom-2 duration-300`}
@@ -873,11 +854,11 @@ export default function ChatPage() {
                     </>
                   )}
                   <button
-                    onClick={() => copyToClipboard(msg.content, `${msg.role}-${i}`)}
+                    onClick={() => copyToClipboard(msg.content, msg.id)}
                     className="flex items-center gap-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 rounded-md cursor-pointer"
                     title="Salin Pesan"
                   >
-                    {copiedIndex === (`${msg.role}-${i}` as unknown as number) ? (
+                    {copiedId === msg.id ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-500" />
                         <span className="text-[10px] text-emerald-500">Tersalin</span>
@@ -947,6 +928,8 @@ export default function ChatPage() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
+          aria-label="Kembali ke atas"
+          title="Kembali ke atas"
           className="fixed bottom-20 sm:bottom-28 right-4 sm:right-6 z-50 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 flex items-center justify-center hover:bg-emerald-500 transition-all active:scale-95 cursor-pointer animate-in fade-in touch-manipulation"
         >
           <ArrowUp className="w-4 h-4 sm:w-4 sm:h-4" />
