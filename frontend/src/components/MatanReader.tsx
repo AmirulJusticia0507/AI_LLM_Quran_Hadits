@@ -70,6 +70,11 @@ export default function MatanReader() {
         <span className="block rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-600 dark:border-slate-700 dark:bg-slate-900 dark:peer-checked:bg-emerald-700">{book.title}</span>
       </label>)}
     </fieldset>
+    <section aria-label="Kitab al-Jami&apos;" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-900 dark:bg-emerald-950 space-y-3">
+      <h2 className="font-bold">Kitab al-Jami&apos; <span lang="ar" dir="rtl">كتاب الجامع</span></h2>
+      <p className="text-sm leading-7">Bagian ke-16 dari Bulughul Maram karya Ibnu Hajar al-Asqalani tentang adab dan akhlak. Teks Arab mengikuti sumber Bulughul Maram; terjemahan Indonesia belum tersedia.</p>
+      <button type="button" onClick={() => { setBookId("bulughul-maram"); setChapter("16"); setQuery(""); setPage(1); }} className="rounded-xl bg-emerald-700 px-4 py-3 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">Baca Kitab al-Jami&apos;</button>
+    </section>
     <section aria-label="Pencarian kitab" className="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 bg-white dark:bg-slate-900 space-y-4">
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="text-sm font-medium">Cari nomor atau teks<input type="search" maxLength={150} value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} placeholder="Nomor, judul, teks Arab, atau terjemahan…" className="block mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-3" /></label>

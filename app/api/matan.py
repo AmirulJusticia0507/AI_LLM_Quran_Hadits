@@ -11,7 +11,7 @@ SOURCES = {
     "arbain-nawawi": "https://ournoor.com/api/v1/hadits",
     "bulughul-maram": "https://raw.githubusercontent.com/AhmedBaset/hadith-json/v1.2.0/db/by_book/other_books/bulugh_almaram.json",
 }
-CHAPTER_NAMES = ["Bersuci", "Shalat", "Jenazah", "Zakat", "Puasa", "Haji", "Jual beli", "Pernikahan", "Jinayat", "Hudud", "Jihad", "Makanan", "Sumpah dan nazar", "Peradilan", "Memerdekakan budak", "Adab dan akhlak"]
+CHAPTER_NAMES = ["Bersuci", "Shalat", "Jenazah", "Zakat", "Puasa", "Haji", "Jual beli", "Pernikahan", "Jinayat", "Hudud", "Jihad", "Makanan", "Sumpah dan nazar", "Peradilan", "Memerdekakan budak", "Kitab al-Jami’ (Adab dan akhlak)"]
 
 
 def normalize(text: str) -> str:

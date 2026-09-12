@@ -7,7 +7,7 @@ const sources: Record<BookId, string> = {
   "arbain-nawawi": "https://ournoor.com/api/v1/hadits",
   "bulughul-maram": "https://raw.githubusercontent.com/AhmedBaset/hadith-json/v1.2.0/db/by_book/other_books/bulugh_almaram.json",
 };
-const chapterNames = ["Bersuci", "Shalat", "Jenazah", "Zakat", "Puasa", "Haji", "Jual beli", "Pernikahan", "Jinayat", "Hudud", "Jihad", "Makanan", "Sumpah dan nazar", "Peradilan", "Memerdekakan budak", "Adab dan akhlak"];
+const chapterNames = ["Bersuci", "Shalat", "Jenazah", "Zakat", "Puasa", "Haji", "Jual beli", "Pernikahan", "Jinayat", "Hudud", "Jihad", "Makanan", "Sumpah dan nazar", "Peradilan", "Memerdekakan budak", "Kitab al-Jami’ (Adab dan akhlak)"];
 
 function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Data sumber tidak valid");

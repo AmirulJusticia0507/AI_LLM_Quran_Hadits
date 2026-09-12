@@ -14,3 +14,5 @@ Endpoint: `GET /api/matan/{kitab}?q=&bab=&page=1`, dengan kitab `arbain-nawawi` 
 Verifikasi: `.venv/Scripts/python.exe -m unittest discover -s tests -v`, lint frontend, dan build produksi. Telaah isi mengikuti edisi sumber; pembaca tidak menyamakan semua riwayat sebagai sahih atau menjadikan penomoran lintas edisi saling menggantikan.
 
 Endpoint FastAPI tetap tersedia untuk konsumen API terpisah. Deployment frontend harus menjalankan server Next.js (bukan static export) dan dapat mengakses kedua sumber melalui HTTPS. Cache hanya menyimpan data yang lolos validasi; kegagalan dapat dicoba kembali.
+
+Kitab al-Jami' tersedia melalui tombol langsung di /matan, membuka bagian 16 Bulughul Maram (bab=16). Pencarian dan pagination tetap membatasi hasil ke bagian ini sampai pengguna mengganti bagian/kitab. Nomor mengikuti edisi Bulughul Maram, tidak dinomori ulang. Identitas bagian: https://sunnah.com/bulugh/16.
