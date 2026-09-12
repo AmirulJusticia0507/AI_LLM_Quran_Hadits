@@ -5,6 +5,34 @@ from typing import Optional
 class QuranAPI:
     BASE_URL = "https://equran.id/api/v2"
 
+    async def get_surah(self, surah: int) -> dict:
+        """Fetch all verses once, preserving the requested surah identity."""
+        if not 1 <= surah <= 114:
+            return {"status": "error", "message": "Nomor surah harus 1–114"}
+        try:
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                response = await client.get(f"{self.BASE_URL}/surat/{surah}")
+                response.raise_for_status()
+                data = response.json()["data"]
+            if data.get("nomor") != surah or not data.get("ayat"):
+                raise ValueError("Data surah tidak sesuai permintaan")
+            verses = []
+            for item in data["ayat"]:
+                audio = item.get("audio", {}) or {}
+                verses.append({
+                    "status": "success", "surah": data["namaLatin"],
+                    "nomor_surah": surah, "nomor_ayat": item["nomorAyat"],
+                    "teks_arab": item["teksArab"], "teks_latin": item.get("teksLatin", ""),
+                    "terjemahan": item["teksIndonesia"],
+                    "audio": audio.get("05") or next(iter(audio.values()), ""),
+                })
+            if len(verses) != data["jumlahAyat"]:
+                raise ValueError("Data ayat surah belum lengkap")
+            return {"status": "success", "nomor_surah": surah,
+                    "surah": data["namaLatin"], "jumlah_ayat": len(verses), "ayat": verses}
+        except (httpx.HTTPError, ValueError, KeyError, TypeError):
+            return {"status": "error", "message": "Gagal mengambil surah lengkap. Silakan coba lagi."}
+
     async def get_verse(self, surah: int, ayat: int) -> dict:
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:

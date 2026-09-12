@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Swal from "sweetalert2";
+import { filterSurahs, selectSearchSurah } from "@/lib/surah-search";
 import {
   BookOpen,
   Search,
@@ -178,11 +179,23 @@ export default function QuranPage() {
 
   const selectedSurahInfo = SURAH_LIST.find((s) => s.num === surah);
 
-  const filteredSurahs = SURAH_LIST.filter(
-    (s) =>
-      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.num.toString() === searchQuery.trim()
-  );
+  const filteredSurahs = filterSurahs(SURAH_LIST, searchQuery);
+  const hasSelection = filteredSurahs.some(s => s.num === surah);
+  const requestVersion = useRef(0);
+
+  const changeSearch = (query: string) => {
+    setSearchQuery(query);
+    const next = selectSearchSurah(SURAH_LIST, query, surah);
+    requestVersion.current += 1;
+    setLoading(false);
+    setResult(null);
+    setSurahVerses([]);
+    resetMediaState();
+    if (next !== null && next !== surah) {
+      setSurah(next);
+      setAyat(1);
+    }
+  };
 
   const resetMediaState = () => {
     audioRef.current?.pause();
@@ -227,6 +240,7 @@ export default function QuranPage() {
   };
 
   const fetchVerse = async (targetSurah = surah, targetAyat = ayat) => {
+    const version = ++requestVersion.current;
     setLoading(true);
     setResult(null);
     setCopied(false);
@@ -245,6 +259,7 @@ export default function QuranPage() {
         throw new Error(data.detail || "Ayat tidak ditemukan");
       }
 
+      if (version !== requestVersion.current) return;
       setResult(data);
 
       const savedBookmarks = JSON.parse(localStorage.getItem("quran_bookmarks") || "[]");
@@ -252,6 +267,7 @@ export default function QuranPage() {
       setIsBookmarked(savedBookmarks.includes(bookmarkKey));
 
     } catch (err: unknown) {
+      if (version !== requestVersion.current) return;
       const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data ayat";
       Swal.fire({
         icon: "error",
@@ -263,47 +279,26 @@ export default function QuranPage() {
         }
       });
     } finally {
-      setLoading(false);
+      if (version === requestVersion.current) setLoading(false);
     }
   };
 
   const fetchSurah = async (targetSurah = surah) => {
+    const version = ++requestVersion.current;
+    resetMediaState();
+    setResult(null);
     setLoading(true);
     setSurahVerses([]);
     setViewMode("surah");
 
     try {
-      const res = await fetch(`${API_URL}/api/quran/verse`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ surah: targetSurah, ayat: 1 }),
-      });
-
+      const res = await fetch(`${API_URL}/api/quran/surah/${targetSurah}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Gagal mengambil surah");
-
-      // Fetch all verses for this surah
-      const maxVerses = SURAH_LIST.find(s => s.num === targetSurah)?.verses || 1;
-      const verses: QuranVerse[] = [];
-
-      for (let i = 1; i <= maxVerses; i++) {
-        try {
-          const verseRes = await fetch(`${API_URL}/api/quran/verse`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ surah: targetSurah, ayat: i }),
-          });
-          if (verseRes.ok) {
-            const verseData = await verseRes.json();
-            if (verseData.status === "success") {
-              verses.push(verseData);
-            }
-          }
-        } catch {}
-      }
-
-      setSurahVerses(verses);
+      if (version !== requestVersion.current) return;
+      setSurahVerses(data.ayat);
     } catch (err: unknown) {
+      if (version !== requestVersion.current) return;
       const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data surah";
       Swal.fire({
         icon: "error",
@@ -312,7 +307,7 @@ export default function QuranPage() {
         confirmButtonColor: "#059669",
       });
     } finally {
-      setLoading(false);
+      if (version === requestVersion.current) setLoading(false);
     }
   };
 
@@ -438,6 +433,9 @@ export default function QuranPage() {
                 <button
                   key={i}
                   onClick={() => {
+                    requestVersion.current += 1;
+                    setLoading(false);
+                    setSearchQuery("");
                     setSurah(v.nomor_surah);
                     setAyat(v.nomor_ayat);
                     setResult(v);
@@ -472,6 +470,7 @@ export default function QuranPage() {
                 setSurah(s.num);
                 setAyat(1);
                 setViewMode("single");
+                setSearchQuery("");
                 fetchVerse(s.num, 1);
               }}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
@@ -503,21 +502,30 @@ export default function QuranPage() {
                   type="text"
                   placeholder="Cari nama/nomor surah..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => changeSearch(e.target.value)}
+                  aria-label="Cari nama atau nomor surah"
                   className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <select
-                value={surah}
+                value={hasSelection ? surah : ""}
+                aria-label="Pilih surah"
+                disabled={!filteredSurahs.length}
                 onChange={(e) => {
                   const val = Number(e.target.value);
+                  requestVersion.current += 1;
+                  setLoading(false);
+                  setResult(null);
+                  setSurahVerses([]);
+                  resetMediaState();
                   setSurah(val);
                   setAyat(1);
                   setViewMode("single");
                 }}
                 className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-sm cursor-pointer"
               >
+                {!filteredSurahs.length && <option value="">Surah tidak ditemukan</option>}
                 {filteredSurahs.map((s) => (
                   <option key={s.num} value={s.num} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
                     {s.num}. {s.name} ({s.verses} Ayat)
@@ -547,7 +555,7 @@ export default function QuranPage() {
                 min={1}
                 max={selectedSurahInfo?.verses || 286}
                 value={ayat}
-                onChange={(e) => setAyat(Math.max(1, Number(e.target.value)))}
+                onChange={(e) => setAyat(Math.min(selectedSurahInfo?.verses || 1, Math.max(1, Math.trunc(Number(e.target.value)) || 1)))}
                 className="flex-1 px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-center text-lg"
               />
 
@@ -566,7 +574,7 @@ export default function QuranPage() {
         <div className="flex gap-3">
           <button
             onClick={() => { setViewMode("single"); fetchVerse(); }}
-            disabled={loading}
+            disabled={loading || !hasSelection}
             className="flex-1 py-4 bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-[0.99] font-bold text-base flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? (
@@ -583,7 +591,7 @@ export default function QuranPage() {
           </button>
           <button
             onClick={() => fetchSurah()}
-            disabled={loading}
+            disabled={loading || !hasSelection}
             className="px-6 py-4 bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-lg shadow-teal-600/25 disabled:opacity-50 transition-all font-bold text-base flex items-center gap-2 cursor-pointer"
           >
             <List className="w-5 h-5" />

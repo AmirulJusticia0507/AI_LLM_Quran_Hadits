@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 import time
 from collections import defaultdict
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
@@ -169,6 +169,14 @@ async def get_quran_verse(req: QuranVerseRequest):
     result = await quran_api.get_verse(surah=req.surah, ayat=req.ayat)
     if result["status"] == "error":
         raise HTTPException(status_code=404, detail=result["message"])
+    return result
+
+
+@app.get("/api/quran/surah/{surah}")
+async def get_surah(surah: int = Path(..., ge=1, le=114)):
+    result = await quran_api.get_surah(surah)
+    if result["status"] == "error":
+        raise HTTPException(status_code=502, detail=result["message"])
     return result
 
 
