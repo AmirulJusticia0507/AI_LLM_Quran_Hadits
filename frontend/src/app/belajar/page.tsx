@@ -17,6 +17,7 @@ export default function LearningPage() {
       <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{course.description}</p>
       <p className="mt-6 text-sm font-semibold text-emerald-700 dark:text-emerald-300">Mulai belajar →</p>
     </Link>)}</div>
+    <Link href="/praktik-ibadah" className="block rounded-2xl bg-emerald-700 p-6 text-white font-semibold">Panduan Bergambar Wudhu dan Shalat Nabi</Link>
     <Link href="/matan" className="block rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-6 text-emerald-800 dark:text-emerald-200 hover:underline"><span className="block font-bold">Perpustakaan Matan Kitab →</span><span className="block text-sm mt-2">Baca Arba’in Nawawi dan Bulughul Maram beserta rujukan sumbernya.</span></Link>
     <p className="text-sm text-slate-500 dark:text-slate-400">Materi dasar disertai rujukan untuk dipelajari lebih lanjut. Latihan bacaan Al-Qur’an sebaiknya disimak langsung oleh guru.</p>
   </div>;
