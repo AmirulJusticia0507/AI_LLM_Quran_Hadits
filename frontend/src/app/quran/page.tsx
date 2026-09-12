@@ -571,11 +571,11 @@ export default function QuranPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <button
             onClick={() => { setViewMode("single"); fetchVerse(); }}
             disabled={loading || !hasSelection}
-            className="flex-1 py-4 bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-[0.99] font-bold text-base flex items-center justify-center gap-2 cursor-pointer"
+            className="min-h-12 px-4 py-3 bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-[0.99] font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -584,18 +584,18 @@ export default function QuranPage() {
               </span>
             ) : (
               <>
-                <Search className="w-5 h-5" />
-                <span>Tampilkan Ayat</span>
+                <Search aria-hidden="true" className="size-5 shrink-0" />
+                <span className="whitespace-nowrap">Tampilkan Ayat</span>
               </>
             )}
           </button>
           <button
             onClick={() => fetchSurah()}
             disabled={loading || !hasSelection}
-            className="px-6 py-4 bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-lg shadow-teal-600/25 disabled:opacity-50 transition-all font-bold text-base flex items-center gap-2 cursor-pointer"
+            className="min-h-12 px-4 py-3 bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-lg shadow-teal-600/25 disabled:opacity-50 transition-all font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
           >
-            <List className="w-5 h-5" />
-            <span>Baca Surah</span>
+            <List aria-hidden="true" className="size-5 shrink-0" />
+            <span className="whitespace-nowrap">Baca Surah</span>
           </button>
         </div>
       </div>
