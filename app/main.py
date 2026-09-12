@@ -56,6 +56,7 @@ class SessionManager:
 
     def get_history(self, session_id: str) -> list[dict]:
         self._cleanup()
+        self.last_active[session_id] = time.time()
         return self.sessions[session_id]
 
     def add_message(self, session_id: str, message: dict):
@@ -102,7 +103,8 @@ async def health():
     return {
         "status": "ok",
         "llm_configured": llm is not None,
-        "llm_provider": os.getenv("LLM_PROVIDER", "none"),
+        "llm_provider": llm_provider,
+        "llm_model": getattr(llm, "model_name", getattr(llm, "model", None)),
     }
 
 
@@ -120,7 +122,7 @@ async def chat(req: ChatRequest):
     if not llm:
         raise HTTPException(
             status_code=503,
-            detail="LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.",
+            detail="LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.",
         )
     try:
         history = session_mgr.get_history(req.session_id)
@@ -135,7 +137,7 @@ async def chat_stream(req: ChatRequest):
     if not llm:
         raise HTTPException(
             status_code=503,
-            detail="LLM belum dikonfigurasi. Silakan isi GEMINI_API_KEY di .env atau jalankan Ollama.",
+            detail="LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.",
         )
     if not hasattr(llm, "chat_stream"):
         raise HTTPException(
@@ -144,7 +146,11 @@ async def chat_stream(req: ChatRequest):
         )
 
     async def event_generator():
-        async for chunk in llm.chat_stream(req.message, session_id=req.session_id):
+        current_llm = llm
+        kwargs = {"session_id": req.session_id}
+        if llm_provider == "bazaarlink":
+            kwargs["history"] = session_mgr.get_history(req.session_id)
+        async for chunk in current_llm.chat_stream(req.message, **kwargs):
             yield f"data: {chunk}\n\n"
 
     return StreamingResponse(
@@ -179,6 +185,7 @@ async def list_providers():
         "providers": [
             {"id": "ollama", "name": "Ollama (Lokal)", "available": True},
             {"id": "gemini", "name": "Gemini (Cloud)", "available": _gemini_available()},
+            {"id": "bazaarlink", "name": f"Bazaarlink ({os.getenv('BAZAARLINK_MODEL', 'qwen/qwen3.7-flash:free')})", "available": bool(os.getenv("BAZAARLINK_API_KEY", "").strip())},
         ],
     }
 

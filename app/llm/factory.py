@@ -6,7 +6,10 @@ def get_llm():
     print(f"[FACTORY] LLM_PROVIDER={provider}")
     print(f"[FACTORY] GEMINI_API_KEY={'SET' if os.getenv('GEMINI_API_KEY') else 'NOT SET'}")
 
-    if provider == "ollama":
+    if provider == "bazaarlink":
+        from app.llm.bazaarlink import create_llm
+        return create_llm()
+    elif provider == "ollama":
         from app.llm.ollama import create_llm
         return create_llm()
     elif provider == "gemini":
