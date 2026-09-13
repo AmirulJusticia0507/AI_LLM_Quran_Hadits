@@ -727,25 +727,27 @@ export default function QuranPage() {
           )}
 
           {/* Prev/Next Navigation */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
+          <nav aria-label="Navigasi ayat" className="grid grid-cols-2 items-center gap-3 pt-4 border-t border-slate-200/80 dark:border-slate-800/80 sm:grid-cols-[1fr_auto_1fr]">
             <button
+              aria-label="Ayat sebelumnya"
               onClick={goPrevVerse}
               disabled={ayat <= 1}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
+              className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-all text-sm font-medium cursor-pointer"
             >
-              <ChevronLeft className="w-4 h-4" /> Ayat Sebelumnya
+              <ChevronLeft aria-hidden="true" className="size-4 shrink-0" /><span className="whitespace-nowrap">Sebelumnya</span>
             </button>
-            <span className="text-xs text-slate-500 font-medium">
-              {ayat} / {selectedSurahInfo?.verses}
+            <span className="col-span-2 row-start-1 text-center text-sm text-slate-500 dark:text-slate-400 font-medium tabular-nums sm:col-span-1 sm:col-start-2">
+              Ayat {ayat} / {selectedSurahInfo?.verses}
             </span>
             <button
+              aria-label="Ayat selanjutnya"
               onClick={goNextVerse}
               disabled={ayat >= (selectedSurahInfo?.verses || 1)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
+              className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-all text-sm font-medium cursor-pointer"
             >
-              Ayat Selanjutnya <ChevronRight className="w-4 h-4" />
+              <span className="whitespace-nowrap">Selanjutnya</span><ChevronRight aria-hidden="true" className="size-4 shrink-0" />
             </button>
-          </div>
+          </nav>
         </div>
       )}
 
