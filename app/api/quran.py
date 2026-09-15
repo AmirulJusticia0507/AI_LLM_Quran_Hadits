@@ -1,4 +1,5 @@
 import httpx
+import re
 from typing import Optional
 
 
@@ -91,6 +92,23 @@ class QuranAPI:
             return {"status": "error", "message": f"HTTP error: {str(e)}"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
+
+    async def get_asbabun_nuzul(self, surah: int, ayat: int) -> dict:
+        """Return only an explicitly identified revelation context in the source tafsir."""
+        result = await self.get_tafsir(surah, ayat)
+        if result.get("status") != "success":
+            return result
+        text = result.get("tafsir", "")
+        paragraphs = re.split(r"\n\s*\n", text)
+        markers = ("sebab turunnya ayat", "asbabun nuzul", "asbab al-nuzul")
+        context = next(
+            (paragraph.strip() for paragraph in paragraphs
+             if any(marker in paragraph.lower() for marker in markers)
+             and not paragraph.lower().startswith("berdasarkan ayat di atas")),
+            None,
+        )
+        return {"status": "success", "asbabun_nuzul": context,
+                "sumber": "Tafsir Kemenag via EQuran.id"}
 
     async def search_verse(self, query: str) -> dict:
         try:

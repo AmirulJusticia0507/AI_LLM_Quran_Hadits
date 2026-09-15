@@ -10,7 +10,6 @@ import {
     ChevronLeft,
     ChevronRight,
     Copy,
-    List,
     Pause,
     Search,
     Volume2
@@ -346,6 +345,26 @@ export default function QuranPage() {
   const [tafsir, setTafsir] = useState<string | null>(null);
   const [tafsirLoading, setTafsirLoading] = useState(false);
   const [showTafsir, setShowTafsir] = useState(false);
+  const [asbabunNuzul, setAsbabunNuzul] = useState<string | null>(null);
+  const [asbabLoading, setAsbabLoading] = useState(false);
+
+  useEffect(() => {
+    if (!result || viewMode !== "single") return;
+    let active = true;
+    fetch(`${API_URL}/api/quran/asbabun-nuzul`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ surah: result.nomor_surah, ayat: result.nomor_ayat }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Gagal memuat asbabun nuzul");
+        return response.json();
+      })
+      .then((data) => { if (active) setAsbabunNuzul(data.asbabun_nuzul || "Tidak ada riwayat sebab turunnya ayat yang dijelaskan dalam sumber tafsir ini."); })
+      .catch(() => { if (active) setAsbabunNuzul("Asbabun nuzul belum dapat dimuat. Coba tampilkan ayat kembali."); })
+      .finally(() => { if (active) setAsbabLoading(false); });
+    return () => { active = false; };
+  }, [result, viewMode]);
 
   // Playback uses the visible Arabic verse as its text alternative.
   // Audio is controlled by the existing play/pause button, without a hidden media player.
@@ -437,6 +456,8 @@ export default function QuranPage() {
     setLoading(true);
     setLoadingAction("verse");
     setResult(null);
+    setAsbabunNuzul(null);
+    setAsbabLoading(true);
     setCopied(false);
     resetMediaState();
 
@@ -471,44 +492,6 @@ export default function QuranPage() {
         customClass: {
           popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
         }
-      });
-    } finally {
-      if (version === requestVersion.current) {
-        setLoading(false);
-        setLoadingAction(null);
-      }
-    }
-  };
-
-  const fetchSurah = async (targetSurah = surah) => {
-    const version = ++requestVersion.current;
-    resetMediaState();
-    setResult(null);
-    setLoading(true);
-    setLoadingAction("surah");
-    setSurahVerses([]);
-    setViewMode("surah");
-
-    try {
-      const res = await fetch(`${API_URL}/api/quran/surah/${targetSurah}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Gagal mengambil surah");
-      if (!Array.isArray(data.ayat) || data.ayat.length === 0) {
-        throw new Error("Data surah kosong. Silakan coba lagi.");
-      }
-      if (version !== requestVersion.current) return;
-      setSurahVerses(data.ayat);
-      requestAnimationFrame(() => {
-        document.getElementById("quran-surah-reader")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    } catch (err: unknown) {
-      if (version !== requestVersion.current) return;
-      const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data surah";
-      Swal.fire({
-        icon: "error",
-        title: "Gagal",
-        text: errorMessage,
-        confirmButtonColor: "#059669",
       });
     } finally {
       if (version === requestVersion.current) {
@@ -634,6 +617,8 @@ export default function QuranPage() {
             setSurah(verse.nomor_surah);
             setAyat(verse.nomor_ayat);
             setResult(verse);
+            setAsbabunNuzul(null);
+            setAsbabLoading(true);
             setShowBookmarks(false);
             setViewMode("single");
           }}
@@ -755,7 +740,7 @@ export default function QuranPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div>
           <button
             onClick={() => { setViewMode("single"); fetchVerse(); }}
             disabled={loading || !hasSelection}
@@ -770,23 +755,6 @@ export default function QuranPage() {
               <>
                 <Search aria-hidden="true" className="size-5 shrink-0" />
                 <span className="whitespace-nowrap">Tampilkan Ayat</span>
-              </>
-            )}
-          </button>
-          <button
-            onClick={() => fetchSurah()}
-            disabled={loading || !hasSelection}
-            className="min-h-12 px-4 py-3 bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-lg shadow-teal-600/25 disabled:opacity-50 transition-all font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
-          >
-            {loading && loadingAction === "surah" ? (
-              <>
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span className="whitespace-nowrap">Memuat surah...</span>
-              </>
-            ) : (
-              <>
-                <List aria-hidden="true" className="size-5 shrink-0" />
-                <span className="whitespace-nowrap">Baca Surah</span>
               </>
             )}
           </button>
@@ -826,6 +794,14 @@ export default function QuranPage() {
             <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
               {result.terjemahan}
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Asbabun Nuzul:</span>
+            <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap bg-amber-50 dark:bg-amber-950/30 p-5 rounded-2xl border border-amber-200/60 dark:border-amber-800/40">
+              {asbabLoading ? "Memuat asbabun nuzul..." : asbabunNuzul}
+            </p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Sumber: Tafsir Kemenag via EQuran.id</p>
           </div>
 
 

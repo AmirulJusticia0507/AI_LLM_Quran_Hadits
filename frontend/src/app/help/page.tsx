@@ -132,7 +132,7 @@ const GUIDES: GuideStep[] = [
   },
   {
     title: "Cari Ayat Al-Qur'an",
-    description: "Pilih Surah (dropdown/search) → masukkan nomor ayat → klik 'Tampilkan Ayat'. Atau klik 'Baca Surah' untuk seluruh surah.",
+    description: "Pilih Surah (dropdown/search) → masukkan nomor ayat → klik 'Tampilkan Ayat'. Terjemahan dan asbabun nuzul tampil di bawah ayat.",
     icon: BookOpen,
     shortcut: "Ctrl+K = Fokus search",
   },
