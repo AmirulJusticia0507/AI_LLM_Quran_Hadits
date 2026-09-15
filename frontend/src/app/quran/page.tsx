@@ -1,22 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Swal from "sweetalert2";
 import { filterSurahs, selectSearchSurah } from "@/lib/surah-search";
 import {
-  BookOpen,
-  Search,
-  Copy,
-  Check,
-  Bookmark,
-  BookmarkCheck,
-  ChevronLeft,
-  ChevronRight,
-  List,
-  Volume2,
-  Pause,
-  BookOpenText
+    Bookmark,
+    BookmarkCheck,
+    BookOpen,
+    BookOpenText,
+    Check,
+    ChevronLeft,
+    ChevronRight,
+    Copy,
+    List,
+    Pause,
+    Search,
+    Volume2
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 interface QuranVerse {
   status: string;
@@ -182,11 +182,157 @@ const POPULAR_SURAHS = [
   { num: 112, name: "Al-Ikhlas" }
 ];
 
+type BookmarkPanelProps = {
+  readonly verses: QuranVerse[];
+  readonly onClose: () => void;
+  readonly onSelect: (verse: QuranVerse) => void;
+};
+
+function BookmarkPanel({ verses, onClose, onSelect }: BookmarkPanelProps) {
+  return (
+    <div className="glass-card rounded-3xl p-6 shadow-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Bookmark className="w-5 h-5 text-amber-500" /> Bookmark Saya
+        </h2>
+        <button onClick={onClose} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">
+          Tutup
+        </button>
+      </div>
+      {verses.length === 0 ? (
+        <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
+      ) : (
+        <div className="space-y-3">
+          {verses.map((verse) => (
+            <button
+              key={`${verse.nomor_surah}:${verse.nomor_ayat}`}
+              onClick={() => onSelect(verse)}
+              className="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-500/50 transition-all cursor-pointer"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold">{verse.surah}</span>
+                <span className="text-[10px] text-slate-500">Ayat {verse.nomor_ayat}</span>
+              </div>
+              <p className="arabic-text text-right text-lg text-slate-800 dark:text-emerald-100">{verse.teks_arab}</p>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-1">{verse.terjemahan}</p>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type SurahReaderProps = {
+  readonly verses: QuranVerse[];
+  readonly fontSize: number;
+  readonly onBack: () => void;
+};
+
+function SurahReader({ verses, fontSize, onBack }: SurahReaderProps) {
+  if (verses.length === 0) return null;
+
+  return (
+    <div id="quran-surah-reader" className="scroll-mt-6 space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+          Surah {verses[0]?.surah} — {verses.length} Ayat
+        </h2>
+        <button onClick={onBack} className="text-xs text-emerald-600 hover:text-emerald-500 cursor-pointer">
+          Kembali ke Pencarian
+        </button>
+      </div>
+      {verses.map((verse) => (
+        <div key={`${verse.nomor_surah}:${verse.nomor_ayat}`} className="glass-card rounded-3xl p-6 shadow-lg space-y-4 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
+          <div className="flex items-center gap-2">
+            <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold">Ayat {verse.nomor_ayat}</span>
+          </div>
+          <div className="py-4 px-3 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
+            <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
+              {verse.teks_arab}
+            </p>
+          </div>
+          <p className="text-xs text-slate-500 italic">&ldquo;{verse.teks_latin}&rdquo;</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
+            {verse.terjemahan}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+type VerseToolbarProps = {
+  readonly result: QuranVerse;
+  readonly isPlaying: boolean;
+  readonly showTafsir: boolean;
+  readonly copied: boolean;
+  readonly isBookmarked: boolean;
+  readonly onFontSizeChange: (change: number) => void;
+  readonly onAudioToggle: () => void;
+  readonly onTafsirToggle: () => void;
+  readonly onCopy: () => void;
+  readonly onBookmarkToggle: () => void;
+};
+
+function VerseToolbar({
+  result,
+  isPlaying,
+  showTafsir,
+  copied,
+  isBookmarked,
+  onFontSizeChange,
+  onAudioToggle,
+  onTafsirToggle,
+  onCopy,
+  onBookmarkToggle,
+}: VerseToolbarProps) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+      <div className="flex items-center gap-2">
+        <span className="px-4 py-1.5 rounded-full bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20">
+          Surah {result.surah}
+        </span>
+        <span className="px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold text-xs border border-emerald-300/40 dark:border-emerald-700/50">
+          Ayat Ke-{result.nomor_ayat}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
+          <button onClick={() => onFontSizeChange(-0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Kecilkan Teks Arab">A-</button>
+          <span className="text-[10px] text-slate-400 px-1">Ukuran</span>
+          <button onClick={() => onFontSizeChange(0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Besarkan Teks Arab">A+</button>
+        </div>
+
+        {result.audio ? (
+          <button onClick={onAudioToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isPlaying ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isPlaying ? "Jeda Murottal" : "Putar Murottal"}>
+            {isPlaying ? <Pause className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+        ) : null}
+
+        <button onClick={onTafsirToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${showTafsir ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title="Lihat Tafsir">
+          <BookOpenText className="w-4 h-4" />
+        </button>
+
+        <button onClick={onCopy} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Ayat">
+          {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+        </button>
+
+        <button onClick={onBookmarkToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title="Simpan Bookmark">
+          {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function QuranPage() {
   const [surah, setSurah] = useState(1);
   const [ayat, setAyat] = useState(1);
   const [result, setResult] = useState<QuranVerse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState<"verse" | "surah" | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [fontSize, setFontSize] = useState(2.2);
   const [copied, setCopied] = useState(false);
@@ -234,6 +380,7 @@ export default function QuranPage() {
     const next = selectSearchSurah(SURAH_LIST, query, surah);
     requestVersion.current += 1;
     setLoading(false);
+    setLoadingAction(null);
     setResult(null);
     setSurahVerses([]);
     resetMediaState();
@@ -288,6 +435,7 @@ export default function QuranPage() {
   const fetchVerse = async (targetSurah = surah, targetAyat = ayat) => {
     const version = ++requestVersion.current;
     setLoading(true);
+    setLoadingAction("verse");
     setResult(null);
     setCopied(false);
     resetMediaState();
@@ -325,7 +473,10 @@ export default function QuranPage() {
         }
       });
     } finally {
-      if (version === requestVersion.current) setLoading(false);
+      if (version === requestVersion.current) {
+        setLoading(false);
+        setLoadingAction(null);
+      }
     }
   };
 
@@ -334,6 +485,7 @@ export default function QuranPage() {
     resetMediaState();
     setResult(null);
     setLoading(true);
+    setLoadingAction("surah");
     setSurahVerses([]);
     setViewMode("surah");
 
@@ -341,8 +493,14 @@ export default function QuranPage() {
       const res = await fetch(`${API_URL}/api/quran/surah/${targetSurah}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Gagal mengambil surah");
+      if (!Array.isArray(data.ayat) || data.ayat.length === 0) {
+        throw new Error("Data surah kosong. Silakan coba lagi.");
+      }
       if (version !== requestVersion.current) return;
       setSurahVerses(data.ayat);
+      requestAnimationFrame(() => {
+        document.getElementById("quran-surah-reader")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     } catch (err: unknown) {
       if (version !== requestVersion.current) return;
       const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data surah";
@@ -353,7 +511,10 @@ export default function QuranPage() {
         confirmButtonColor: "#059669",
       });
     } finally {
-      if (version === requestVersion.current) setLoading(false);
+      if (version === requestVersion.current) {
+        setLoading(false);
+        setLoadingAction(null);
+      }
     }
   };
 
@@ -462,45 +623,21 @@ export default function QuranPage() {
 
       {/* Bookmarks View */}
       {showBookmarks && (
-        <div className="glass-card rounded-3xl p-6 shadow-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Bookmark className="w-5 h-5 text-amber-500" /> Bookmark Saya
-            </h2>
-            <button onClick={() => setShowBookmarks(false)} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">
-              Tutup
-            </button>
-          </div>
-          {bookmarkedVerses.length === 0 ? (
-            <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
-          ) : (
-            <div className="space-y-3">
-              {bookmarkedVerses.map((v) => (
-                <button
-                  key={`${v.nomor_surah}:${v.nomor_ayat}`}
-                  onClick={() => {
-                    requestVersion.current += 1;
-                    setLoading(false);
-                    setSearchQuery("");
-                    setSurah(v.nomor_surah);
-                    setAyat(v.nomor_ayat);
-                    setResult(v);
-                    setShowBookmarks(false);
-                    setViewMode("single");
-                  }}
-                  className="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-500/50 transition-all cursor-pointer"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold">{v.surah}</span>
-                    <span className="text-[10px] text-slate-500">Ayat {v.nomor_ayat}</span>
-                  </div>
-                  <p className="arabic-text text-right text-lg text-slate-800 dark:text-emerald-100">{v.teks_arab}</p>
-                  <p className="text-xs text-slate-500 mt-1 line-clamp-1">{v.terjemahan}</p>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <BookmarkPanel
+          verses={bookmarkedVerses}
+          onClose={() => setShowBookmarks(false)}
+          onSelect={(verse) => {
+            requestVersion.current += 1;
+            setLoading(false);
+            setLoadingAction(null);
+            setSearchQuery("");
+            setSurah(verse.nomor_surah);
+            setAyat(verse.nomor_ayat);
+            setResult(verse);
+            setShowBookmarks(false);
+            setViewMode("single");
+          }}
+        />
       )}
 
       {/* Popular Surah Quick Bar */}
@@ -627,7 +764,7 @@ export default function QuranPage() {
             {loading ? (
               <span className="flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Memuat...</span>
+                <span>{loadingAction === "verse" ? "Memuat ayat..." : "Memuat surah..."}</span>
               </span>
             ) : (
               <>
@@ -641,8 +778,17 @@ export default function QuranPage() {
             disabled={loading || !hasSelection}
             className="min-h-12 px-4 py-3 bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-lg shadow-teal-600/25 disabled:opacity-50 transition-all font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
           >
-            <List aria-hidden="true" className="size-5 shrink-0" />
-            <span className="whitespace-nowrap">Baca Surah</span>
+            {loading && loadingAction === "surah" ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span className="whitespace-nowrap">Memuat surah...</span>
+              </>
+            ) : (
+              <>
+                <List aria-hidden="true" className="size-5 shrink-0" />
+                <span className="whitespace-nowrap">Baca Surah</span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -651,42 +797,18 @@ export default function QuranPage() {
       {result && viewMode === "single" && (
         <div className="glass-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300 relative border-2 border-emerald-500/30 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-slate-100">
           
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <span className="px-4 py-1.5 rounded-full bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20">
-                Surah {result.surah}
-              </span>
-              <span className="px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold text-xs border border-emerald-300/40 dark:border-emerald-700/50">
-                Ayat Ke-{result.nomor_ayat}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-                <button onClick={() => setFontSize((prev) => Math.max(1.5, prev - 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Kecilkan Teks Arab">A-</button>
-                <span className="text-[10px] text-slate-400 px-1">Ukuran</span>
-                <button onClick={() => setFontSize((prev) => Math.min(3.5, prev + 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Besarkan Teks Arab">A+</button>
-              </div>
-
-              {result.audio ? (
-                <button onClick={toggleAudio} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isPlaying ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isPlaying ? "Jeda Murottal" : "Putar Murottal"}>
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-              ) : null}
-
-              <button onClick={toggleTafsir} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${showTafsir ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title="Lihat Tafsir">
-                <BookOpenText className="w-4 h-4" />
-              </button>
-
-              <button onClick={copyVerse} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Ayat">
-                {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-              </button>
-
-              <button onClick={toggleBookmark} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title="Simpan Bookmark">
-                {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
+          <VerseToolbar
+            result={result}
+            isPlaying={isPlaying}
+            showTafsir={showTafsir}
+            copied={copied}
+            isBookmarked={isBookmarked}
+            onFontSizeChange={(change) => setFontSize((previous) => Math.min(3.5, Math.max(1.5, previous + change)))}
+            onAudioToggle={toggleAudio}
+            onTafsirToggle={toggleTafsir}
+            onCopy={copyVerse}
+            onBookmarkToggle={toggleBookmark}
+          />
 
           <div className="py-6 px-4 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
             <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
@@ -752,34 +874,7 @@ export default function QuranPage() {
       )}
 
       {/* Read-through Surah View */}
-      {viewMode === "surah" && surahVerses.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              Surah {surahVerses[0]?.surah} — {surahVerses.length} Ayat
-            </h2>
-            <button onClick={() => setViewMode("single")} className="text-xs text-emerald-600 hover:text-emerald-500 cursor-pointer">
-              Kembali ke Pencarian
-            </button>
-          </div>
-          {surahVerses.map((v) => (
-            <div key={`${v.nomor_surah}:${v.nomor_ayat}`} className="glass-card rounded-3xl p-6 shadow-lg space-y-4 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold">Ayat {v.nomor_ayat}</span>
-              </div>
-              <div className="py-4 px-3 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
-                <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
-                  {v.teks_arab}
-                </p>
-              </div>
-              <p className="text-xs text-slate-500 italic">&ldquo;{v.teks_latin}&rdquo;</p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
-                {v.terjemahan}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+      {viewMode === "surah" && <SurahReader verses={surahVerses} fontSize={fontSize} onBack={() => setViewMode("single")} />}
     </div>
   );
 }
