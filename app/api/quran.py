@@ -94,19 +94,31 @@ class QuranAPI:
             return {"status": "error", "message": str(e)}
 
     async def get_asbabun_nuzul(self, surah: int, ayat: int) -> dict:
-        """Return only an explicitly identified revelation context in the source tafsir."""
+        """Extract revelation context (asbabun nuzul) from tafsir text."""
         result = await self.get_tafsir(surah, ayat)
         if result.get("status") != "success":
             return result
         text = result.get("tafsir", "")
+        if not text:
+            return {"status": "success", "asbabun_nuzul": None,
+                    "sumber": "Tafsir Kemenag via EQuran.id"}
         paragraphs = re.split(r"\n\s*\n", text)
-        markers = ("sebab turunnya ayat", "asbabun nuzul", "asbab al-nuzul")
+        markers = (
+            "sebab turunnya ayat", "asbabun nuzul", "asbab al-nuzul",
+            "menurut riwayat", "didirik", "diterbitkan", "wa qulan",
+            "dikenal dengan", "disebabkan", "al-nuzul", " sebab turun",
+            "keniscayaan", "tidak turun", "sebab turun",
+        )
+        excluded_prefixes = ("berdasarkan ayat di atas", "sebab turunnya surah",
+                             "berikut ayat sebelumnya", "sebab turunnya bab")
         context = next(
             (paragraph.strip() for paragraph in paragraphs
              if any(marker in paragraph.lower() for marker in markers)
-             and not paragraph.lower().startswith("berdasarkan ayat di atas")),
+             and not any(paragraph.lower().startswith(prefix) for prefix in excluded_prefixes)),
             None,
         )
+        if context:
+            context = re.sub(r"\s+", " ", context).strip()
         return {"status": "success", "asbabun_nuzul": context,
                 "sumber": "Tafsir Kemenag via EQuran.id"}
 
