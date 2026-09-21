@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
-import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass } from "lucide-react";
+import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass, BookMarked } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Chat AI", icon: MessageSquare, badge: "AI Assistant" },
@@ -19,6 +19,7 @@ const ibadahItems = [
   { href: "/asmaul", label: "Asmaul Husna", icon: Sparkles, badge: "99 Nama" },
   { href: "/doa", label: "Doa Harian", icon: HeartHandshake, badge: "14 Doa" },
   { href: "/kiblat", label: "Arah Kiblat", icon: Compass, badge: "Kompas" },
+  { href: "/panduan-ibadah", label: "Panduan Ibadah", icon: BookMarked, badge: "Jenazah + Manasik" },
 ];
 
 // ---------------------------------------------------------------------------
