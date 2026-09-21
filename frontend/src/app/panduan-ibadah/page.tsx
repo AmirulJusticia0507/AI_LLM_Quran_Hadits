@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -79,6 +80,7 @@ export default function PanduanIbadahPage() {
 
     <section id="jenazah" className={sectionClass}>
       <div><p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Fardu kifayah</p><h2 className="mt-1 text-2xl font-bold">Tata cara shalat jenazah</h2><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">Imam berdiri sejajar kepala jenazah laki-laki dan sekitar bagian tengah jenazah perempuan. Posisi ini merupakan tuntunan; sahnya shalat tidak bergantung pada ketepatan posisi tersebut.</p></div>
+      <figure className="space-y-3"><a href="/images/ibadah/sholat-jenazah.png" target="_blank" rel="noopener noreferrer"><Image src="/images/ibadah/sholat-jenazah.png" width={1536} height={1024} alt="Ilustrasi posisi shalat jenazah: imam dan jamaah berdiri menghadap kiblat, jenazah di depan, tangan di bawah dada, tanpa rukuk dan sujud." className="w-full h-auto rounded-2xl" /></a><figcaption className="text-sm leading-6 text-slate-500">Ilustrasi AI peraga masa kini, bukan penggambaran Nabi. Gambar menunjukkan posisi berdiri, letak jenazah, dan posisi tangan. Ikuti langkah tertulis di bawah. Ketuk untuk memperbesar.</figcaption></figure>
       <Steps items={jenazah} />
       <div className="space-y-3"><h3 className="text-xl font-bold">Bacaan doa</h3>{bacaanJenazah.map(item => <details key={item.title} className="border border-slate-200 p-5 dark:border-slate-800"><summary className="cursor-pointer font-semibold">{item.title}</summary><p lang="ar" dir="rtl" className="arabic-text my-5">{item.arab}</p><p className="italic leading-7 text-slate-600 dark:text-slate-300">{item.latin}</p><p className="mt-3 leading-7"><strong>Arti:</strong> {item.arti}</p></details>)}</div>
     </section>
