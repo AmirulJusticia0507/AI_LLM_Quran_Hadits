@@ -47,15 +47,18 @@ const translations: Record<Language, Record<string, string>> = {
   },
 };
 
+function getInitialLanguage(): Language {
+  if (typeof window === "undefined") return "id";
+  const saved = localStorage.getItem("language") as Language | null;
+  if (saved === "id" || saved === "en") return saved;
+  return "id";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("id");
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("language") as Language | null;
-    if (saved && (saved === "id" || saved === "en")) {
-      setLanguageState(saved);
-    }
     setMounted(true);
   }, []);
 
