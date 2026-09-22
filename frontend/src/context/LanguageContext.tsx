@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
 
 type Language = "id" | "en";
 
@@ -56,10 +56,10 @@ function getInitialLanguage(): Language {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(getInitialLanguage);
-  const [mounted, setMounted] = useState(false);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
-    setMounted(true);
+    mountedRef.current = true;
   }, []);
 
   const setLanguage = (lang: Language) => {
@@ -69,7 +69,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   const t = (key: string) => {
-    if (!mounted) return translations.id[key] || key;
+    if (!mountedRef.current) return translations.id[key] || key;
     return translations[language][key] || translations.id[key] || key;
   };
 
