@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Amiri } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -88,13 +89,15 @@ export default function RootLayout({
         <div className="fixed top-0 left-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full filter blur-[120px] pointer-events-none -z-10 animate-pulse-fast"></div>
         <div className="fixed bottom-10 right-1/4 w-120 h-120 bg-teal-500/10 dark:bg-teal-500/15 rounded-full filter blur-[140px] pointer-events-none -z-10"></div>
         
-        <Navbar />
-        
-        <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">
-          {children}
-        </main>
-        
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          
+          <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">
+            {children}
+          </main>
+          
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

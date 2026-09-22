@@ -3,23 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
-import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass, BookMarked } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass, BookMarked, Globe } from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "Chat AI", icon: MessageSquare, badge: "AI Assistant" },
-  { href: "/quran", label: "Al-Qur'an", icon: BookOpen, badge: "30 Juz" },
-  { href: "/hadith", label: "Hadits", icon: ScrollText, badge: "9 Kitab" },
-  { href: "/belajar", label: "Belajar", icon: GraduationCap, badge: "4 Modul Islam" },
-  { href: "/about", label: "Tentang", icon: Info, badge: "Info" },
+  { href: "/", labelKey: "nav.chat", icon: MessageSquare, badge: "AI Assistant" },
+  { href: "/quran", labelKey: "nav.quran", icon: BookOpen, badge: "30 Juz" },
+  { href: "/hadith", labelKey: "nav.hadith", icon: ScrollText, badge: "9 Kitab" },
+  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "4 Modul Islam" },
+  { href: "/about", labelKey: "nav.about", icon: Info, badge: "Info" },
 ];
 
 const ibadahItems = [
-  { href: "/jadwal", label: "Jadwal Shalat", icon: Clock, badge: "GPS + Hijriah" },
-  { href: "/dzikir", label: "Dzikir", icon: Fingerprint, badge: "Counter" },
-  { href: "/asmaul", label: "Asmaul Husna", icon: Sparkles, badge: "99 Nama" },
-  { href: "/doa", label: "Doa Harian", icon: HeartHandshake, badge: "14 Doa" },
-  { href: "/kiblat", label: "Arah Kiblat", icon: Compass, badge: "Kompas" },
-  { href: "/panduan-ibadah", label: "Panduan Ibadah", icon: BookMarked, badge: "Jenazah + Manasik" },
+  { href: "/jadwal", labelKey: "nav.jadwal", icon: Clock, badge: "GPS + Hijriah" },
+  { href: "/dzikir", labelKey: "nav.dzikir", icon: Fingerprint, badge: "Counter" },
+  { href: "/asmaul", labelKey: "nav.asmaul", icon: Sparkles, badge: "99 Nama" },
+  { href: "/doa", labelKey: "nav.doa", icon: HeartHandshake, badge: "14 Doa" },
+  { href: "/kiblat", labelKey: "nav.kiblat", icon: Compass, badge: "Kompas" },
+  { href: "/panduan-ibadah", labelKey: "nav.panduan", icon: BookMarked, badge: "Jenazah + Manasik" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -36,12 +37,10 @@ function subscribeTheme(cb: Listener) {
 }
 
 function getThemeSnapshot(): boolean {
-  // Reads from DOM — always accurate on client.
   return document.documentElement.classList.contains("dark");
 }
 
 function getThemeServerSnapshot(): boolean {
-  // Server always returns false → Moon icon → matches SSR.
   return false;
 }
 
@@ -53,21 +52,39 @@ function applyTheme(dark: boolean) {
     document.documentElement.classList.remove("dark");
     localStorage.setItem("theme", "light");
   }
-  // Notify all subscribers so useSyncExternalStore triggers re-render.
   themeListeners.forEach((cb) => cb());
 }
 
 // ---------------------------------------------------------------------------
 
+function LanguageSwitcher() {
+  const { language, setLanguage, t } = useLanguage();
+
+  return (
+    <div className="relative hidden sm:block">
+      <button
+        onClick={() => setLanguage(language === "id" ? "en" : "id")}
+        aria-label={t("language.indonesia") + " / " + t("language.english")}
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/50 transition-all hover:scale-105 active:scale-95 shadow-sm cursor-pointer"
+      >
+        <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        <span className="text-sm font-medium whitespace-nowrap">
+          {language === "id" ? "ID" : "EN"}
+        </span>
+        <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+      </button>
+    </div>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [ibadahOpen, setIbadahOpen] = useState(false);
   const ibadahRef = useRef<HTMLDivElement>(null);
 
-  // isDark comes from DOM class — no React state, no setState in effect.
-  // Server snapshot = false, client snapshot = reads classList.
   const isDark = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
@@ -80,7 +97,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Tutup dropdown Ibadah saat klik di luar (setState di event listener = aman)
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ibadahRef.current && !ibadahRef.current.contains(e.target as Node)) {
@@ -128,8 +144,8 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links — hanya muat lega di lg ke atas */}
-          <div className="hidden lg:flex items-center gap-1 p-1.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/70 border border-slate-200/50 dark:border-slate-800/50">
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center gap-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/fiqh", "/sirah", "/tajweed"].includes(pathname));
@@ -137,14 +153,14 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap shrink-0 ${
+                  className={`relative px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap shrink-0 ${
                     isActive
                       ? "text-white bg-linear-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/25"
-                      : "text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white/60 dark:hover:bg-slate-800/60"
+                      : "text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                   }`}
                 >
                   <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-emerald-600 dark:text-emerald-400"}`} />
-                  <span className="whitespace-nowrap">{item.label}</span>
+                  <span className="whitespace-nowrap">{t(item.labelKey)}</span>
                   {isActive && (
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping absolute top-2 right-2" />
                   )}
@@ -156,19 +172,19 @@ export default function Navbar() {
             <div ref={ibadahRef} className="relative shrink-0">
               <button
                 onClick={() => setIbadahOpen((v) => !v)}
-                aria-label="Menu ibadah"
-                className={`relative px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                aria-label={t("nav.ibadah")}
+                className={`relative px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                   ibadahActive || ibadahOpen
                     ? "text-white bg-linear-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/25"
-                    : "text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white/60 dark:hover:bg-slate-800/60"
+                    : "text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
                 <Compass className={`w-4 h-4 shrink-0 ${ibadahActive || ibadahOpen ? "text-white" : "text-emerald-600 dark:text-emerald-400"}`} />
-                <span className="whitespace-nowrap">Ibadah</span>
+                <span className="whitespace-nowrap">{t("nav.ibadah")}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${ibadahOpen ? "rotate-180" : ""}`} />
               </button>
               {ibadahOpen && (
-                <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 shadow-xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 z-50">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 shadow-xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 z-50">
                   {ibadahItems.map((item) => {
                     const SubIcon = item.icon;
                     const subActive = pathname === item.href;
@@ -177,14 +193,14 @@ export default function Navbar() {
                         key={item.href}
                         href={item.href}
                         onClick={() => setIbadahOpen(false)}
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                        className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all ${
                           subActive
                             ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                             : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                         }`}
                       >
                         <SubIcon className="w-4 h-4 text-emerald-500 shrink-0" />
-                        <span className="font-medium flex-1">{item.label}</span>
+                        <span className="font-medium flex-1">{t(item.labelKey)}</span>
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                           {item.badge}
                         </span>
@@ -194,11 +210,27 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              className="ml-1 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200/60 dark:border-slate-800 transition-all hover:scale-105 active:scale-95 shadow-sm cursor-pointer"
+            >
+              {isDark ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+              )}
+            </button>
           </div>
 
-          {/* Controls Right */}
-          <div className="flex items-center gap-3">
-            {/* Theme Toggle Button */}
+          {/* Mobile Controls */}
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
             <button
               onClick={toggleTheme}
               aria-label="Toggle Theme"
@@ -210,12 +242,10 @@ export default function Navbar() {
                 <Moon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
               )}
             </button>
-
-            {/* Mobile Menu Toggle Button — tampil di bawah lg */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Buka menu navigasi"
-              className="lg:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 cursor-pointer"
+              className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 cursor-pointer"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -223,7 +253,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu — tampil di bawah lg */}
+      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-in slide-in-from-top duration-200">
           {navItems.map((item) => {
@@ -242,7 +272,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-3">
                   <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-emerald-500"}`} />
-                  <span>{item.label}</span>
+                  <span>{t(item.labelKey)}</span>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                   isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -255,7 +285,7 @@ export default function Navbar() {
 
           {/* Seksi Ibadah di drawer */}
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-4 pt-2">
-            Ibadah Harian
+            {t("nav.ibadah")}
           </p>
           {ibadahItems.map((item) => {
             const SubIcon = item.icon;
@@ -273,7 +303,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-3">
                   <SubIcon className={`w-5 h-5 ${subActive ? "text-white" : "text-emerald-500"}`} />
-                  <span>{item.label}</span>
+                  <span>{t(item.labelKey)}</span>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                   subActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
