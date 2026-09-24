@@ -33,3 +33,5 @@ out/
 next-env.d.ts
 
 data/visits.sqlite3*
+.vercel
+.env.local

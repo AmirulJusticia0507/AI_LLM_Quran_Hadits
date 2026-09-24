@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SiteSearch from "@/components/SiteSearch";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useLanguage } from "@/context/LanguageContext";
@@ -118,6 +119,7 @@ export default function Navbar() {
         : "bg-white/60 dark:bg-slate-950/60 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50"
     }`}>
       <div className="container mx-auto px-4 max-w-6xl">
+        <SiteSearch key={pathname} />
         <div className="flex items-center justify-between h-20">
           
           {/* Logo & Title */}

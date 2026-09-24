@@ -64,7 +64,7 @@ export default function LearningCourse({ course }: { course: Course }) {
         {storageError && <p role="alert" className="text-sm text-red-600 dark:text-red-400">Progres belum tersimpan. Penyimpanan browser tidak tersedia atau penuh.</p>}
       </section>
       <div className="space-y-4">
-        {filtered.map(lesson => <article key={lesson.id} className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-6">
+        {filtered.map(lesson => <article id={lesson.id} key={lesson.id} className="scroll-mt-44 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-6">
           <details>
             <summary className="cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-emerald-500">
               <span className="text-xs text-emerald-700 dark:text-emerald-300">{lesson.category}{completed.includes(lesson.id) ? ' • Selesai dibaca' : ''}</span>
