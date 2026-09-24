@@ -1,0 +1,10 @@
+.git
+.vercel
+.env
+.env.*
+.venv
+venv
+**/node_modules
+**/.next
+**/__pycache__
+data/*.sqlite3*

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from 'next/link';
 
 type Stats = { visitors_today: number; total_views: number };
 function randomId() {
@@ -24,10 +25,11 @@ export default function VisitorStats() {
   const pathname = usePathname();
   const [stats, setStats] = useState<Stats | null>(null);
   useEffect(() => {
+    if (pathname.startsWith('/admin')) return;
     let cancelled = false;
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch("/api/visits", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ visitor_id: visitorId(), event_id: randomId() }) });
+        const response = await fetch("/api/visits", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ visitor_id: visitorId(), event_id: randomId(), path: pathname }) });
         if (!response.ok) throw new Error("Counter unavailable");
         const result: Stats = await response.json();
         if (!cancelled) setStats(result);
@@ -36,7 +38,7 @@ export default function VisitorStats() {
     return () => { cancelled = true; clearTimeout(timer); };
   }, [pathname]);
   return <div className="mt-4 text-xs text-slate-500 dark:text-slate-400 space-y-1">
-    {stats ? <p>Pengunjung hari ini: <strong>{stats.visitors_today.toLocaleString("id-ID")}</strong> · Total kunjungan: <strong>{stats.total_views.toLocaleString("id-ID")}</strong></p> : <p>Statistik kunjungan belum tersedia.</p>}
+    {stats ? <p><Link href="/admin/pengunjung" className="underline underline-offset-4 hover:text-emerald-600">Pengunjung hari ini: <strong>{stats.visitors_today.toLocaleString("id-ID")}</strong></Link> · Total kunjungan: <strong>{stats.total_views.toLocaleString("id-ID")}</strong></p> : <p>Statistik kunjungan belum tersedia. <Link href="/admin/pengunjung" className="underline">Riwayat pengunjung (admin)</Link></p>}
     <p>Perkiraan browser unik per hari (WIB); total kunjungan menghitung pembukaan halaman.</p>
   </div>;
 }

@@ -3,7 +3,7 @@
 import { Shield, FileText, Database, User, AlertCircle, Mail, Globe } from "lucide-react";
 
 export default function PrivacyPage() {
-  const lastUpdated = "7 September 2026";
+  const lastUpdated = "24 September 2026";
 
   const sections = [
     {
@@ -13,7 +13,7 @@ export default function PrivacyPage() {
         "Pesan chat yang Anda kirim ke AI Assistant (untuk memproses permintaan dan menyediakan jawaban)",
         "Riwayat percakapan (disimpan lokal di browser via localStorage, tidak dikirim ke server kecuali untuk memproses chat)",
         "Preferensi tema (light/dark mode), ukuran font, dan pengaturan UI lainnya (lokal di browser)",
-        "Statistik kunjungan menggunakan ID browser acak di localStorage dan ID pembukaan halaman. Server menyimpan total pembukaan serta ID untuk menghitung browser unik per hari WIB; ID hari sebelumnya dibersihkan saat kunjungan hari baru. Statistik ini tidak menyimpan IP, nama, nomor WhatsApp, atau isi pesan.",
+        "Statistik kunjungan menggunakan ID browser acak di localStorage dan ID pembukaan halaman. Detail waktu, alamat halaman tanpa parameter pencarian, serta perkiraan jenis perangkat, browser, dan sistem operasi disimpan hingga 30 hari untuk analitik khusus admin. Detail kedaluwarsa dibersihkan saat pencatatan atau pembacaan riwayat berikutnya. Total pembukaan halaman tetap disimpan. Statistik ini tidak menyimpan IP, nama, nomor WhatsApp, user-agent mentah, atau isi pesan. Halaman admin tidak dicatat.",
       ],
     },
     {
