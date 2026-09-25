@@ -2,17 +2,18 @@
 
 ## Analisis dan implementasi
 
-Web menggunakan Next.js App Router, React, dan Tailwind; FastAPI melayani percakapan AI dan pencarian Qur'an/hadits. Sebelumnya tajwid mempunyai 20 kaidah dengan pencarian dan filter, tetapi belum menyediakan makhraj. Tiga disiplin lainnya belum mempunyai halaman khusus.
+Web menggunakan Next.js App Router, React, dan Tailwind; FastAPI melayani percakapan AI dan pencarian Qur'an/hadits. Sebelumnya tajwid mempunyai 20 kaidah dengan pencarian dan filter, tetapi belum menyediakan makhraj. Tiga disiplin lainnya belum mempunyai halaman khusus. Modul balaghoh kemudian ditambahkan sebagai pengantar ilmu maani, bayan, dan badi'.
 
 Materi belajar dibuat sebagai data TypeScript terstruktur, tanpa ketergantungan layanan LLM. Halaman server menyediakan metadata; komponen klien menangani pencarian, kategori, detail, dan progres. Tidak ada perubahan API atau aplikasi Android.
 
 | URL | Cakupan |
 | --- | --- |
-| `/belajar` | Pintu masuk empat modul |
+| `/belajar` | Pintu masuk lima modul |
 | `/tazkiyah` | 10 materi: niat, taubat, muhasabah, akhlak hati, amal harian |
 | `/fiqh` | 12 materi dasar bersuci, shalat, puasa, zakat, haji, jenazah |
 | `/sirah` | 14 tahap kronologis, dari masa kecil hingga wafat |
 | `/tajweed` | 20 kaidah lama + 17 makhraj dalam 5 wilayah, seluruh huruf hijaiyah |
+| `/balaghoh` | 13 materi: maqolat, i'rob, tashrif, maani, bayan, dan badi' |
 
 Menu Belajar dan footer mengarah ke modul. Semua halaman masuk sitemap. Tampilan mengikuti dark mode dan susunan responsif aplikasi.
 
@@ -22,12 +23,12 @@ Kunci `alhikmah-learning-v1-{course.id}` menyimpan array ID materi di localStora
 
 ## Pemeliharaan materi
 
-- `frontend/src/data/learning.ts`: tiga modul, materi, praktik, dan rujukan per topik. Gunakan ID stabil agar progres tetap berlaku.
+- `frontend/src/data/learning.ts`: empat modul, materi, praktik, dan rujukan per topik. Gunakan ID stabil agar progres tetap berlaku.
 - `frontend/src/data/makhraj.ts`: tempat artikulasi, huruf, nama Latin untuk pencarian, dan latihan.
 - `LearningCourse.tsx`: pembaca materi bersama.
 - `MakhrajGuide.tsx`: pencarian huruf dengan normalisasi harakat dan filter wilayah.
 
-Materi merupakan pengantar, bukan ensiklopedia fiqih atau siroh yang menyeluruh. Rincian fiqih mengikuti Syafi'i sebagaimana keterangan pada halaman. Rujukan Qur'an dan hadits ditampilkan sebagai landasan; tidak semua tanggal sejarah maupun rincian mazhab terkandung pada satu dalil tersebut. Materi perlu penelaahan pengajar sebelum dikembangkan menjadi kurikulum tingkat lanjut. Pelafalan memerlukan talaqqi; audio diarahkan ke pelajaran guru eksternal, bukan suara sintetis atau penilaian otomatis.
+Materi merupakan pengantar, bukan ensiklopedia fiqih atau siroh yang menyeluruh. Rincian fiqih mengikuti Syafi'i sebagaimana keterangan pada halaman. Penentuan makna gaya bahasa Al-Qur'an pada modul balaghoh perlu diajarkan dan diverifikasi oleh guru balaghah; rujukan ditampilkan sebagai landasan bacaan awal. Rujukan Qur'an dan hadits ditampilkan sebagai landasan; tidak semua tanggal sejarah maupun rincian mazhab terkandung pada satu dalil tersebut. Materi perlu penelaahan pengajar sebelum dikembangkan menjadi kurikulum tingkat lanjut. Pelafalan memerlukan talaqqi; audio diarahkan ke pelajaran guru eksternal, bukan suara sintetis atau penilaian otomatis.
 
 Rujukan tambahan untuk menelaah materi:
 
@@ -37,6 +38,8 @@ Rujukan tambahan untuk menelaah materi:
 - [Rukun haji — NU Online](https://islam.nu.or.id/syariah/6-rukun-haji-yang-tidak-boleh-ditinggalkan-oxLJR)
 - [Makhraj dan pelajaran audio — Imam Faisal](https://imamfaisal.com/articulation/)
 - [17 titik artikulasi — Qiratul Quran](https://www.qiratulquran.com/17-places-of-articulation/)
+- [Ilmu Balaghah — Terjemah Kitab Kuning](https://www.alkhoirot.org/2023/11/ilmu-balaghah.html)
+- [Terjemah Al-Balaghah al-Wadihah — Terjemah Kitab Kuning](https://www.alkhoirot.org/2023/12/terjemah-balaghah-wadhihah.html)
 
 ## Verifikasi
 

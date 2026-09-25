@@ -11,7 +11,7 @@ const navItems = [
   { href: "/", labelKey: "nav.chat", icon: MessageSquare, badge: "AI Assistant" },
   { href: "/quran", labelKey: "nav.quran", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", labelKey: "nav.hadith", icon: ScrollText, badge: "9 Kitab" },
-  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "4 Modul Islam" },
+  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "5 Modul Islam" },
   { href: "/about", labelKey: "nav.about", icon: Info, badge: "Info" },
 ];
 
@@ -150,7 +150,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/fiqh", "/sirah", "/tajweed"].includes(pathname));
+              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/fiqh", "/sirah", "/tajweed", "/balaghoh"].includes(pathname));
               return (
                 <Link
                   key={item.href}
@@ -260,7 +260,7 @@ export default function Navbar() {
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-in slide-in-from-top duration-200">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/fiqh", "/sirah", "/tajweed"].includes(pathname));
+            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/fiqh", "/sirah", "/tajweed", "/balaghoh"].includes(pathname));
             return (
               <Link
                 key={item.href}
