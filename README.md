@@ -49,6 +49,29 @@ dark mode, responsif penuh (hamburger hingga breakpoint `lg`).
 
 ---
 
+## 🤖 AI Agent vs Autonomous AI Agent
+
+Istilah ini sering tertukar, padahal bedanya di **otonomi pengambilan keputusan**:
+
+| Aspek | AI Agent | Autonomous AI Agent |
+|---|---|---|
+| Tujuan | Ditentukan tiap permintaan pengguna | Ditentukan sekali, dikejar sendiri |
+| Perencanaan | Mengikuti alur/percakapan pengguna | Menyusun & mengubah rencana sendiri |
+| Koreksi arah | Pengguna memandu tiap langkah | Evaluasi diri (plan → action → reflection) |
+| Durasi kerja | Sesi pendek, per tugas | Bisa multi-step dalam waktu lama |
+| Risiko | Rendah | Lebih tinggi: butuh guardrail, sandbox, human-in-the-loop |
+
+- **AI agent**: LLM yang memakai tool (cari data, panggil API, eksekusi kode) untuk
+  menjawab atau mengerjakan satu permintaan, dengan arah kerja banyak ditentukan pengguna.
+- **Autonomous agent**: diberi satu tujuan lalu berjalan sendiri menyusun rencana,
+  mengeksekusi, mengevaluasi hasil, dan memperbaiki langkah berikutnya tanpa diarahkan
+  tiap step — hanya butuh supervisi di awal (tujuan) dan akhir (hasil).
+
+Di proyek ini, chatbot RAG (`/`) termasuk **AI agent**: menjawab per pertanyaan dengan
+tool Al-Qur'an/hadits, bukan mengejar tujuan otonom.
+
+---
+
 ## 🏗️ Arsitektur
 
 ```
