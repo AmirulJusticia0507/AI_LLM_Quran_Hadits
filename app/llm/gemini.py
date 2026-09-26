@@ -19,6 +19,13 @@ SAFETY_SETTINGS = {
     HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
 }
 
+# Keep enough room for a complete Arabic source, its Indonesian translation,
+# and the surrounding explanation. The model may still choose to end earlier.
+GENERATION_CONFIG = genai.types.GenerationConfig(
+    max_output_tokens=8192,
+    temperature=0.45,
+)
+
 
 class GeminiLLM:
     def __init__(self):
@@ -39,6 +46,7 @@ class GeminiLLM:
                 system_instruction=SYSTEM_PROMPT,
                 tools=TOOLS,
                 safety_settings=SAFETY_SETTINGS,
+                generation_config=GENERATION_CONFIG,
             )
             self.chats[session_id] = model.start_chat(history=[])
         return self.chats[session_id]
@@ -77,6 +85,7 @@ class GeminiLLM:
             response = chat_session.send_message(
                 user_message,
                 safety_settings=SAFETY_SETTINGS,
+                generation_config=GENERATION_CONFIG,
             )
 
             while response.candidates and response.candidates[0].content.parts:
@@ -104,6 +113,7 @@ class GeminiLLM:
                 response = chat_session.send_message(
                     function_responses,
                     safety_settings=SAFETY_SETTINGS,
+                    generation_config=GENERATION_CONFIG,
                 )
 
             text = self._extract_text(response)
@@ -122,46 +132,52 @@ class GeminiLLM:
         try:
             chat_session = self._get_chat(session_id or "default")
 
-            # Use streaming
             response = chat_session.send_message(
                 user_message,
                 safety_settings=SAFETY_SETTINGS,
+                generation_config=GENERATION_CONFIG,
                 stream=True,
             )
 
             full_text = ""
-            for chunk in response:
-                if chunk.candidates and chunk.candidates[0].content.parts:
-                    # Check for function calls in this chunk
-                    has_function_call = any(
-                        hasattr(part, "function_call") and part.function_call
-                        for part in chunk.candidates[0].content.parts
-                    )
-
-                    if has_function_call:
-                        # Handle tool calls
-                        for part in chunk.candidates[0].content.parts:
-                            if hasattr(part, "function_call") and part.function_call:
-                                result = await self._execute_tool(part.function_call)
-                                chat_session.send_message(
-                                    [
-                                        {
-                                            "function_response": {
-                                                "name": part.function_call.name,
-                                                "response": result,
-                                            }
-                                        }
-                                    ],
-                                    safety_settings=SAFETY_SETTINGS,
-                                )
-                        # After tool call, continue streaming the final response
+            for _ in range(5):
+                function_calls = []
+                for chunk in response:
+                    if not chunk.candidates or not chunk.candidates[0].content.parts:
                         continue
-
                     for part in chunk.candidates[0].content.parts:
-                        if hasattr(part, "text") and part.text:
+                        if hasattr(part, "function_call") and part.function_call:
+                            function_calls.append(part.function_call)
+                        elif hasattr(part, "text") and part.text:
                             text = part.text
                             full_text += text
                             yield json.dumps({"type": "token", "text": text})
+
+                if not function_calls:
+                    break
+
+                function_responses = []
+                for function_call in function_calls:
+                    result = await self._execute_tool(function_call)
+                    function_responses.append(
+                        {
+                            "function_response": {
+                                "name": function_call.name,
+                                "response": result,
+                            }
+                        }
+                    )
+                # Start a new stream from the tool result. Previously this
+                # response was discarded, so a sourced answer could end early.
+                response = chat_session.send_message(
+                    function_responses,
+                    safety_settings=SAFETY_SETTINGS,
+                    generation_config=GENERATION_CONFIG,
+                    stream=True,
+                )
+            else:
+                yield json.dumps({"type": "error", "message": "Batas pengambilan dalil tercapai. Silakan ulangi pertanyaan dengan fokus yang lebih spesifik."}) + "\n"
+                return
 
             if not full_text:
                 yield json.dumps({"type": "token", "text": "Maaf, tidak dapat memproses jawaban. Silakan coba pertanyaan lain."}) + "\n"
