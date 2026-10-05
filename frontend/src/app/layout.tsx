@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Amiri } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -76,14 +77,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${plusJakartaSans.variable} ${amiri.variable}`} suppressHydrationWarning>
-      <head>
-        {/* Inline script: apply theme BEFORE React hydration to prevent flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark')}catch(e){}})()`
-          }}
-        />
-      </head>
       <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 selection:bg-emerald-500 selection:text-white transition-colors duration-300 relative">
         {/* Subtle Decorative Background Glow Elements */}
         <div className="fixed top-0 left-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full filter blur-[120px] pointer-events-none -z-10 animate-pulse-fast"></div>
@@ -98,6 +91,9 @@ export default function RootLayout({
           
           <Footer />
         </LanguageProvider>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function(){try{var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark')}catch(e){}})()`}
+        </Script>
       </body>
     </html>
   );
