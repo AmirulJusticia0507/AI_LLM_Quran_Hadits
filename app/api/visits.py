@@ -11,6 +11,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response
 from pydantic import BaseModel, Field
+from psycopg import Connection, connect as pg_connect
+from psycopg.rows import dict_row
 
 router = APIRouter()
 WIB = timezone(timedelta(hours=7))
@@ -18,10 +20,50 @@ Device = Literal["Desktop", "Mobile", "Tablet", "Bot", "Unknown"]
 
 
 def connect(db_path=None):
-    target = Path(db_path or os.getenv("VISITS_DB_PATH", "data/visits.sqlite3"))
+    sqlite_path = db_path or os.getenv("VISITS_DB_PATH")
+    database_url = os.getenv("DATABASE_URL")
+    if database_url and not sqlite_path:
+        db = pg_connect(database_url, row_factory=dict_row)
+        _initialize(db)
+        return db
+
+    target = Path(sqlite_path or "data/visits.sqlite3")
     target.parent.mkdir(parents=True, exist_ok=True)
     db = sqlite3.connect(target, timeout=10)
     db.row_factory = sqlite3.Row
+    _initialize(db)
+    return db
+
+
+def _is_postgres(db) -> bool:
+    return isinstance(db, Connection)
+
+
+def _execute(db, statement: str, params=()):
+    if _is_postgres(db):
+        statement = statement.replace("?", "%s")
+    return db.execute(statement, params)
+
+
+def _initialize(db):
+    if _is_postgres(db):
+        statements = (
+            "CREATE TABLE IF NOT EXISTS totals (id SMALLINT PRIMARY KEY CHECK(id=1), views BIGINT NOT NULL)",
+            "INSERT INTO totals VALUES (1, 0) ON CONFLICT (id) DO NOTHING",
+            "CREATE TABLE IF NOT EXISTS visitors (day DATE, visitor TEXT, PRIMARY KEY(day, visitor))",
+            "CREATE TABLE IF NOT EXISTS events (id TEXT PRIMARY KEY, day DATE)",
+            """CREATE TABLE IF NOT EXISTS visit_history (
+                event TEXT PRIMARY KEY, visitor TEXT NOT NULL, day DATE NOT NULL,
+                visited_at TIMESTAMPTZ NOT NULL, path TEXT NOT NULL, device TEXT NOT NULL,
+                browser TEXT NOT NULL, os TEXT NOT NULL)""",
+            "CREATE INDEX IF NOT EXISTS history_day ON visit_history(day, visited_at)",
+            "CREATE TABLE IF NOT EXISTS admin_attempts (created DOUBLE PRECISION NOT NULL)",
+        )
+        for statement in statements:
+            db.execute(statement)
+        db.commit()
+        return
+
     db.executescript("""
         CREATE TABLE IF NOT EXISTS totals (id INTEGER PRIMARY KEY CHECK(id=1), views INTEGER NOT NULL);
         INSERT OR IGNORE INTO totals VALUES (1, 0);
@@ -34,7 +76,6 @@ def connect(db_path=None):
         CREATE INDEX IF NOT EXISTS history_day ON visit_history(day, visited_at);
         CREATE TABLE IF NOT EXISTS admin_attempts (created REAL NOT NULL);
     """)
-    return db
 
 
 class Visit(BaseModel):
@@ -51,17 +92,26 @@ def record_visit(visitor_id: str, event_id: str, db_path=None, day=None, *, path
     today = day or now.date().isoformat()
     cutoff = (date.fromisoformat(today) - timedelta(days=29)).isoformat()
     with closing(connect(db_path)) as db, db:
-        db.execute("DELETE FROM visitors WHERE day < ?", (today,))
-        db.execute("DELETE FROM events WHERE day < ?", (cutoff,))
-        db.execute("DELETE FROM visit_history WHERE day < ?", (cutoff,))
-        inserted = db.execute("INSERT OR IGNORE INTO events VALUES (?, ?)", (event_id, today)).rowcount
+        _execute(db, "DELETE FROM visitors WHERE day < ?", (today,))
+        _execute(db, "DELETE FROM events WHERE day < ?", (cutoff,))
+        _execute(db, "DELETE FROM visit_history WHERE day < ?", (cutoff,))
+        insert_event = (
+            "INSERT INTO events VALUES (?, ?) ON CONFLICT (id) DO NOTHING"
+            if _is_postgres(db) else "INSERT OR IGNORE INTO events VALUES (?, ?)"
+        )
+        inserted = _execute(db, insert_event, (event_id, today)).rowcount
         if inserted:
-            db.execute("UPDATE totals SET views=views+1 WHERE id=1")
-            db.execute("INSERT OR IGNORE INTO visitors VALUES (?, ?)", (today, visitor_id))
-            db.execute("INSERT INTO visit_history VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                       (event_id, visitor_id, today, now.isoformat(), path, device, browser, os_name))
-        return {"visitors_today": db.execute("SELECT COUNT(*) FROM visitors WHERE day=?", (today,)).fetchone()[0],
-                "total_views": db.execute("SELECT views FROM totals WHERE id=1").fetchone()[0]}
+            _execute(db, "UPDATE totals SET views=views+1 WHERE id=1")
+            insert_visitor = (
+                "INSERT INTO visitors VALUES (?, ?) ON CONFLICT (day, visitor) DO NOTHING"
+                if _is_postgres(db) else "INSERT OR IGNORE INTO visitors VALUES (?, ?)"
+            )
+            _execute(db, insert_visitor, (today, visitor_id))
+            _execute(db, "INSERT INTO visit_history VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                     (event_id, visitor_id, today, now.isoformat(), path, device, browser, os_name))
+        visitors = _execute(db, "SELECT COUNT(*) AS count FROM visitors WHERE day=?", (today,)).fetchone()
+        totals = _execute(db, "SELECT views FROM totals WHERE id=1").fetchone()
+        return {"visitors_today": visitors["count"], "total_views": totals["views"]}
 
 
 @router.post("/api/visits")
@@ -93,13 +143,17 @@ def admin_login(body: AdminLogin):
     now = time.time()
     # Persistent, shared across workers; requests are accepted only via the bridge.
     with closing(connect()) as db, db:
-        db.execute("BEGIN IMMEDIATE")
-        db.execute("DELETE FROM admin_attempts WHERE created < ?", (now - 900,))
-        if db.execute("SELECT COUNT(*) FROM admin_attempts").fetchone()[0] >= 10:
+        if _is_postgres(db):
+            db.execute("LOCK TABLE admin_attempts IN EXCLUSIVE MODE")
+        else:
+            db.execute("BEGIN IMMEDIATE")
+        _execute(db, "DELETE FROM admin_attempts WHERE created < ?", (now - 900,))
+        attempts = _execute(db, "SELECT COUNT(*) AS count FROM admin_attempts").fetchone()
+        if attempts["count"] >= 10:
             raise HTTPException(429, "Terlalu banyak percobaan. Coba lagi dalam 15 menit.")
         valid = secrets.compare_digest(body.password.encode(), expected.encode())
         if not valid:
-            db.execute("INSERT INTO admin_attempts VALUES (?)", (now,))
+            _execute(db, "INSERT INTO admin_attempts VALUES (?)", (now,))
     if not valid:
         raise HTTPException(401, "Password admin salah.")
     return {"ok": True}
@@ -118,8 +172,8 @@ def history(start: date | None = None, end: date | None = None,
         conditions += " AND device = ?"
         args.append(device)
     with closing(connect()) as db, db:
-        db.execute("DELETE FROM visit_history WHERE day < ?", ((today - timedelta(days=29)).isoformat(),))
-        summary = db.execute(f"SELECT COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors FROM visit_history WHERE {conditions}", args).fetchone()
-        rows = db.execute(f"SELECT visitor, visited_at, path, device, browser, os FROM visit_history WHERE {conditions} ORDER BY visited_at DESC, event DESC LIMIT 25 OFFSET ?", [*args, (page - 1) * 25]).fetchall()
+        _execute(db, "DELETE FROM visit_history WHERE day < ?", ((today - timedelta(days=29)).isoformat(),))
+        summary = _execute(db, f"SELECT COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors FROM visit_history WHERE {conditions}", args).fetchone()
+        rows = _execute(db, f"SELECT visitor, visited_at, path, device, browser, os FROM visit_history WHERE {conditions} ORDER BY visited_at DESC, event DESC LIMIT 25 OFFSET ?", [*args, (page - 1) * 25]).fetchall()
         return {"items": [dict(row) for row in rows], "views": summary["views"], "visitors": summary["visitors"],
                 "page": page, "pages": max(1, (summary["views"] + 24) // 25), "retention_days": 30}

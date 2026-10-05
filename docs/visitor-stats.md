@@ -18,16 +18,18 @@ Backend:
 
 - `ADMIN_API_TOKEN`: token yang sama dengan frontend.
 - `ADMIN_PASSWORD`: password admin unik minimal 16 karakter.
-- `VISITS_DB_PATH`: path SQLite di volume persisten, misalnya `/data/visits.sqlite3` jika volume memang dipasang pada `/data`.
+- `DATABASE_URL`: pooled connection string PostgreSQL dari Neon, wajib di production.
+- `VISITS_DB_PATH`: opsional untuk fallback SQLite pada development/test lokal.
 
-Simpan secret di environment hosting, bukan Git. Backend memeriksa password dengan perbandingan konstan dan membatasi kegagalan login menjadi 10 per 15 menit, menggunakan SQLite agar berlaku lintas worker. API admin backend memerlukan bearer token server; browser tidak menerima token ini. Frontend memakai cookie bertanda tangan, HttpOnly, Secure pada production, SameSite Strict, kedaluwarsa 8 jam. Login/logout memeriksa Origin. Respons admin tidak boleh di-cache. Mengganti `ADMIN_SESSION_SECRET` membatalkan seluruh sesi. Mengganti password saja tidak membatalkan cookie yang sudah terbit.
+Simpan secret di environment hosting, bukan Git. Backend memeriksa password dengan perbandingan konstan dan membatasi kegagalan login menjadi 10 per 15 menit, menggunakan PostgreSQL agar berlaku lintas worker. API admin backend memerlukan bearer token server; browser tidak menerima token ini. Frontend memakai cookie bertanda tangan, HttpOnly, Secure pada production, SameSite Strict, kedaluwarsa 8 jam. Login/logout memeriksa Origin. Respons admin tidak boleh di-cache. Mengganti `ADMIN_SESSION_SECRET` membatalkan seluruh sesi. Mengganti password saja tidak membatalkan cookie yang sudah terbit.
 
-Deployment tanpa secret menolak login/detail admin; penghitung publik tetap berfungsi. Deploy backend dan set secret kedua sisi sebelum mengaktifkan frontend. Gunakan satu replika backend dengan disk persisten. Beberapa replika harus memakai database bersama sebelum diskalakan. Tabel riwayat dibuat otomatis tanpa mereset total yang sudah ada. Menghapus database mereset seluruh hitungan.
+Deployment tanpa secret menolak login/detail admin; penghitung publik tetap berfungsi. Deploy backend dan set secret kedua sisi sebelum mengaktifkan frontend. Tabel PostgreSQL dibuat otomatis saat koneksi pertama. Menghapus database mereset seluruh hitungan. Data SQLite lama tidak disalin otomatis ke PostgreSQL.
 
 ## Verifikasi
 
 ```text
-python -m unittest tests.test_visits tests.test_visitor_admin
+python -m unittest discover -s tests -p "test_visits.py"
+python -m unittest discover -s tests -p "test_visitor_admin.py"
 cd frontend
 node --test tests/visitor-admin.cjs
 npm run build
