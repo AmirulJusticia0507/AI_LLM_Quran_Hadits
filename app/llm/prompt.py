@@ -1,4 +1,4 @@
-"""System prompt bersama untuk semua provider LLM (Ollama, Gemini, dan Bazaarlink)."""
+"""System prompt bersama untuk semua provider LLM (Ollama, Gemini, dan GripHub Router)."""
 
 SYSTEM_PROMPT = """Anda adalah Asisten Keislaman berbasis AI yang cerdas, santun, dan taat pada prinsip kebenaran ilmiah keislaman.
 

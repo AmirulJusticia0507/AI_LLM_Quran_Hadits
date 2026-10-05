@@ -1,17 +1,18 @@
-# Bazaarlink
+# GripHub Router
 
 Backend mendukung API chat completions kompatibel OpenAI melalui HTTPX yang sudah ada di requirements. Tidak perlu SDK tambahan.
 
 Isi `.env` backend:
 
 ```dotenv
-LLM_PROVIDER=bazaarlink
-BAZAARLINK_BASE_URL=https://api.bazaarlink.ai/v1
-BAZAARLINK_API_KEY=isi_key_anda
-BAZAARLINK_MODEL=qwen/qwen3.7-flash:free
+LLM_PROVIDER=griphub
+GRIPHUB_BASE_URL=https://griphubrouter.web.id/v1
+GRIPHUB_API_KEY=isi_key_anda
+GRIPHUB_MODEL=gpt-5.6-luna
+GRIPHUB_HISTORY_MESSAGES=8
 ```
 
-Restart backend setelah mengganti konfigurasi. Pilihan Bazaarlink juga tersedia pada pemilih provider di Chat AI. Penggantian provider melalui UI berlaku selama proses berjalan; `.env` menentukan provider saat restart.
+Restart backend setelah mengganti konfigurasi. Pilihan GripHub Router juga tersedia pada pemilih provider di Chat AI. Penggantian provider melalui UI berlaku selama proses berjalan; `.env` menentukan provider saat restart.
 
 Nama model harus cocok dengan ID pada endpoint `GET /v1/models`. Autentikasi menggunakan `Authorization: Bearer ...` hanya dari backend. Jangan menaruh key dalam `NEXT_PUBLIC_*`. `.env` dan virtual environment diabaikan Git.
 

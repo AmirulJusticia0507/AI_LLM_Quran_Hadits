@@ -22,15 +22,18 @@ def _json_schema(value):
 COMPATIBLE_TOOLS = [{"type": "function", "function": _json_schema(tool)} for tool in TOOLS]
 
 
-class BazaarlinkLLM:
+class GripHubLLM:
     def __init__(self):
-        self.api_key = os.getenv("BAZAARLINK_API_KEY", "").strip()
+        self.api_key = os.getenv("GRIPHUB_API_KEY", "").strip()
         if not self.api_key or self.api_key == "your_api_key_here":
-            raise ValueError("BAZAARLINK_API_KEY belum diisi di .env")
-        self.base_url = os.getenv("BAZAARLINK_BASE_URL", "https://api.bazaarlink.ai/v1").rstrip("/")
+            raise ValueError("GRIPHUB_API_KEY belum diisi di .env")
+        self.base_url = os.getenv("GRIPHUB_BASE_URL", "https://griphubrouter.web.id/v1").rstrip("/")
         if not self.base_url.startswith("https://"):
-            raise ValueError("BAZAARLINK_BASE_URL harus menggunakan HTTPS")
-        self.model_name = os.getenv("BAZAARLINK_MODEL", "qwen/qwen3.7-flash:free")
+            raise ValueError("GRIPHUB_BASE_URL harus menggunakan HTTPS")
+        self.model_name = os.getenv("GRIPHUB_MODEL", "").strip()
+        if not self.model_name:
+            raise ValueError("GRIPHUB_MODEL belum diisi di .env")
+        self.history_messages = max(0, min(int(os.getenv("GRIPHUB_HISTORY_MESSAGES", "8")), 20))
         self.quran_api = QuranAPI()
         self.hadith_api = HadithAPI()
 
@@ -50,8 +53,9 @@ class BazaarlinkLLM:
         return {"status": "error", "message": "Fungsi rujukan tidak dikenal."}
 
     async def chat_stream(self, user_message, session_id=None, history=None):
+        recent_history = list(history[-self.history_messages:]) if history and self.history_messages else []
         messages = [{"role": "system", "content": SYSTEM_PROMPT},
-                    *(list(history[-20:]) if history else []),
+                    *recent_history,
                     {"role": "user", "content": user_message}]
         answer = ""
         try:
@@ -104,7 +108,10 @@ class BazaarlinkLLM:
                         if history is not None:
                             history.extend([{"role": "user", "content": user_message},
                                             {"role": "assistant", "content": answer}])
-                            del history[:-20]
+                            if self.history_messages:
+                                del history[:-self.history_messages]
+                            else:
+                                history.clear()
                         yield json.dumps({"type": "done"})
                         return
                     ordered_calls = [calls[index] for index in sorted(calls)]
@@ -115,13 +122,13 @@ class BazaarlinkLLM:
                 raise ValueError("Too many tool rounds")
         except httpx.HTTPStatusError as exc:
             status = exc.response.status_code
-            message = {401: "API key Bazaarlink ditolak. Periksa konfigurasi backend.",
-                       402: "Saldo atau kuota Bazaarlink tidak mencukupi.",
-                       429: "Batas permintaan Bazaarlink tercapai. Coba lagi nanti."}.get(status, f"Bazaarlink gagal merespons (HTTP {status}). Periksa model dan layanan.")
+            message = {401: "API key GripHub Router ditolak. Periksa konfigurasi backend.",
+                       402: "Saldo atau kuota GripHub Router tidak mencukupi.",
+                       429: "Batas permintaan GripHub Router tercapai. Coba lagi nanti."}.get(status, f"GripHub Router gagal merespons (HTTP {status}). Periksa model dan layanan.")
             yield json.dumps({"type": "error", "message": message})
         except Exception:
             # Never expose upstream response bodies, headers, or credentials.
-            yield json.dumps({"type": "error", "message": "Jawaban Bazaarlink belum selesai. Silakan coba lagi."})
+            yield json.dumps({"type": "error", "message": "Jawaban GripHub Router belum selesai. Silakan coba lagi."})
 
     async def chat(self, user_message, history=None, session_id=None):
         parts = []
@@ -135,4 +142,4 @@ class BazaarlinkLLM:
 
 
 def create_llm():
-    return BazaarlinkLLM()
+    return GripHubLLM()

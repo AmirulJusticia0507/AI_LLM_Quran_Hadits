@@ -391,7 +391,7 @@ export default function ChatPage() {
     const data = await res.json();
     if (!res.ok) {
       if (res.status === 503) {
-        throw new Error("LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.");
+        throw new Error("LLM belum dikonfigurasi. Silakan atur API key GripHub/Gemini di backend atau jalankan Ollama.");
       }
       throw new Error(data.detail || "Gagal memproses pesan dari server.");
     }

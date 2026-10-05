@@ -5,23 +5,23 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 
-from app.llm.bazaarlink import BazaarlinkLLM
+from app.llm.griphub import GripHubLLM
 
 
 def stream(*deltas):
     return ''.join('data: ' + json.dumps({'choices': [{'delta': d}]}) + '\n\n' for d in deltas) + 'data: [DONE]\n\n'
 
 
-class BazaarlinkTests(unittest.IsolatedAsyncioTestCase):
+class GripHubTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
-        self.env = patch.dict(os.environ, {'BAZAARLINK_API_KEY': 'test-private-key', 'BAZAARLINK_BASE_URL': 'https://example.test/v1'})
+        self.env = patch.dict(os.environ, {'GRIPHUB_API_KEY': 'test-private-key', 'GRIPHUB_BASE_URL': 'https://example.test/v1', 'GRIPHUB_MODEL': 'test-model'})
         self.env.start()
         self.addCleanup(self.env.stop)
-        self.llm = BazaarlinkLLM()
+        self.llm = GripHubLLM()
 
     def client(self, handler):
         real_client = httpx.AsyncClient
-        return patch('app.llm.bazaarlink.httpx.AsyncClient', side_effect=lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
+        return patch('app.llm.griphub.httpx.AsyncClient', side_effect=lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
 
     async def test_fragmented_tool_calls_and_followup_history(self):
         requests = []

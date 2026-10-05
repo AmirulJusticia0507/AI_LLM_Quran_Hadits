@@ -123,6 +123,7 @@ Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run buil
 |---|---|
 | **Ollama (lokal, gratis)** | Install Ollama → `ollama pull deepseek-r1:8b` → `LLM_PROVIDER=ollama` |
 | **Gemini (cloud)** | Isi `GEMINI_API_KEY` di `.env` → `LLM_PROVIDER=gemini`, atau ganti via UI (badge status di halaman chat) |
+| **GripHub Router (cloud)** | Isi `GRIPHUB_API_KEY` dan `GRIPHUB_MODEL` di `.env` → `LLM_PROVIDER=griphub` |
 
 ---
 
@@ -132,7 +133,11 @@ Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run buil
 
 | Key | Default | Keterangan |
 |---|---|---|
-| `LLM_PROVIDER` | `ollama` | `ollama` atau `gemini` |
+| `LLM_PROVIDER` | `ollama` | `ollama`, `gemini`, atau `griphub` |
+| `GRIPHUB_BASE_URL` | `https://griphubrouter.web.id/v1` | Endpoint OpenAI-compatible GripHub Router |
+| `GRIPHUB_API_KEY` | – | Wajib jika provider `griphub`; hanya disimpan di backend |
+| `GRIPHUB_MODEL` | – | Model slug dari GripHub Router |
+| `GRIPHUB_HISTORY_MESSAGES` | `8` | Jumlah pesan terakhir yang dikirim ulang sebagai konteks (maks. 20) |
 | `GEMINI_API_KEY` | – | Wajib jika provider `gemini` |
 | `GEMINI_MODEL` | `gemini-2.5-flash` | Model Gemini |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Server Ollama |

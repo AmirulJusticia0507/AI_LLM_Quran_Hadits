@@ -136,7 +136,7 @@ async def chat(req: ChatRequest):
     if not llm:
         raise HTTPException(
             status_code=503,
-            detail="LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.",
+            detail="LLM belum dikonfigurasi. Silakan atur API key GripHub/Gemini di backend atau jalankan Ollama.",
         )
     try:
         history = session_mgr.get_history(req.session_id)
@@ -151,7 +151,7 @@ async def chat_stream(req: ChatRequest):
     if not llm:
         raise HTTPException(
             status_code=503,
-            detail="LLM belum dikonfigurasi. Silakan atur API key Bazaarlink/Gemini di backend atau jalankan Ollama.",
+            detail="LLM belum dikonfigurasi. Silakan atur API key GripHub/Gemini di backend atau jalankan Ollama.",
         )
     if not hasattr(llm, "chat_stream"):
         raise HTTPException(
@@ -162,7 +162,7 @@ async def chat_stream(req: ChatRequest):
     async def event_generator():
         current_llm = llm
         kwargs = {"session_id": req.session_id}
-        if llm_provider == "bazaarlink":
+        if llm_provider == "griphub":
             kwargs["history"] = session_mgr.get_history(req.session_id)
         async for chunk in current_llm.chat_stream(req.message, **kwargs):
             yield f"data: {chunk}\n\n"
@@ -207,7 +207,7 @@ async def list_providers():
         "providers": [
             {"id": "ollama", "name": "Ollama (Lokal)", "available": True},
             {"id": "gemini", "name": "Gemini (Cloud)", "available": _gemini_available()},
-            {"id": "bazaarlink", "name": f"Bazaarlink ({os.getenv('BAZAARLINK_MODEL', 'qwen/qwen3.7-flash:free')})", "available": bool(os.getenv("BAZAARLINK_API_KEY", "").strip())},
+            {"id": "griphub", "name": f"GripHub Router ({os.getenv('GRIPHUB_MODEL', 'model belum dipilih')})", "available": bool(os.getenv("GRIPHUB_API_KEY", "").strip()) and bool(os.getenv("GRIPHUB_MODEL", "").strip())},
         ],
     }
 

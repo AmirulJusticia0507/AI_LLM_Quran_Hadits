@@ -19,7 +19,7 @@ class HadithRequest(BaseModel):
 
 
 class ProviderSwitch(BaseModel):
-    provider: Literal["ollama", "gemini", "bazaarlink"]
+    provider: Literal["ollama", "gemini", "griphub"]
 
 
 class HadithSearchRequest(BaseModel):
