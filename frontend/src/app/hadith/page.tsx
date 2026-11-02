@@ -21,9 +21,10 @@ interface HadithResult {
   nomor: number;
   teks_arab: string;
   terjemahan: string;
+  bab?: string | null;
+  nomor_bab?: number | null;
+  nomor_dalam_bab?: number | null;
 }
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const KITAB_LIST = [
   { id: "bukhari", name: "Shahih Bukhari", maxHadith: 7563, tag: "Sahih Utama" },
@@ -35,7 +36,21 @@ const KITAB_LIST = [
   { id: "ahmad", name: "Musnad Ahmad", maxHadith: 26363, tag: "Musnad" },
   { id: "malik", name: "Muwatta Malik", maxHadith: 1836, tag: "Muwatta" },
   { id: "darimi", name: "Sunan ad-Darimi", maxHadith: 3573, tag: "Sunan" },
+  { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1896, tag: "Adab & Akhlak" },
 ];
+
+/**
+ * Turns fetch/HTTP failures into a message a reader can act on. The raw
+ * "Failed to fetch" text only confuses visitors.
+ */
+function friendlyError(err: unknown, fallback: string, offlineHint: string) {
+  if (typeof navigator !== "undefined" && !navigator.onLine) return offlineHint;
+  if (err instanceof TypeError) return "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
+  if (err instanceof Error && /failed to fetch|networkerror|load failed/i.test(err.message)) {
+    return "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
+  }
+  return err instanceof Error && err.message ? err.message : fallback;
+}
 
 export default function HadithPage() {
   const [kitab, setKitab] = useState("bukhari");
@@ -49,7 +64,14 @@ export default function HadithPage() {
   const [bookmarkedHadiths, setBookmarkedHadiths] = useState<HadithResult[]>([]);
   const [keyword, setKeyword] = useState("");
   const [searching, setSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<{ number: number; arab: string; id: string }[]>([]);
+  const [searchResults, setSearchResults] = useState<{
+    number: number;
+    arab: string;
+    id: string;
+    bab?: string | null;
+    nomor_bab?: number | null;
+    nomor_dalam_bab?: number | null;
+  }[]>([]);
   const [searchMeta, setSearchMeta] = useState<{ scanned: number; total: number; partial: boolean } | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -61,16 +83,16 @@ export default function HadithPage() {
     setCopied(false);
 
     try {
-      const res = await fetch(`${API_URL}/api/hadith`, {
+      const res = await fetch(`/api/hadith`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kitab: targetKitab, nomor: targetNomor }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
 
-      if (!res.ok) {
-        throw new Error(data.detail || "Hadits tidak ditemukan");
+      if (!res.ok || !data || data.status === "error") {
+        throw new Error(data?.message || data?.detail || "Hadits tidak ditemukan");
       }
 
       setResult(data);
@@ -80,7 +102,11 @@ export default function HadithPage() {
       setIsBookmarked(savedBookmarks.includes(bookmarkKey));
 
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data hadits";
+      const errorMessage = friendlyError(
+        err,
+        "Gagal mengambil data hadits",
+        "Anda sedang offline. Hadits membutuhkan koneksi internet.",
+      );
       Swal.fire({
         icon: "error",
         title: "Gagal",
@@ -108,13 +134,15 @@ export default function HadithPage() {
     setSearchResults([]);
     setSearchMeta(null);
     try {
-      const res = await fetch(`${API_URL}/api/hadith/search`, {
+      const res = await fetch(`/api/hadith/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kitab, keyword: keyword.trim() }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Pencarian gagal");
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || data.status === "error") {
+        throw new Error(data?.message || data?.detail || "Pencarian gagal");
+      }
       setSearchResults(data.matches ?? []);
       setSearchMeta({ scanned: data.scanned, total: data.total, partial: data.partial });
       setHasSearched(true);
@@ -122,7 +150,11 @@ export default function HadithPage() {
       Swal.fire({
         icon: "error",
         title: "Gagal",
-        text: err instanceof Error ? err.message : "Pencarian gagal",
+        text: friendlyError(
+          err,
+          "Pencarian gagal",
+          "Anda sedang offline. Pencarian hadits membutuhkan koneksi internet.",
+        ),
         confirmButtonColor: "#059669",
         customClass: {
           popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
@@ -179,7 +211,12 @@ export default function HadithPage() {
   };
 
   const loadBookmarks = async () => {
-    const savedKeys: string[] = JSON.parse(localStorage.getItem("hadith_bookmarks") || "[]");
+    let savedKeys: string[] = [];
+    try {
+      savedKeys = JSON.parse(localStorage.getItem("hadith_bookmarks") || "[]");
+    } catch {
+      savedKeys = [];
+    }
     if (savedKeys.length === 0) {
       setBookmarkedHadiths([]);
       setShowBookmarks(true);
@@ -187,22 +224,34 @@ export default function HadithPage() {
     }
 
     const hadiths: HadithResult[] = [];
+    let missing = 0;
     for (const key of savedKeys) {
       const [k, n] = key.split(":");
       try {
-        const res = await fetch(`${API_URL}/api/hadith`, {
+        const res = await fetch(`/api/hadith`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ kitab: k, nomor: Number(n) }),
         });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.status === "success") hadiths.push(data);
-        }
-      } catch {}
+        const data = await res.json().catch(() => null);
+        if (res.ok && data?.status === "success") hadiths.push(data);
+        else missing += 1;
+      } catch {
+        missing += 1;
+      }
     }
     setBookmarkedHadiths(hadiths);
     setShowBookmarks(true);
+    if (missing > 0) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: `${missing} bookmark gagal dimuat`,
+        showConfirmButton: false,
+        timer: 2800,
+      });
+    }
   };
 
   return (
@@ -364,8 +413,8 @@ export default function HadithPage() {
             {searchMeta && (
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Ditemukan <span className="font-bold text-emerald-600 dark:text-emerald-400">{searchResults.length}</span> hadits
-                {" "}• dipindai {searchMeta.scanned.toLocaleString("id-ID")} dari {searchMeta.total.toLocaleString("id-ID")}
-                {searchMeta.partial && " (hasil parsial — saring per kitab kecil untuk cakupan penuh)"}
+                {" "}• dipindai {searchMeta.scanned.toLocaleString("id-ID")} dari {selectedKitab.maxHadith.toLocaleString("id-ID")} hadits
+                {searchMeta.partial && " (hasil parsial — cakupan bertahap, saring per kitab untuk hasil lebih lengkap)"}
               </p>
             )}
             {searchResults.length === 0 ? (
@@ -383,6 +432,11 @@ export default function HadithPage() {
                     <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                       {selectedKitab.name} • Hadits #{h.number}
                     </span>
+                    {h.bab && (
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                        Bab {h.nomor_bab}: {h.bab}
+                      </p>
+                    )}
                     <p className="arabic-text text-right text-lg text-slate-800 dark:text-teal-100 line-clamp-2 mt-1">{h.arab}</p>
                     <p className="text-xs text-slate-500 mt-1 line-clamp-2">{h.id}</p>
                   </button>
@@ -483,6 +537,15 @@ export default function HadithPage() {
               </button>
             </div>
           </div>
+
+          {result.bab && (
+            <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+              Bab {result.nomor_bab}: {result.bab}
+              {result.nomor_dalam_bab
+                ? ` • Riwayat ke-${result.nomor_dalam_bab} dalam bab`
+                : ""}
+            </p>
+          )}
 
           {/* Arabic Hadith Text */}
           <div className="py-6 px-4 bg-teal-50/50 dark:bg-teal-950/40 rounded-2xl border border-teal-500/20 text-right">
