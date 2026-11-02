@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Al-Qur'an statis (dibangun ulang oleh prebuild; tidak perlu di-commit)
+public/quran-data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

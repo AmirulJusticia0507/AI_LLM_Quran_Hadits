@@ -4,6 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import OfflineBanner from "@/components/OfflineBanner";
+import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -84,8 +86,10 @@ export default function RootLayout({
         
         <LanguageProvider>
           <Navbar />
+          <ServiceWorkerRegistrar />
           
           <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">
+            <OfflineBanner />
             {children}
           </main>
           

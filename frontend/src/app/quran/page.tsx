@@ -12,10 +12,20 @@ import {
     Copy,
     Pause,
     Search,
-    Volume2
+    Volume2,
+    WifiOff
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
+import { useOnlineStatus } from "@/hooks/use-online-status";
+import { loadQuranSurah, prepareOfflineQuran } from "@/lib/quran-offline-data";
+import {
+  cacheAsbabunNuzul,
+  cacheTafsir,
+  cacheVerse,
+  getCachedAsbabunNuzul,
+  getCachedTafsir
+} from "@/lib/quran-offline-cache";
 
 interface QuranVerse {
   status: string;
@@ -29,6 +39,36 @@ interface QuranVerse {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+type PageNotice = {
+  message: string;
+};
+
+function isNetworkError(error: unknown) {
+  if (error instanceof TypeError) return true;
+  return typeof navigator !== "undefined" && !navigator.onLine;
+}
+
+/**
+ * Ayat dibaca dari payload statis /quran-data (dibangun saat build), sehingga
+ * Al-Qur'an tetap bisa dibuka tanpa internet. Hanya tafsir, asbabun nuzul, dan
+ * murottal yang membutuhkan backend + koneksi.
+ */
+async function loadVerseFromStaticData(surahNumber: number, ayatNumber: number): Promise<QuranVerse> {
+  const surah = await loadQuranSurah(surahNumber);
+  const ayat = surah.ayat.find((item) => item.nomorAyat === ayatNumber);
+  if (!ayat) throw new Error(`Ayat ${surahNumber}:${ayatNumber} tidak ditemukan.`);
+  return {
+    status: "success",
+    surah: surah.namaLatin,
+    nomor_surah: surahNumber,
+    nomor_ayat: ayatNumber,
+    teks_arab: ayat.teksArab,
+    teks_latin: ayat.teksLatin,
+    terjemahan: ayat.teksIndonesia,
+    audio: ayat.audio,
+  };
+}
 
 const SURAH_LIST = [
   { num: 1, name: "Al-Fatihah", verses: 7 },
@@ -347,24 +387,53 @@ export default function QuranPage() {
   const [showTafsir, setShowTafsir] = useState(false);
   const [asbabunNuzul, setAsbabunNuzul] = useState<string | null>(null);
   const [asbabLoading, setAsbabLoading] = useState(false);
+  const [pageNotice, setPageNotice] = useState<PageNotice | null>(null);
+  const isOnline = useOnlineStatus();
 
   useEffect(() => {
-    if (!result || viewMode !== "single") return;
+    if (typeof navigator === "undefined" || !navigator.onLine) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      if (!cancelled) void prepareOfflineQuran();
+    }, 4000);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  // Asbabun nuzul needs the backend, so it is skipped (not fetched) while offline.
+  const asbabRequestKey = result && viewMode === "single" ? `${result.nomor_surah}:${result.nomor_ayat}` : null;
+  useEffect(() => {
+    if (!asbabRequestKey) return;
     let active = true;
+    const [surahNumber, ayatNumber] = asbabRequestKey.split(":").map(Number);
+
     fetch(`${API_URL}/api/quran/asbabun-nuzul`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ surah: result.nomor_surah, ayat: result.nomor_ayat }),
+      body: JSON.stringify({ surah: surahNumber, ayat: ayatNumber }),
     })
       .then((response) => {
         if (!response.ok) throw new Error("Gagal memuat asbabun nuzul");
         return response.json();
       })
-      .then((data) => { if (active) setAsbabunNuzul(data.asbabun_nuzul || "Tidak ada riwayat sebab turunnya ayat yang dijelaskan dalam sumber tafsir ini."); })
-      .catch(() => { if (active) setAsbabunNuzul("Asbabun nuzul belum dapat dimuat. Coba tampilkan ayat kembali."); })
-      .finally(() => { if (active) setAsbabLoading(false); });
+      .then((data) => {
+        if (!active) return;
+        const text = data.asbabun_nuzul || "Tidak ada riwayat sebab turunnya ayat yang dijelaskan dalam sumber tafsir ini.";
+        setAsbabunNuzul(text);
+        setAsbabLoading(false);
+        cacheAsbabunNuzul(surahNumber, ayatNumber, text);
+      })
+      .catch(() => {
+        if (!active) return;
+        const fallback = getCachedAsbabunNuzul(surahNumber, ayatNumber);
+        setAsbabunNuzul(fallback || "Asbabun nuzul belum dapat dimuat. Periksa koneksi lalu tampilkan ayat kembali.");
+        setAsbabLoading(false);
+      });
     return () => { active = false; };
-  }, [result, viewMode]);
+  }, [asbabRequestKey]);
+
 
   // Playback uses the visible Arabic verse as its text alternative.
   // Audio is controlled by the existing play/pause button, without a hidden media player.
@@ -419,6 +488,17 @@ export default function QuranPage() {
   const toggleAudio = () => {
     const el = audioRef.current;
     if (!el || !result?.audio) return;
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: "Murottal membutuhkan koneksi internet",
+        showConfirmButton: false,
+        timer: 2200,
+      });
+      return;
+    }
     if (isPlaying) {
       el.pause();
       setIsPlaying(false);
@@ -434,20 +514,40 @@ export default function QuranPage() {
     }
     setShowTafsir(true);
     if (tafsir || !result) return;
+    const surahNumber = result.nomor_surah;
+    const ayatNumber = result.nomor_ayat;
+    const cached = getCachedTafsir(surahNumber, ayatNumber);
     setTafsirLoading(true);
+
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      setTafsir(cached || "Tafsir belum tersimpan di perangkat. Buka tafsir ini saat online agar bisa dibaca offline.");
+      setTafsirLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch(`${API_URL}/api/quran/tafsir`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ surah: result.nomor_surah, ayat: result.nomor_ayat }),
+        body: JSON.stringify({ surah: surahNumber, ayat: ayatNumber }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Tafsir tidak ditemukan");
       setTafsir(data.tafsir);
+      cacheTafsir(surahNumber, ayatNumber, data.tafsir);
     } catch {
-      setTafsir("Gagal memuat tafsir. Coba lagi nanti.");
+      setTafsir(getCachedTafsir(surahNumber, ayatNumber) || "Tafsir belum dapat dimuat. Periksa koneksi lalu coba lagi.");
     } finally {
       setTafsirLoading(false);
+    }
+  };
+
+  const syncBookmarkState = (surahNumber: number, ayatNumber: number) => {
+    try {
+      const savedBookmarks: string[] = JSON.parse(localStorage.getItem("quran_bookmarks") || "[]");
+      setIsBookmarked(savedBookmarks.includes(`${surahNumber}:${ayatNumber}`));
+    } catch {
+      setIsBookmarked(false);
     }
   };
 
@@ -456,43 +556,46 @@ export default function QuranPage() {
     setLoading(true);
     setLoadingAction("verse");
     setResult(null);
-    setAsbabunNuzul(null);
-    setAsbabLoading(true);
     setCopied(false);
     resetMediaState();
 
+    // Offline: tidak ada asbabun nuzul dari server, pakai salinan lokal bila ada.
+    const offline = typeof navigator !== "undefined" && !navigator.onLine;
+    if (offline) {
+      setAsbabunNuzul(getCachedAsbabunNuzul(targetSurah, targetAyat));
+      setAsbabLoading(false);
+    } else {
+      setAsbabunNuzul(null);
+      // Sudah ada jawaban untuk ayat yang sama sebelumnya -> jangan direset.
+      const sameVerse = result?.nomor_surah === targetSurah && result?.nomor_ayat === targetAyat;
+      setAsbabLoading(!sameVerse);
+    }
+    setPageNotice(null);
+
     try {
-      const res = await fetch(`${API_URL}/api/quran/verse`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ surah: targetSurah, ayat: targetAyat }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || "Ayat tidak ditemukan");
-      }
-
+      const verse = await loadVerseFromStaticData(targetSurah, targetAyat);
       if (version !== requestVersion.current) return;
-      setResult(data);
-
-      const savedBookmarks = JSON.parse(localStorage.getItem("quran_bookmarks") || "[]");
-      const bookmarkKey = `${targetSurah}:${targetAyat}`;
-      setIsBookmarked(savedBookmarks.includes(bookmarkKey));
-
+      setResult(verse);
+      cacheVerse(verse);
+      syncBookmarkState(targetSurah, targetAyat);
     } catch (err: unknown) {
       if (version !== requestVersion.current) return;
-      const errorMessage = err instanceof Error ? err.message : "Gagal mengambil data ayat";
-      Swal.fire({
-        icon: "error",
-        title: "Gagal",
-        text: errorMessage,
-        confirmButtonColor: "#059669",
-        customClass: {
-          popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
-        }
-      });
+      const surahName = SURAH_LIST.find((s) => s.num === targetSurah)?.name || `Surah ${targetSurah}`;
+      const offlineNow = typeof navigator !== "undefined" && !navigator.onLine;
+
+      if (offlineNow && isNetworkError(err)) {
+        setPageNotice({
+          message:
+            `Data Al-Qur'an ${surahName} ayat ${targetAyat} belum tersimpan di perangkat ini. ` +
+            "Buka halaman Qur'an sekali saat online agar seluruh 114 surah tersimpan, lalu ayat bisa dibaca tanpa internet.",
+        });
+      } else {
+        setPageNotice({
+          message: err instanceof Error ? err.message : "Gagal mengambil data ayat.",
+        });
+      }
+      setAsbabunNuzul(null);
+      setAsbabLoading(false);
     } finally {
       if (version === requestVersion.current) {
         setLoading(false);
@@ -543,30 +646,45 @@ export default function QuranPage() {
   };
 
   const loadBookmarks = async () => {
-    const savedKeys: string[] = JSON.parse(localStorage.getItem("quran_bookmarks") || "[]");
+    let savedKeys: string[] = [];
+    try {
+      savedKeys = JSON.parse(localStorage.getItem("quran_bookmarks") || "[]");
+    } catch {
+      savedKeys = [];
+    }
     if (savedKeys.length === 0) {
       setBookmarkedVerses([]);
       setShowBookmarks(true);
       return;
     }
 
+    const offline = typeof navigator !== "undefined" && !navigator.onLine;
     const verses: QuranVerse[] = [];
+    let missing = 0;
+
     for (const key of savedKeys) {
       const [s, a] = key.split(":").map(Number);
       try {
-        const res = await fetch(`${API_URL}/api/quran/verse`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ surah: s, ayat: a }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.status === "success") verses.push(data);
-        }
-      } catch {}
+        const verse = await loadVerseFromStaticData(s, a);
+        verses.push(verse);
+        cacheVerse(verse);
+      } catch {
+        missing += 1;
+      }
     }
+
     setBookmarkedVerses(verses);
     setShowBookmarks(true);
+    if (missing > 0) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: offline ? `${missing} bookmark belum tersimpan di perangkat` : `${missing} bookmark gagal dimuat`,
+        showConfirmButton: false,
+        timer: 2800,
+      });
+    }
   };
 
   return (
@@ -586,6 +704,7 @@ export default function QuranPage() {
             </h1>
             <p className="text-sm text-emerald-100/80 mt-1 max-w-xl">
               Cari teks Arab, transliterasi Latin, dan terjemahan bahasa Indonesia yang otentik untuk 114 Surah.
+              Seluruh ayat tersimpan di perangkat, jadi tetap bisa dibaca tanpa internet.
             </p>
           </div>
 
@@ -599,6 +718,10 @@ export default function QuranPage() {
             <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
               <span className="text-xs text-emerald-200 uppercase font-semibold block">Total Surah</span>
               <span className="text-2xl font-black text-white">114 Surah</span>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
+              <span className="text-xs text-emerald-200 uppercase font-semibold block">Bisa Offline</span>
+              <span className="text-2xl font-black text-white">{isOnline ? "Siap" : "Aktif"}</span>
             </div>
           </div>
         </div>
@@ -623,6 +746,16 @@ export default function QuranPage() {
             setViewMode("single");
           }}
         />
+      )}
+
+      {/* Peringatan koneksi / gagal muat */}
+      {pageNotice && (
+        <div className="flex items-start gap-3 rounded-2xl border border-sky-300/70 bg-sky-50 px-4 py-3 text-sky-900 shadow-sm dark:border-sky-800/60 dark:bg-sky-950/40 dark:text-sky-100">
+          <WifiOff aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
+          <p className="min-w-0 flex-1 text-sm leading-relaxed opacity-90">
+            {pageNotice.message}
+          </p>
+        </div>
       )}
 
       {/* Popular Surah Quick Bar */}
