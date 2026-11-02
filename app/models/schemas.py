@@ -14,7 +14,18 @@ class QuranVerseRequest(BaseModel):
 
 
 class HadithRequest(BaseModel):
-    kitab: Literal["abu-dawud", "ahmad", "bukhari", "darimi", "ibnu-majah", "malik", "muslim", "nasai", "tirmidzi"]
+    kitab: Literal[
+        "abu-dawud",
+        "ahmad",
+        "bukhari",
+        "darimi",
+        "ibnu-majah",
+        "malik",
+        "muslim",
+        "nasai",
+        "tirmidzi",
+        "riyadhus-shalihin",
+    ]
     nomor: int = Field(..., ge=1)
 
 
@@ -23,6 +34,17 @@ class ProviderSwitch(BaseModel):
 
 
 class HadithSearchRequest(BaseModel):
-    kitab: Literal["abu-dawud", "ahmad", "bukhari", "darimi", "ibnu-majah", "malik", "muslim", "nasai", "tirmidzi"]
+    kitab: Literal[
+        "abu-dawud",
+        "ahmad",
+        "bukhari",
+        "darimi",
+        "ibnu-majah",
+        "malik",
+        "muslim",
+        "nasai",
+        "tirmidzi",
+        "riyadhus-shalihin",
+    ]
     keyword: str = Field(..., min_length=1, max_length=100, description="Kata kunci terjemahan")
     max_pages: int = Field(default=8, ge=1, le=12, description="Halaman dipindai (20 hadits/halaman)")

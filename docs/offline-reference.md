@@ -26,7 +26,8 @@ Script mengunduh sekali, memvalidasi jumlah, lalu menyimpan:
 |---|---|
 | Al-Qur'an | 114 surah, 6.236 ayat |
 | Tafsir Kemenag | 6.236 tafsir (1 per ayat) |
-| Hadits | 9 kitab; jumlah riwayat harus sama dengan `total` upstream dan nomor unik |
+| Hadits API | 9 kitab; jumlah riwayat harus sama dengan `total` upstream dan nomor unik |
+| Riyadhus Shalihin | 372 bab tervalidasi; riwayat dinomori ulang berurutan dan ditautkan ke bab; teks yang memang tidak tersedia di sumber dipertahankan sebagai kosong |
 
 Impor bersifat **resumable**: jalankan ulang dan surah/kitab yang sudah lengkap
 akan dilewati. Perkiraan ukuran file 60–150 MB (teks saja; audio tetap online).
@@ -44,7 +45,7 @@ REFERENCE_DB_PATH=data/reference.sqlite3
 |---|---|---|---|
 | `hybrid` (default) | ya | ya | ya |
 | `local` | ya | tidak | tidak |
-| `online` | tidak | ya | tidak |
+| `online` | tidak | ya untuk Qur'an dan 9 kitab API | tidak |
 
 - `hybrid` cocok untuk pengembangan: tanpa build manual pun, setiap ayat/hadits
   yang pernah dibuka akan otomatis tersimpan dan tersedia offline berikutnya.
@@ -52,6 +53,8 @@ REFERENCE_DB_PATH=data/reference.sqlite3
   mengembalikan error yang menyebutkan cara membangun database.
 - `online` berguna untuk membandingkan hasil dengan sumber asli atau menjalankan
   tes yang mem-*mock* HTTP.
+- Riyadhus Shalihin hanya tersedia dari database lokal karena sumbernya berupa
+  dump SQL, bukan bagian dari hadis-api-id. Gunakan mode `hybrid` atau `local`.
 
 ## 3. Cek status
 
@@ -69,7 +72,7 @@ Contoh respons:
   "quran_surahs": 114,
   "quran_verses": 6236,
   "quran_tafsirs": 6236,
-  "hadith_books": 9,
+  "hadith_books": 10,
   "hadiths": 51234,
   "imported_at": "2026-11-02T10:00:00+00:00"
 }
@@ -95,6 +98,15 @@ Semua endpoint rujukan tetap sama bentuk responsnya, dengan tambahan field
 Pencarian hadits lokal mencakup **seluruh** riwayat kitab, bukan hanya beberapa
 halaman pertama seperti mode online. Respons menyertakan `match_total`,
 `scanned`, `total`, dan `partial`.
+
+Riwayat Riyadhus Shalihin juga menyertakan metadata `bab`, `nomor_bab`, dan
+`nomor_dalam_bab`; `nomor` adalah urutan global hasil impor untuk navigasi.
+Nomor sumber Arab dan terjemahan yang berbeda tersedia sebagai
+`nomor_sumber_arab` dan `nomor_sumber_terjemahan`.
+
+Sumber: [irsyadulibad/hadits-database](https://github.com/irsyadulibad/hadits-database),
+yang menyebutkan CariHadis sebagai sumber teks dan MIT sebagai lisensi repositori.
+Perubahan sumber/terjemahan tetap perlu ditinjau sebelum distribusi.
 
 ## 5. Catatan deployment
 

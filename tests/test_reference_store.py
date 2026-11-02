@@ -1,3 +1,4 @@
+import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
@@ -77,6 +78,66 @@ class ReferenceStoreTests(unittest.TestCase):
         self.assertEqual(result["matches"][0]["number"], 1)
         self.assertFalse(result["partial"])
 
+    def test_hadith_chapter_metadata_roundtrip_and_search(self):
+        self.store.save_hadith_book(
+            "riyadhus-shalihin",
+            "Riyadhus Shalihin",
+            1,
+            [
+                {
+                    "number": 1,
+                    "arab": "نص الحديث",
+                    "id": "Hadits tentang niat",
+                    "chapter_number": 2,
+                    "chapter_title": "Ikhlas",
+                    "chapter_hadith_number": 1,
+                    "source_arab_number": 3,
+                    "source_translation_number": 4,
+                }
+            ],
+        )
+
+        hadith = self.store.get_hadith("riyadhus-shalihin", 1)
+        self.assertEqual(hadith["bab"], "Ikhlas")
+        self.assertEqual(hadith["nomor_bab"], 2)
+        self.assertEqual(hadith["nomor_dalam_bab"], 1)
+        self.assertEqual(hadith["nomor_sumber_arab"], 3)
+        self.assertEqual(hadith["nomor_sumber_terjemahan"], 4)
+
+        result = self.store.search_hadith("riyadhus-shalihin", "niat")
+        self.assertEqual(result["matches"][0]["bab"], "Ikhlas")
+        self.assertEqual(result["matches"][0]["nomor_bab"], 2)
+
+    def test_existing_database_gets_hadith_chapter_columns(self):
+        legacy_path = Path(self.tmp.name) / "legacy.sqlite3"
+        connection = sqlite3.connect(legacy_path)
+        try:
+            connection.executescript(
+                """
+                CREATE TABLE reference_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE hadith_books (
+                    slug TEXT PRIMARY KEY, name TEXT NOT NULL,
+                    hadiths_count INTEGER NOT NULL DEFAULT 0
+                );
+                CREATE TABLE hadiths (
+                    book_slug TEXT NOT NULL, hadith_number INTEGER NOT NULL,
+                    arabic_text TEXT NOT NULL DEFAULT '',
+                    translation_id TEXT NOT NULL DEFAULT '',
+                    PRIMARY KEY (book_slug, hadith_number)
+                );
+                INSERT INTO hadith_books VALUES ('bukhari', 'Bukhari', 1);
+                INSERT INTO hadiths VALUES ('bukhari', 1, 'arab', 'translation');
+                """
+            )
+        finally:
+            connection.close()
+
+        legacy_store = ReferenceStore(legacy_path)
+        hadith = legacy_store.get_hadith("bukhari", 1)
+        self.assertEqual(hadith["teks_arab"], "arab")
+        self.assertIsNone(hadith["bab"])
+        self.assertIsNone(hadith["nomor_bab"])
+
     def test_surah_complete_requires_tafsir(self):
         self.store.save_surah(surah_payload())
         self.assertFalse(self.store.surah_complete(1))
@@ -144,6 +205,33 @@ class LocalFirstTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result["partial"])
         self.assertEqual(result["scanned"], 30)
         self.assertEqual(result["matches"][0]["number"], 30)
+
+    async def test_riyadhus_shalihin_uses_local_data_only(self):
+        self.store.save_hadith_book(
+            "riyadhus-shalihin",
+            "Riyadhus Shalihin",
+            1,
+            [{"number": 1, "arab": "arab", "id": "Hadits niat"}],
+        )
+        api = HadithAPI(store=self.store, mode="hybrid")
+
+        with patch("app.api.hadith.httpx.AsyncClient") as client:
+            result = await api.get_hadith("riyadhus-shalihin", 1)
+            search = await api.search_hadith("riyadhus-shalihin", "niat")
+
+        client.assert_not_called()
+        self.assertEqual(result["source"], "offline")
+        self.assertEqual(result["nomor"], 1)
+        self.assertEqual(search["source"], "offline")
+        self.assertEqual(search["matches"][0]["number"], 1)
+
+    async def test_riyadhus_shalihin_reports_missing_offline_data(self):
+        api = HadithAPI(store=self.store, mode="hybrid")
+        with patch("app.api.hadith.httpx.AsyncClient") as client:
+            result = await api.get_hadith("riyadhus-shalihin", 1)
+        client.assert_not_called()
+        self.assertEqual(result["status"], "error")
+        self.assertEqual(result["source"], "offline")
 
 
 if __name__ == "__main__":

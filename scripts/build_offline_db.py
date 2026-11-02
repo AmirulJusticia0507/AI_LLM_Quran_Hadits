@@ -3,11 +3,12 @@
 Contoh:
     python scripts/build_offline_db.py                 # semua dataset
     python scripts/build_offline_db.py --only quran    # hanya Qur'an + tafsir
-    python scripts/build_offline_db.py --only hadith   # hanya 9 kitab hadits
+    python scripts/build_offline_db.py --only hadith   # kitab API + Riyadhus Shalihin
     python scripts/build_offline_db.py --rebuild       # buat ulang dari nol
 
 Data diunduh sekali dari sumber yang sama dengan versi online (equran.id dan
-hadis-api-id), lalu divalidasi sebelum disimpan. Script aman dijalankan ulang:
+hadis-api-id dan repositori hadits-database), lalu divalidasi sebelum disimpan.
+Script aman dijalankan ulang:
 surah/kitab yang sudah lengkap akan dilewati.
 """
 
@@ -24,6 +25,12 @@ import httpx
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.api.reference_store import ReferenceStore  # noqa: E402
+from scripts.riyadhus import (
+    EXPECTED_CHAPTERS,
+    SOURCE_URL as RIYADHUS_SOURCE_URL,
+    parse_chapters,
+    parse_sql_dump,
+)
 
 EQURAN = "https://equran.id/api/v2"
 HADITH_API = "https://hadis-api-id.vercel.app"
@@ -51,6 +58,20 @@ def fetch_json(client: httpx.Client, url: str, **kwargs) -> dict:
             response.raise_for_status()
             return response.json()
         except (httpx.HTTPError, ValueError) as exc:
+            last_error = exc
+            if attempt < 3:
+                time.sleep(attempt * 2)
+    raise RuntimeError(f"Gagal mengambil {url}: {type(last_error).__name__}")
+
+
+def fetch_text(client: httpx.Client, url: str) -> str:
+    last_error: Exception | None = None
+    for attempt in range(1, 4):
+        try:
+            response = client.get(url)
+            response.raise_for_status()
+            return response.text
+        except httpx.HTTPError as exc:
             last_error = exc
             if attempt < 3:
                 time.sleep(attempt * 2)
@@ -148,6 +169,54 @@ def import_hadith(store: ReferenceStore, client: httpx.Client) -> None:
         name, total, rows = fetch_hadith_book(client, slug)
         saved = store.save_hadith_book(slug, name, total, rows)
         print(f"Hadis {slug}: {saved:,} riwayat tersimpan", flush=True)
+
+    import_riyadhus(store, client)
+
+
+def import_riyadhus(store: ReferenceStore, client: httpx.Client) -> None:
+    existing = store.get_hadith_book("riyadhus-shalihin")
+    if existing and existing["hadiths_count"] > 0 and existing["stored"] == existing["hadiths_count"]:
+        print(
+            f"Hadis Riyadhus Shalihin: sudah lengkap "
+            f"({existing['stored']:,} riwayat), dilewati",
+            flush=True,
+        )
+        return
+
+    chapters = parse_sql_dump(fetch_text(client, RIYADHUS_SOURCE_URL))
+    if len(chapters) != EXPECTED_CHAPTERS:
+        raise ValueError(
+            f"Bab Riyadhus Shalihin tidak lengkap: "
+            f"{len(chapters)}/{EXPECTED_CHAPTERS}"
+        )
+    chapter_numbers = [chapter["id"] for chapter in chapters]
+    if len(set(chapter_numbers)) != EXPECTED_CHAPTERS:
+        raise ValueError("Nomor bab Riyadhus Shalihin tidak unik")
+
+    rows = parse_chapters(chapters)
+    numbers = [int(row["number"]) for row in rows]
+    if len(set(numbers)) != len(rows):
+        raise ValueError("Nomor riwayat Riyadhus Shalihin tidak unik")
+    missing_arab = sum(not row["arab"] for row in rows)
+    missing_translation = sum(not row["id"] for row in rows)
+
+    saved = store.save_hadith_book(
+        "riyadhus-shalihin",
+        "Riyadhus Shalihin",
+        len(rows),
+        rows,
+        replace=True,
+    )
+    if saved != len(rows):
+        raise ValueError(
+            f"Impor Riyadhus Shalihin tidak lengkap: {saved}/{len(rows)} riwayat"
+        )
+    print(
+        f"Hadis Riyadhus Shalihin: {len(chapters):,} bab, "
+        f"{saved:,} riwayat tersimpan "
+        f"({missing_arab} tanpa Arab, {missing_translation} tanpa terjemahan pada sumber)",
+        flush=True,
+    )
 
 
 def main() -> None:

@@ -20,7 +20,9 @@ class HadithAPI:
         "nasai-4",
         "nasai-5",
         "tirmidzi",
+        "riyadhus-shalihin",
     ]
+    OFFLINE_ONLY_BOOKS = {"riyadhus-shalihin"}
 
     def __init__(
         self,
@@ -45,6 +47,17 @@ class HadithAPI:
             "message": f"Kitab tidak tersedia. Pilih: {', '.join(self.AVAILABLE_BOOKS)}",
         }
 
+    def _offline_only_error(self, kitab: str) -> dict:
+        return {
+            "status": "error",
+            "source": "offline",
+            "message": (
+                f"Kitab {kitab} hanya tersedia dari database offline. "
+                "Jalankan scripts/build_offline_db.py --only hadith dan gunakan "
+                "REFERENCE_MODE=hybrid atau local."
+            ),
+        }
+
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
@@ -63,6 +76,9 @@ class HadithAPI:
                         "Jalankan scripts/build_offline_db.py untuk mengisi database offline."
                     ),
                 }
+
+        if kitab_lower in self.OFFLINE_ONLY_BOOKS:
+            return self._offline_only_error(kitab_lower)
 
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
@@ -109,6 +125,28 @@ class HadithAPI:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
             return self._invalid_book()
+
+        if kitab_lower in self.OFFLINE_ONLY_BOOKS:
+            if self.mode != "online":
+                book = await asyncio.to_thread(
+                    self.store.get_hadith_book, kitab_lower
+                )
+                if book and book["stored"] > 0:
+                    local = await asyncio.to_thread(
+                        self.store.search_hadith, kitab_lower, keyword
+                    )
+                    return {
+                        "status": "success",
+                        "kitab": kitab_lower,
+                        "keyword": keyword,
+                        "matches": local["matches"],
+                        "match_total": local["match_total"],
+                        "scanned": local["scanned"],
+                        "total": local["total"],
+                        "partial": book["stored"] < book["hadiths_count"],
+                        "source": "offline",
+                    }
+            return self._offline_only_error(kitab_lower)
 
         if self.mode != "online":
             book = await asyncio.to_thread(self.store.get_hadith_book, kitab_lower)

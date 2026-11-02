@@ -69,6 +69,11 @@ CREATE TABLE IF NOT EXISTS hadiths (
     hadith_number INTEGER NOT NULL,
     arabic_text TEXT NOT NULL DEFAULT '',
     translation_id TEXT NOT NULL DEFAULT '',
+    chapter_number INTEGER,
+    chapter_title TEXT NOT NULL DEFAULT '',
+    chapter_hadith_number INTEGER,
+    source_arab_number INTEGER,
+    source_translation_number INTEGER,
     PRIMARY KEY (book_slug, hadith_number)
 );
 CREATE INDEX IF NOT EXISTS idx_quran_verses_surah ON quran_verses(surah_id);
@@ -144,6 +149,20 @@ class ReferenceStore:
                 connection.execute("PRAGMA journal_mode=WAL")
                 connection.execute("PRAGMA synchronous=NORMAL")
                 connection.executescript(SCHEMA)
+                columns = {
+                    row[1] for row in connection.execute("PRAGMA table_info(hadiths)")
+                }
+                for column, definition in (
+                    ("chapter_number", "INTEGER"),
+                    ("chapter_title", "TEXT NOT NULL DEFAULT ''"),
+                    ("chapter_hadith_number", "INTEGER"),
+                    ("source_arab_number", "INTEGER"),
+                    ("source_translation_number", "INTEGER"),
+                ):
+                    if column not in columns:
+                        connection.execute(
+                            f"ALTER TABLE hadiths ADD COLUMN {column} {definition}"
+                        )
                 connection.commit()
             finally:
                 connection.close()
@@ -152,6 +171,8 @@ class ReferenceStore:
     def _read(self) -> sqlite3.Connection:
         if not self.exists:
             raise FileNotFoundError(self.path)
+        if not self._schema_ready:
+            self.ensure_schema()
         connection = sqlite3.connect(self.path, timeout=15)
         connection.row_factory = sqlite3.Row
         return connection
@@ -530,6 +551,11 @@ class ReferenceStore:
                 "nomor": row["hadith_number"],
                 "teks_arab": row["arabic_text"],
                 "terjemahan": row["translation_id"],
+                "bab": row["chapter_title"] or None,
+                "nomor_bab": row["chapter_number"],
+                "nomor_dalam_bab": row["chapter_hadith_number"],
+                "nomor_sumber_arab": row["source_arab_number"],
+                "nomor_sumber_terjemahan": row["source_translation_number"],
             }
         except sqlite3.Error:
             return None
@@ -537,10 +563,21 @@ class ReferenceStore:
             connection.close()
 
     def save_hadith_book(
-        self, kitab: str, name: str, total: int, rows: Iterable[dict]
+        self,
+        kitab: str,
+        name: str,
+        total: int,
+        rows: Iterable[dict],
+        *,
+        replace: bool = False,
     ) -> int:
         connection = self._write()
         try:
+            if replace:
+                connection.execute(
+                    "DELETE FROM hadith_search WHERE book_slug = ?", (kitab,)
+                )
+                connection.execute("DELETE FROM hadiths WHERE book_slug = ?", (kitab,))
             connection.execute(
                 """INSERT INTO hadith_books (slug, name, hadiths_count)
                    VALUES (?, ?, ?)
@@ -586,12 +623,29 @@ class ReferenceStore:
         terjemahan = row.get("id") or ""
         connection.execute(
             """INSERT INTO hadiths
-               (book_slug, hadith_number, arabic_text, translation_id)
-               VALUES (?, ?, ?, ?)
+               (book_slug, hadith_number, arabic_text, translation_id,
+                chapter_number, chapter_title, chapter_hadith_number,
+                source_arab_number, source_translation_number)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                ON CONFLICT(book_slug, hadith_number) DO UPDATE SET
                  arabic_text = excluded.arabic_text,
-                 translation_id = excluded.translation_id""",
-            (kitab, nomor, arab, terjemahan),
+                 translation_id = excluded.translation_id,
+                 chapter_number = excluded.chapter_number,
+                 chapter_title = excluded.chapter_title,
+                 chapter_hadith_number = excluded.chapter_hadith_number,
+                 source_arab_number = excluded.source_arab_number,
+                 source_translation_number = excluded.source_translation_number""",
+            (
+                kitab,
+                nomor,
+                arab,
+                terjemahan,
+                row.get("chapter_number"),
+                row.get("chapter_title") or "",
+                row.get("chapter_hadith_number"),
+                row.get("source_arab_number"),
+                row.get("source_translation_number"),
+            ),
         )
         connection.execute(
             "DELETE FROM hadith_search WHERE book_slug = ? AND hadith_number = ?",
@@ -631,7 +685,9 @@ class ReferenceStore:
                 if not match_total:
                     continue
                 rows = connection.execute(
-                    """SELECT h.hadith_number, h.arabic_text, h.translation_id
+                    """SELECT h.hadith_number, h.arabic_text, h.translation_id,
+                              h.chapter_title, h.chapter_number,
+                              h.chapter_hadith_number
                        FROM hadith_search
                        JOIN hadiths h
                          ON h.book_slug = hadith_search.book_slug
@@ -647,6 +703,9 @@ class ReferenceStore:
                             "number": row["hadith_number"],
                             "arab": row["arabic_text"],
                             "id": row["translation_id"],
+                            "bab": row["chapter_title"] or None,
+                            "nomor_bab": row["chapter_number"],
+                            "nomor_dalam_bab": row["chapter_hadith_number"],
                         }
                         for row in rows
                     ],
