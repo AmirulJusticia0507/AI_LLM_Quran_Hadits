@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import { KITAB } from "@/app/api/hadith/route";
 import { 
   ScrollText, 
   Search, 
@@ -26,16 +27,22 @@ interface HadithResult {
   nomor_dalam_bab?: number | null;
 }
 
+// Jumlah hadits mengikuti sumber data (hadis-api-id), dipakai bersama dengan
+// route /api/hadith supaya nomor yang diterima selalu bisa diambil.
+const TAGS: { id: string; tag: string }[] = [
+  { id: "bukhari", tag: "Sahih Utama" },
+  { id: "muslim", tag: "Sahih Utama" },
+  { id: "tirmidzi", tag: "Sunan" },
+  { id: "abu-dawud", tag: "Sunan" },
+  { id: "nasai", tag: "Sunan" },
+  { id: "ibnu-majah", tag: "Sunan" },
+  { id: "ahmad", tag: "Musnad" },
+  { id: "malik", tag: "Muwatta" },
+  { id: "darimi", tag: "Sunan" },
+];
+
 const KITAB_LIST = [
-  { id: "bukhari", name: "Shahih Bukhari", maxHadith: 7563, tag: "Sahih Utama" },
-  { id: "muslim", name: "Shahih Muslim", maxHadith: 7500, tag: "Sahih Utama" },
-  { id: "tirmidzi", name: "Jami' at-Tirmidzi", maxHadith: 3956, tag: "Sunan" },
-  { id: "abu-dawud", name: "Sunan Abu Dawud", maxHadith: 5274, tag: "Sunan" },
-  { id: "nasai", name: "Sunan an-Nasa'i", maxHadith: 5761, tag: "Sunan" },
-  { id: "ibnu-majah", name: "Sunan Ibnu Majah", maxHadith: 4341, tag: "Sunan" },
-  { id: "ahmad", name: "Musnad Ahmad", maxHadith: 26363, tag: "Musnad" },
-  { id: "malik", name: "Muwatta Malik", maxHadith: 1836, tag: "Muwatta" },
-  { id: "darimi", name: "Sunan ad-Darimi", maxHadith: 3573, tag: "Sunan" },
+  ...TAGS.map(({ id, tag }) => ({ id, name: KITAB[id].name, maxHadith: KITAB[id].max, tag })),
   { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1896, tag: "Adab & Akhlak" },
 ];
 

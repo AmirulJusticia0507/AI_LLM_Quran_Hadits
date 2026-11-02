@@ -15,12 +15,12 @@ export const runtime = "nodejs";
 const UPSTREAM = "https://hadis-api-id.vercel.app";
 const BACKEND = (process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
 
-interface KitabConfig {
+export interface KitabConfig {
   name: string;
   max: number;
 }
 
-const KITAB: Record<string, KitabConfig> = {
+export const KITAB: Record<string, KitabConfig> = {
   bukhari: { name: "Shahih Bukhari", max: 6638 },
   muslim: { name: "Shahih Muslim", max: 4930 },
   tirmidzi: { name: "Jami' at-Tirmidzi", max: 3625 },
