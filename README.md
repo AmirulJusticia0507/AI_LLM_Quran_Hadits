@@ -125,6 +125,30 @@ Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run buil
 | **Gemini (cloud)** | Isi `GEMINI_API_KEY` di `.env` → `LLM_PROVIDER=gemini`, atau ganti via UI (badge status di halaman chat) |
 | **GripHub Router (cloud)** | Isi `GRIPHUB_API_KEY` dan `GRIPHUB_MODEL` di `.env` → `LLM_PROVIDER=griphub` |
 
+### 4. Siapkan Data Rujukan Offline (disarankan)
+
+Ayat, tafsir, dan hadits bisa dilayani dari SQLite lokal sehingga tetap jalan tanpa
+internet. Unduh sekali:
+
+```bash
+npm run build:offline          # Qur'an + tafsir + 9 kitab hadits
+npm run build:offline:quran    # hanya Qur'an + tafsir
+npm run build:offline:hadith   # hanya kitab hadits
+```
+
+Database ditulis ke `data/reference.sqlite3` (di-ignore Git). Script aman dijalankan
+ulang: surah/kitab yang sudah lengkap akan dilewati. Perilaku runtime diatur
+`REFERENCE_MODE`:
+
+| Mode | Perilaku |
+|---|---|
+| `hybrid` (default) | Baca SQLite dulu; jika belum ada, ambil dari API online lalu simpan ke SQLite |
+| `local` | Hanya SQLite — tidak menyentuh internet sama sekali |
+| `online` | Selalu ambil dari API, tanpa cache lokal |
+
+Setiap respons ayat/tafsir/hadits menyertakan field `source` (`offline`/`online`).
+Cek kesiapan data lewat `GET /api/reference/status`. Detail: [`docs/offline-reference.md`](docs/offline-reference.md).
+
 ---
 
 ## ⚙️ Environment Variables
@@ -144,6 +168,8 @@ Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run buil
 | `OLLAMA_MODEL` | `deepseek-r1:8b` | Model Ollama |
 | `ALLOWED_ORIGINS` | `http://localhost:3000` | CORS (pisahkan koma) |
 | `CHAT_RATE_LIMIT` | `30` | Maks request/menit per IP (chat & search) |
+| `REFERENCE_MODE` | `hybrid` | `hybrid`, `local`, atau `online` — sumber data Qur'an/hadits |
+| `REFERENCE_DB_PATH` | `data/reference.sqlite3` | Lokasi database SQLite offline |
 | `API_HOST` / `API_PORT` | `0.0.0.0` / `8000` | Bind server |
 
 **Frontend (`frontend/.env.local`)**
@@ -160,6 +186,7 @@ Perintah root lain: `npm run dev:backend`, `npm run dev:frontend`, `npm run buil
 | Method | Endpoint | Keterangan |
 |---|---|---|
 | GET | `/api/health` | Status server + LLM |
+| GET | `/api/reference/status` | Status database offline (mode, jumlah ayat/hadits, waktu impor) |
 | POST | `/api/chat` | Chat non-streaming |
 | POST | `/api/chat/stream` | Chat streaming (SSE) |
 | GET | `/api/llm/providers` | Daftar provider + yang aktif |

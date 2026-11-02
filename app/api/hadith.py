@@ -1,4 +1,8 @@
+import asyncio
+
 import httpx
+
+from app.api.reference_store import ReferenceStore, resolve_mode
 
 
 class HadithAPI:
@@ -18,13 +22,47 @@ class HadithAPI:
         "tirmidzi",
     ]
 
+    def __init__(
+        self,
+        store: ReferenceStore | None = None,
+        mode: str | None = None,
+    ):
+        self.store = store or ReferenceStore()
+        self.mode = resolve_mode(mode)
+
+    async def _cache(self, callback, *args) -> None:
+        """Best-effort write-through cache; never break the online response."""
+        if self.mode != "hybrid":
+            return
+        try:
+            await asyncio.to_thread(callback, *args)
+        except Exception:
+            pass
+
+    def _invalid_book(self) -> dict:
+        return {
+            "status": "error",
+            "message": f"Kitab tidak tersedia. Pilih: {', '.join(self.AVAILABLE_BOOKS)}",
+        }
+
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
-            return {
-                "status": "error",
-                "message": f"Kitab tidak tersedia. Pilih: {', '.join(self.AVAILABLE_BOOKS)}",
-            }
+            return self._invalid_book()
+
+        if self.mode != "online":
+            local = await asyncio.to_thread(self.store.get_hadith, kitab_lower, nomor)
+            if local:
+                return {**local, "source": "offline"}
+            if self.mode == "local":
+                return {
+                    "status": "error",
+                    "source": "offline",
+                    "message": (
+                        f"Hadits {kitab_lower} #{nomor} belum tersedia di database offline. "
+                        "Jalankan scripts/build_offline_db.py untuk mengisi database offline."
+                    ),
+                }
 
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
@@ -34,13 +72,25 @@ class HadithAPI:
                 response.raise_for_status()
 
                 data = response.json()
+                name = data.get("name", kitab.title())
+                arab = data.get("arab", "")
+                terjemahan = data.get("id", "")
+                await self._cache(
+                    self.store.save_hadith,
+                    kitab_lower,
+                    name,
+                    int(data.get("number", nomor)),
+                    arab,
+                    terjemahan,
+                )
 
                 return {
                     "status": "success",
-                    "kitab": data.get("name", kitab.title()),
+                    "kitab": name,
                     "nomor": data.get("number", nomor),
-                    "teks_arab": data.get("arab", ""),
-                    "terjemahan": data.get("id", ""),
+                    "teks_arab": arab,
+                    "terjemahan": terjemahan,
+                    "source": "online",
                 }
 
         except httpx.HTTPError as e:
@@ -49,19 +99,41 @@ class HadithAPI:
             return {"status": "error", "message": str(e)}
 
     async def search_hadith(self, kitab: str, keyword: str, max_pages: int = 8) -> dict:
-        """Cari kata kunci dalam terjemahan — pindai max_pages halaman pertama (20/halaman).
+        """Cari kata kunci dalam terjemahan.
 
-        Upstream tidak menyediakan pencarian server-side, jadi hasilnya
-        parsial untuk kitab besar. scanned/total selalu dilaporkan jujur.
+        Bila database offline sudah memuat kitab tersebut secara lengkap,
+        pencarian dilakukan lewat FTS5 sehingga mencakup seluruh riwayat.
+        Jika belum, pencarian memindai halaman pertama API (hasil parsial)
+        dan melaporkan ``scanned``/``total`` secara jujur.
         """
-        import asyncio
-
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
-            return {
-                "status": "error",
-                "message": f"Kitab tidak tersedia. Pilih: {', '.join(self.AVAILABLE_BOOKS)}",
-            }
+            return self._invalid_book()
+
+        if self.mode != "online":
+            book = await asyncio.to_thread(self.store.get_hadith_book, kitab_lower)
+            book_ready = bool(
+                book and book["hadiths_count"] > 0
+                and book["stored"] >= book["hadiths_count"]
+            )
+            if book_ready or self.mode == "local":
+                local = await asyncio.to_thread(
+                    self.store.search_hadith, kitab_lower, keyword
+                )
+                partial = bool(
+                    book and book["hadiths_count"] > book["stored"]
+                )
+                return {
+                    "status": "success",
+                    "kitab": kitab_lower,
+                    "keyword": keyword,
+                    "matches": local["matches"],
+                    "match_total": local["match_total"],
+                    "scanned": local["scanned"],
+                    "total": local["total"],
+                    "partial": partial,
+                    "source": "offline",
+                }
 
         kw = keyword.casefold()
         matches: list[dict] = []
@@ -111,9 +183,11 @@ class HadithAPI:
                 "kitab": kitab_lower,
                 "keyword": keyword,
                 "matches": matches,
+                "match_total": len(matches),
                 "scanned": scanned,
                 "total": total,
                 "partial": scanned < total,
+                "source": "online",
             }
 
         except httpx.HTTPError as e:
@@ -124,10 +198,7 @@ class HadithAPI:
     async def get_hadith_range(self, kitab: str, start: int, end: int) -> dict:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
-            return {
-                "status": "error",
-                "message": f"Kitab tidak tersedia. Pilih: {', '.join(self.AVAILABLE_BOOKS)}",
-            }
+            return self._invalid_book()
 
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
@@ -142,6 +213,7 @@ class HadithAPI:
                     "status": "success",
                     "kitab": data.get("name", kitab.title()),
                     "hadits": data.get("hadiths", []),
+                    "source": "online",
                 }
 
         except httpx.HTTPError as e:

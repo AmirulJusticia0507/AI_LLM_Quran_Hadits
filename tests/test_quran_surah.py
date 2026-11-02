@@ -19,7 +19,7 @@ class SurahTests(unittest.IsolatedAsyncioTestCase):
 
         with patch('app.api.quran.httpx.AsyncClient', side_effect=lambda **kw: original(transport=httpx.MockTransport(respond), **kw)):
             for number in range(1, 115):
-                result = await QuranAPI().get_surah(number)
+                result = await QuranAPI(mode='online').get_surah(number)
                 self.assertEqual(result['nomor_surah'], number)
                 self.assertEqual([v['nomor_ayat'] for v in result['ayat']], [1, 2])
                 self.assertTrue(all(v['nomor_surah'] == number for v in result['ayat']))
@@ -32,8 +32,8 @@ class SurahTests(unittest.IsolatedAsyncioTestCase):
             {'nomor': 36, 'namaLatin': 'Ya-Sin', 'jumlahAyat': 83, 'ayat': [{'nomorAyat': 1, 'teksArab': 'fixture', 'teksIndonesia': 'fixture'}]},
         ]:
             with patch('app.api.quran.httpx.AsyncClient', side_effect=lambda **kw: original(transport=httpx.MockTransport(lambda r: httpx.Response(200, json={'data': data})), **kw)):
-                self.assertEqual((await QuranAPI().get_surah(36))['status'], 'error')
+                self.assertEqual((await QuranAPI(mode='online').get_surah(36))['status'], 'error')
 
     async def test_invalid_number(self):
         for number in (0, 115):
-            self.assertEqual((await QuranAPI().get_surah(number))['status'], 'error')
+            self.assertEqual((await QuranAPI(mode='online').get_surah(number))['status'], 'error')

@@ -11,6 +11,7 @@ import os
 from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest, ProviderSwitch, HadithSearchRequest
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
+from app.api.reference_store import ReferenceStore, resolve_mode
 from app.api.matan import MatanAPI, BookId
 from app.api.visits import router as visits_router
 from app.llm.factory import get_llm
@@ -79,8 +80,9 @@ class SessionManager:
 
 
 session_mgr = SessionManager()
-quran_api = QuranAPI()
-hadith_api = HadithAPI()
+reference_store = ReferenceStore()
+quran_api = QuranAPI(store=reference_store)
+hadith_api = HadithAPI(store=reference_store)
 matan_api = MatanAPI()
 
 
@@ -119,7 +121,14 @@ async def health():
         "llm_configured": llm is not None,
         "llm_provider": llm_provider,
         "llm_model": getattr(llm, "model_name", getattr(llm, "model", None)),
+        "reference_mode": resolve_mode(),
+        "reference_db_present": reference_store.exists,
     }
+
+
+@app.get("/api/reference/status")
+async def reference_status():
+    return {"mode": resolve_mode(), **reference_store.stats()}
 
 
 @app.get("/")
