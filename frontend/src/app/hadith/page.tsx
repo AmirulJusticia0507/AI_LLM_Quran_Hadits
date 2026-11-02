@@ -43,7 +43,7 @@ const TAGS: { id: string; tag: string }[] = [
 
 const KITAB_LIST = [
   ...TAGS.map(({ id, tag }) => ({ id, name: KITAB[id].name, maxHadith: KITAB[id].max, tag })),
-  { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1896, tag: "Adab & Akhlak" },
+  { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1903, tag: "Adab & Akhlak" },
 ];
 
 /**
@@ -566,9 +566,15 @@ export default function HadithPage() {
             <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
               Terjemahan Bahasa Indonesia:
             </span>
-            <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
-              {result.terjemahan}
-            </p>
+            {result.terjemahan ? (
+              <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
+                {result.terjemahan}
+              </p>
+            ) : (
+              <p className="text-sm text-slate-500 dark:text-slate-400 italic">
+                Terjemahan tidak tersedia pada sumber untuk riwayat ini.
+              </p>
+            )}
           </div>
 
           {/* Prev/Next Navigation */}

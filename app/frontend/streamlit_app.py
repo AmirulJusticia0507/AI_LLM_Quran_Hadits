@@ -84,10 +84,21 @@ with tab_hadith:
     with col1:
         kitab = st.selectbox(
             "Pilih Kitab",
-            ["bukhari", "muslim", "tirmidzi", "abu-daud", "nasai", "ibnu-majah"],
+            [
+                "bukhari",
+                "muslim",
+                "tirmidzi",
+                "abu-daud",
+                "nasai",
+                "ibnu-majah",
+                "riyadhus-shalihin",
+            ],
         )
+        max_hadith = 1903 if kitab == "riyadhus-shalihin" else 7563
     with col2:
-        nomor = st.number_input("Nomor Hadits", min_value=1, max_value=7563, value=1)
+        nomor = st.number_input(
+            "Nomor Hadits", min_value=1, max_value=max_hadith, value=1
+        )
 
     if st.button("Ambil Hadits", key="btn_hadith"):
         with st.spinner("Mengambil data..."):
@@ -101,7 +112,12 @@ with tab_hadith:
                     data = response.json()
                     st.subheader(f"{data['kitab']} - Hadits #{data['nomor']}")
                     st.markdown(f"### {data['teks_arab']}")
-                    st.info(data["terjemahan"])
+                    if data["terjemahan"]:
+                        st.info(data["terjemahan"])
+                    else:
+                        st.caption(
+                            "Terjemahan tidak tersedia pada sumber untuk riwayat ini."
+                        )
                 else:
                     st.error("Hadits tidak ditemukan")
             except Exception as e:

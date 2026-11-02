@@ -28,7 +28,7 @@ langsung dari UI tanpa restart server.
 - Bookmark ayat + halaman daftar bookmark, salin ayat
 
 ### 📜 Kitab Hadits (`/hadith`)
-- 9 kitab (Bukhari, Muslim, Tirmidzi, Abu Dawud, Nasa'i, Ibnu Majah, Ahmad, Malik, Darimi)
+- 10 koleksi offline: 9 kitab dari hadis-api-id dan Riyadhus Shalihin
 - **Pencarian kata kunci** terjemahan per kitab (dengan info cakupan pindai)
 - Navigasi prev/next, Hadits Acak, font Arab A+/A-, bookmark + salin
 
@@ -131,12 +131,14 @@ Ayat, tafsir, dan hadits bisa dilayani dari SQLite lokal sehingga tetap jalan ta
 internet. Unduh sekali:
 
 ```bash
-npm run build:offline          # Qur'an + tafsir + 9 kitab hadits
+npm run build:offline          # Qur'an + tafsir + 9 kitab API + Riyadhus Shalihin
 npm run build:offline:quran    # hanya Qur'an + tafsir
 npm run build:offline:hadith   # hanya kitab hadits
 ```
 
-Database ditulis ke `data/reference.sqlite3` (di-ignore Git). Script aman dijalankan
+Database ditulis ke `data/reference.sqlite3` (di-ignore Git). Riyadhus Shalihin
+diimpor dari [hadits-database](https://github.com/irsyadulibad/hadits-database)
+dan hanya tersedia dalam mode `hybrid` atau `local`. Script aman dijalankan
 ulang: surah/kitab yang sudah lengkap akan dilewati. Perilaku runtime diatur
 `REFERENCE_MODE`:
 
