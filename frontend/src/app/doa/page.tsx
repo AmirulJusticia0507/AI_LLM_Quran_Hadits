@@ -1,202 +1,392 @@
 "use client";
 
-import { useState } from "react";
-import { HeartHandshake, Search, Copy, Check } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { 
+  HeartHandshake, 
+  Search, 
+  Copy, 
+  Check, 
+  Bookmark, 
+  BookmarkCheck, 
+  Shuffle, 
+  ChevronLeft, 
+  ChevronRight,
+  Sparkles,
+  BookOpen
+} from "lucide-react";
+import hisnulMuslimData from "@/data/hisnul-muslim.json";
 
-interface Doa {
+interface DoaItem {
+  id: number;
+  group_id: number;
+  kategori: string;
   judul: string;
   arab: string;
-  latin: string;
   arti: string;
-  sumber?: string;
+  sumber: string;
 }
 
-const DOA_LIST: Doa[] = [
-  {
-    judul: "Sebelum Makan",
-    arab: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ",
-    latin: "Allahumma barik lana fima razaqtana wa qina 'adzaban nar",
-    arti: "Ya Allah, berkahilah kami dalam rezeki yang telah Engkau berikan kepada kami dan peliharalah kami dari siksa api neraka.",
-    sumber: "HR. Abu Dawud & Tirmidzi",
-  },
-  {
-    judul: "Sesudah Makan",
-    arab: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
-    latin: "Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin",
-    arti: "Segala puji bagi Allah yang telah memberi kami makan dan minum serta menjadikan kami orang-orang Islam.",
-    sumber: "HR. Abu Dawud & Tirmidzi",
-  },
-  {
-    judul: "Sebelum Tidur",
-    arab: "بِاسْمِكَ اللَّهُمَّ أَحْيَا وَبِاسْمِكَ أَمُوتُ",
-    latin: "Bismikallahumma ahya wa bismika amut",
-    arti: "Dengan nama-Mu ya Allah aku hidup dan dengan nama-Mu aku mati.",
-    sumber: "HR. Bukhari & Muslim",
-  },
-  {
-    judul: "Bangun Tidur",
-    arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
-    latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur",
-    arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami dan kepada-Nya kami dibangkitkan.",
-    sumber: "HR. Bukhari",
-  },
-  {
-    judul: "Masuk Kamar Mandi",
-    arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ",
-    latin: "Allahumma inni a'udzu bika minal khubutsi wal khabaits",
-    arti: "Ya Allah, aku berlindung kepada-Mu dari godaan setan laki-laki dan perempuan.",
-    sumber: "HR. Bukhari & Muslim",
-  },
-  {
-    judul: "Keluar Kamar Mandi",
-    arab: "غُفْرَانَكَ",
-    latin: "Ghufraanaka",
-    arti: "Aku memohon ampunan-Mu (ya Allah).",
-    sumber: "HR. Abu Dawud & Tirmidzi",
-  },
-  {
-    judul: "Bepergian / Naik Kendaraan",
-    arab: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ",
-    latin: "Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin",
-    arti: "Maha Suci (Allah) yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya. (QS. Az-Zukhruf: 13)",
-    sumber: "QS. Az-Zukhruf: 13",
-  },
-  {
-    judul: "Masuk Masjid",
-    arab: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
-    latin: "Allahummaftah li abwaba rahmatik",
-    arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.",
-    sumber: "HR. Muslim",
-  },
-  {
-    judul: "Keluar Masjid",
-    arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
-    latin: "Allahumma inni as'aluka min fadhlik",
-    arti: "Ya Allah, aku memohon kepada-Mu sebagian dari karunia-Mu.",
-    sumber: "HR. Muslim",
-  },
-  {
-    judul: "Ketika Hujan Turun",
-    arab: "اللَّهُمَّ صَيِّبًا نَافِعًا",
-    latin: "Allahumma shayyiban nafi'an",
-    arti: "Ya Allah, (jadikanlah hujan ini) hujan yang bermanfaat.",
-    sumber: "HR. Bukhari",
-  },
-  {
-    judul: "Memohon Ilmu Bermanfaat",
-    arab: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا",
-    latin: "Allahummanfa'ni bima 'allamtani wa 'allimni ma yanfa'uni wa zidni 'ilma",
-    arti: "Ya Allah, berilah aku manfaat dari ilmu yang telah Engkau ajarkan kepadaku, ajarilah aku ilmu yang bermanfaat bagiku, dan tambahkanlah ilmu kepadaku.",
-    sumber: "HR. Tirmidzi & Ibnu Majah",
-  },
-  {
-    judul: "Untuk Kedua Orang Tua",
-    arab: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
-    latin: "Rabbighfir li wa liwalidayya warhamhuma kama rabbayani shaghira",
-    arti: "Ya Tuhanku, ampunilah aku dan kedua orang tuaku, dan sayangilah keduanya sebagaimana mereka menyayangiku di waktu kecil.",
-    sumber: "QS. Al-Isra': 24",
-  },
-  {
-    judul: "Mohon Keteguhan Hati",
-    arab: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
-    latin: "Ya muqallibal qulub, tsabbit qalbi 'ala dinik",
-    arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.",
-    sumber: "HR. Tirmidzi",
-  },
-  {
-    judul: "Sayyidul Istighfar",
-    arab: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
-    latin: "Allahumma anta rabbi, la ilaha illa anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastatha'tu, a'udzu bika min syarri ma shana'tu, abu'u laka bini'matika 'alayya, wa abu'u bidzanbi, faghfirli, fa innahu la yaghfirudz dzunuba illa anta",
-    arti: "Ya Allah, Engkau Tuhanku, tiada tuhan selain Engkau. Engkau menciptakanku dan aku hamba-Mu. Aku berada di atas perjanjian dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu atasku dan aku mengakui dosaku, maka ampunilah aku, karena tidak ada yang mengampuni dosa kecuali Engkau.",
-    sumber: "HR. Bukhari",
-  },
-];
+const ITEMS_PER_PAGE = 15;
 
 export default function DoaPage() {
   const [query, setQuery] = useState("");
+  const [selectedKategori, setSelectedKategori] = useState<string>("Semua");
+  const [currentPage, setCurrentPage] = useState(1);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg">("md");
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
 
-  const filtered = DOA_LIST.filter(
-    (d) =>
-      d.judul.toLowerCase().includes(query.toLowerCase()) ||
-      d.arti.toLowerCase().includes(query.toLowerCase())
-  );
+  // Load bookmarks from localStorage safely
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("doa_bookmarks");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        window.setTimeout(() => setBookmarks(parsed), 0);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
-  const copyDoa = (d: Doa, i: number) => {
-    const text = `${d.judul}\n\n${d.arab}\n\nLatin: ${d.latin}\n\nArtinya: ${d.arti}${d.sumber ? `\n(${d.sumber})` : ""}`;
+  const toggleBookmark = (id: number) => {
+    setBookmarks((prev) => {
+      const next = prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id];
+      try {
+        localStorage.setItem("doa_bookmarks", JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
+
+  // Extract unique categories
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    hisnulMuslimData.forEach((item) => set.add(item.kategori));
+    return ["Semua", ...Array.from(set)];
+  }, []);
+
+  // Filtered items
+  const filtered = useMemo(() => {
+    const q = query.toLowerCase().trim();
+    return (hisnulMuslimData as DoaItem[]).filter((d) => {
+      if (showBookmarksOnly && !bookmarks.includes(d.id)) return false;
+      if (selectedKategori !== "Semua" && d.kategori !== selectedKategori) return false;
+      if (!q) return true;
+      return (
+        d.kategori.toLowerCase().includes(q) ||
+        d.arti.toLowerCase().includes(q) ||
+        d.arab.includes(q) ||
+        d.sumber.toLowerCase().includes(q)
+      );
+    });
+  }, [query, selectedKategori, bookmarks, showBookmarksOnly]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+
+  const paginated = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filtered.slice(start, start + ITEMS_PER_PAGE);
+  }, [filtered, currentPage]);
+
+  const copyDoa = (d: DoaItem) => {
+    const text = `${d.kategori}\n\n${d.arab}\n\nArtinya:\n"${d.arti}"\n\nSumber: ${d.sumber || "Hisnul Muslim"}`;
     navigator.clipboard.writeText(text);
-    setCopiedIdx(i);
+    setCopiedIdx(d.id);
     setTimeout(() => setCopiedIdx(null), 2000);
   };
 
+  const handleRandomDoa = () => {
+    const randomItem = hisnulMuslimData[Math.floor(Math.random() * hisnulMuslimData.length)];
+    setSelectedKategori("Semua");
+    setShowBookmarksOnly(false);
+    setQuery(randomItem.kategori);
+    setCurrentPage(1);
+  };
+
+  const fontSizeClass = {
+    sm: "text-xl sm:text-2xl",
+    md: "text-2xl sm:text-3xl",
+    lg: "text-3xl sm:text-4xl",
+  }[fontSize];
+
   return (
-    <div className="max-w-3xl mx-auto w-full px-2 sm:px-4">
-      <div className="flex items-center gap-3 pb-4 border-b border-slate-200/60 dark:border-slate-800/60 mb-4">
-        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 shrink-0">
-          <HeartHandshake className="w-5 h-5" />
+    <div className="max-w-4xl mx-auto w-full px-3 sm:px-6 py-4">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/60 dark:border-slate-800/60 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 shrink-0">
+            <HeartHandshake className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              Doa &amp; Dzikir Hisnul Muslim
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-semibold">
+                267 Doa
+              </span>
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Kumpulan doa &amp; dzikir shahih dari Al-Qur&apos;an dan As-Sunnah (Perisai Muslim)
+            </p>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">Doa Harian</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{DOA_LIST.length} doa sehari-hari • Arab, Latin & arti</p>
+
+        <div className="flex items-center gap-2">
+          {/* Random Doa */}
+          <button
+            onClick={handleRandomDoa}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer"
+            title="Tampilkan doa acak"
+          >
+            <Shuffle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>Doa Acak</span>
+          </button>
+
+          {/* Bookmarks Toggle */}
+          <button
+            onClick={() => {
+              setShowBookmarksOnly(!showBookmarksOnly);
+              setCurrentPage(1);
+            }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+              showBookmarksOnly
+                ? "bg-amber-500 text-white"
+                : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+            }`}
+            title="Tampilkan doa yang ditandai"
+          >
+            <Bookmark className="w-3.5 h-3.5" />
+            <span>Tersimpan ({bookmarks.length})</span>
+          </button>
+
+          {/* Font Size Selector */}
+          <div className="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-semibold">
+            {(["sm", "md", "lg"] as const).map((size) => (
+              <button
+                key={size}
+                onClick={() => setFontSize(size)}
+                className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
+                  fontSize === size
+                    ? "bg-emerald-600 text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                {size === "sm" ? "A-" : size === "md" ? "A" : "A+"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="relative mb-4">
-        <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 dark:text-slate-500" />
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari doa… mis. tidur, makan, hujan"
-          className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
-        />
-      </div>
-
-      {filtered.length === 0 ? (
-        <p className="text-sm text-slate-500 text-center py-8">Tidak ditemukan. Coba kata kunci lain.</p>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((d, i) => (
-            <div
-              key={i}
-              className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md p-4 sm:p-5 space-y-3"
+      {/* Search & Category Filter */}
+      <div className="space-y-3 mb-6">
+        <div className="relative">
+          <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 dark:text-slate-500" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+            placeholder="Cari doa atau dzikir… mis. tidur, masjid, istikharah, perlindungan, makan"
+            className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm shadow-xs"
+          />
+          {query && (
+            <button
+              onClick={() => {
+                setQuery("");
+                setCurrentPage(1);
+              }}
+              className="absolute right-3.5 top-3 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
-              <div className="flex items-center justify-between gap-2">
-                <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[11px] font-bold">
-                  {d.judul}
-                </span>
-                <button
-                  onClick={() => copyDoa(d, i)}
-                  className="flex items-center gap-1 text-xs text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors p-1 cursor-pointer"
-                  title="Salin doa"
-                >
-                  {copiedIdx === i ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="text-[10px] text-emerald-500">Tersalin</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span className="text-[10px]">Salin</span>
-                    </>
-                  )}
-                </button>
+              Hapus
+            </button>
+          )}
+        </div>
+
+        {/* Categories Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+          <span className="text-xs font-medium text-slate-400 dark:text-slate-500 shrink-0 flex items-center gap-1">
+            <BookOpen className="w-3.5 h-3.5" />
+            Kategori:
+          </span>
+          <select
+            value={selectedKategori}
+            onChange={(e) => {
+              setSelectedKategori(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer shrink-0 max-w-xs"
+          >
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {selectedKategori !== "Semua" && (
+            <button
+              onClick={() => {
+                setSelectedKategori("Semua");
+                setCurrentPage(1);
+              }}
+              className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline shrink-0"
+            >
+              Reset Kategori
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Info Status */}
+      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4 px-1">
+        <span>
+          Menampilkan {filtered.length} doa {selectedKategori !== "Semua" ? `dalam "${selectedKategori}"` : ""}
+        </span>
+        {totalPages > 1 && (
+          <span>
+            Halaman {currentPage} dari {totalPages}
+          </span>
+        )}
+      </div>
+
+      {/* Doa Cards List */}
+      {filtered.length === 0 ? (
+        <div className="text-center py-12 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800">
+          <HeartHandshake className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            Tidak ada doa yang cocok dengan pencarian Anda.
+          </p>
+          <button
+            onClick={() => {
+              setQuery("");
+              setSelectedKategori("Semua");
+              setShowBookmarksOnly(false);
+              setCurrentPage(1);
+            }}
+            className="mt-3 text-xs text-emerald-600 dark:text-emerald-400 font-semibold hover:underline"
+          >
+            Tampilkan Semua Doa
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {paginated.map((d) => {
+            const isBookmarked = bookmarks.includes(d.id);
+            return (
+              <div
+                key={d.id}
+                className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md p-5 sm:p-6 space-y-4 transition-all hover:border-emerald-500/40"
+              >
+                {/* Header Card */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-semibold">
+                      #{d.id}
+                    </span>
+                    <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {d.kategori}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => toggleBookmark(d.id)}
+                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                        isBookmarked
+                          ? "text-amber-500 bg-amber-50 dark:bg-amber-950/40"
+                          : "text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      }`}
+                      title={isBookmarked ? "Hapus bookmark" : "Simpan bookmark"}
+                    >
+                      {isBookmarked ? (
+                        <BookmarkCheck className="w-4 h-4" />
+                      ) : (
+                        <Bookmark className="w-4 h-4" />
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => copyDoa(d)}
+                      className="flex items-center gap-1 text-xs text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                      title="Salin doa"
+                    >
+                      {copiedIdx === d.id ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[11px] text-emerald-500 font-medium">Tersalin</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span className="text-[11px]">Salin</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Teks Arab */}
+                <div className="py-2">
+                  <p
+                    dir="rtl"
+                    className={`arabic-text text-right font-bold text-slate-900 dark:text-emerald-100 leading-loose ${fontSizeClass}`}
+                  >
+                    {d.arab}
+                  </p>
+                </div>
+
+                {/* Terjemahan */}
+                <div className="bg-slate-50 dark:bg-slate-800/70 p-4 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+                  <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5" /> Artinya:
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                    &ldquo;{d.arti}&rdquo;
+                  </p>
+                </div>
+
+                {/* Sumber Hadits */}
+                {d.sumber && (
+                  <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                    <span className="shrink-0 font-medium">📚 Sumber:</span>
+                    <span className="leading-normal">{d.sumber}</span>
+                  </div>
+                )}
               </div>
-              <p className="arabic-text text-right text-2xl sm:text-3xl font-bold text-slate-900 dark:text-emerald-100 leading-loose">
-                {d.arab}
-              </p>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 italic leading-relaxed">
-                {d.latin}
-              </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
-                {d.arti}
-              </p>
-              {d.sumber ? (
-                <p className="text-[11px] text-slate-400 dark:text-slate-500">📚 {d.sumber}</p>
-              ) : null}
-            </div>
-          ))}
+            );
+          })}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-8 pb-8">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Sebelumnya
+          </button>
+
+          <span className="text-xs text-slate-500 dark:text-slate-400 px-3">
+            Halaman {currentPage} / {totalPages}
+          </span>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+          >
+            Berikutnya
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>

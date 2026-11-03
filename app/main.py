@@ -279,3 +279,29 @@ async def search_hadith(req: HadithSearchRequest):
     if result["status"] == "error":
         raise HTTPException(status_code=404, detail=result["message"])
     return result
+
+
+@app.get("/api/doa")
+async def get_all_doa():
+    import json
+    from pathlib import Path
+    p = Path("data/hisnul-muslim.json")
+    if p.is_file():
+        with open(p, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+@app.get("/api/doa/{doa_id}")
+async def get_doa_by_id(doa_id: int):
+    import json
+    from pathlib import Path
+    p = Path("data/hisnul-muslim.json")
+    if p.is_file():
+        with open(p, "r", encoding="utf-8") as f:
+            items = json.load(f)
+            for item in items:
+                if item.get("id") == doa_id:
+                    return {"status": "success", "data": item}
+    raise HTTPException(status_code=404, detail="Doa tidak ditemukan")
+

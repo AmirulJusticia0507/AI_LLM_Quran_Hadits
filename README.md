@@ -38,7 +38,7 @@ langsung dari UI tanpa restart server.
 | `/jadwal` | Jadwal shalat via GPS (metode **Kemenag RI**), tanggal Hijriah, hitung mundur live |
 | `/dzikir` | Tasbih digital 8 dzikir + target + tersimpan lokal |
 | `/asmaul` | 99 Asmaul Husna (Arab, Latin, arti) + pencarian |
-| `/doa` | 14 doa harian (Arab, Latin, arti, sumber) + salin |
+| `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
 
