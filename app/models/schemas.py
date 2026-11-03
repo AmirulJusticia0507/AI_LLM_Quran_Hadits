@@ -26,6 +26,7 @@ class HadithRequest(BaseModel):
         "tirmidzi",
         "riyadhus-shalihin",
         "arbain-nawawi",
+        "musnad-syafii",
     ]
     nomor: int = Field(..., ge=1)
 
@@ -47,6 +48,7 @@ class HadithSearchRequest(BaseModel):
         "tirmidzi",
         "riyadhus-shalihin",
         "arbain-nawawi",
+        "musnad-syafii",
     ]
     keyword: str = Field(..., min_length=1, max_length=100, description="Kata kunci terjemahan")
     max_pages: int = Field(default=8, ge=1, le=12, description="Halaman dipindai (20 hadits/halaman)")

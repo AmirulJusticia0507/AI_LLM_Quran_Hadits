@@ -28,7 +28,7 @@ langsung dari UI tanpa restart server.
 - Bookmark ayat + halaman daftar bookmark, salin ayat
 
 ### 📜 Kitab Hadits (`/hadith`)
-- 11 koleksi: 9 kitab dari hadis-api-id, Riyadhus Shalihin, dan Arba'in An-Nawawi
+- 12 koleksi: 9 kitab dari hadis-api-id, Riyadhus Shalihin, Arba'in An-Nawawi, dan Musnad Asy-Syafi'i (1.800 hadits)
 - **Pencarian kata kunci** terjemahan per kitab (dengan info cakupan pindai)
 - Navigasi prev/next, Hadits Acak, font Arab A+/A-, bookmark + salin
 

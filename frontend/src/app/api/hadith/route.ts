@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import arbainJson from "@/data/arbain-nawawi.json";
+import syafiiJson from "@/data/musnad-syafii.json";
 
 /**
  * Same-origin proxy for the hadith API.
@@ -32,6 +33,7 @@ export const KITAB: Record<string, KitabConfig> = {
   malik: { name: "Muwatta Malik", max: 1587 },
   darimi: { name: "Sunan ad-Darimi", max: 2949 },
   "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
+  "musnad-syafii": { name: "Musnad Asy-Syafi'i", max: 1800 },
 };
 
 const OFFLINE_ONLY = new Set(["riyadhus-shalihin"]);
@@ -92,6 +94,32 @@ export async function POST(request: NextRequest) {
       });
     }
     return fail(`Hadits Arba'in nomor ${nomor} tidak ditemukan.`, 404);
+  }
+
+  // Handle Musnad Asy-Syafi'i locally from parsed dataset
+  if (kitab === "musnad-syafii") {
+    const list = syafiiJson as Array<{
+      number: number;
+      arab: string;
+      id: string;
+      chapter_title?: string;
+      chapter_number?: number | null;
+    }>;
+    const item = list.find((h) => Number(h.number) === nomor);
+    if (item) {
+      return Response.json({
+        status: "success",
+        kitab: config.name,
+        nomor,
+        teks_arab: item.arab,
+        terjemahan: item.id,
+        bab: item.chapter_title || "",
+        nomor_bab: item.chapter_number || 1,
+        nomor_dalam_bab: nomor,
+        source: "offline",
+      });
+    }
+    return fail(`Hadits Musnad Asy-Syafi'i nomor ${nomor} tidak ditemukan.`, 404);
   }
 
   // 1) Local/hosted backend when it is configured (also serves the offline DB).

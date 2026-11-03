@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import arbainJson from "@/data/arbain-nawawi.json";
+import syafiiJson from "@/data/musnad-syafii.json";
 
 /**
  * Same-origin keyword search over the public hadith API, filtered to one kitab.
@@ -29,6 +30,7 @@ const KITAB: Record<string, KitabConfig> = {
   malik: { name: "Muwatta Malik", max: 1587 },
   darimi: { name: "Sunan ad-Darimi", max: 2949 },
   "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
+  "musnad-syafii": { name: "Musnad Asy-Syafi'i", max: 1800 },
 };
 
 interface SearchHit {
@@ -84,6 +86,30 @@ export async function POST(request: NextRequest) {
       matches,
       scanned,
       total: 42,
+      partial: false,
+    });
+  }
+
+  if (kitab === "musnad-syafii") {
+    const list = syafiiJson as Array<{ number: number; arab: string; id: string }>;
+    for (const item of list) {
+      scanned += 1;
+      const haystack = normalize(item.id || "");
+      if (haystack.includes(needle)) {
+        matches.push({
+          number: Number(item.number),
+          arab: item.arab,
+          id: item.id,
+          kitab: KITAB[kitab].name,
+        });
+        if (matches.length >= 50) break;
+      }
+    }
+    return Response.json({
+      status: "success",
+      matches,
+      scanned,
+      total: 1800,
       partial: false,
     });
   }

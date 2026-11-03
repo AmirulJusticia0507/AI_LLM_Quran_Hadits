@@ -172,6 +172,7 @@ def import_hadith(store: ReferenceStore, client: httpx.Client) -> None:
 
     import_riyadhus(store, client)
     import_arbain(store, client)
+    import_syafii(store, client)
 
 
 def import_arbain(store: ReferenceStore, client: httpx.Client) -> None:
@@ -209,6 +210,45 @@ def import_arbain(store: ReferenceStore, client: httpx.Client) -> None:
         replace=True,
     )
     print(f"Hadis Arba'in An-Nawawi: {saved} riwayat tersimpan", flush=True)
+
+
+def import_syafii(store: ReferenceStore, client: httpx.Client) -> None:
+    existing = store.get_hadith_book("musnad-syafii")
+    if existing and existing["hadiths_count"] == 1800 and existing["stored"] == 1800:
+        print("Hadis Musnad Asy-Syafi'i: sudah lengkap (1800 riwayat), dilewati", flush=True)
+        return
+
+    path = Path("data/musnad-syafii-parsed.json")
+    if path.is_file():
+        import json
+        with open(path, "r", encoding="utf-8") as f:
+            items = json.load(f)
+    else:
+        from scripts.syafii import SOURCE_URL, parse_sql_dump
+        sql = fetch_text(client, SOURCE_URL)
+        items = parse_sql_dump(sql)
+
+    rows = []
+    for item in items:
+        num = int(item["number"])
+        rows.append({
+            "number": num,
+            "arab": item.get("arab", ""),
+            "id": item.get("id", ""),
+            "chapter_number": item.get("chapter_number"),
+            "chapter_title": item.get("chapter_title", ""),
+            "chapter_hadith_number": num,
+            "source_arab_number": num,
+            "source_translation_number": num,
+        })
+    saved = store.save_hadith_book(
+        "musnad-syafii",
+        "Musnad Asy-Syafi'i",
+        len(rows),
+        rows,
+        replace=True,
+    )
+    print(f"Hadis Musnad Asy-Syafi'i: {saved} riwayat tersimpan", flush=True)
 
 
 def import_riyadhus(store: ReferenceStore, client: httpx.Client) -> None:
