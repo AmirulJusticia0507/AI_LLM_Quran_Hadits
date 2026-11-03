@@ -44,6 +44,7 @@ const TAGS: { id: string; tag: string }[] = [
 const KITAB_LIST = [
   ...TAGS.map(({ id, tag }) => ({ id, name: KITAB[id].name, maxHadith: KITAB[id].max, tag })),
   { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1903, tag: "Adab & Akhlak" },
+  { id: "arbain-nawawi", name: "Arba'in An-Nawawi", maxHadith: 42, tag: "Hadits Pokok" },
 ];
 
 /**

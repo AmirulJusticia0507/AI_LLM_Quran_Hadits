@@ -21,8 +21,9 @@ class HadithAPI:
         "nasai-5",
         "tirmidzi",
         "riyadhus-shalihin",
+        "arbain-nawawi",
     ]
-    OFFLINE_ONLY_BOOKS = {"riyadhus-shalihin"}
+    OFFLINE_ONLY_BOOKS = {"riyadhus-shalihin", "arbain-nawawi"}
 
     def __init__(
         self,
@@ -58,6 +59,37 @@ class HadithAPI:
             ),
         }
 
+    @staticmethod
+    def _load_arbain_json() -> list[dict]:
+        from pathlib import Path
+        import json
+        path = Path("data/arbain-nawawi.json")
+        if not path.is_file():
+            return []
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+            return payload.get("data", [])
+        except Exception:
+            return []
+
+    def _get_arbain_builtin(self, nomor: int) -> dict | None:
+        items = self._load_arbain_json()
+        for item in items:
+            if int(item.get("no", 0)) == nomor:
+                return {
+                    "status": "success",
+                    "kitab": "Arba'in An-Nawawi",
+                    "nomor": nomor,
+                    "teks_arab": item.get("arab", ""),
+                    "terjemahan": item.get("indo", ""),
+                    "bab": item.get("judul", ""),
+                    "nomor_bab": 1,
+                    "nomor_dalam_bab": nomor,
+                    "source": "offline",
+                }
+        return None
+
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
@@ -67,6 +99,10 @@ class HadithAPI:
             local = await asyncio.to_thread(self.store.get_hadith, kitab_lower, nomor)
             if local:
                 return {**local, "source": "offline"}
+            if kitab_lower == "arbain-nawawi":
+                builtin = self._get_arbain_builtin(nomor)
+                if builtin:
+                    return builtin
             if self.mode == "local":
                 return {
                     "status": "error",
@@ -76,6 +112,11 @@ class HadithAPI:
                         "Jalankan scripts/build_offline_db.py untuk mengisi database offline."
                     ),
                 }
+
+        if kitab_lower == "arbain-nawawi":
+            builtin = self._get_arbain_builtin(nomor)
+            if builtin:
+                return builtin
 
         if kitab_lower in self.OFFLINE_ONLY_BOOKS:
             return self._offline_only_error(kitab_lower)
@@ -146,6 +187,31 @@ class HadithAPI:
                         "partial": book["stored"] < book["hadiths_count"],
                         "source": "offline",
                     }
+            if kitab_lower == "arbain-nawawi":
+                items = self._load_arbain_json()
+                kw = keyword.casefold()
+                matches = []
+                for item in items:
+                    text_all = f"{item.get('judul', '')} {item.get('indo', '')}".casefold()
+                    if kw in text_all:
+                        matches.append({
+                            "number": int(item.get("no", 0)),
+                            "arab": item.get("arab", ""),
+                            "id": item.get("indo", ""),
+                            "bab": item.get("judul", ""),
+                            "nomor_bab": 1,
+                        })
+                return {
+                    "status": "success",
+                    "kitab": kitab_lower,
+                    "keyword": keyword,
+                    "matches": matches,
+                    "match_total": len(matches),
+                    "scanned": len(items),
+                    "total": len(items),
+                    "partial": False,
+                    "source": "offline",
+                }
             return self._offline_only_error(kitab_lower)
 
         if self.mode != "online":

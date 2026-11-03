@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import arbainJson from "@/data/arbain-nawawi.json";
 
 /**
  * Same-origin proxy for the hadith API.
@@ -30,6 +31,7 @@ export const KITAB: Record<string, KitabConfig> = {
   ahmad: { name: "Musnad Ahmad", max: 4305 },
   malik: { name: "Muwatta Malik", max: 1587 },
   darimi: { name: "Sunan ad-Darimi", max: 2949 },
+  "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
 };
 
 const OFFLINE_ONLY = new Set(["riyadhus-shalihin"]);
@@ -71,6 +73,25 @@ export async function POST(request: NextRequest) {
   if (!config) return fail("Kitab tidak tersedia.", 400);
   if (!Number.isInteger(nomor) || nomor < 1 || nomor > config.max) {
     return fail(`Nomor hadits harus antara 1 dan ${config.max.toLocaleString("id-ID")}.`, 400);
+  }
+
+  // Handle Arba'in Nawawi locally from verified dataset
+  if (kitab === "arbain-nawawi") {
+    const item = arbainJson.data.find((h) => Number(h.no) === nomor);
+    if (item) {
+      return Response.json({
+        status: "success",
+        kitab: config.name,
+        nomor,
+        teks_arab: item.arab,
+        terjemahan: item.indo,
+        bab: item.judul,
+        nomor_bab: 1,
+        nomor_dalam_bab: nomor,
+        source: "offline",
+      });
+    }
+    return fail(`Hadits Arba'in nomor ${nomor} tidak ditemukan.`, 404);
   }
 
   // 1) Local/hosted backend when it is configured (also serves the offline DB).

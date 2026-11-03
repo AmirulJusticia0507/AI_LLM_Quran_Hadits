@@ -171,6 +171,44 @@ def import_hadith(store: ReferenceStore, client: httpx.Client) -> None:
         print(f"Hadis {slug}: {saved:,} riwayat tersimpan", flush=True)
 
     import_riyadhus(store, client)
+    import_arbain(store, client)
+
+
+def import_arbain(store: ReferenceStore, client: httpx.Client) -> None:
+    existing = store.get_hadith_book("arbain-nawawi")
+    if existing and existing["hadiths_count"] == 42 and existing["stored"] == 42:
+        print("Hadis Arba'in An-Nawawi: sudah lengkap (42 riwayat), dilewati", flush=True)
+        return
+
+    path = Path("data/arbain-nawawi.json")
+    if path.is_file():
+        import json
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = fetch_json(client, "https://ournoor.com/api/v1/hadits")
+
+    rows = []
+    for item in data.get("data", []):
+        num = int(item["no"])
+        rows.append({
+            "number": num,
+            "arab": item.get("arab", ""),
+            "id": item.get("indo", ""),
+            "chapter_number": 1,
+            "chapter_title": item.get("judul", "Hadits Pokok"),
+            "chapter_hadith_number": num,
+            "source_arab_number": num,
+            "source_translation_number": num,
+        })
+    saved = store.save_hadith_book(
+        "arbain-nawawi",
+        "Arba'in An-Nawawi",
+        len(rows),
+        rows,
+        replace=True,
+    )
+    print(f"Hadis Arba'in An-Nawawi: {saved} riwayat tersimpan", flush=True)
 
 
 def import_riyadhus(store: ReferenceStore, client: httpx.Client) -> None:

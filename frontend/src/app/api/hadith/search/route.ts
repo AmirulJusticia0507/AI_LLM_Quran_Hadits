@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import arbainJson from "@/data/arbain-nawawi.json";
 
 /**
  * Same-origin keyword search over the public hadith API, filtered to one kitab.
@@ -27,6 +28,7 @@ const KITAB: Record<string, KitabConfig> = {
   ahmad: { name: "Musnad Ahmad", max: 4305 },
   malik: { name: "Muwatta Malik", max: 1587 },
   darimi: { name: "Sunan ad-Darimi", max: 2949 },
+  "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
 };
 
 interface SearchHit {
@@ -63,6 +65,28 @@ export async function POST(request: NextRequest) {
   const matches: SearchHit[] = [];
   let scanned = 0;
   let partial = false;
+
+  if (kitab === "arbain-nawawi") {
+    for (const item of arbainJson.data) {
+      scanned += 1;
+      const haystack = normalize(`${item.judul} ${item.indo}`);
+      if (haystack.includes(needle)) {
+        matches.push({
+          number: Number(item.no),
+          arab: item.arab,
+          id: item.indo,
+          kitab: KITAB[kitab].name,
+        });
+      }
+    }
+    return Response.json({
+      status: "success",
+      matches,
+      scanned,
+      total: 42,
+      partial: false,
+    });
+  }
 
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     let payload: { items?: { number: number; arab?: string; id?: string }[] } | null = null;

@@ -1,4 +1,5 @@
 import metadata from "./matan-metadata.json";
+import arbainJson from "@/data/arbain-nawawi.json";
 
 export type BookId = keyof typeof metadata;
 type Entry = { number: number; title: string; arabic: string; translation: string | null; chapter: number };
@@ -55,6 +56,21 @@ type Book = ReturnType<typeof parseBook>;
 const cache = new Map<BookId, { expires: number; book: Book }>();
 const pending = new Map<BookId, Promise<Book>>();
 async function fetchBook(id: BookId): Promise<Book> {
+  if (id === "arbain-nawawi") {
+    try {
+      const response = await fetch(sources[id], { signal: AbortSignal.timeout(10000), cache: "no-store" });
+      if (response.ok) {
+        const book = parseBook(id, await response.json());
+        cache.set(id, { expires: Date.now() + 3600000, book });
+        return book;
+      }
+    } catch {
+      // Offline fallback
+    }
+    const book = parseBook(id, arbainJson);
+    cache.set(id, { expires: Date.now() + 3600000, book });
+    return book;
+  }
   const response = await fetch(sources[id], { signal: AbortSignal.timeout(30000), cache: "no-store" });
   if (!response.ok) throw new Error("Sumber tidak tersedia");
   const book = parseBook(id, await response.json());
