@@ -23,8 +23,9 @@ class HadithAPI:
         "riyadhus-shalihin",
         "arbain-nawawi",
         "musnad-syafii",
+        "bulughul-maram",
     ]
-    OFFLINE_ONLY_BOOKS = {"riyadhus-shalihin", "arbain-nawawi", "musnad-syafii"}
+    OFFLINE_ONLY_BOOKS = {"riyadhus-shalihin", "arbain-nawawi", "musnad-syafii", "bulughul-maram"}
 
     def __init__(
         self,
@@ -120,6 +121,35 @@ class HadithAPI:
                     "source": "offline",
                 }
         return None
+    @staticmethod
+    def _load_bulughul_json() -> list[dict]:
+        from pathlib import Path
+        import json
+        path = Path("data/bulughul-maram.json")
+        if not path.is_file():
+            return []
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+
+    def _get_bulughul_builtin(self, nomor: int) -> dict | None:
+        items = self._load_bulughul_json()
+        for item in items:
+            if int(item.get("number", 0)) == nomor:
+                return {
+                    "status": "success",
+                    "kitab": "Bulughul Maram",
+                    "nomor": nomor,
+                    "teks_arab": item.get("arab", ""),
+                    "terjemahan": item.get("id", ""),
+                    "bab": item.get("bab", ""),
+                    "nomor_bab": 1,
+                    "nomor_dalam_bab": nomor,
+                    "source": "offline",
+                }
+        return None
 
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
         kitab_lower = kitab.lower()
@@ -136,6 +166,10 @@ class HadithAPI:
                     return builtin
             if kitab_lower == "musnad-syafii":
                 builtin = self._get_syafii_builtin(nomor)
+                if builtin:
+                    return builtin
+            if kitab_lower == "bulughul-maram":
+                builtin = self._get_bulughul_builtin(nomor)
                 if builtin:
                     return builtin
             if self.mode == "local":
@@ -155,6 +189,11 @@ class HadithAPI:
 
         if kitab_lower == "musnad-syafii":
             builtin = self._get_syafii_builtin(nomor)
+            if builtin:
+                return builtin
+
+        if kitab_lower == "bulughul-maram":
+            builtin = self._get_bulughul_builtin(nomor)
             if builtin:
                 return builtin
 
@@ -264,6 +303,31 @@ class HadithAPI:
                             "arab": item.get("arab", ""),
                             "id": item.get("id", ""),
                             "bab": item.get("chapter_title", ""),
+                            "nomor_bab": 1,
+                        })
+                return {
+                    "status": "success",
+                    "kitab": kitab_lower,
+                    "keyword": keyword,
+                    "matches": matches,
+                    "match_total": len(matches),
+                    "scanned": len(items),
+                    "total": len(items),
+                    "partial": False,
+                    "source": "offline",
+                }
+            if kitab_lower == "bulughul-maram":
+                items = self._load_bulughul_json()
+                kw = keyword.casefold()
+                matches = []
+                for item in items:
+                    text_all = f"{item.get('bab', '')} {item.get('id', '')}".casefold()
+                    if kw in text_all:
+                        matches.append({
+                            "number": int(item.get("number", 0)),
+                            "arab": item.get("arab", ""),
+                            "id": item.get("id", ""),
+                            "bab": item.get("bab", ""),
                             "nomor_bab": 1,
                         })
                 return {

@@ -173,6 +173,7 @@ def import_hadith(store: ReferenceStore, client: httpx.Client) -> None:
     import_riyadhus(store, client)
     import_arbain(store, client)
     import_syafii(store, client)
+    import_bulughul(store, client)
 
 
 def import_arbain(store: ReferenceStore, client: httpx.Client) -> None:
@@ -249,6 +250,44 @@ def import_syafii(store: ReferenceStore, client: httpx.Client) -> None:
         replace=True,
     )
     print(f"Hadis Musnad Asy-Syafi'i: {saved} riwayat tersimpan", flush=True)
+
+
+def import_bulughul(store: ReferenceStore, client: httpx.Client) -> None:
+    existing = store.get_hadith_book("bulughul-maram")
+    if existing and existing["hadiths_count"] == 1323 and existing["stored"] == 1323:
+        print("Hadis Bulughul Maram: sudah lengkap (1323 riwayat), dilewati", flush=True)
+        return
+
+    path = Path("data/bulughul-maram.json")
+    if path.is_file():
+        import json
+        with open(path, "r", encoding="utf-8") as f:
+            items = json.load(f)
+    else:
+        print("File data/bulughul-maram.json tidak ditemukan, jalankan scripts/build_bulughul_json.py", flush=True)
+        return
+
+    rows = []
+    for item in items:
+        num = int(item["number"])
+        rows.append({
+            "number": num,
+            "arab": item.get("arab", ""),
+            "id": item.get("id", ""),
+            "chapter_number": 1,
+            "chapter_title": item.get("bab", "Bulughul Maram"),
+            "chapter_hadith_number": num,
+            "source_arab_number": num,
+            "source_translation_number": num,
+        })
+    saved = store.save_hadith_book(
+        "bulughul-maram",
+        "Bulughul Maram",
+        len(rows),
+        rows,
+        replace=True,
+    )
+    print(f"Hadis Bulughul Maram: {saved} riwayat tersimpan", flush=True)
 
 
 def import_riyadhus(store: ReferenceStore, client: httpx.Client) -> None:

@@ -94,9 +94,10 @@ with tab_hadith:
                 "riyadhus-shalihin",
                 "arbain-nawawi",
                 "musnad-syafii",
+                "bulughul-maram",
             ],
         )
-        max_hadith = 42 if kitab == "arbain-nawawi" else (1903 if kitab == "riyadhus-shalihin" else (1800 if kitab == "musnad-syafii" else 7563))
+        max_hadith = 42 if kitab == "arbain-nawawi" else (1903 if kitab == "riyadhus-shalihin" else (1800 if kitab == "musnad-syafii" else (1323 if kitab == "bulughul-maram" else 7563)))
     with col2:
         nomor = st.number_input(
             "Nomor Hadits", min_value=1, max_value=max_hadith, value=1

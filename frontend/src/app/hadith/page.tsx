@@ -46,6 +46,7 @@ const KITAB_LIST = [
   { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1903, tag: "Adab & Akhlak" },
   { id: "arbain-nawawi", name: "Arba'in An-Nawawi", maxHadith: 42, tag: "Hadits Pokok" },
   { id: "musnad-syafii", name: "Musnad Asy-Syafi'i", maxHadith: 1800, tag: "Musnad" },
+  { id: "bulughul-maram", name: "Bulughul Maram", maxHadith: 1323, tag: "Fiqih Hadits" },
 ];
 
 /**
