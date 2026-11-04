@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import arbainJson from "@/data/arbain-nawawi.json";
 import syafiiJson from "@/data/musnad-syafii.json";
 import bulughulJson from "@/data/bulughul-maram.json";
+import riyadhusJson from "@/data/riyadhus-shalihin.json";
 
 /**
  * Same-origin proxy for the hadith API.
@@ -36,9 +37,10 @@ export const KITAB: Record<string, KitabConfig> = {
   "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
   "musnad-syafii": { name: "Musnad Asy-Syafi'i", max: 1800 },
   "bulughul-maram": { name: "Bulughul Maram", max: 1323 },
+  "riyadhus-shalihin": { name: "Riyadhus Shalihin", max: 1903 },
 };
 
-const OFFLINE_ONLY = new Set(["riyadhus-shalihin"]);
+const OFFLINE_ONLY = new Set<string>([]);
 
 function fail(message: string, status = 502) {
   return Response.json({ status: "error", message }, { status });
@@ -147,6 +149,33 @@ export async function POST(request: NextRequest) {
       });
     }
     return fail(`Hadits Bulughul Maram nomor ${nomor} tidak ditemukan.`, 404);
+  }
+
+  // Handle Riyadhus Shalihin locally from parsed dataset
+  if (kitab === "riyadhus-shalihin") {
+    const list = riyadhusJson as Array<{
+      number: number;
+      arab: string;
+      id: string;
+      chapter_title?: string;
+      chapter_number?: number | null;
+      chapter_hadith_number?: number | null;
+    }>;
+    const item = list.find((h) => Number(h.number) === nomor);
+    if (item) {
+      return Response.json({
+        status: "success",
+        kitab: config.name,
+        nomor,
+        teks_arab: item.arab,
+        terjemahan: item.id,
+        bab: item.chapter_title || "",
+        nomor_bab: item.chapter_number || 1,
+        nomor_dalam_bab: item.chapter_hadith_number || nomor,
+        source: "offline",
+      });
+    }
+    return fail(`Hadits Riyadhus Shalihin nomor ${nomor} tidak ditemukan.`, 404);
   }
 
   // 1) Local/hosted backend when it is configured (also serves the offline DB).

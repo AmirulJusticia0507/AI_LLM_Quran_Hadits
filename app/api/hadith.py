@@ -151,6 +151,36 @@ class HadithAPI:
                 }
         return None
 
+    @staticmethod
+    def _load_riyadhus_json() -> list[dict]:
+        from pathlib import Path
+        import json
+        path = Path("data/riyadhus-shalihin.json")
+        if not path.is_file():
+            return []
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+
+    def _get_riyadhus_builtin(self, nomor: int) -> dict | None:
+        items = self._load_riyadhus_json()
+        for item in items:
+            if int(item.get("number", 0)) == nomor:
+                return {
+                    "status": "success",
+                    "kitab": "Riyadhus Shalihin",
+                    "nomor": nomor,
+                    "teks_arab": item.get("arab", ""),
+                    "terjemahan": item.get("id", ""),
+                    "bab": item.get("chapter_title", ""),
+                    "nomor_bab": item.get("chapter_number") or 1,
+                    "nomor_dalam_bab": item.get("chapter_hadith_number") or nomor,
+                    "source": "offline",
+                }
+        return None
+
     async def get_hadith(self, kitab: str, nomor: int) -> dict:
         kitab_lower = kitab.lower()
         if kitab_lower not in self.AVAILABLE_BOOKS:
@@ -172,6 +202,11 @@ class HadithAPI:
                 builtin = self._get_bulughul_builtin(nomor)
                 if builtin:
                     return builtin
+            if kitab_lower == "riyadhus-shalihin":
+                builtin = self._get_riyadhus_builtin(nomor)
+                if builtin:
+                    return builtin
+
             if self.mode == "local":
                 return {
                     "status": "error",
@@ -196,6 +231,13 @@ class HadithAPI:
             builtin = self._get_bulughul_builtin(nomor)
             if builtin:
                 return builtin
+
+        if kitab_lower == "riyadhus-shalihin":
+            builtin = self._get_riyadhus_builtin(nomor)
+            if builtin:
+                return builtin
+
+
 
         if kitab_lower in self.OFFLINE_ONLY_BOOKS:
             return self._offline_only_error(kitab_lower)
@@ -329,6 +371,31 @@ class HadithAPI:
                             "id": item.get("id", ""),
                             "bab": item.get("bab", ""),
                             "nomor_bab": 1,
+                        })
+                return {
+                    "status": "success",
+                    "kitab": kitab_lower,
+                    "keyword": keyword,
+                    "matches": matches,
+                    "match_total": len(matches),
+                    "scanned": len(items),
+                    "total": len(items),
+                    "partial": False,
+                    "source": "offline",
+                }
+            if kitab_lower == "riyadhus-shalihin":
+                items = self._load_riyadhus_json()
+                kw = keyword.casefold()
+                matches = []
+                for item in items:
+                    text_all = f"{item.get('chapter_title', '')} {item.get('id', '')}".casefold()
+                    if kw in text_all:
+                        matches.append({
+                            "number": int(item.get("number", 0)),
+                            "arab": item.get("arab", ""),
+                            "id": item.get("id", ""),
+                            "bab": item.get("chapter_title", ""),
+                            "nomor_bab": item.get("chapter_number") or 1,
                         })
                 return {
                     "status": "success",

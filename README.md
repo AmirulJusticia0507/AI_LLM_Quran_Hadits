@@ -28,7 +28,7 @@ langsung dari UI tanpa restart server.
 - Bookmark ayat + halaman daftar bookmark, salin ayat
 
 ### 📜 Kitab Hadits (`/hadith`)
-- 13 koleksi: 9 kitab dari hadis-api-id, Riyadhus Shalihin, Arba'in An-Nawawi, Musnad Asy-Syafi'i (1.800 hadits), dan Bulughul Maram (1.323 hadits)
+- 13 koleksi: 9 kitab dari hadis-api-id, Riyadhus Shalihin (1.903 hadits offline), Arba'in An-Nawawi, Musnad Asy-Syafi'i (1.800 hadits), dan Bulughul Maram (1.323 hadits)
 - **Pencarian kata kunci** terjemahan per kitab (dengan info cakupan pindai)
 - Navigasi prev/next, Hadits Acak, font Arab A+/A-, bookmark + salin
 
@@ -136,9 +136,7 @@ npm run build:offline:quran    # hanya Qur'an + tafsir
 npm run build:offline:hadith   # hanya kitab hadits
 ```
 
-Database ditulis ke `data/reference.sqlite3` (di-ignore Git). Riyadhus Shalihin
-diimpor dari [hadits-database](https://github.com/irsyadulibad/hadits-database)
-dan hanya tersedia dalam mode `hybrid` atau `local`. Script aman dijalankan
+Database ditulis ke `data/reference.sqlite3` (di-ignore Git). Riyadhus Shalihin (1.903 hadits) sudah terintegrasi langsung sebagai dataset JSON offline di frontend Next.js dan backend Python tanpa perlu koneksi internet. Script aman dijalankan
 ulang: surah/kitab yang sudah lengkap akan dilewati. Perilaku runtime diatur
 `REFERENCE_MODE`:
 

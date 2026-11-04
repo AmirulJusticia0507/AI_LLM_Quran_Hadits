@@ -266,7 +266,7 @@ Pilih provider LLM melalui variabel `LLM_PROVIDER` di file `.env`:
 - Copy ayat
 
 ### Hadits (`/hadith`)
-- Grid selector **13 kitab (9 kitab Kutubut Tis'ah + Riyadhus Shalihin + Arba'in An-Nawawi + Musnad Asy-Syafi'i + Bulughul Maram)** dengan tag kategori
+- Grid selector **13 kitab (9 kitab Kutubut Tis'ah + Riyadhus Shalihin (1.903 hadits offline) + Arba'in An-Nawawi + Musnad Asy-Syafi'i + Bulughul Maram)** dengan tag kategori
 - **Hadits Acak** (random hadith) button
 - Input nomor hadits dengan stepper (+/-)
 - Tampilan: teks Arab (font size adjustable), terjemahan Indonesia

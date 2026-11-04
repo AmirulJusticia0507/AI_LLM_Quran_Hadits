@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import arbainJson from "@/data/arbain-nawawi.json";
 import syafiiJson from "@/data/musnad-syafii.json";
 import bulughulJson from "@/data/bulughul-maram.json";
+import riyadhusJson from "@/data/riyadhus-shalihin.json";
 
 /**
  * Same-origin keyword search over the public hadith API, filtered to one kitab.
@@ -33,6 +34,7 @@ const KITAB: Record<string, KitabConfig> = {
   "arbain-nawawi": { name: "Arba'in An-Nawawi", max: 42 },
   "musnad-syafii": { name: "Musnad Asy-Syafi'i", max: 1800 },
   "bulughul-maram": { name: "Bulughul Maram", max: 1323 },
+  "riyadhus-shalihin": { name: "Riyadhus Shalihin", max: 1903 },
 };
 
 interface SearchHit {
@@ -136,6 +138,35 @@ export async function POST(request: NextRequest) {
       matches,
       scanned,
       total: 1323,
+      partial: false,
+    });
+  }
+
+  if (kitab === "riyadhus-shalihin") {
+    const list = riyadhusJson as Array<{
+      number: number;
+      arab: string;
+      id: string;
+      chapter_title?: string;
+    }>;
+    for (const item of list) {
+      scanned += 1;
+      const haystack = normalize(`${item.chapter_title || ""} ${item.id || ""}`);
+      if (haystack.includes(needle)) {
+        matches.push({
+          number: Number(item.number),
+          arab: item.arab,
+          id: item.id,
+          kitab: KITAB[kitab].name,
+        });
+        if (matches.length >= 50) break;
+      }
+    }
+    return Response.json({
+      status: "success",
+      matches,
+      scanned,
+      total: 1903,
       partial: false,
     });
   }

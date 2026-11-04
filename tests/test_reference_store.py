@@ -228,7 +228,7 @@ class LocalFirstTests(unittest.IsolatedAsyncioTestCase):
     async def test_riyadhus_shalihin_reports_missing_offline_data(self):
         api = HadithAPI(store=self.store, mode="hybrid")
         with patch("app.api.hadith.httpx.AsyncClient") as client:
-            result = await api.get_hadith("riyadhus-shalihin", 1)
+            result = await api.get_hadith("riyadhus-shalihin", 99999)
         client.assert_not_called()
         self.assertEqual(result["status"], "error")
         self.assertEqual(result["source"], "offline")
