@@ -7,7 +7,7 @@ import httpx
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.llm.prompt import SYSTEM_PROMPT
-from app.llm.tools import TOOLS
+from app.llm.tools import TOOLS, source_from_tool
 
 
 def _json_schema(value):
@@ -48,6 +48,10 @@ class GripHubLLM:
                 from app.models.schemas import HadithRequest
                 params = HadithRequest(**args)
                 return await self.hadith_api.get_hadith(kitab=params.kitab, nomor=params.nomor)
+            if name == "search_quran":
+                return await self.quran_api.search_verse(args["query"])
+            if name == "search_hadith":
+                return await self.hadith_api.search_hadith(kitab=args["kitab"], keyword=args["query"])
         except (ValueError, TypeError):
             return {"status": "error", "message": "Argumen rujukan tidak valid."}
         return {"status": "error", "message": "Fungsi rujukan tidak dikenal."}
@@ -118,6 +122,13 @@ class GripHubLLM:
                     messages.append({"role": "assistant", "content": round_text or None, "tool_calls": ordered_calls})
                     for call in ordered_calls:
                         result = await self._execute_tool(call["function"]["name"], call["function"]["arguments"])
+                        try:
+                            args = json.loads(call["function"]["arguments"])
+                            source = source_from_tool(call["function"]["name"], args, result)
+                            if source:
+                                yield json.dumps({"type": "sources", "sources": [source]})
+                        except (TypeError, ValueError):
+                            pass
                         messages.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(result, ensure_ascii=False)})
                 raise ValueError("Too many tool rounds")
         except httpx.HTTPStatusError as exc:

@@ -3,6 +3,16 @@ export interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp?: string;
+  references?: Reference[];
+}
+
+/** A reference explicitly mentioned in an AI response, kept with the chat. */
+export interface Reference {
+  id: string;
+  type: "quran" | "hadith";
+  label: string;
+  detail: string;
+  href: string;
 }
 
 export function makeMessage(role: Message["role"], content: string, timestamp?: string): Message {

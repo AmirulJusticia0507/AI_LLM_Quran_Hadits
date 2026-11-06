@@ -7,7 +7,7 @@ import os
 
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
-from app.llm.tools import TOOLS
+from app.llm.tools import TOOLS, source_from_tool
 from app.llm.prompt import SYSTEM_PROMPT
 
 load_dotenv()
@@ -63,6 +63,10 @@ class GeminiLLM:
             return await self.hadith_api.get_hadith(
                 kitab=args["kitab"], nomor=args["nomor"]
             )
+        elif name == "search_quran":
+            return await self.quran_api.search_verse(args["query"])
+        elif name == "search_hadith":
+            return await self.hadith_api.search_hadith(kitab=args["kitab"], keyword=args["query"])
         return {"status": "error", "message": "Unknown function"}
 
     def _extract_text(self, response) -> str:
@@ -159,6 +163,9 @@ class GeminiLLM:
                 function_responses = []
                 for function_call in function_calls:
                     result = await self._execute_tool(function_call)
+                    source = source_from_tool(function_call.name, dict(function_call.args), result)
+                    if source:
+                        yield json.dumps({"type": "sources", "sources": [source]})
                     function_responses.append(
                         {
                             "function_response": {

@@ -5,12 +5,13 @@ import SiteSearch from "@/components/SiteSearch";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass, BookMarked, Globe } from "lucide-react";
+import { MessageSquare, BookOpen, ScrollText, Moon, Sun, Menu, X, Sparkles, Info, GraduationCap, Clock, ChevronDown, Fingerprint, HeartHandshake, Compass, BookMarked, Globe, Network } from "lucide-react";
 
 const navItems = [
   { href: "/", labelKey: "nav.chat", icon: MessageSquare, badge: "AI Assistant" },
   { href: "/quran", labelKey: "nav.quran", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", labelKey: "nav.hadith", icon: ScrollText, badge: "9 Kitab" },
+  { href: "/rujukan", labelKey: "nav.references", icon: Network, badge: "Sumber" },
   { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "5 Modul Islam" },
   { href: "/about", labelKey: "nav.about", icon: Info, badge: "Info" },
 ];

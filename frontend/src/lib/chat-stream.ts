@@ -1,5 +1,6 @@
 export type ChatStreamEvent =
   | { type: "token"; text: string }
+  | { type: "sources"; sources: Array<Record<string, unknown>> }
   | { type: "error"; message: string }
   | { type: "done" };
 
@@ -10,6 +11,7 @@ function parseEvent(line: string): ChatStreamEvent | null {
   try {
     const event = JSON.parse(payload);
     if (event.type === "token" && typeof event.text === "string") return event;
+    if (event.type === "sources" && Array.isArray(event.sources)) return event;
     if (event.type === "error" && typeof event.message === "string") return event;
     if (event.type === "done") return event;
   } catch { /* Ignore non-JSON events, never discard partial network chunks. */ }

@@ -13,6 +13,7 @@ from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.api.reference_store import ReferenceStore, resolve_mode
 from app.api.matan import MatanAPI, BookId
+from app.api.chat_store import ChatStore
 from app.api.visits import router as visits_router
 from app.llm.factory import get_llm
 
@@ -84,6 +85,7 @@ reference_store = ReferenceStore()
 quran_api = QuranAPI(store=reference_store)
 hadith_api = HadithAPI(store=reference_store)
 matan_api = MatanAPI()
+chat_store = ChatStore(os.getenv("CHAT_DB_PATH", "data/chat.sqlite3"))
 
 
 @app.get("/api/matan/{kitab}")
@@ -173,8 +175,21 @@ async def chat_stream(req: ChatRequest):
         kwargs = {"session_id": req.session_id}
         if llm_provider == "griphub":
             kwargs["history"] = session_mgr.get_history(req.session_id)
+        chat_store.add_message(req.session_id, "user", req.message)
+        answer = ""
+        sources = []
         async for chunk in current_llm.chat_stream(req.message, **kwargs):
+            try:
+                event = json.loads(chunk)
+                if event.get("type") == "token":
+                    answer += event.get("text", "")
+                elif event.get("type") == "sources":
+                    sources.extend(event.get("sources", []))
+            except (TypeError, json.JSONDecodeError):
+                pass
             yield f"data: {chunk}\n\n"
+        if answer:
+            chat_store.add_message(req.session_id, "assistant", answer, sources)
 
     return StreamingResponse(
         event_generator(),
@@ -185,6 +200,27 @@ async def chat_stream(req: ChatRequest):
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@app.post("/api/chat/sessions/{session_id}/share")
+async def share_chat(session_id: str):
+    slug = chat_store.share(session_id)
+    if not slug:
+        raise HTTPException(status_code=404, detail="Sesi chat tidak ditemukan.")
+    return {"slug": slug}
+
+
+@app.get("/api/chat/shared/{slug}")
+async def get_shared_chat(slug: str):
+    shared = chat_store.public_chat(slug)
+    if not shared:
+        raise HTTPException(status_code=404, detail="Tautan chat tidak ditemukan atau tidak bersifat publik.")
+    return shared
+
+
+@app.get("/api/chat/explore")
+async def explore_shared_chats(limit: int = Query(20, ge=1, le=50)):
+    return {"chats": chat_store.explore(limit)}
 
 
 @app.post("/api/quran/verse")

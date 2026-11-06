@@ -36,7 +36,9 @@ class GeminiStreamTests(unittest.IsolatedAsyncioTestCase):
 
         llm._execute_tool = tool_result
         events = [json.loads(event) async for event in llm.chat_stream("Tampilkan hadits")]
-        self.assertEqual(events, [{"type": "token", "text": "### Dalil Hadits\nTeks lengkap."}, {"type": "done"}])
+        self.assertEqual(events[0]["type"], "sources")
+        self.assertEqual(events[0]["sources"][0]["kitab"], "bukhari")
+        self.assertEqual(events[1:], [{"type": "token", "text": "### Dalil Hadits\nTeks lengkap."}, {"type": "done"}])
         self.assertEqual(len(chat.calls), 2)
         self.assertTrue(chat.calls[1][1]["stream"])
         self.assertEqual(chat.calls[1][0][0]["function_response"]["response"]["teks_arab"], "نص كامل")

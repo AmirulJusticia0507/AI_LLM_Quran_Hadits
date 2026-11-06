@@ -8,6 +8,7 @@ const pages = [
   ['/', 'Chat AI', 'Tanya jawab keislaman dengan rujukan Al-Qur’an dan hadits.', 'asisten islam pertanyaan konsultasi'],
   ['/quran', 'Al-Qur’an & Terjemahan', 'Baca surah, ayat, terjemahan, dan dengarkan murottal Al-Qur’an.', 'quran qur an surat tafsir audio'],
   ['/hadith', 'Hadits', 'Telusuri koleksi kitab hadits dan baca riwayat beserta terjemahannya.', 'hadis hadith bukhari muslim tirmidzi abu dawud nasai ibnu majah ahmad malik darimi'],
+  ['/rujukan', 'Jelajah Rujukan', 'Telusuri koleksi sumber Al-Qur’an, hadits, doa, dan materi Al-Hikmah AI.', 'sumber dalil referensi rujukan verifikasi koleksi kitab'],
   ['/belajar', 'Pusat Belajar Islam', 'Materi tazkiyah, fiqh ibadah, sirah, tajwid, makhraj huruf, dan balaghoh.', 'pelajaran modul belajar'],
   ['/fiqh', 'Fiqh Ibadah', 'Pelajari bersuci, shalat, puasa, zakat, haji, dan ibadah sehari-hari.', 'fikih fiqih'],
   ['/tazkiyah', 'Tazkiyatun Nafs', 'Membersihkan hati, menjaga niat, dan membangun akhlak baik.', 'akhlak penyucian jiwa'],

@@ -5,7 +5,9 @@ import Swal from "sweetalert2";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { readChatStream, type ChatStreamEvent } from "@/lib/chat-stream";
-import { ensureMessageIds, makeMessage, type Message } from "@/lib/chat-message";
+import { ensureMessageIds, makeMessage, type Message, type Reference } from "@/lib/chat-message";
+import { extractReferences } from "@/lib/references";
+import ReferencePanel from "@/components/ReferencePanel";
 import {
   Send,
   Trash2,
@@ -151,6 +153,7 @@ export default function ChatPage() {
   // Ref accumulates streamed tokens outside React render cycle — avoids
   // React compiler's "immutable captured variable" error on reassignment.
   const assistantContentRef = useRef("");
+  const assistantSourcesRef = useRef<Reference[]>([]);
 
   const activeSession = sessions.find((s) => s.id === activeId) ?? sessions[0];
   const messages = useMemo(() => activeSession?.messages ?? [], [activeSession]);
@@ -372,6 +375,20 @@ export default function ChatPage() {
 
   const handleStreamEvent = (event: ChatStreamEvent) => {
     if (event.type === "done") return;
+    if (event.type === "sources") {
+      const sources = event.sources.flatMap((source): Reference[] => {
+        if (source.type === "quran" && typeof source.surah === "string" && typeof source.verse === "number") {
+          const label = `QS. ${source.surah}${typeof source.surah_number === "number" ? ` [${source.surah_number}]` : ""}: ${source.verse}`;
+          return [{ id: `quran:${source.surah_number}:${source.verse}`, type: "quran", label, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks ayat terverifikasi dari tool.", href: "/quran" }];
+        }
+        if (source.type === "hadith" && typeof source.kitab === "string" && typeof source.number === "number") {
+          return [{ id: `hadith:${source.kitab}:${source.number}`, type: "hadith", label: `${source.kitab} No. ${source.number}`, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks hadits terverifikasi dari tool.", href: "/hadith" }];
+        }
+        return [];
+      });
+      assistantSourcesRef.current = [...assistantSourcesRef.current, ...sources.filter(source => !assistantSourcesRef.current.some(item => item.id === source.id))];
+      return;
+    }
     if (event.type === "error") {
       assistantContentRef.current = `Maaf, ${event.message}`;
     } else {
@@ -382,9 +399,19 @@ export default function ChatPage() {
 
   const handleStream = async (res: Response) => {
     assistantContentRef.current = "";
+    assistantSourcesRef.current = [];
     const placeholder = makeMessage("assistant", "", getCurrentTime());
     updateMessages((prev) => [...prev, placeholder]);
     await readChatStream(res, handleStreamEvent);
+    const references = assistantSourcesRef.current.length ? assistantSourcesRef.current : extractReferences(assistantContentRef.current);
+    if (references.length) {
+      updateMessages((prev) => {
+        const updated = [...prev];
+        const last = updated.at(-1);
+        if (last?.role === "assistant") updated.splice(-1, 1, { ...last, references });
+        return updated;
+      });
+    }
   };
 
   const handleRegularResponse = async (res: Response) => {
@@ -397,7 +424,7 @@ export default function ChatPage() {
     }
     updateMessages((prev) => [
       ...prev,
-      makeMessage("assistant", data.response, getCurrentTime()),
+      { ...makeMessage("assistant", data.response, getCurrentTime()), references: extractReferences(data.response) },
     ]);
   };
 
@@ -885,6 +912,8 @@ export default function ChatPage() {
                   {msg.content}
                 </div>
               )}
+
+              {msg.role === "assistant" && <ReferencePanel references={msg.references} />}
 
               {/* Timestamp */}
               {msg.timestamp && (
