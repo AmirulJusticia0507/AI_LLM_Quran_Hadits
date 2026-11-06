@@ -29,10 +29,18 @@ import {
   X,
   Mic,
   ThumbsUp,
-  ThumbsDown
+  ThumbsDown,
+  Share2
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit, timeout = 5000) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeout);
+  try { return await fetch(input, { ...init, signal: controller.signal }); }
+  finally { window.clearTimeout(timer); }
+}
 
 const SUGGESTED_PROMPTS = [
   {
@@ -216,7 +224,7 @@ export default function ChatPage() {
   const [showProviders, setShowProviders] = useState(false);
 
   const loadProviders = () => {
-    fetch(`${API_URL}/api/llm/providers`)
+    fetchWithTimeout(`${API_URL}/api/llm/providers`)
       .then((res) => res.json())
       .then((data) => {
         setProviders(data.providers ?? []);
@@ -352,11 +360,24 @@ export default function ChatPage() {
   }, [messages, loading]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/health`)
+    fetchWithTimeout(`${API_URL}/api/health`)
       .then((res) => res.json())
       .then((data) => setLlmStatus(data.llm_configured ? "online" : "offline"))
       .catch(() => setLlmStatus("offline"));
     loadProviders();
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/chat/sessions`)
+      .then(response => response.ok ? response.json() : Promise.reject())
+      .then(data => setSessions(previous => {
+        const known = new Set(previous.map(session => session.id));
+        const remote = (data.sessions || []).filter((session: { id: string }) => !known.has(session.id)).map((session: { id: string; title: string; updated_at: string }) => ({ id: session.id, title: session.title, updatedAt: session.updated_at, messages: [] as Message[] }));
+        if (!remote.length) return previous;
+        const next = [...remote, ...previous].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        persistSessions(next); return next;
+      }))
+      .catch(() => {});
   }, []);
 
   const getCurrentTime = () => {
@@ -379,10 +400,10 @@ export default function ChatPage() {
       const sources = event.sources.flatMap((source): Reference[] => {
         if (source.type === "quran" && typeof source.surah === "string" && typeof source.verse === "number") {
           const label = `QS. ${source.surah}${typeof source.surah_number === "number" ? ` [${source.surah_number}]` : ""}: ${source.verse}`;
-          return [{ id: `quran:${source.surah_number}:${source.verse}`, type: "quran", label, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks ayat terverifikasi dari tool.", href: "/quran" }];
+          return [{ id: `quran:${source.surah_number}:${source.verse}`, type: "quran", label, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks ayat terverifikasi dari tool.", href: `/quran?surah=${source.surah_number}&ayat=${source.verse}` }];
         }
         if (source.type === "hadith" && typeof source.kitab === "string" && typeof source.number === "number") {
-          return [{ id: `hadith:${source.kitab}:${source.number}`, type: "hadith", label: `${source.kitab} No. ${source.number}`, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks hadits terverifikasi dari tool.", href: "/hadith" }];
+          return [{ id: `hadith:${source.kitab}:${source.number}`, type: "hadith", label: `${source.kitab} No. ${source.number}`, detail: typeof source.excerpt === "string" ? source.excerpt : "Teks hadits terverifikasi dari tool.", href: `/hadith?kitab=${encodeURIComponent(source.kitab)}&nomor=${source.number}` }];
         }
         return [];
       });
@@ -540,6 +561,19 @@ export default function ChatPage() {
     if (id === activeId) setPinnedId(final[0]?.id ?? null);
   };
 
+  const loadServerSession = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/api/chat/sessions/${id}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || "Riwayat tidak dapat dimuat.");
+      const restored: Message[] = (data.messages || []).map((message: { role: "user" | "assistant"; content: string; created_at?: string }) => makeMessage(message.role, message.content, message.created_at ? new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : undefined));
+      setSessions(previous => {
+        const next = previous.map(session => session.id === id ? { ...session, title: data.title, updatedAt: data.updated_at, messages: restored } : session);
+        persistSessions(next); return next;
+      });
+    } catch { /* Local copy remains available when the server is offline. */ }
+  };
+
   const sessionToMarkdown = (s: ChatSession): string => {
     const lines = [
       `# ${s.title}`,
@@ -581,6 +615,29 @@ export default function ChatPage() {
         timer: 1500,
       });
     } catch {}
+  };
+
+  const shareSession = async () => {
+    if (!activeSession || messages.length === 0) return;
+    const confirm = await Swal.fire({ title: "Bagikan percakapan?", text: "Siapa pun yang memiliki tautan dapat membaca seluruh isi sesi ini. Pastikan tidak ada data pribadi.", icon: "warning", showCancelButton: true, confirmButtonText: "Buat tautan", cancelButtonText: "Batal", confirmButtonColor: "#059669" });
+    if (!confirm.isConfirmed) return;
+    try {
+      const res = await fetch(`${API_URL}/api/chat/sessions/${sessionId}/share`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok || !data.slug) throw new Error(data.detail || "Tautan belum dapat dibuat.");
+      const url = `${window.location.origin}/shared/${data.slug}`;
+      await navigator.clipboard.writeText(url);
+      await Swal.fire({ icon: "success", title: "Tautan disalin", text: "Chat menjadi publik hanya melalui tautan ini.", confirmButtonColor: "#059669" });
+    } catch (error) {
+      Swal.fire({ icon: "error", title: "Gagal membagikan", text: error instanceof Error ? error.message : "Coba lagi nanti.", confirmButtonColor: "#059669" });
+    }
+  };
+  const unshareSession = async () => {
+    if (!activeSession) return;
+    const confirm = await Swal.fire({ title: "Cabut publikasi?", text: "Tautan publik lama tidak akan dapat dibuka lagi.", icon: "warning", showCancelButton: true, confirmButtonText: "Cabut", cancelButtonText: "Batal", confirmButtonColor: "#dc2626" });
+    if (!confirm.isConfirmed) return;
+    try { const res = await fetch(`${API_URL}/api/chat/sessions/${sessionId}/share`, { method: "DELETE" }); if (!res.ok) throw new Error(); await Swal.fire({ icon: "success", title: "Publikasi dicabut", confirmButtonColor: "#059669" }); }
+    catch { Swal.fire({ icon: "error", title: "Gagal mencabut publikasi", text: "Coba lagi saat backend tersedia.", confirmButtonColor: "#059669" }); }
   };
 
   return (
@@ -634,6 +691,19 @@ export default function ChatPage() {
             <span className="hidden sm:inline">Chat Baru</span>
           </button>
           {messages.length > 0 && (
+            <>
+            <button
+              onClick={shareSession}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/60 text-sky-700 dark:text-sky-300 rounded-xl border border-sky-200 dark:border-sky-900/50 transition-all active:scale-95 cursor-pointer"
+              title="Bagikan sesi ini secara publik"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Bagikan</span>
+            </button>
+            <button onClick={unshareSession} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-300" title="Cabut tautan publik">Cabut publikasi</button>
+            </>
+          )}
+          {messages.length > 0 && (
             <button
               onClick={clearChat}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-900/50 transition-all active:scale-95 cursor-pointer"
@@ -665,6 +735,7 @@ export default function ChatPage() {
                     onClick={() => {
                       setPinnedId(s.id);
                       setShowSessions(false);
+                      void loadServerSession(s.id);
                     }}
                     className="flex-1 min-w-0 text-left cursor-pointer"
                   >

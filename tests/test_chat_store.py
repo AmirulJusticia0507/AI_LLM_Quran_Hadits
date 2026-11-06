@@ -17,3 +17,5 @@ class ChatStoreTests(unittest.TestCase):
             shared = store.public_chat(slug)
             self.assertEqual(shared["messages"][1]["sources"][0]["verse"], 153)
             self.assertEqual(store.explore()[0]["share_slug"], slug)
+            self.assertTrue(store.unshare("session-a"))
+            self.assertIsNone(store.public_chat(slug))

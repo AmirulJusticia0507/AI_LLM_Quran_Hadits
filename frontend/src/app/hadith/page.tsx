@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { KITAB } from "@/app/api/hadith/route";
@@ -130,6 +130,16 @@ export default function HadithPage() {
       setLoading(false);
     }
   };
+  // URL target is intentionally read once on initial client hydration.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const k = params.get("kitab") || ""; const n = Number(params.get("nomor"));
+    if (!KITAB_LIST.some(item => item.id === k) || !Number.isInteger(n) || n < 1) return;
+    const timer = window.setTimeout(() => { setKitab(k); setNomor(n); void fetchHadith(k, n); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
 
   const getRandomHadith = () => {
     const randomNum = Math.floor(Math.random() * (selectedKitab.maxHadith || 100)) + 1;

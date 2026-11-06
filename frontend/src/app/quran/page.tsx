@@ -404,6 +404,8 @@ export default function QuranPage() {
 
   // Asbabun nuzul needs the backend, so it is skipped (not fetched) while offline.
   const asbabRequestKey = result && viewMode === "single" ? `${result.nomor_surah}:${result.nomor_ayat}` : null;
+  // URL target is intentionally read once on initial client hydration.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!asbabRequestKey) return;
     let active = true;
@@ -603,6 +605,15 @@ export default function QuranPage() {
       }
     }
   };
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const s = Number(params.get("surah")); const a = Number(params.get("ayat"));
+    const max = SURAH_LIST.find(item => item.num === s)?.verses;
+    if (!max || !Number.isInteger(a) || a < 1 || a > max) return;
+    const timer = window.setTimeout(() => { setSurah(s); setAyat(a); void fetchVerse(s, a); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
 
   const goPrevVerse = () => {
     if (ayat > 1) {

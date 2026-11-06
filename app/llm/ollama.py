@@ -1,10 +1,12 @@
 import ollama
+import json
 from dotenv import load_dotenv
 import os
 
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.llm.prompt import SYSTEM_PROMPT
+from app.llm.tools import source_from_tool
 
 load_dotenv()
 
@@ -119,6 +121,29 @@ class OllamaLLM:
 
         except Exception as e:
             return f"Maaf, terjadi kesalahan: {str(e)}"
+
+    async def chat_stream(self, user_message: str, history: list[dict] = None, session_id: str = None):
+        """SSE-compatible local flow with tool-result provenance."""
+        messages = list(history) if history else []
+        messages.append({"role": "user", "content": user_message})
+        response = ollama.chat(model=self.model, messages=[{"role": "system", "content": SYSTEM_PROMPT}, *messages], tools=TOOLS)
+        message = response["message"]
+        sources = []
+        if message.get("tool_calls"):
+            for call in message["tool_calls"]:
+                name, args = call["function"]["name"], call["function"]["arguments"]
+                result = await self._execute_tool(name, args)
+                source = source_from_tool(name, args, result)
+                if source: sources.append(source)
+                messages.extend([{"role": "assistant", "content": "", "tool_calls": message["tool_calls"]}, {"role": "tool", "content": str(result)}])
+            final = ollama.chat(model=self.model, messages=[{"role": "system", "content": SYSTEM_PROMPT}, *messages])
+            answer = final["message"]["content"]
+        else:
+            answer = message["content"]
+        if sources:
+            yield json.dumps({"type": "sources", "sources": sources})
+        yield json.dumps({"type": "token", "text": answer})
+        yield json.dumps({"type": "done"})
 
 
 def create_llm():

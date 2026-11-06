@@ -7,6 +7,7 @@ from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 import json
 import os
+import re
 
 from app.models.schemas import ChatRequest, QuranVerseRequest, HadithRequest, ProviderSwitch, HadithSearchRequest
 from app.api.quran import QuranAPI
@@ -100,20 +101,16 @@ async def browse_matan(kitab: BookId, q: str = Query("", max_length=150),
 # --- Rate limiting sederhana (sliding window in-memory, per IP) ---
 RATE_LIMIT = int(os.getenv("CHAT_RATE_LIMIT", "30"))
 RATE_WINDOW = 60
-_rate_store: dict[str, list[float]] = {}
 
 
 async def rate_limit(request: Request):
     ip = request.client.host if request.client else "unknown"
     now = time.time()
-    hits = [t for t in _rate_store.get(ip, []) if now - t < RATE_WINDOW]
-    if len(hits) >= RATE_LIMIT:
+    if not chat_store.allow_rate(f"chat:{ip}", now, RATE_WINDOW, RATE_LIMIT):
         raise HTTPException(
             status_code=429,
             detail="Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.",
         )
-    hits.append(now)
-    _rate_store[ip] = hits
 
 
 @app.get("/api/health")
@@ -178,6 +175,7 @@ async def chat_stream(req: ChatRequest):
         chat_store.add_message(req.session_id, "user", req.message)
         answer = ""
         sources = []
+        buffered = []
         async for chunk in current_llm.chat_stream(req.message, **kwargs):
             try:
                 event = json.loads(chunk)
@@ -187,6 +185,14 @@ async def chat_stream(req: ChatRequest):
                     sources.extend(event.get("sources", []))
             except (TypeError, json.JSONDecodeError):
                 pass
+            buffered.append(chunk)
+        # A provider may write a citation-looking claim without ever opening a
+        # source. Do not publish that answer: tool-call evidence is required.
+        claims_dalil = bool(re.search(r"\b(?:QS\.?|Q\.S\.?|HR\.?|H\.R\.?|hadits riwayat)\b", answer, re.I))
+        if claims_dalil and not sources:
+            answer = "Maaf, saya tidak dapat menampilkan klaim dalil karena sumber terverifikasi belum berhasil diperoleh. Silakan coba pertanyaan yang lebih spesifik atau buka koleksi Al-Qur'an dan Hadits."
+            buffered = [json.dumps({"type": "token", "text": answer}), json.dumps({"type": "done"})]
+        for chunk in buffered:
             yield f"data: {chunk}\n\n"
         if answer:
             chat_store.add_message(req.session_id, "assistant", answer, sources)
@@ -210,6 +216,13 @@ async def share_chat(session_id: str):
     return {"slug": slug}
 
 
+@app.delete("/api/chat/sessions/{session_id}/share")
+async def unshare_chat(session_id: str):
+    if not chat_store.unshare(session_id):
+        raise HTTPException(status_code=404, detail="Sesi chat tidak ditemukan.")
+    return {"status": "success"}
+
+
 @app.get("/api/chat/shared/{slug}")
 async def get_shared_chat(slug: str):
     shared = chat_store.public_chat(slug)
@@ -221,6 +234,19 @@ async def get_shared_chat(slug: str):
 @app.get("/api/chat/explore")
 async def explore_shared_chats(limit: int = Query(20, ge=1, le=50)):
     return {"chats": chat_store.explore(limit)}
+
+
+@app.get("/api/chat/sessions")
+async def list_chat_sessions(limit: int = Query(50, ge=1, le=100)):
+    return {"sessions": chat_store.sessions(limit)}
+
+
+@app.get("/api/chat/sessions/{session_id}")
+async def get_chat_session(session_id: str):
+    session = chat_store.session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Sesi chat tidak ditemukan.")
+    return session
 
 
 @app.post("/api/quran/verse")

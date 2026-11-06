@@ -43,6 +43,8 @@ class ChatStore:
             );
             CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id, id);
             CREATE INDEX IF NOT EXISTS idx_chat_sessions_public ON chat_sessions(is_public, updated_at DESC);
+            CREATE TABLE IF NOT EXISTS rate_limits (key TEXT NOT NULL, seen_at REAL NOT NULL);
+            CREATE INDEX IF NOT EXISTS idx_rate_limits_key_seen ON rate_limits(key, seen_at);
             """)
 
     @staticmethod
@@ -66,6 +68,11 @@ class ChatStore:
             connection.execute("UPDATE chat_sessions SET is_public = 1, share_slug = ?, updated_at = ? WHERE id = ?", (slug, self._now(), session_id))
         return slug
 
+    def unshare(self, session_id: str) -> bool:
+        with self._connection() as connection:
+            result = connection.execute("UPDATE chat_sessions SET is_public = 0, share_slug = NULL, updated_at = ? WHERE id = ?", (self._now(), session_id))
+        return result.rowcount > 0
+
     def public_chat(self, slug: str):
         with self._connection() as connection:
             session = connection.execute("SELECT id, title, created_at, updated_at FROM chat_sessions WHERE share_slug = ? AND is_public = 1", (slug,)).fetchone()
@@ -78,3 +85,23 @@ class ChatStore:
         with self._connection() as connection:
             rows = connection.execute("SELECT title, share_slug, updated_at FROM chat_sessions WHERE is_public = 1 ORDER BY updated_at DESC LIMIT ?", (limit,)).fetchall()
         return [dict(row) for row in rows]
+
+    def sessions(self, limit: int = 50):
+        with self._connection() as connection:
+            rows = connection.execute("SELECT id, title, updated_at FROM chat_sessions ORDER BY updated_at DESC LIMIT ?", (limit,)).fetchall()
+        return [dict(row) for row in rows]
+
+    def session(self, session_id: str):
+        with self._connection() as connection:
+            session = connection.execute("SELECT id, title, updated_at FROM chat_sessions WHERE id = ?", (session_id,)).fetchone()
+            if not session: return None
+            rows = connection.execute("SELECT role, content, sources_json, created_at FROM chat_messages WHERE session_id = ? ORDER BY id", (session_id,)).fetchall()
+        return {**dict(session), "messages": [{**dict(row), "sources": json.loads(row["sources_json"])} for row in rows]}
+
+    def allow_rate(self, key: str, now: float, window: float, limit: int) -> bool:
+        with self._connection() as connection:
+            connection.execute("DELETE FROM rate_limits WHERE seen_at < ?", (now - window,))
+            count = connection.execute("SELECT COUNT(*) FROM rate_limits WHERE key = ? AND seen_at >= ?", (key, now - window)).fetchone()[0]
+            if count >= limit: return False
+            connection.execute("INSERT INTO rate_limits (key, seen_at) VALUES (?, ?)", (key, now))
+        return True
