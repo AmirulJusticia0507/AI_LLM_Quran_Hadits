@@ -206,6 +206,20 @@ class LocalFirstTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["scanned"], 30)
         self.assertEqual(result["matches"][0]["number"], 30)
 
+    async def test_asbabun_nuzul_uses_offline_tafsir(self):
+        self.store.save_surah(surah_payload(count=1))
+        self.store.save_tafsir(
+            1, 1,
+            "Pembahasan umum. Sebab turunnya ayat ini berkaitan dengan sebuah riwayat."
+        )
+        api = QuranAPI(store=self.store, mode="local")
+        with patch("app.api.quran.httpx.AsyncClient") as client:
+            result = await api.get_asbabun_nuzul(1, 1)
+        client.assert_not_called()
+        self.assertEqual(result["status"], "success")
+        self.assertEqual(result["source"], "offline")
+        self.assertIn("Sebab turunnya ayat", result["asbabun_nuzul"])
+
     async def test_riyadhus_shalihin_uses_local_data_only(self):
         self.store.save_hadith_book(
             "riyadhus-shalihin",

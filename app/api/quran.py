@@ -156,14 +156,22 @@ class QuranAPI:
             return {"status": "error", "message": str(e)}
 
     async def get_asbabun_nuzul(self, surah: int, ayat: int) -> dict:
-        """Extract revelation context (asbabun nuzul) from tafsir text."""
+        """Extract revelation context from the local-first tafsir text.
+
+        Asbabun nuzul is derived from the Kemenag tafsir already stored by
+        ``build_offline_db.py``.  This means local mode does not need a second
+        network-only dataset: once the Qur'an + tafsir dataset is imported,
+        this endpoint works completely offline.
+        """
         result = await self.get_tafsir(surah, ayat)
         if result.get("status") != "success":
             return result
+        source = result.get("source", "online")
         text = result.get("tafsir", "")
         if not text:
             return {"status": "success", "asbabun_nuzul": None,
-                    "sumber": "Tafsir Kemenag via EQuran.id"}
+                    "sumber": "Tafsir Kemenag via EQuran.id",
+                    "source": source}
         paragraphs = re.split(r"\n\s*\n", text)
         markers = (
             "sebab turunnya ayat", "asbabun nuzul", "asbab al-nuzul",
@@ -182,7 +190,8 @@ class QuranAPI:
         if context:
             context = re.sub(r"\s+", " ", context).strip()
         return {"status": "success", "asbabun_nuzul": context,
-                "sumber": "Tafsir Kemenag via EQuran.id"}
+                "sumber": "Tafsir Kemenag via EQuran.id",
+                "source": source}
 
     async def search_verse(self, query: str) -> dict:
         if self.mode != "online":
