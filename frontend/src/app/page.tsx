@@ -117,6 +117,12 @@ const SUGGESTED_PROMPTS = [
     category: "Ushul Fiqh",
     icon: BookOpen,
   },
+  {
+    title: "Hadits Shahih vs Hadits Palsu",
+    prompt: "Bagaimana cara membedakan hadits shahih, dha'if, dan hadits palsu (maudhu') serta ciri-ciri hadits maudhu'?",
+    category: "Musthalah Hadits",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

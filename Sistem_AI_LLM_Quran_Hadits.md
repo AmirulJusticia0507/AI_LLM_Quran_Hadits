@@ -274,7 +274,7 @@ Pilih provider LLM melalui variabel `LLM_PROVIDER` di file `.env`:
 - Copy hadits
 
 ### Pusat Belajar Islam (`/belajar`)
-- **14 Modul Interaktif:** Tazkiyatun Nafs, Fiqh Ibadah, Fiqh Munakahat, Fiqh Integritas & Anti-Korupsi, Fiqh Muamalah, Fiqh Makanan Halal, Fiqh Medis, Komparasi Agama, Sains & Sunnatullah, Aqidah & Eskatologi, Siroh Nabawiyah, Ilmu Tajwid & Makhraj, Ilmu Balaghah, dan Ushul Fiqh & Kaidah Fiqhiyyah.
+- **15 Modul Interaktif:** Tazkiyatun Nafs, Fiqh Ibadah, Fiqh Munakahat, Fiqh Integritas & Anti-Korupsi, Fiqh Muamalah, Fiqh Makanan Halal, Fiqh Medis, Komparasi Agama, Sains & Sunnatullah, Aqidah & Eskatologi, Siroh Nabawiyah, Ilmu Tajwid & Makhraj, Ilmu Balaghah, Ushul Fiqh & Kaidah Fiqhiyyah, dan Musthalah Hadits (Kritik & Validasi Sanad).
 - Teks dalil Al-Qur'an dan Hadits shahih terverifikasi, poin intisari, dan panduan latihan amal harian.
 - Dapat diakses 100% offline langsung dari bundle Next.js.
 
