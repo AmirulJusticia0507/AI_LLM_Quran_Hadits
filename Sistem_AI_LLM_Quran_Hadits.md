@@ -273,6 +273,11 @@ Pilih provider LLM melalui variabel `LLM_PROVIDER` di file `.env`:
 - **Bookmark** (localStorage) untuk hadits favorit
 - Copy hadits
 
+### Pusat Belajar Islam (`/belajar`)
+- **7 Modul Interaktif:** Tazkiyatun Nafs, Fiqh Ibadah, Fiqh Munakahat (Pernikahan & Keluarga), Fiqh Integritas & Anti-Korupsi, Siroh Nabawiyah, Ilmu Tajwid & Makhraj, dan Ilmu Balaghah.
+- Teks dalil Al-Qur'an dan Hadits shahih terverifikasi, poin intisari, dan panduan latihan amal harian.
+- Dapat diakses 100% offline langsung dari bundle Next.js.
+
 ### UI/UX
 - **Dark/Light mode** dengan deteksi system preference + localStorage persistence
 - **Glassmorphism** design dengan backdrop blur

@@ -41,6 +41,9 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
+| `/belajar` | Pusat Belajar Islam: 7 Modul (Tazkiyah, Fiqh Ibadah, Munakahat, Integritas, Sirah, Tajwid, Balaghah) |
+| `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
+| `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |
 
 ### ℹ️ Lainnya
 Halaman Tentang (profil pembuat + WhatsApp), Bantuan, Privasi, Syarat & Ketentuan,

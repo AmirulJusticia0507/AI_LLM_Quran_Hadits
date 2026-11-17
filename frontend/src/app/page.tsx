@@ -17,6 +17,7 @@ import {
   Copy,
   Check,
   BookOpen,
+  HeartHandshake,
   ScrollText,
   ShieldCheck,
   RefreshCw,
@@ -48,6 +49,7 @@ const SUGGESTED_PROMPTS = [
     prompt: "Apa saja keutamaan membaca Surah Al-Kahfi pada hari Jumat berdasarkan hadits sahih?",
     category: "Al-Qur'an",
     icon: BookOpen,
+  HeartHandshake,
   },
   {
     title: "Hadits Menjaga Lisan",
@@ -65,6 +67,18 @@ const SUGGESTED_PROMPTS = [
     title: "Adab dan Tata Cara Shalat Tahajud",
     prompt: "Bagaimana tata cara shalat Tahajud, waktu terbaik melaksanakannya, dan doa yang dianjurkan?",
     category: "Fiqih & Ibadah",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Rukun dan Syarat Sah Nikah",
+    prompt: "Jelaskan rukun nikah, syarat saksi dan wali, serta hak mahar bagi istri menurut fiqih Islam.",
+    category: "Pernikahan",
+    icon: HeartHandshake,
+  },
+  {
+    title: "Hukum Suap (Risywah) & Korupsi",
+    prompt: "Bagaimana hukum korupsi (ghulul), suap (risywah), dan gratifikasi dalam Al-Qur'an dan hadits shahih?",
+    category: "Integritas & Hukum",
     icon: ShieldCheck,
   },
 ];
