@@ -5,7 +5,8 @@ export type Lesson = {
   summary: string;
   points: string[];
   practice: string;
-  source: { label: string; href: string };
+  source: { label: string; labelEn?: string; href: string };
+  extraReferences?: { label: string; labelEn?: string; href: string }[];
 };
 export type Course = { id: string; title: string; description: string; note: string; lessons: Lesson[] };
 const quran = (verse: string) => ({ label: `QS. ${verse.replace('/', ':')}`, href: `https://quran.com/${verse}` });
@@ -2815,6 +2816,31 @@ export const islamNusantara: Course = {
       ],
       practice: 'Cintai dan muliakan keluarga Nabi (Ahlul Bait) dengan adab yang benar tanpa ghuluw (kultus berlebihan), serta teladani keluasan ilmu dan kelembutan akhlak dakwah mereka.',
       source: quran('42/23'),
+    },
+    {
+      id: 'contoh-habaib-indonesia',
+      title: 'Contoh Habaib di Indonesia: Tokoh, Marga, dan Verifikasi',
+      category: 'Nasab & Jaringan Ulama',
+      summary: 'Beberapa ulama dan pendakwah Indonesia yang dikenal publik dengan gelar Habib. Contoh ini bukan daftar lengkap dan bukan pengganti verifikasi nasab perorangan.',
+      points: [
+        'Tokoh sejarah: Habib Ali bin Abdurrahman Al-Habsyi (Habib Ali Kwitang) dan Habib Salim bin Ahmad Jindan dikenal dalam sejarah dakwah di Indonesia.',
+        'Ulama dan pendakwah masa kini: Habib Muhammad Luthfi bin Ali bin Yahya, Habib Syech bin Abdul Qodir Assegaf, dan Habib Jindan bin Novel bin Salim Jindan.',
+        'Tokoh lain yang dikenal dengan gelar tersebut: Habib Munzir bin Fuad Al-Musawa (pendiri Majelis Rasulullah), Habib Muhammad Rizieq Shihab, dan Habib Bahar bin Ali bin Smith (juga ditulis Sumayt/Sumait).',
+        'Sebutan publik dan nama marga tidak dengan sendirinya membuktikan silsilah seseorang. Untuk kepastian nasab keluarga tertentu, rujuk pencatatan dan prosedur verifikasi Maktab Daimi Rabithah Alawiyah.',
+        'Jangan menyimpulkan bahwa semua orang bermarga Shihab atau Smith menggunakan gelar Habib. Perempuan dari keluarga yang tercatat sebagai keturunan Alawiyyin lazim disebut Syarifah; pemakaian sebutan tetap mengikuti tradisi keluarga masing-masing.',
+      ],
+      practice: 'Saat menyebut tokoh, bedakan gelar yang dikenal publik, marga keluarga, dan status nasab yang telah diverifikasi. Gunakan sumber tepercaya dan hindari menggeneralisasi satu keluarga dari nama marganya.',
+      source: { label: 'Maktab Daimi Rabithah Alawiyah — Sejarah dan fungsi pencatatan nasab', labelEn: 'Maktab Daimi Rabithah Alawiyah — History and role in lineage records', href: 'https://maktabdaimi.org/sejarah' },
+      extraReferences: [
+        { label: 'NU Online Jakarta — Habib Ali Kwitang', labelEn: 'NU Online Jakarta — Habib Ali Kwitang', href: 'https://jakarta.nu.or.id/literatur/habib-ali-bin-abdurrahman-al-habsyi-sang-ulama-penuntut-ilmu-UwMwu' },
+        { label: 'NU Online — Habib Salim bin Jindan', labelEn: 'NU Online — Habib Salim bin Jindan', href: 'https://islam.nu.or.id/fragmen/al-habib-salim-bin-jindan-ulama-nasionalis-dan-pejuang-kemerdekaan-A9ZoK' },
+        { label: 'NU Online — Habib Luthfi bin Yahya', labelEn: 'NU Online — Habib Luthfi bin Yahya', href: 'https://nu.or.id/tokoh/habib-muhammad-luthfi-bin-yahya-sosok-pelayan-umat-3ucSw' },
+        { label: 'Kompas — Profil Habib Syech bin Abdul Qodir Assegaf', labelEn: 'Kompas — Profile of Habib Syech bin Abdul Qodir Assegaf', href: 'https://cahaya.kompas.com/aktual/26H01212337590/profil-habib-syech-bin-abdul-qodir-assegaf-pengisi-shalawat-kebangsaan-hut-ke-81?source=melewatkan_artikel' },
+        { label: 'Yayasan Al-Fachriyah — Habib Jindan bin Novel', labelEn: 'Al-Fachriyah Foundation — Habib Jindan bin Novel', href: 'https://www.alfachriyah.org/tokoh-dan-pengajar-al-fachriyah/habib-jindan-bin-novel-bin-jindan/' },
+        { label: 'Majelis Rasulullah — Profil majelis yang didirikan Habib Munzir Al-Musawa', labelEn: 'Majelis Rasulullah — Profile of the assembly founded by Habib Munzir Al-Musawa', href: 'https://www.majelisrasulullah.org/' },
+        { label: 'Okezone — Laporan yang mengutip keterangan Ketua Maktab Daimi tentang Habib Rizieq', labelEn: 'Okezone — Report quoting the Maktab Daimi chair on Habib Rizieq', href: 'https://news.okezone.com/read/2020/11/19/337/2312575/rabithah-alawiyah-pastikan-habib-rizieq-keturunan-rasulullah-berikut-silsilahnya' },
+        { label: 'Sindonews — Laporan yang mengutip Ketua Maktab Daimi tentang Habib Bahar', labelEn: 'Sindonews — Report quoting the Maktab Daimi chair on Habib Bahar', href: 'https://kalam.sindonews.com/read/432546/786/habib-bahar-keturunan-nabi-muhammad-saw-ke-37-berikut-silsilahnya-1621497936' },
+      ],
     },
     {
       id: 'kesultanan-maritim-nusantara',

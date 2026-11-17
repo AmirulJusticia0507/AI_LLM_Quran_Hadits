@@ -59,6 +59,18 @@ export default function LearningCourse({ course }: { course: Course }) {
     ],
     practice: 'Love and honor the Prophet’s family with proper manners and without excess (ghuluw). Follow their examples of knowledge, character, and gentle da‘wah.',
   };
+  const englishExamples = {
+    title: 'Examples of Habaib in Indonesia: Figures, Family Names, and Verification',
+    summary: 'A selection of Indonesian scholars and preachers publicly known by the title Habib. This is not a complete list and does not replace individual lineage verification.',
+    points: [
+      'Historical figures: Habib Ali bin Abdurrahman Al-Habsyi (Habib Ali Kwitang) and Habib Salim bin Ahmad Jindan are known in the history of Islamic teaching in Indonesia.',
+      'Contemporary scholars and preachers: Habib Muhammad Luthfi bin Ali bin Yahya, Habib Syech bin Abdul Qodir Assegaf, and Habib Jindan bin Novel bin Salim Jindan.',
+      'Other public figures known by the title include Habib Munzir bin Fuad Al-Musawa (founder of Majelis Rasulullah), Habib Muhammad Rizieq Shihab, and Habib Bahar bin Ali bin Smith (also written Sumayt or Sumait).',
+      'Public titles and family names do not by themselves prove an individual’s genealogy. For a family’s lineage status, consult the records and verification process of Maktab Daimi Rabithah Alawiyah.',
+      'Do not assume that everyone with the Shihab or Smith surname uses the title Habib. Women from families recorded as Alawiyyin are commonly referred to as Syarifah; usage follows each family’s tradition.',
+    ],
+    practice: 'When referring to a figure, distinguish public titles, family names, and individually verified lineage. Use reliable sources and do not generalize about a family from its surname.',
+  };
   const categories = [allLabel, ...new Set(course.lessons.map(l => localizedCategory(l.category)))];
   const search = query.trim().toLocaleLowerCase('id');
   const filtered = course.lessons.filter(l =>
@@ -139,19 +151,19 @@ export default function LearningCourse({ course }: { course: Course }) {
                 <span className="text-xs text-emerald-700 dark:text-emerald-300">
                   {localizedCategory(lesson.category)}{completed.includes(lesson.id) ? (en ? ' • Completed' : ' • Selesai dibaca') : ''}
                 </span>
-                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : lesson.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : lesson.summary}</p>
+                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.title : lesson.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.summary : lesson.summary}</p>
               </summary>
               <div className="pt-5 space-y-4">
                 <ul className="list-disc pl-5 space-y-2 text-sm leading-7">
-                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : point}</li>)}
+                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : point}</li>)}
                 </ul>
                 {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
                 <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 p-4">
                   <h3 className="font-semibold text-sm mb-2">
                     {en ? 'Practice & application' : 'Latihan & penerapan'}
                   </h3>
-                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : lesson.practice}</p>
+                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.practice : lesson.practice}</p>
                 </div>
                 <a
                   href={lesson.source.href}
@@ -159,8 +171,20 @@ export default function LearningCourse({ course }: { course: Course }) {
                   rel="noopener noreferrer"
                   className="block text-sm underline text-emerald-700 dark:text-emerald-300"
                 >
-                  {en ? 'Reference' : 'Rujukan'}: {lesson.source.label} ↗
+                  {en ? 'Reference' : 'Rujukan'}: {en ? lesson.source.labelEn || lesson.source.label : lesson.source.label} ↗
                 </a>
+                {lesson.extraReferences?.length ? (
+                  <div className="space-y-1 text-sm">
+                    <h3 className="font-semibold">{en ? 'Further reading' : 'Bacaan lanjutan'}</h3>
+                    <ul className="list-disc space-y-1 pl-5">
+                      {lesson.extraReferences.map(reference => (
+                        <li key={reference.href}>
+                          <a href={reference.href} target="_blank" rel="noopener noreferrer" className="underline text-emerald-700 dark:text-emerald-300">{en ? reference.labelEn || reference.label : reference.label} ↗</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
                 <label className="flex items-center gap-2 text-sm font-medium">
                   <input
                     type="checkbox"
