@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useSyncExternalStore } from 'react';
 import type { Course } from '@/data/learning';
+import NasabLessonCharts from '@/components/NasabLessonCharts';
 
 const subscribe = (callback: () => void) => {
   window.addEventListener('storage', callback);
@@ -73,6 +74,7 @@ export default function LearningCourse({ course }: { course: Course }) {
             </summary>
             <div className="pt-5 space-y-4">
               <ul className="list-disc pl-5 space-y-2 text-sm leading-7">{lesson.points.map(point => <li key={point}>{point}</li>)}</ul>
+              {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
               <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 p-4"><h3 className="font-semibold text-sm mb-2">Latihan & penerapan</h3><p className="text-sm leading-relaxed">{lesson.practice}</p></div>
               <a href={lesson.source.href} target="_blank" rel="noopener noreferrer" className="block text-sm underline text-emerald-700 dark:text-emerald-300">Rujukan: {lesson.source.label} ↗</a>
               <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={completed.includes(lesson.id)} onChange={() => toggle(lesson.id)} className="accent-emerald-600 h-4 w-4" />Sudah saya baca</label>
