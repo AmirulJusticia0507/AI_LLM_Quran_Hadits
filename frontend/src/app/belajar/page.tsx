@@ -34,7 +34,7 @@ export default function LearningPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/hijaiyah" className="block rounded-2xl bg-linear-to-br from-emerald-600 to-teal-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
           <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">{t("belajar.hijaiyah.badge")}</span>
           {t("belajar.hijaiyah.cta")}
@@ -46,6 +46,10 @@ export default function LearningPage() {
         <Link href="/panduan-ibadah" className="block rounded-2xl bg-teal-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
           <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">{t("belajar.panduan.badge")}</span>
           {t("belajar.panduan.cta")}
+        </Link>
+        <Link href="/silsilah-habaib" className="block rounded-2xl bg-linear-to-br from-teal-900 to-slate-950 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform border border-emerald-400/20">
+          <span className="block text-xs uppercase tracking-wider text-amber-300 mb-1">Bagan Interaktif</span>
+          Silsilah Habaib Ba &apos;Alawi
         </Link>
       </div>
 
