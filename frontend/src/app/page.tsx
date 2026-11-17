@@ -159,6 +159,12 @@ const SUGGESTED_PROMPTS = [
     category: "Fiqh Wanita",
     icon: BookOpen,
   },
+  {
+    title: "Maqashid Syari'ah & Piagam Madinah",
+    prompt: "Jelaskan 5 tujuan perlindungan syariat Islam (Al-Kulliyatul Khams) dan bagaimana Piagam Madinah mengatur kebebasan beragama?",
+    category: "Siyasah Syari'ah",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

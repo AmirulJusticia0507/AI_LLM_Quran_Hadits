@@ -41,7 +41,7 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
-| `/belajar` | Pusat Belajar Islam: 21 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah) |
+| `/belajar` | Pusat Belajar Islam: 22 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah) |
 | `/aqidah` | Aqidah & Hari Akhir: 9 kajian tauhid, malaikat, takdir, sakaratul maut, fitnah kubur, kiamat kubra, mahsyar, hisab, surga |
 | `/ushul-fiqh` | Ushul Fiqh & Kaidah Fiqhiyyah: 10 kajian sumber hukum Islam, qiyas, ijma', ijtihad, perbedaan mazhab |
 | `/musthalah-hadits` | Musthalah Hadits: 10 kajian sanad, matan, 5 syarat shahih, hasan, dha'if, ciri hadits palsu, Kutubut Tis'ah |
@@ -51,6 +51,7 @@ langsung dari UI tanpa restart server.
 | `/faraidh` | Faraidh & Hukum Waris: 10 kajian rukun, syarat, ashabul furudh, ashabah, rasio 2:1, wasiat, hibah, kasus 'aul dan radd |
 | `/adab-digital` | Adab & Etika Digital: 10 kajian adab penuntut ilmu, fiqh lisan & jempol, ghibah online, flexing, tabayyun, hak cipta |
 | `/muslimah` | Tokoh Muslimah & Fiqh Wanita: 10 kajian Khadijah, Aisyah, Nusaibah, Fathimah Fihri, fiqh darah wanita, hak finansial mandiri |
+| `/siyasah` | Maqashid Syari'ah & Siyasah: 10 kajian 5 pilar syariat, Piagam Madinah, filosofi pidana Islam, prinsip syura, tata kelola publik |
 | `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
 | `/muamalah` | Fiqh Muamalah: 7 panduan anti-riba, gharar, utang-piutang, akad bisnis, paylater, pinjol, kripto |
 | `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |
