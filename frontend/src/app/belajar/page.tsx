@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { courseLinks } from '@/data/learning';
 
-export const metadata: Metadata = { title: 'Pusat Belajar Islam', description: 'Pusat Belajar Islam 13 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Hari Akhir, Fiqh Ibadah, Munakahat, Muamalah, Anti-Korupsi, Perbandingan Agama, Sains & Sunnatullah, Makanan Halal, Fiqh Medis, Siroh Nabawiyah, Ilmu Tajwid, dan Ilmu Balaghoh.' };
+export const metadata: Metadata = { title: 'Pusat Belajar Islam', description: 'Pusat Belajar Islam 14 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Hari Akhir, Fiqh Ibadah, Munakahat, Muamalah, Anti-Korupsi, Perbandingan Agama, Sains & Sunnatullah, Makanan Halal, Fiqh Medis, Siroh Nabawiyah, Ilmu Tajwid, dan Ilmu Balaghoh.' };
 
 export default function LearningPage() {
   return <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">

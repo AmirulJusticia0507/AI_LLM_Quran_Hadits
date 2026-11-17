@@ -12,7 +12,7 @@ const navItems = [
   { href: "/quran", labelKey: "nav.quran", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", labelKey: "nav.hadith", icon: ScrollText, badge: "9 Kitab" },
   { href: "/rujukan", labelKey: "nav.references", icon: Network, badge: "Sumber" },
-  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "13 Modul Islam" },
+  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "14 Modul Islam" },
   { href: "/about", labelKey: "nav.about", icon: Info, badge: "Info" },
 ];
 
@@ -151,7 +151,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh"].includes(pathname));
+              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh"].includes(pathname));
               return (
                 <Link
                   key={item.href}
@@ -261,7 +261,7 @@ export default function Navbar() {
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-in slide-in-from-top duration-200">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh"].includes(pathname));
+            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh"].includes(pathname));
             return (
               <Link
                 key={item.href}

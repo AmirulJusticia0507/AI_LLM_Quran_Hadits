@@ -111,6 +111,12 @@ const SUGGESTED_PROMPTS = [
     category: "Aqidah & Akhirat",
     icon: ShieldCheck,
   },
+  {
+    title: "Ushul Fiqh & Perbedaan 4 Mazhab",
+    prompt: "Jelaskan sumber-sumber dalil hukum Islam (Al-Qur'an, Sunnah, Ijma', Qiyas) dan mengapa 4 mazhab bisa berbeda pendapat?",
+    category: "Ushul Fiqh",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
