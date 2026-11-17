@@ -42,6 +42,7 @@ export default function Footer() {
               <li><Link href="/fiqh" className="hover:underline">Fiqh Ibadah</Link></li>
               <li><Link href="/ushul-fiqh" className="hover:underline">Ushul Fiqh & Kaidah Fiqhiyyah</Link></li>
               <li><Link href="/musthalah-hadits" className="hover:underline">Musthalah Hadits (Kritik & Validasi)</Link></li>
+              <li><Link href="/peradaban" className="hover:underline">Sejarah Keemasan Islam</Link></li>
               <li><Link href="/munakahat" className="hover:underline">Fiqh Pernikahan</Link></li>
               <li><Link href="/muamalah" className="hover:underline">Fiqh Muamalah & Bisnis</Link></li>
               <li><Link href="/integritas" className="hover:underline">Fiqh Anti-Korupsi</Link></li>

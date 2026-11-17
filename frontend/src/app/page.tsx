@@ -123,6 +123,12 @@ const SUGGESTED_PROMPTS = [
     category: "Musthalah Hadits",
     icon: BookOpen,
   },
+  {
+    title: "Zaman Keemasan Sains Islam",
+    prompt: "Bagaimana sejarah kejayaan sains Islam di Baitul Hikmah Baghdad dan tokoh seperti Ibnu Sina dan Al-Khawarizmi?",
+    category: "Sejarah Islam",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

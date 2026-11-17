@@ -41,10 +41,11 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
-| `/belajar` | Pusat Belajar Islam: 15 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits) |
+| `/belajar` | Pusat Belajar Islam: 16 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam) |
 | `/aqidah` | Aqidah & Hari Akhir: 9 kajian tauhid, malaikat, takdir, sakaratul maut, fitnah kubur, kiamat kubra, mahsyar, hisab, surga |
 | `/ushul-fiqh` | Ushul Fiqh & Kaidah Fiqhiyyah: 10 kajian sumber hukum Islam, qiyas, ijma', ijtihad, perbedaan mazhab |
 | `/musthalah-hadits` | Musthalah Hadits: 10 kajian sanad, matan, 5 syarat shahih, hasan, dha'if, ciri hadits palsu, Kutubut Tis'ah |
+| `/peradaban` | Sejarah Keemasan Islam: 10 kajian Baitul Hikmah, Ibnu Sina, Al-Khawarizmi, Alhazen, Al-Biruni, Ibnu Khaldun, Andalusia |
 | `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
 | `/muamalah` | Fiqh Muamalah: 7 panduan anti-riba, gharar, utang-piutang, akad bisnis, paylater, pinjol, kripto |
 | `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |
