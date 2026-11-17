@@ -129,6 +129,12 @@ const SUGGESTED_PROMPTS = [
     category: "Sejarah Islam",
     icon: BookOpen,
   },
+  {
+    title: "Metode Parenting Luqman Al-Hakim",
+    prompt: "Bagaimana tips mendidik anak dan mengatasi tantangan era digital menurut Al-Qur'an dan Sunnah?",
+    category: "Parenting Islami",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
