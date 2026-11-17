@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Compass, MapPin, Navigation, LocateFixed, TriangleAlert } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const KAABA = { lat: 21.4225, lng: 39.8262 };
 const DEFAULT_COORDS = { lat: -6.2088, lng: 106.8456, label: "Jakarta (default)" };
@@ -32,6 +33,8 @@ function distanceKm(lat: number, lng: number): number {
 }
 
 export default function KiblatPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [coords, setCoords] = useState(DEFAULT_COORDS);
   const [heading, setHeading] = useState<number | null>(null);
   // Deteksi iOS (butuh izin kompas) saat init — bukan di effect body
@@ -55,14 +58,14 @@ export default function KiblatPage() {
         setCoords({
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
-          label: "Lokasi GPS Anda",
+          label: isEn ? "Your GPS Location" : "Lokasi GPS Anda",
         });
         onDone?.();
       },
       () => onDone?.(),
       { timeout: 8000 }
     );
-  }, []);
+  }, [isEn]);
 
   // GPS awal via microtask (lint-safe, tidak setState sinkron di effect)
   useEffect(() => {
@@ -130,7 +133,7 @@ export default function KiblatPage() {
           <Compass className="w-5 h-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">Arah Kiblat</h1>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">{isEn ? "Qibla Direction" : "Arah Kiblat"}</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 truncate flex items-center gap-1">
             <MapPin className="w-3 h-3 shrink-0" /> {coords.label} • {coords.lat.toFixed(3)}, {coords.lng.toFixed(3)}
           </p>
@@ -150,10 +153,10 @@ export default function KiblatPage() {
         <div className="relative w-64 h-64 sm:w-72 sm:h-72">
           {/* Dial */}
           <div className="absolute inset-0 rounded-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-inner" />
-          {(["U", "T", "S", "B"] as const).map((d, i) => (
+          {(isEn ? ["N", "E", "S", "W"] : ["U", "T", "S", "B"]).map((d, i) => (
             <span
               key={d}
-              className={`absolute font-extrabold ${d === "U" ? "text-red-500" : "text-slate-400 dark:text-slate-500"}`}
+              className={`absolute font-extrabold ${(d === "U" || d === "N") ? "text-red-500" : "text-slate-400 dark:text-slate-500"}`}
               style={{
                 top: "50%",
                 left: "50%",
@@ -180,28 +183,32 @@ export default function KiblatPage() {
 
         {aligned ? (
           <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-4 py-2 rounded-full">
-            ✅ Tepat menghadap kiblat!
+            {isEn ? "✅ Exactly facing the Qibla!" : "✅ Tepat menghadap kiblat!"}
           </p>
         ) : (
           <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
-            Putar perangkat hingga penanda 🕋 lurus ke atas
+            {isEn ? "Rotate device until the 🕋 marker points straight up" : "Putar perangkat hingga penanda 🕋 lurus ke atas"}
           </p>
         )}
 
         <div className="grid grid-cols-2 gap-3 w-full">
           <div className="rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 p-3 text-center">
-            <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Arah Kiblat</p>
+            <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+              {isEn ? "Qibla Bearing" : "Arah Kiblat"}
+            </p>
             <p className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tabular-nums">
               {bearing.toFixed(1)}°
             </p>
-            <p className="text-[11px] text-slate-500">dari utara</p>
+            <p className="text-[11px] text-slate-500">{isEn ? "from True North" : "dari utara"}</p>
           </div>
           <div className="rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 p-3 text-center">
-            <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Jarak ke Ka&apos;bah</p>
-            <p className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tabular-nums">
-              {dist.toLocaleString("id-ID", { maximumFractionDigits: 0 })} km
+            <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+              {isEn ? "Distance to Kaaba" : "Jarak ke Ka'bah"}
             </p>
-            <p className="text-[11px] text-slate-500">Makkah, Arab Saudi</p>
+            <p className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tabular-nums">
+              {dist.toLocaleString(isEn ? "en-US" : "id-ID", { maximumFractionDigits: 0 })} km
+            </p>
+            <p className="text-[11px] text-slate-500">{isEn ? "Makkah, Saudi Arabia" : "Makkah, Arab Saudi"}</p>
           </div>
         </div>
 
@@ -210,19 +217,19 @@ export default function KiblatPage() {
             onClick={requestCompass}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg shadow-emerald-600/20 transition-all active:scale-95 cursor-pointer"
           >
-            <Navigation className="w-4 h-4" /> Aktifkan Kompas
+            <Navigation className="w-4 h-4" /> {isEn ? "Activate Compass" : "Aktifkan Kompas"}
           </button>
         )}
         {!needPermission && heading == null && (
           <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 px-4 py-2 rounded-xl flex items-center gap-1.5">
             <TriangleAlert className="w-3.5 h-3.5 shrink-0" />
-            Sensor kompas tidak terdeteksi — gunakan angka derajat di atas dengan aplikasi kompas.
+            {isEn ? "Compass sensor not detected — use the degree angle above with a physical/digital compass." : "Sensor kompas tidak terdeteksi — gunakan angka derajat di atas dengan aplikasi kompas."}
           </p>
         )}
       </div>
 
       <p className="text-[10px] sm:text-[11px] text-center text-slate-400 dark:text-slate-500 mt-4">
-        Kalibrasi dengan mengayun perangkat membentuk angka 8 bila arah tidak stabil.
+        {isEn ? "Calibrate by moving device in a figure-8 motion if orientation fluctuates." : "Kalibrasi dengan mengayun perangkat membentuk angka 8 bila arah tidak stabil."}
       </p>
     </div>
   );

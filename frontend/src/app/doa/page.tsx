@@ -15,6 +15,7 @@ import {
   BookOpen
 } from "lucide-react";
 import hisnulMuslimData from "@/data/hisnul-muslim.json";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface DoaItem {
   id: number;
@@ -29,6 +30,8 @@ interface DoaItem {
 const ITEMS_PER_PAGE = 15;
 
 export default function DoaPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [query, setQuery] = useState("");
   const [selectedKategori, setSelectedKategori] = useState<string>("Semua");
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,13 +126,15 @@ export default function DoaPage() {
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              Doa &amp; Dzikir Hisnul Muslim
+              {isEn ? "Supplications & Dhikr (Hisnul Muslim)" : "Doa & Dzikir Hisnul Muslim"}
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-semibold">
-                267 Doa
+                {isEn ? "267 Duas" : "267 Doa"}
               </span>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Kumpulan doa &amp; dzikir shahih dari Al-Qur&apos;an dan As-Sunnah (Perisai Muslim)
+              {isEn
+                ? "Authentic supplications and remembrance from Al-Qur'an & Sunnah (Fortress of the Muslim)"
+                : "Kumpulan doa & dzikir shahih dari Al-Qur'an dan As-Sunnah (Perisai Muslim)"}
             </p>
           </div>
         </div>
@@ -142,7 +147,7 @@ export default function DoaPage() {
             title="Tampilkan doa acak"
           >
             <Shuffle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Doa Acak</span>
+            <span>{isEn ? "Random Dua" : "Doa Acak"}</span>
           </button>
 
           {/* Bookmarks Toggle */}
@@ -159,7 +164,7 @@ export default function DoaPage() {
             title="Tampilkan doa yang ditandai"
           >
             <Bookmark className="w-3.5 h-3.5" />
-            <span>Tersimpan ({bookmarks.length})</span>
+            <span>{isEn ? `Saved (${bookmarks.length})` : `Tersimpan (${bookmarks.length})`}</span>
           </button>
 
           {/* Font Size Selector */}

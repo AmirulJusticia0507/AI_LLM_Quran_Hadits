@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Sunrise,
   Sunset,
@@ -63,7 +64,19 @@ function formatCountdown(ms: number): string {
   return `${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 
+const PRAYER_LABELS_EN: Record<string, string> = {
+  Imsak: "Imsak",
+  Fajr: "Fajr (Dawn)",
+  Sunrise: "Sunrise",
+  Dhuhr: "Dhuhr (Noon)",
+  Asr: "Asr (Afternoon)",
+  Maghrib: "Maghrib (Sunset)",
+  Isha: "Isha (Night)",
+};
+
 export default function JadwalPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [coords, setCoords] = useState(DEFAULT_COORDS);
   const [timings, setTimings] = useState<PrayerTimings | null>(null);
   const [hijri, setHijri] = useState<HijriDate | null>(null);
@@ -130,7 +143,7 @@ export default function JadwalPage() {
           const c = {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
-            label: "Lokasi GPS Anda",
+            label: isEn ? "Your GPS Location" : "Lokasi GPS Anda",
           };
           setCoords(c);
           fetchTimings(c.lat, c.lng);
@@ -144,7 +157,7 @@ export default function JadwalPage() {
     return () => {
       cancelled = true;
     };
-  }, [fetchTimings]);
+  }, [fetchTimings, isEn]);
 
   // Tick tiap detik untuk countdown
   useEffect(() => {
@@ -160,7 +173,7 @@ export default function JadwalPage() {
         const c = {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
-          label: "Lokasi GPS Anda",
+          label: isEn ? "Your GPS Location" : "Lokasi GPS Anda",
         };
         setCoords(c);
         setLocating(false);
@@ -204,10 +217,10 @@ export default function JadwalPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">
-              Jadwal Shalat
+              {isEn ? "Prayer Times" : "Jadwal Shalat"}
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate flex items-center gap-1">
-              <MapPin className="w-3 h-3 shrink-0" /> {coords.label} • Metode Kemenag RI
+              <MapPin className="w-3 h-3 shrink-0" /> {coords.label} • {isEn ? "Kemenag RI Method" : "Metode Kemenag RI"}
             </p>
           </div>
         </div>
@@ -218,7 +231,7 @@ export default function JadwalPage() {
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200 dark:border-emerald-900/50 transition-all active:scale-95 cursor-pointer shrink-0 disabled:opacity-50"
           >
             <Navigation className={`w-3.5 h-3.5 ${locating ? "animate-pulse" : ""}`} />
-            {locating ? "Mencari..." : "Pakai GPS"}
+            {locating ? (isEn ? "Locating..." : "Mencari...") : (isEn ? "Use GPS" : "Pakai GPS")}
           </button>
           <button
             onClick={() => fetchTimings(coords.lat, coords.lng)}
@@ -226,7 +239,7 @@ export default function JadwalPage() {
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-700 transition-all active:scale-95 cursor-pointer shrink-0 disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Muat Ulang
+            {isEn ? "Reload" : "Muat Ulang"}
           </button>
         </div>
       </div>
@@ -235,7 +248,7 @@ export default function JadwalPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
         <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 shadow-md">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1.5 mb-1">
-            <CalendarDays className="w-3.5 h-3.5" /> Tanggal Hari Ini
+            <CalendarDays className="w-3.5 h-3.5" /> {isEn ? "Today's Date" : "Tanggal Hari Ini"}
           </p>
           <p className="font-bold text-slate-900 dark:text-slate-100">{gregorian || "…"}</p>
           <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium mt-0.5">
@@ -244,7 +257,7 @@ export default function JadwalPage() {
         </div>
         <div className="rounded-2xl bg-linear-to-r from-emerald-600 to-teal-600 text-white p-4 shadow-lg shadow-emerald-600/20">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-100/80 flex items-center gap-1.5 mb-1">
-            <BellRing className="w-3.5 h-3.5" /> Shalat Berikutnya
+            <BellRing className="w-3.5 h-3.5" /> {isEn ? "Next Prayer" : "Shalat Berikutnya"}
           </p>
           {nextKey && nextDate ? (
             <div className="flex items-end justify-between gap-2">
@@ -291,11 +304,11 @@ export default function JadwalPage() {
                   </span>
                   {isNext && (
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded-full">
-                      Berikutnya
+                      {isEn ? "Next" : "Berikutnya"}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{p.label}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{isEn ? (PRAYER_LABELS_EN[p.key] || p.label) : p.label}</p>
                 <p
                   className={`text-2xl font-extrabold tabular-nums ${
                     loading ? "animate-pulse text-slate-300 dark:text-slate-600" : "text-slate-900 dark:text-slate-100"

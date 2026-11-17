@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { Sparkles, Search } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface AsmaulHusna {
   arab: string;
   latin: string;
   arti: string;
+  artiEn?: string;
 }
 
 const ASMAUL_HUSNA: AsmaulHusna[] = [
@@ -111,13 +113,21 @@ const ASMAUL_HUSNA: AsmaulHusna[] = [
   { arab: "الصبور", latin: "Ash-Shabur", arti: "Maha Sabar" },
 ];
 
+const ASMAUL_EN_MAP: Record<string, string> = {'Allah': 'The One and Only God', 'Ar-Rahman': 'The Entirely Merciful', 'Ar-Rahim': 'The Especially Merciful', 'Al-Malik': 'The Absolute Ruler / King', 'Al-Quddus': 'The Pure / The Most Holy', 'As-Salam': 'The Source of Peace', "Al-Mu'min": 'The Inspirer of Faith / Granter of Security', 'Al-Muhaimin': 'The Guardian / Preserver', 'Al-Aziz': 'The Almighty / The Victorious', 'Al-Jabbar': 'The Compeller / Restorer', 'Al-Mutakabbir': 'The Supreme / The Majestic', 'Al-Khaliq': 'The Creator', "Al-Bari'": 'The Originator / Maker', 'Al-Mushawwir': 'The Fashioner of Forms', 'Al-Ghaffar': 'The All-Forgiving', 'Al-Qahhar': 'The Subduer / All-Prevailing', 'Al-Wahhab': 'The Bestower', 'Ar-Razzaq': 'The Provider', 'Al-Fattah': 'The Opener / The Judge', 'Al-Alim': 'The All-Knowing', 'Al-Qabidh': 'The Withholder', 'Al-Basith': 'The Extender / Expander', 'Al-Khafidh': 'The Abaser', "Ar-Rafi'": 'The Exalter', "Al-Mu'izz": 'The Bestower of Honor', 'Al-Mudzill': 'The Dishonorer / Humiliator', "As-Sami'": 'The All-Hearing', 'Al-Bashir': 'The All-Seeing', 'Al-Hakam': 'The Impartial Judge', 'Al-Adl': 'The Utterly Just', 'Al-Lathif': 'The Subtle / The Gentle', 'Al-Khabir': 'The All-Aware', 'Al-Halim': 'The Most Forbearing', 'Al-Azhim': 'The Magnificent', 'Al-Ghafur': 'The Great Forgiver', 'Asy-Syakur': 'The Most Appreciative', 'Al-Aliyy': 'The Most High', 'Al-Kabir': 'The Most Great', 'Al-Hafizh': 'The Preserver', 'Al-Muqit': 'The Sustainer', 'Al-Hasib': 'The Reckoner', 'Al-Jalil': 'The Majestic', 'Al-Karim': 'The Most Generous', 'Ar-Raqib': 'The Watchful', 'Al-Mujib': 'The Responsive', "Al-Wasi'": 'The All-Encompassing', 'Al-Hakim': 'The All-Wise', 'Al-Wadud': 'The Most Loving', 'Al-Majid': 'The Glorious', "Al-Ba'its": 'The Resurrector', 'Asy-Syahid': 'The Witness', 'Al-Haqq': 'The Absolute Truth', 'Al-Wakil': 'The Trustee', 'Al-Qawiyy': 'The Strong', 'Al-Matin': 'The Firm / Steadfast', 'Al-Waliyy': 'The Protecting Friend', 'Al-Hamid': 'The Praiseworthy', 'Al-Muhshi': 'The Accounter / Counter', "Al-Mubdi'": 'The Originator', "Al-Mu'id": 'The Restorer', 'Al-Muhyi': 'The Giver of Life', 'Al-Mumit': 'The Bringer of Death', 'Al-Hayy': 'The Ever-Living', 'Al-Qayyum': 'The Self-Sustaining', 'Al-Wajid': 'The Perceiver / Finder', 'Al-Majid (2)': 'The Illustrious', 'Al-Wahid': 'The One', 'Al-Ahad': 'The Unique', 'Ash-Shamad': 'The Eternal Refuge', 'Al-Qadir': 'The Capable / Powerful', 'Al-Muqtadir': 'The Determiner / Omnipotent', 'Al-Muqaddim': 'The Expediter', "Al-Mu'akhkhir": 'The Delayer', 'Al-Awwal': 'The First', 'Al-Akhir': 'The Last', 'Azh-Zhahir': 'The Manifest', 'Al-Bathin': 'The Hidden', 'Al-Wali': 'The Sole Governor', "Al-Muta'ali": 'The Self-Exalted', 'Al-Barr': 'The Source of Goodness', 'At-Tawwab': 'The Ever-Pardoning', 'Al-Muntaqim': 'The Avenger', 'Al-Afuww': 'The Pardoner', "Ar-Ra'uf": 'The Most Kind', 'Malikul Mulk': 'Owner of All Sovereignty', 'Dzul Jalali wal Ikram': 'Lord of Majesty and Generosity', 'Al-Muqsith': 'The Equitable', "Al-Jami'": 'The Gatherer', 'Al-Ghaniyy': 'The Self-Sufficient', 'Al-Mughni': 'The Enricher', "Al-Mani'": 'The Preventer', 'Adh-Dharr': 'The Creator of Harm', "An-Nafi'": 'The Creator of Good', 'An-Nur': 'The Light', 'Al-Hadi': 'The Guide', "Al-Badi'": 'The Incomparable Originator', 'Al-Baqi': 'The Everlasting', 'Al-Warits': 'The Ultimate Inheritor', 'Ar-Rasyid': 'The Guide to the Right Path', 'Ash-Shabur': 'The Most Patient'};
+
 export default function AsmaulPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [query, setQuery] = useState("");
 
   const filtered = ASMAUL_HUSNA.filter(
-    (a) =>
-      a.latin.toLowerCase().includes(query.toLowerCase()) ||
-      a.arti.toLowerCase().includes(query.toLowerCase())
+    (a) => {
+      const q = query.toLowerCase();
+      const en = ASMAUL_EN_MAP[a.latin]?.toLowerCase() || "";
+      return a.latin.toLowerCase().includes(q) ||
+             a.arti.toLowerCase().includes(q) ||
+             en.includes(q);
+    }
   );
 
   return (
@@ -128,7 +138,7 @@ export default function AsmaulPage() {
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate">Asmaul Husna</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">99 Nama Allah SWT beserta artinya</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{isEn ? "99 Beautiful Names of Allah SWT and their meanings" : "99 Nama Allah SWT beserta artinya"}</p>
         </div>
       </div>
 
@@ -138,13 +148,13 @@ export default function AsmaulPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari nama atau arti… mis. Penyayang"
+          placeholder={isEn ? "Search name or meaning… e.g. Merciful" : "Cari nama atau arti… mis. Penyayang"}
           className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
         />
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-sm text-slate-500 text-center py-8">Tidak ditemukan. Coba kata kunci lain.</p>
+        <p className="text-sm text-slate-500 text-center py-8">{isEn ? "No names match your search. Try another keyword." : "Tidak ditemukan. Coba kata kunci lain."}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((a) => {
@@ -159,7 +169,7 @@ export default function AsmaulPage() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-slate-900 dark:text-slate-100 text-sm truncate">{a.latin}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.arti}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{isEn ? (ASMAUL_EN_MAP[a.latin] || a.arti) : a.arti}</p>
                 </div>
                 <p className="arabic-text text-2xl font-bold text-emerald-700 dark:text-emerald-300 shrink-0">
                   {a.arab}
@@ -171,7 +181,9 @@ export default function AsmaulPage() {
       )}
 
       <p className="text-[10px] sm:text-[11px] text-center text-slate-400 dark:text-slate-500 mt-4">
-        &ldquo;Hanya milik Allah Asmaul Husna, maka bermohonlah kepada-Nya dengan menyebut Asmaul Husna itu.&rdquo; (QS. Al-A&apos;raf: 180)
+        {isEn
+          ? <>“The most beautiful names belong to Allah: so call on Him by them.” (Surah Al-A&apos;raf: 180)</>
+          : <>“Hanya milik Allah Asmaul Husna, maka bermohonlah kepada-Nya dengan menyebut Asmaul Husna itu.” (QS. Al-A&apos;raf: 180)</>}
       </p>
     </div>
   );
