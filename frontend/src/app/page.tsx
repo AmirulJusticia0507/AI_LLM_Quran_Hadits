@@ -189,6 +189,12 @@ const SUGGESTED_PROMPTS = [
     category: "Sahabat Nabi",
     icon: BookOpen,
   },
+  {
+    title: "Fiqh Lingkungan & Ekologi Islam",
+    prompt: "Bagaimana pandangan Islam tentang konservasi air, hak satwa, dan anjuran menanam pohon kurma meski kiamat tiba?",
+    category: "Fiqh Lingkungan",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
