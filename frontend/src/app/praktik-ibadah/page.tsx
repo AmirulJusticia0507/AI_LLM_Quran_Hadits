@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-
-export const metadata: Metadata = { title: "Meneladani Wudhu dan Shalat Nabi", description: "Panduan urutan wudhu dan shalat dengan ilustrasi, bacaan, dan rujukan hadits." };
+import { useLanguage } from "@/context/LanguageContext";
 
 const wudhu = [
   ["Persiapan dan niat", "Gunakan air suci dan menyucikan. Hilangkan penghalang air seperti cat pada kulit. Niatkan bersuci dalam hati; tidak ada lafaz niat tertentu yang harus diucapkan. Mulailah dengan menyebut nama Allah."],
@@ -30,6 +30,42 @@ const shalat = [
   ["Salam", "Akhiri dengan mengucapkan Assalamu ‘alaikum wa rahmatullah sambil menoleh ke kanan, lalu ke kiri. Setelah selesai, lanjutkan dzikir setelah shalat."],
 ] as const;
 
+const wudhuEn = [
+  ["Preparation and intention", "Use purifying water and remove anything that prevents water from reaching the skin. Intend purification in the heart; no specific spoken formula is required. Begin by mentioning Allah's name."],
+  ["Wash both hands", "Wash both hands up to the wrists, including between the fingers, three times."],
+  ["Rinse the mouth and nose", "Rinse the mouth, gently draw water into the nose, then expel it. Repeat three times. When fasting, avoid doing this excessively."],
+  ["Wash the face", "Wash the entire face from the hairline to the chin and from ear to ear three times, ensuring water reaches all required areas."],
+  ["Wash the arms to the elbows", "Wash the right arm, including the elbow, then the left. Wash each three times and reach between the fingers."],
+  ["Wipe the head and ears", "With wet hands, wipe from the front of the head to the back and return. Wipe the inner and outer ears. Wiping is different from washing; once is sufficient."],
+  ["Wash the feet to the ankles", "Wash the right then left foot three times each, including ankles, heels, and between the toes. Do not leave any area dry."],
+  ["Finish and supplicate", "Perform the steps in order and continuously. Recite the testimony of faith after wudu. This guide shows three washes; reports also support washing once thoroughly. Avoid wasting water."],
+] as const;
+
+const shalatEn = [
+  ["Preparation", "Ensure the prayer time has begun, you are free of ritual impurity and filth, your awrah is covered, and you face the qibla. Make the intention in your heart. Stand if able; those unable have concessions."],
+  ["Opening takbir", "Say Allahu akbar while raising the hands to shoulder or ear level, then place the right hand over the left. Look toward the place of prostration."],
+  ["Standing and recitation", "Recite an opening supplication, isti‘adhah, then Al-Fatihah. In the first two rak‘ahs, follow with a surah or verses you know. There are scholarly details about the follower's recitation and basmalah aloud."],
+  ["Bowing (ruku‘)", "Say takbir as you bow. Place the hands on the knees, level the back, and keep the head aligned with it. Pause calmly (tuma’ninah), then glorify Allah."],
+  ["Rising from bowing (i‘tidal)", "Rise to a fully upright position. The imam or one praying alone says Sami‘allahu liman hamidah; say Rabbana wa lakal-hamd while standing. The follower says the praise. Pause before moving on."],
+  ["First prostration (sujud)", "Say takbir and prostrate on seven body parts: forehead with nose, both palms, both knees, and the toes of both feet. Keep the forearms off the floor and pause calmly."],
+  ["Sitting between prostrations", "Say takbir and sit calmly. One taught posture is sitting on the left foot with the right foot upright. Recite Rabbighfir li."],
+  ["Second prostration", "Say takbir and prostrate again with calm composure. A rak‘ah includes two prostrations. Then rise for the next rak‘ah with takbir."],
+  ["Following rak‘ahs", "Repeat standing, Al-Fatihah, bowing, rising, two prostrations, and the sitting between them. Fajr is two rak‘ahs, Maghrib three, and Zuhr, ‘Asr, and ‘Isha four in ordinary circumstances without shortening."],
+  ["First tashahhud", "In prayers of three or four rak‘ahs, sit after the second rak‘ah and recite the tashahhud, then stand for the next rak‘ah. In a two-rak‘ah prayer, this is the final tashahhud."],
+  ["Final tashahhud and supplication", "In the final rak‘ah, sit, recite the tashahhud and blessings upon the Prophet, then supplicate before the salams. Sitting postures and the index-finger gesture have scholarly variations."],
+  ["Salam", "Conclude by saying Assalamu ‘alaikum wa rahmatullah while turning to the right, then to the left. Continue with remembrance after prayer."],
+] as const;
+
+const enText = {
+  pageTitle: "Following the Prophet's Wudu and Prayer ﷺ",
+  pageIntro: "Learn the preparation, sequence of movements, recitations, and references to build calm, consistent worship.",
+  wudu: "Wudu steps", prayer: "Prayer steps", recitations: "Recitations", references: "References",
+  illustration: "An AI illustration of a present-day person, not a depiction of the Prophet. It shows selected movements rather than the complete sequence; follow the written steps. Click to enlarge.",
+  guideNote: "This guide covers basic practice in ordinary circumstances. Sunnah details, essentials, and recitation variations are discussed by the schools of law; study them with a teacher. Tuma’ninah means pausing calmly in each position, without rushing.",
+  wuduNote: "Repeat wudu after it is invalidated, for example after using the toilet or passing wind. Wounds, bandages, and dry ablution require separate guidance.",
+  quranLink: "Open the Qur’an to read Al-Fatihah and other surahs", postPrayer: "Continue to remembrance after prayer →", fiqhLink: "Learn more about the fiqh of worship →",
+};
+
 const bacaan = [
   { title: "Syahadat setelah wudhu", arab: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا عَبْدُ اللَّهِ وَرَسُولُهُ", arti: "Aku bersaksi bahwa tidak ada sesembahan yang berhak disembah selain Allah dan Muhammad adalah hamba serta utusan-Nya." },
   { title: "Takbir", arab: "اللَّهُ أَكْبَرُ", arti: "Allah Mahabesar." },
@@ -42,21 +78,37 @@ const bacaan = [
   { title: "Salam", arab: "السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", arti: "Semoga keselamatan dan rahmat Allah tercurah kepada kalian." },
 ];
 
-function Steps({ items }: Readonly<{ items: ReadonlyArray<readonly [string, string]> }>) {
-  return <ol className="space-y-4">{items.map(([title, detail], index) => <li key={title} className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><h3 className="font-bold text-lg">{index + 1}. {title}</h3><p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{detail}</p></li>)}</ol>;
+const recitationTitlesEn = ["Testimony of faith after wudu", "Takbir", "Tasbih in bowing", "Rising from bowing", "Tasbih in prostration", "Between the two prostrations", "Tashahhud (Ibn Mas‘ud narration)", "Ibrahimic blessings", "Salam"];
+const recitationMeaningsEn = [
+  "I bear witness that none is worthy of worship except Allah, and that Muhammad is His servant and Messenger.",
+  "Allah is the Greatest.",
+  "Glory be to my Lord, the Most Great.",
+  "Allah hears whoever praises Him. Our Lord, all praise belongs to You.",
+  "Glory be to my Lord, the Most High.",
+  "My Lord, forgive me.",
+  "All greetings, prayers, and good things belong to Allah. Peace, Allah’s mercy, and His blessings be upon you, O Prophet. Peace be upon us and the righteous servants of Allah. I bear witness that none is worthy of worship except Allah, and Muhammad is His servant and Messenger.",
+  "O Allah, bless Muhammad and the family of Muhammad as You blessed the family of Abraham. You are Praiseworthy and Glorious.",
+  "May the peace and mercy of Allah be upon you.",
+];
+
+function Steps({ items, en }: Readonly<{ items: ReadonlyArray<readonly [string, string]>; en: boolean }>) {
+  const displayItems = en ? (items === wudhu ? wudhuEn : items === shalat ? shalatEn : items) : items;
+  return <ol className="space-y-4">{displayItems.map(([title, detail], index) => <li key={title} className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><h3 className="font-bold text-lg">{index + 1}. {title}</h3><p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{detail}</p></li>)}</ol>;
 }
 
 export default function PraktikIbadahPage() {
+  const { language } = useLanguage();
+  const en = language === "en";
   return <div className="mx-auto max-w-5xl px-4 py-8 space-y-8">
-    <header className="rounded-3xl bg-emerald-900 p-7 text-white space-y-3"><p>Panduan praktik ibadah</p><h1 className="text-3xl font-bold">Meneladani Wudhu dan Shalat Nabi ﷺ</h1><p className="leading-7">Pelajari persiapan, urutan gerakan, bacaan, dan rujukan untuk membiasakan ibadah dengan tenang.</p></header>
-    <nav aria-label="Bagian panduan" className="flex flex-wrap gap-4 text-emerald-700 dark:text-emerald-300 underline"><a href="#wudhu">Urutan wudhu</a><a href="#shalat">Urutan shalat</a><a href="#bacaan">Bacaan</a><a href="#rujukan">Rujukan</a></nav>
-    <figure className="space-y-3"><a href="/images/ibadah/wudhu-shalat.png" target="_blank" rel="noopener noreferrer"><Image src="/images/ibadah/wudhu-shalat.png" width={1536} height={1024} alt="Gambaran membasuh tangan, wajah, lengan dan kaki; serta berdiri, rukuk, sujud dan duduk dalam shalat." className="w-full h-auto rounded-2xl" /></a><figcaption className="text-sm leading-6 text-slate-500">Ilustrasi AI seorang peraga masa kini, bukan penggambaran Nabi. Gambar hanya gambaran beberapa gerakan, bukan seluruh urutan; ikuti langkah tertulis di bawah. Ketuk untuk memperbesar.</figcaption></figure>
-    <p className="leading-7">Panduan ini untuk praktik dasar dalam keadaan biasa. Detail sunnah, rukun, dan variasi bacaan memiliki pembahasan mazhab; pelajari bersama guru. Tuma’ninah berarti berhenti dengan tenang pada posisi gerakan, bukan bergerak tergesa-gesa.</p>
-    <section id="wudhu" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">Urutan wudhu</h2><Steps items={wudhu} /><p className="text-sm">Wudhu perlu diulang ketika batal, misalnya setelah buang air atau keluar angin. Kondisi luka, penggunaan perban, dan tayamum memerlukan panduan tersendiri.</p></section>
-    <section id="shalat" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">Urutan shalat</h2><Steps items={shalat} /><Link href="/dzikir" className="block text-emerald-700 dark:text-emerald-300 underline">Lanjut ke dzikir setelah shalat →</Link></section>
-    <section id="bacaan" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">Bacaan pendamping</h2><Link href="/quran" className="block underline text-emerald-700 dark:text-emerald-300">Buka Al-Qur’an untuk membaca Al-Fatihah dan surat lainnya</Link>{bacaan.map(item => <details key={item.title} className="rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><summary className="cursor-pointer font-semibold">{item.title}</summary><p lang="ar" dir="rtl" className="arabic-text my-5">{item.arab}</p><p className="leading-7">{item.arti}</p></details>)}</section>
-    <section id="rujukan" className="scroll-mt-24 space-y-3"><h2 className="text-2xl font-bold">Rujukan untuk dipelajari</h2><ul className="list-disc pl-6 space-y-2">{[
+    <header className="rounded-3xl bg-emerald-900 p-7 text-white space-y-3"><p>{en ? "Worship practice guide" : "Panduan praktik ibadah"}</p><h1 className="text-3xl font-bold">{en ? enText.pageTitle : "Meneladani Wudhu dan Shalat Nabi ﷺ"}</h1><p className="leading-7">{en ? enText.pageIntro : "Pelajari persiapan, urutan gerakan, bacaan, dan rujukan untuk membiasakan ibadah dengan tenang."}</p></header>
+    <nav aria-label={en ? "Guide sections" : "Bagian panduan"} className="flex flex-wrap gap-4 text-emerald-700 dark:text-emerald-300 underline"><a href="#wudhu">{en ? enText.wudu : "Urutan wudhu"}</a><a href="#shalat">{en ? enText.prayer : "Urutan shalat"}</a><a href="#bacaan">{en ? enText.recitations : "Bacaan"}</a><a href="#rujukan">{en ? enText.references : "Rujukan"}</a></nav>
+    <figure className="space-y-3"><a href="/images/ibadah/wudhu-shalat.png" target="_blank" rel="noopener noreferrer"><Image src="/images/ibadah/wudhu-shalat.png" width={1536} height={1024} alt={en ? "Illustration of washing the hands, face, arms, and feet, and standing, bowing, prostrating, and sitting in prayer." : "Gambaran membasuh tangan, wajah, lengan dan kaki; serta berdiri, rukuk, sujud dan duduk dalam shalat."} className="w-full h-auto rounded-2xl" /></a><figcaption className="text-sm leading-6 text-slate-500">{en ? enText.illustration : "Ilustrasi AI seorang peraga masa kini, bukan penggambaran Nabi. Gambar hanya gambaran beberapa gerakan, bukan seluruh urutan; ikuti langkah tertulis di bawah. Ketuk untuk memperbesar."}</figcaption></figure>
+    <p className="leading-7">{en ? enText.guideNote : "Panduan ini untuk praktik dasar dalam keadaan biasa. Detail sunnah, rukun, dan variasi bacaan memiliki pembahasan mazhab; pelajari bersama guru. Tuma’ninah berarti berhenti dengan tenang pada posisi gerakan, bukan bergerak tergesa-gesa."}</p>
+    <section id="wudhu" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">{en ? enText.wudu : "Urutan wudhu"}</h2><Steps items={wudhu} en={en} /><p className="text-sm">{en ? enText.wuduNote : "Wudhu perlu diulang ketika batal, misalnya setelah buang air atau keluar angin. Kondisi luka, penggunaan perban, dan tayamum memerlukan panduan tersendiri."}</p></section>
+    <section id="shalat" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">{en ? enText.prayer : "Urutan shalat"}</h2><Steps items={shalat} en={en} /><Link href="/dzikir" className="block text-emerald-700 dark:text-emerald-300 underline">{en ? enText.postPrayer : "Lanjut ke dzikir setelah shalat →"}</Link></section>
+    <section id="bacaan" className="scroll-mt-24 space-y-4"><h2 className="text-2xl font-bold">{en ? enText.recitations : "Bacaan pendamping"}</h2><Link href="/quran" className="block underline text-emerald-700 dark:text-emerald-300">{en ? enText.quranLink : "Buka Al-Qur’an untuk membaca Al-Fatihah dan surat lainnya"}</Link>{bacaan.map((item, index) => <details key={item.title} className="rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><summary className="cursor-pointer font-semibold">{en ? recitationTitlesEn[index] : item.title}</summary><p lang="ar" dir="rtl" className="arabic-text my-5">{item.arab}</p><p className="leading-7">{en ? recitationMeaningsEn[index] : item.arti}</p></details>)}</section>
+    <section id="rujukan" className="scroll-mt-24 space-y-3"><h2 className="text-2xl font-bold">{en ? enText.references : "Rujukan untuk dipelajari"}</h2><ul className="list-disc pl-6 space-y-2">{[
       ["bukhari:159", "Wudhu Utsman yang mencontoh wudhu Nabi"], ["bukhari:185", "Mengusap kepala dari depan ke belakang dan kembali"], ["bukhari:157", "Membasuh anggota wudhu sekali"], ["muslim:234a", "Syahadat setelah wudhu"], ["bukhari:631", "Mencontoh shalat Nabi"], ["bukhari:757", "Urutan gerakan dan tuma’ninah"], ["bukhari:812", "Tujuh anggota sujud"], ["muslim:772", "Tasbih rukuk dan sujud"], ["muslim:402a", "Bacaan tasyahud"], ["bukhari:6357", "Shalawat kepada Nabi"],
-    ].map(([id, title]) => <li key={id}><a className="underline text-emerald-700 dark:text-emerald-300" href={`https://sunnah.com/${id}`} target="_blank" rel="noopener noreferrer">{title} ({id})</a></li>)}</ul><Link href="/fiqh" className="block underline">Pelajari Fiqh Ibadah lebih lanjut →</Link></section>
+    ].map(([id, title], index) => <li key={id}><a className="underline text-emerald-700 dark:text-emerald-300" href={`https://sunnah.com/${id}`} target="_blank" rel="noopener noreferrer">{en ? ["‘Uthman’s wudu following the Prophet", "Wiping the head from front to back and returning", "Washing each limb once", "Testimony of faith after wudu", "Following the Prophet’s prayer", "Prayer sequence and composure", "The seven prostration points", "Glorification in bowing and prostration", "Tashahhud wording", "Blessings upon the Prophet"][index] : title} ({id})</a></li>)}</ul><Link href="/fiqh" className="block underline">{en ? enText.fiqhLink : "Pelajari Fiqh Ibadah lebih lanjut →"}</Link></section>
   </div>;
 }

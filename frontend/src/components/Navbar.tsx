@@ -81,7 +81,7 @@ function LanguageSwitcher() {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [ibadahOpen, setIbadahOpen] = useState(false);
@@ -247,7 +247,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Buka menu navigasi"
+              aria-label={language === "en" ? "Open navigation menu" : "Buka menu navigasi"}
               className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 cursor-pointer"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
