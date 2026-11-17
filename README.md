@@ -41,7 +41,7 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
-| `/belajar` | Pusat Belajar Islam: 24 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah, Fitnah Dajjal & Akhir Zaman, Kisah 25 Nabi & Rasul) |
+| `/belajar` | Pusat Belajar Islam: 25 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah, Fitnah Dajjal & Akhir Zaman, Kisah 25 Nabi & Rasul, Islam Nusantara & Walisongo) |
 | `/aqidah` | Aqidah & Hari Akhir: 9 kajian tauhid, malaikat, takdir, sakaratul maut, fitnah kubur, kiamat kubra, mahsyar, hisab, surga |
 | `/ushul-fiqh` | Ushul Fiqh & Kaidah Fiqhiyyah: 10 kajian sumber hukum Islam, qiyas, ijma', ijtihad, perbedaan mazhab |
 | `/musthalah-hadits` | Musthalah Hadits: 10 kajian sanad, matan, 5 syarat shahih, hasan, dha'if, ciri hadits palsu, Kutubut Tis'ah |
@@ -54,6 +54,7 @@ langsung dari UI tanpa restart server.
 | `/siyasah` | Maqashid Syari'ah & Siyasah: 10 kajian 5 pilar syariat, Piagam Madinah, filosofi pidana Islam, prinsip syura, tata kelola publik |
 | `/fitnah-akhir-zaman` | Fitnah Dajjal & Akhir Zaman: 10 kajian ciri fisik Dajjal, Al-Jassasah, tipu daya semu, Imam Mahdi, turunnya Nabi Isa, Babul Ludd |
 | `/kisah-nabi` | Kisah 25 Nabi & Rasul: 10 kajian silsilah Adam s/d Muhammad ﷺ, mukjizat agung, 5 Rasul Ulul Azmi, ibrah dakwah |
+| `/islam-nusantara` | Islam Nusantara: 10 kajian jalur rempah Pasai, metode dakwah Walisongo, kesultanan maritim, tradisi pesantren, Resolusi Jihad |
 | `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
 | `/muamalah` | Fiqh Muamalah: 7 panduan anti-riba, gharar, utang-piutang, akad bisnis, paylater, pinjol, kripto |
 | `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |

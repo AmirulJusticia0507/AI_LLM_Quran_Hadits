@@ -177,6 +177,12 @@ const SUGGESTED_PROMPTS = [
     category: "Kisah Nabi",
     icon: BookOpen,
   },
+  {
+    title: "Sejarah Islam Nusantara & Walisongo",
+    prompt: "Bagaimana metode dakwah kultural Walisongo dan peran ulama pesantren dalam mempertahankan kemerdekaan Indonesia?",
+    category: "Islam Nusantara",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
