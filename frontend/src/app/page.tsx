@@ -153,6 +153,12 @@ const SUGGESTED_PROMPTS = [
     category: "Etika Digital",
     icon: BookOpen,
   },
+  {
+    title: "Tokoh Muslimah & Fiqh Wanita",
+    prompt: "Ceritakan keteladanan Khadijah, Aisyah, dan Nusaibah serta keadilan syariat dalam hak finansial mandiri wanita?",
+    category: "Fiqh Wanita",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
