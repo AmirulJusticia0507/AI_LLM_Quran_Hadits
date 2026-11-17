@@ -207,6 +207,12 @@ const SUGGESTED_PROMPTS = [
     category: "Alam Ghaib",
     icon: BookOpen,
   },
+  {
+    title: "Adab Ikhtilaf & Moderasi Beragama",
+    prompt: "Mengapa 4 imam madzhab berbeda pendapat fiqih, bagaimana prinsip Islam Wasathiyyah, dan adab menyikapi khilafiyyah tanpa takfiri?",
+    category: "Adab Ikhtilaf",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

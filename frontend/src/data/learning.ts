@@ -3431,6 +3431,156 @@ export const alamGhaib: Course = {
   ]
 };
 
+export const adabIkhtilaf: Course = {
+  id: 'adab-ikhtilaf',
+  title: 'Adab Ikhtilaf & Moderasi Beragama (Islam Wasathiyyah)',
+  description: 'Memahami akar perbedaan fiqih ulama madzhab, adab berbeda pendapat, prinsip Islam wasathiyyah, dan merawat persatuan umat.',
+  note: 'Membimbing penuntut ilmu agar berwawasan luas, lapang dada dalam perkara furu\', serta menjauhi fanatisme buta dan sikap mudah mengkafirkan.',
+  lessons: [
+    {
+      id: 'konsep-wasathiyyah',
+      title: 'Hakikat Ummatan Wasathan: Islam yang Adil & Proporsional',
+      category: 'Landasan Moderasi',
+      summary: 'Islam adalah agama jalan tengah (wasathiyyah) yang menjauhi sikap ekstrem berlebihan (ghuluw) dan peremehan syariat (tafrith).',
+      points: [
+        "QS. Al-Baqarah: 143 menegaskan status kaum muslimin sebagai 'Ummatan Wasathan' (umat pertengahan/pilihan) agar menjadi saksi atas manusia.",
+        "Menjauhi Sikap Ghuluw (Melampaui Batas): Sabda Nabi SAW, 'Binasalah orang-orang yang berlebih-lebihan (dalam beragama)' (HR. Muslim).",
+        'Keseimbangan (Tawazun) Tiga Dimensi: Seimbang antara akal dan wahyu, ruhani dan jasmani, serta urusan dunia dan akhirat.',
+        "Kemudahan dalam Beragama: Islam datang membawa kemudahan (yusr), bukan kesulitan ('usr); syariat memiliki rukhshah saat kondisi darurat."
+      ],
+      practice: 'Terapkan prinsip tawazun hari ini dengan menyeimbangkan kewajiban ibadah, pekerjaan profesional, dan waktu istirahat bersama keluarga.',
+      source: quran('2/143')
+    },
+    {
+      id: 'sebab-ikhtilaf-fuqaha',
+      title: 'Akar Penyebab Perbedaan Pendapat Para Ulama Fiqih',
+      category: 'Metodologi Fiqih',
+      summary: 'Memahami mengapa para imam madzhab berbeda kesimpulan hukum adalah kunci lahirnya sikap lapang dada dan kedewasaan berfikir.',
+      points: [
+        'Perbedaan Sampainya Riwayat Hadits: Suatu hadits sampai kepada satu imam dengan sanad shahih, namun belum sampai atau sanadnya berbeda bagi imam lain.',
+        "Perbedaan Penilaian Keshahihan Perawi: Kriteria jarh wa ta'dil yang berbeda dalam menilai tingkat kekuatan ingatan seorang perawi.",
+        "Kaidah Bahasa Arab (Dilalah Lafadz): Perbedaan dalam memahami lafadz musytarak (bermakna ganda), seperti kata 'qur' ' yang bermakna masa suci atau haid.",
+        'Metode Ijtihad & Qiyas: Ada ulama yang mendahulukan maslahat mursalah, ada yang mengutamakan amalan penduduk Madinah, atau istihsan.'
+      ],
+      practice: 'Ketika mendapati perbedaan hukum fiqih, pelajari dalil masing-masing pihak sebelum terburu-buru menghakimi salah satu pendapat.',
+      source: quran('4/59')
+    },
+    {
+      id: 'mengenal-empat-madzhab',
+      title: 'Mengenal 4 Madzhab Fiqih Utama & Keharmonisan Para Imam',
+      category: 'Sejarah Madzhab',
+      summary: 'Empat madzhab mu\'tabar (Hanafi, Maliki, Syafi\'i, Hanbali) bersumber dari mata air Al-Qur\'an dan Sunnah yang sama dan saling menghormati.',
+      points: [
+        "Imam Abu Hanifah (80-150 H): Pelopor fiqih ahlur ra'yi di Kufah, sangat teliti dalam logika hukum dan analogi (qiyas).",
+        "Imam Malik bin Anas (93-179 H): Guru besar Madinah, penulis kitab Al-Muwaththa', mengutamakan atsar dan amalan ahli Madinah.",
+        "Imam Asy-Syafi'i (150-204 H): Perumus Ushul Fiqh pertama (kitab Ar-Risalah), memadukan keluasan hadits Madinah dan nalar Kufah.",
+        'Imam Ahmad bin Hanbal (164-241 H): Ahli hadits terkemuka, penyusun Musnad Ahmad dengan puluhan ribu riwayat, pejuang keteguhan sunnah.',
+        "Adab Saling Menghargai: Imam Syafi'i adalah murid Imam Malik; Imam Ahmad adalah murid Imam Syafi'i. Mereka saling memuji dan tidak pernah merendahkan madzhab sesama ulama."
+      ],
+      practice: 'Hormati ulama dan madzhab fiqih yang dianut masyarakat setempat tanpa merasa madzhab yang kita pelajari paling unggul sendiri.',
+      source: hadith(3674)
+    },
+    {
+      id: 'ushul-vs-furu',
+      title: "Membedakan Wilayah Pokok (Ushul) vs Cabang (Furu')",
+      category: 'Kaidah Toleransi',
+      summary: 'Tidak boleh ada kompromi dalam aqidah pokok, namun sangat lapang dalam perkara cabang fiqih yang berstatus zhanni.',
+      points: [
+        "Wilayah Ushul (Qath'i): Rukun iman, kewajiban shalat 5 waktu, keharaman zina dan riba; wilayah ini mutlak dan tidak boleh ada perselisihan.",
+        "Wilayah Furu' (Zhanni): Rincian teknis shalat (qunut, sedekap, bacaan jahr/sirr), rincian batas zakat, dan hal kontemporer; di sinilah ijtihad berlaku.",
+        "Kaidah Emas: 'Laa inkaara fii masa-ilil ijtihad' (Tidak boleh ada pengingkaran keras terhadap masalah-masalah yang masih terbuka ruang ijtihad di dalamnya).",
+        'Pahala Berijtihad: Mujtahid yang benar mendapat dua pahala, dan jika keliru tetap mendapat satu pahala dari niat tulus ikhtiarnya (HR. Bukhari).'
+      ],
+      practice: "Bedakan antara menolak penyimpangan aqidah dengan menghargai variasi fiqih ibadah furu'iyyah di masjid lingkungan kita.",
+      source: hadith(7352)
+    },
+    {
+      id: 'bahaya-takfiri-dan-tabdi',
+      title: "Bahaya Takfiri (Mengkafirkan) & Tabdi' (Membid'ahkan Liar)",
+      category: 'Ukhuwah Islamiyyah',
+      summary: 'Menuduh sesama muslim keluar dari Islam atau sesat adalah dosa besar yang ancamannya berbalik kepada si penuduh.',
+      points: [
+        "Peringatan Keras Rasulullah SAW: 'Barangsiapa memanggil saudaranya wahai kafir, maka vonis itu akan kembali kepada salah satu dari keduanya' (HR. Bukhari).",
+        "Prinsip Ahlussunnah wal Jama'ah: Tidak mengkafirkan seorang muslim yang shalat menghadap kiblat hanya karena dosa besar selama tidak menghalalkannya.",
+        "Pembedaan Antara Perbuatan dan Pelaku: Suatu ucapan/perbuatan bisa dinilai bid'ah/syirik, namun pelakunya tidak serta merta dihukumi kafir tanpa terpenuhi syarat dan hilang penghalang (mawani').",
+        "Wewenang Hukum: Vonis murtad atau kafir adalah wewenang mahkamah syar'i dan ulama mu'tabar, bukan hak individu di media sosial."
+      ],
+      practice: "Jaga lisan dan jari dari melabeli sesama muslim dengan sebutan 'sesat', 'ahli neraka', atau 'kafir' hanya karena berbeda pandangan fiqih.",
+      source: hadith(6103)
+    },
+    {
+      id: 'adab-dialog-dan-debat-ilmiah',
+      title: 'Adab Berdialog Ilmiah & Menjauhi Debat Kusir (Mirak)',
+      category: 'Etika Komunikasi',
+      summary: 'Tujuan diskusi ilmiah adalah mencari kebenaran bersama, bukan mencari kemenangan ego atau mempermalukan lawan bicara.',
+      points: [
+        "QS. An-Nahl: 125: Berdakwah dan berdiskusi dengan cara yang terbaik ('Wa jaadilhum billatii hiya ahsan').",
+        'Menjauhi Perdebatan Demi Menang: Sabda Nabi SAW, Aku menjamin sebuah istana di tepi surga bagi orang yang meninggalkan perdebatan meski ia berada di pihak yang benar (HR. Abu Dawud).',
+        'Mendengarkan dengan Objektif: Mengapresiasi argumen lawan bicara yang benar dan tidak memotong pembicaraan dengan emosi.',
+        "Kesiapan Menerima Koreksi: Perkataan Imam Syafi'i, 'Aku tidak pernah berdebat dengan seseorang kecuali aku berharap kebenaran tampak dari lisannya.'"
+      ],
+      practice: 'Jika sebuah diskusi di grup WhatsApp atau media sosial mulai mengarah ke adu gengsi dan saling sindir, segera undurkan diri dengan santun.',
+      source: quran('16/125')
+    },
+    {
+      id: 'tiga-lingkar-persaudaraan',
+      title: 'Ukhuwah Islamiyyah, Wathaniyyah, & Basyariyyah',
+      category: 'Kemanusiaan Universal',
+      summary: 'Harmoni persaudaraan kaum mukmin dibangun dalam tiga pilar: ikatan aqidah, ikatan sebangsa, dan ikatan kemanusiaan sedunia.',
+      points: [
+        'Ukhuwah Islamiyyah: Persaudaraan sesama mukmin di seluruh penjuru bumi laksana satu tubuh; sakit satu bagian, sakit seluruhnya (QS. Al-Hujurat: 10).',
+        'Ukhuwah Wathaniyyah: Persaudaraan sebangsa dan setanah air, sebagaimana Piagam Madinah menyatukan muslim dan non-muslim dalam kewajiban membela negeri.',
+        'Ukhuwah Basyariyyah: Persaudaraan sesama anak cucu Adam AS; semua manusia berasal dari tanah dan memiliki hak hidup, keadilan, dan kehormatan.',
+        'Berbuat Adil kepada Non-Muslim: QS. Al-Mumtahanah: 8 memerintahkan berbuat baik dan berlaku adil kepada orang yang tidak memerangi dalam agama.'
+      ],
+      practice: 'Bantu tetangga atau rekan yang membutuhkan pertolongan tanpa membedakan latar belakang suku, madzhab, maupun agamanya.',
+      source: quran('60/8')
+    },
+    {
+      id: 'menghargai-kearifan-lokal',
+      title: "Fiqh Budaya: Menghargai Kearifan Lokal (Al-'Adah Muhakkamah)",
+      category: 'Kaidah Fiqhiyyah',
+      summary: 'Adat istiadat dan tradisi nusantara yang baik dapat dijadikan pertimbangan hukum selama tidak bertentangan dengan Al-Qur\'an dan Sunnah.',
+      points: [
+        "Kaidah Ushuliyyah: 'Al-'Adatu Muhakkamah' (Adat kebiasaan yang baik dapat menjadi rujukan dalam penetapan hukum fiqih).",
+        'Metode Dakwah Walisongo: Mengisi wadah budaya lokal (tembang, gamelan, wayang, kenduri) dengan ruh tauhid dan sholawat tanpa menghancurkan tatanan sosial.',
+        'Membedakan Budaya Mubah vs Syirik: Budaya gotong royong, pakaian santun, dan silaturahmi halal; yang diubah hanyalah unsur pemujaan berhala dan kemusyrikan.',
+        'Dakwah Merangkul, Bukan Memukul: Menjadikan masyarakat mencintai syariat melalui akhlak mulia dan keteladanan nyata.'
+      ],
+      practice: 'Lestarikan tradisi silaturahmi lokal yang positif di lingkungan tempat tinggal Anda dan warnai dengan nilai-nilai sedekah serta doa.',
+      source: quran('7/199')
+    },
+    {
+      id: 'teladan-sahabat-dalam-ijtihad',
+      title: 'Kisah Sahabat di Bani Quraizhah: Pelajaran Toleransi dari Nabi SAW',
+      category: 'Sunnah Nabawiyah',
+      summary: 'Rasulullah SAW tidak menyalahkan sahabat yang shalat Ashar di jalan maupun yang shalat di Bani Quraizhah karena keduanya berijtihad jujur.',
+      points: [
+        "Perintah Nabi SAW: 'Jangan sekali-kali ada yang shalat Ashar kecuali di perkampungan Bani Quraizhah' (HR. Bukhari).",
+        'Perbedaan Pemahaman: Sebagian sahabat shalat di jalan karena waktu Ashar hampir habis (memahami maksud kecepatan), sebagian lagi shalat di lokasi tujuan (memegang tekstual sabda).',
+        'Sikap Mulia Rasulullah SAW: Ketika dilaporkan kepada Nabi SAW, beliau tidak mencela dan tidak memarahi salah satu pun dari kedua kelompok tersebut.',
+        'Pelajaran Berharga: Teks wahyu yang sama bisa melahirkan pemahaman tekstual dan kontekstual; kedua-duanya diakui dalam koridor niat taat.'
+      ],
+      practice: 'Belajarlah berlapang dada saat rekan Anda mengambil kesimpulan hukum yang berbeda namun tetap berlandaskan ijtihad yang dapat dipertanggungjawabkan.',
+      source: hadith(946)
+    },
+    {
+      id: 'panduan-menjaga-ukhuwah-digital',
+      title: 'Resolusi Damai: Menjaga Persatuan Umat di Era Digital',
+      category: 'Komitmen Harian',
+      summary: 'Menjadi duta perdamaian yang merajut ukhuwah, menyebarkan narasi penyejuk, dan menyaring konten adu domba.',
+      points: [
+        'Filter Tabayyun (QS. Al-Hujurat: 6): Wajib memverifikasi potongan video ceramah atau kutipan kontroversial sebelum ikut berkomentar.',
+        'Menolak Algoritma Adu Domba: Tidak membagikan konten clickbait yang membenturkan ormas Islam (NU, Muhammadiyah, Persis, dll) demi popularitas.',
+        "Fokus pada Titik Temu (Kalimatun Sawa'): Mengedepankan 95% kesamaan aqidah dan ibadah daripada membesar-besarkan 5% perbedaan teknis furu'iyyah.",
+        "Doa untuk Keutuhan Hati: 'Rabbanaghfir lana wa li-ikhwaninalladzina sabaquna bil-iman, wa la taj'al fi qulubina ghillan lilladzina amanu' (QS. Al-Hasyr: 10)."
+      ],
+      practice: 'Doakan kebaikan bagi ulama, da\'i, dan seluruh saudara seiman yang berbeda madzhab dengan Anda dalam shalat malam.',
+      source: quran('59/10')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -3461,4 +3611,5 @@ export const courseLinks = [
   { href: '/tajweed', title: 'Ilmu Tajwid & Makhraj Huruf', description: '20 kaidah bacaan, 17 makhraj dalam 5 wilayah, serta latihan artikulasi huruf.' },
   { href: '/balaghoh', title: balaghoh.title, description: balaghoh.description },
   { href: '/alam-ghaib', title: alamGhaib.title, description: alamGhaib.description },
+  { href: '/adab-ikhtilaf', title: adabIkhtilaf.title, description: adabIkhtilaf.description },
 ];
