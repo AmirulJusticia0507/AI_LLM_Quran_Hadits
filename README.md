@@ -239,7 +239,7 @@ Theme + API service). Status: parsial — integrasi dengan endpoint backend terb
 
 ## 👨‍💻 Pembuat
 
-**Amirul Justicia** — Full-Stack Developer & AI Enthusiast
+**Amirul Putra Justicia** — Full-Stack Developer & AI Enthusiast
 
 - GitHub: https://github.com/AmirulJusticia0507
 - WhatsApp: https://wa.me/6282134402383

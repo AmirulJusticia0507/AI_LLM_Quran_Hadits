@@ -78,7 +78,7 @@ const TECH_STACK: TechStack[] = [
 ];
 
 const CREATOR_INFO = {
-  name: "Amirul Justicia",
+  name: "Amirul Putra Justicia",
   role: "Full-Stack Developer & AI Enthusiast",
   bio: "Pengembang sistem Al-Hikmah AI dengan latar belakang pengembangan web modern dan minat mendalam pada teknologi AI untuk keislaman. Berkomitmen membangun tools yang bermanfaat untuk umat.",
   github: "https://github.com/AmirulJusticia0507",

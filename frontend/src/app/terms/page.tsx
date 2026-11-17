@@ -74,7 +74,7 @@ export default function TermsPage() {
       title: "Properti Intelektual",
       icon: Info,
       items: [
-        "Kode sumber, desain, dan arsitektur sistem: Hak cipta pengembang (Amirul Justicia)",
+        "Kode sumber, desain, dan arsitektur sistem: Hak cipta pengembang (Amirul Putra Justicia)",
         "Data Al-Qur'an & Hadits: Milik publik/domain publik (sumber: equran.id, hadis-api-id)",
         "Model AI (Gemini): Milik Google; Model Ollama: Sesuai lisensi masing-masing (Apache 2.0, dll)",
         "Anda diperbolehkan menggunakan layanan untuk keperluan pribadi, edukasi, dan non-komersial",

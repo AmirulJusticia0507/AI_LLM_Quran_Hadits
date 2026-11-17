@@ -49,7 +49,7 @@ const FAQS: FAQItem[] = [
   {
     category: "Umum",
     question: "Siapa pengembang sistem ini?",
-    answer: "Dikembangkan oleh Amirul Justicia (Full-Stack Developer & AI Enthusiast). Kode sumber tersedia di GitHub: github.com/AmirulJusticia0507",
+    answer: "Dikembangkan oleh Amirul Putra Justicia (Full-Stack Developer & AI Enthusiast). Kode sumber tersedia di GitHub: github.com/AmirulJusticia0507",
   },
   {
     category: "AI & Akurasi",

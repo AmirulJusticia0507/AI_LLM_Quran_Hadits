@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     "tajwid",
     "chatbot islami",
   ],
-  authors: [{ name: "Amirul Justicia" }],
+  authors: [{ name: "Amirul Putra Justicia" }],
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
