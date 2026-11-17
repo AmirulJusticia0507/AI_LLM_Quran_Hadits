@@ -430,7 +430,13 @@ export default function QuranPage() {
       .catch(() => {
         if (!active) return;
         const fallback = getCachedAsbabunNuzul(surahNumber, ayatNumber);
-        setAsbabunNuzul(fallback || "Asbabun nuzul belum dapat dimuat. Periksa koneksi lalu tampilkan ayat kembali.");
+        const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+        setAsbabunNuzul(
+          fallback ||
+            (isOffline
+              ? "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat."
+              : "Asbabun nuzul belum dapat dimuat. Periksa koneksi lalu tampilkan ayat kembali.")
+        );
         setAsbabLoading(false);
       });
     return () => { active = false; };
@@ -564,7 +570,11 @@ export default function QuranPage() {
     // Offline: tidak ada asbabun nuzul dari server, pakai salinan lokal bila ada.
     const offline = typeof navigator !== "undefined" && !navigator.onLine;
     if (offline) {
-      setAsbabunNuzul(getCachedAsbabunNuzul(targetSurah, targetAyat));
+      const cached = getCachedAsbabunNuzul(targetSurah, targetAyat);
+      setAsbabunNuzul(
+        cached ||
+          "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat."
+      );
       setAsbabLoading(false);
     } else {
       setAsbabunNuzul(null);
