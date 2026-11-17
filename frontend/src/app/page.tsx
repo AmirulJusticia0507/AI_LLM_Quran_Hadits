@@ -93,6 +93,12 @@ const SUGGESTED_PROMPTS = [
     category: "Pangan Halal",
     icon: Sparkles,
   },
+  {
+    title: "Keesaan Allah & Kenabian Isa AS",
+    prompt: "Jelaskan bukti filosofis dan dalil Al-Qur'an serta komparasi teks Alkitab (Bibel) bahwa Nabi Isa AS adalah nabi dan bukan Tuhan.",
+    category: "Perbandingan Agama",
+    icon: ScrollText,
+  },
 ];
 
 interface ChatSession {
