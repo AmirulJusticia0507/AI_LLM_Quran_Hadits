@@ -2699,9 +2699,9 @@ export const kisahNabi: Course = {
 
 export const islamNusantara: Course = {
   id: 'islam-nusantara',
-  title: "Sejarah Islam Nusantara & Kearifan Walisongo",
-  description: "Menelusuri sejarah masuknya Islam secara damai di Nusantara: jalur perdagangan rempah Samudera Pasai, metode akulturasi budaya Walisongo, kerajaan maritim Islam, dan tradisi pesantren.",
-  note: "Islam di Nusantara berkembang pesat bukan melalui invasi pedang, melainkan lewat pesona akhlak mulia para pedagang, diplomasi damai, dan kearifan dakwah kultural para wali.",
+  title: "Sejarah Islam Nusantara, Walisongo, & Nasab Habaib",
+  description: "Menelusuri sejarah masuknya Islam secara damai di Nusantara: jalur rempah Samudera Pasai, metode akulturasi Walisongo, silsilah nasab Habaib Ba 'Alawi dari Rasulullah SAW, kerajaan maritim, dan tradisi pesantren.",
+  note: "Islam di Nusantara berkembang pesat bukan melalui invasi pedang, melainkan lewat pesona akhlak mulia para pedagang, diplomasi damai, dan kearifan dakwah kultural para wali dan habaib.",
   lessons: [
     {
       id: 'jalur-masuk-islam-nusantara',
@@ -2800,6 +2800,21 @@ export const islamNusantara: Course = {
       ],
       practice: 'Makmurkan masjid di lingkungan sekitar dan pastikan masyarakat miskin di sekitar tempat ibadah terpenuhi kebutuhannya.',
       source: hadith(25),
+    },
+    {
+      id: 'nasab-habaib-ba-alawi',
+      title: 'Nasab Habaib Ba \'Alawi: Silsilah Keturunan Nabi ﷺ & Dakwah Nusantara',
+      category: 'Nasab & Jaringan Ulama',
+      summary: 'Silsilah keturunan Rasulullah ﷺ melalui Sayyidah Fatimah dan Sayyidina Husain, hijrah Imam Ahmad Al-Muhajir ke Hadramaut, lahirnya marga-marga Habaib, serta perannya di Nusantara.',
+      points: [
+        'Pangkal Nasab Suci Melalui Sayyidah Fatimah: Seluruh putra Nabi wafat saat belia; garis keturunan Rasulullah ﷺ berlanjut melalui pernikahan Sayyidah Fatimah Az-Zahra RA dan Sayyidina Ali bin Abi Thalib RA, melahirkan dua cabang utama: Sayyidina Hasan (gelar Syarif) dan Sayyidina Husain (gelar Sayyid/Habib).',
+        'Jalur Emas dari Karbala ke Hadramaut: Dari Sayyidina Husain, nasab diteruskan oleh Ali Zainal Abidin (As-Sajjad) yang selamat dari Karbala, Muhammad Al-Baqir, Ja\'far Ash-Shadiq, Ali Al-Uraidhi, hingga Imam Ahmad Al-Muhajir yang berhijrah dari Basrah (Irak) ke Hadramaut (Yaman) pada tahun 317 H demi menyelamatkan akidah dari fitnah politik.',
+        'Klan Ba \'Alawi & Tarekat Damai: Dinisbatkan kepada Alawi bin Ubaidillah bin Ahmad Al-Muhajir. Pada era Al-Imam Muhammad Al-Faqih Al-Muqaddam (w. 653 H), beliau mematahkan pedang sebagai simbol meninggalkan senjata perang dan memilih jalur dakwah tasawuf, akhlak, dan ilmu syariat.',
+        'Terbentuknya Marga-Marga Habaib: Keturunan Ba \'Alawi menyebar dan melahirkan marga-marga terkenal di Nusantara seperti Assegaf (Al-Saqqaf), Al-Attas, Al-Habsyi, Al-Haddad, Alaydrus, Shihab, Al-Jufri, Bin Yahya, Al-Kaff, dan lainnya.',
+        'Pencatatan Ketat & Makna Gelar: Nasab Alawiyyin diverifikasi dengan buku induk silsilah turun-temurun (di Indonesia dicatat resmi oleh Maktab Daimi - Rabithah Alawiyah). "Sayyid" adalah status nasab biologis, sedangkan "Habib" adalah sebutan kehormatan bagi Sayyid yang berilmu, bertakwa, dan mengamalkan ajaran datuknya.',
+      ],
+      practice: 'Cintai dan muliakan keluarga Nabi (Ahlul Bait) dengan adab yang benar tanpa ghuluw (kultus berlebihan), serta teladani keluasan ilmu dan kelembutan akhlak dakwah mereka.',
+      source: quran('42/23'),
     },
     {
       id: 'kesultanan-maritim-nusantara',
