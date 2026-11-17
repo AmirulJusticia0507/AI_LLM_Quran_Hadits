@@ -139,7 +139,7 @@ export default function Footer() {
               <li><Link href="/fiqh" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Ibadah</Link></li>
               <li><Link href="/tajweed" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tajwid &amp; Makhraj Huruf</Link></li>
               <li><Link href="/ulumul-quran" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ulumul Qur&apos;an &amp; Tafsir</Link></li>
-              <li><Link href="/kisah-nabi" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kisah 25 Nabi &amp; Rasul</Link></li>
+              <li><Link href="/kisah-nabi" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kisah 25 Nabi, Rasul &amp; Khidir AS</Link></li>
               <li><Link href="/musthalah-hadits" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Musthalah Hadits</Link></li>
               <li><Link href="/peradaban" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Sejarah Peradaban Islam</Link></li>
               <li><Link href="/munakahat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Pernikahan</Link></li>

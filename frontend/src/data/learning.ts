@@ -2535,8 +2535,8 @@ export const fitnahAkhirZaman: Course = {
 
 export const kisahNabi: Course = {
   id: 'kisah-nabi',
-  title: "Kisah 25 Nabi & Rasul: Silsilah, Mukjizat, & Ulul Azmi",
-  description: "Menelusuri jejak sejarah kronologis 25 Nabi dan Rasul Allah: silsilah garis kenabian, mukjizat agung, ketabahan 5 Rasul Ulul Azmi, dan ibrah dakwah sepanjang zaman.",
+  title: "Kisah 25 Nabi & Rasul serta Nabi Khidir AS: Silsilah, Mukjizat, & Ulul Azmi",
+  description: "Menelusuri jejak sejarah kronologis 25 Nabi dan Rasul Allah serta pertemuan hikmah Nabi Khidir AS: silsilah garis kenabian, mukjizat agung, ketabahan 5 Rasul Ulul Azmi, dan ibrah dakwah sepanjang zaman.",
   note: "Kisah para Nabi bukanlah sekadar dongeng masa lalu, melainkan lentera keteladanan akhlak, keteguhan tauhid, dan bukti pemeliharaan wahyu Allah di setiap peradaban manusia.",
   lessons: [
     {
@@ -2650,6 +2650,21 @@ export const kisahNabi: Course = {
       ],
       practice: 'Jangan pernah takut menghadapi kezaliman sebesar apa pun, karena pertolongan Allah selalu bersama hamba-Nya yang bertakwa.',
       source: quran('26/63'),
+    },
+    {
+      id: 'musa-dan-khidir',
+      title: 'Nabi Khidir AS & Nabi Musa AS: Hikmah Takdir & Hakikat Ilmu Ladunni',
+      category: 'Kisah Al-Kahfi & Hakikat Takdir',
+      summary: 'Perjalanan agung Nabi Musa menuntut ilmu rahasia ketetapan Allah bersama Hamba Saleh (Nabi Khidir AS) di pertemuan dua lautan.',
+      points: [
+        'Latar Belakang Pencarian: Ketika Nabi Musa ditanya kaumnya tentang siapa manusia berilmu paling luas, Allah mewahyukan ada seorang hamba-Nya di pertemuan dua lautan (Majma\'al Bahrayn) yang memiliki ilmu khusus (QS. Al-Kahfi: 60-65).',
+        'Syarat Menuntut Ilmu & Kesabaran: Khidir mengajukan syarat tegas: "Jika engkau mengikutiku, janganlah engkau menanyakan kepadaku tentang sesuatu apa pun, sampai aku sendiri menerangkannya kepadamu" (QS. Al-Kahfi: 70).',
+        'Tiga Peristiwa Penuh Misteri: Melubangi perahu orang miskin, mengambil nyawa seorang pemuda, dan menegakkan kembali dinding rumah runtuh di perkampungan yang menolak memberi makan.',
+        'Penyingkapan Rahasia Hikmah: Perahu dilubangi agar luput dari rampasan raja zalim; pemuda dicegah agar tidak menjerumuskan orang tuanya yang saleh ke dalam kekafiran; dan dinding ditegakkan karena di bawahnya tersimpan harta pusaka milik dua anak yatim warisan ayah mereka yang saleh (QS. Al-Kahfi: 79-82).',
+        'Hikmah Tertinggi & Kenabian: Penegasan Nabi Khidir bahwa segala tindakannya bukanlah kemauan hawa nafsunya sendiri ("wa ma fa\'altuhu \'an amri"), melainkan wahyu langsung dan rahmat dari Allah Ta\'ala.',
+      ],
+      practice: 'Jaga adab tawadhu\' dalam menuntut ilmu dan berbaik sangkalah kepada ketetapan takdir Allah walau tampak pahit secara kasat mata.',
+      source: quran('18/65'),
     },
     {
       id: 'dawud-sulaiman-zakariya',
