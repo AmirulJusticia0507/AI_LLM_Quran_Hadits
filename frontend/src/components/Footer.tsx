@@ -54,6 +54,7 @@ export default function Footer() {
               <li><Link href="/islam-nusantara" className="hover:underline">Sejarah Islam Nusantara & Walisongo</Link></li>
               <li><Link href="/sahabat-surga" className="hover:underline">10 Sahabat Dijamin Surga</Link></li>
               <li><Link href="/lingkungan" className="hover:underline">Fiqh Lingkungan & Ekologi Islam</Link></li>
+              <li><Link href="/fiqh-dakwah" className="hover:underline">Fiqh Dakwah & Komunikasi</Link></li>
               <li><Link href="/munakahat" className="hover:underline">Fiqh Pernikahan</Link></li>
               <li><Link href="/muamalah" className="hover:underline">Fiqh Muamalah & Bisnis</Link></li>
               <li><Link href="/integritas" className="hover:underline">Fiqh Anti-Korupsi</Link></li>

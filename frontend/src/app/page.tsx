@@ -195,6 +195,12 @@ const SUGGESTED_PROMPTS = [
     category: "Fiqh Lingkungan",
     icon: BookOpen,
   },
+  {
+    title: "Fiqh Dakwah & Komunikasi Persuasif",
+    prompt: "Bagaimana 3 metode dakwah Al-Qur'an (Hikmah, Mau'izhah Hasanah, Jidal bil Ahsan) dan etika dialog lintas iman?",
+    category: "Fiqh Dakwah",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
