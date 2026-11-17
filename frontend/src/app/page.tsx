@@ -105,6 +105,12 @@ const SUGGESTED_PROMPTS = [
     category: "Sains & Kosmologi",
     icon: Sparkles,
   },
+  {
+    title: "Fase Alam Barzakh & Hari Kiamat",
+    prompt: "Jelaskan fase perjalanan ruh manusia mulai dari sakaratul maut, fitnah kubur, tanda kiamat kubra, hingga pengadilan di Padang Mahsyar.",
+    category: "Aqidah & Akhirat",
+    icon: ShieldCheck,
+  },
 ];
 
 interface ChatSession {
