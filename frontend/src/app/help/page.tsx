@@ -39,7 +39,7 @@ const FAQS: FAQItem[] = [
   {
     category: "Umum",
     question: "Apa itu Al-Hikmah AI?",
-    answer: "Al-Hikmah AI adalah platform asisten keislaman berbasis AI yang mengintegrasikan pencarian kontekstual Al-Qur'an dan Hadits dengan model AI generatif (Gemini/Ollama) untuk menjawab pertanyaan keagamaan dengan rujukan sahih.",
+    answer: "Al-Hikmah AI adalah platform asisten keislaman berbasis AI yang mengintegrasikan pencarian kontekstual Al-Qur'an dan Hadits dengan model AI generatif (GripHub Router GPT-5.6 Luna, Gemini, Ollama) untuk menjawab pertanyaan keagamaan dengan rujukan sahih.",
   },
   {
     category: "Umum",
@@ -59,7 +59,7 @@ const FAQS: FAQItem[] = [
   {
     category: "AI & Akurasi",
     question: "Model AI apa yang digunakan?",
-    answer: "Default: Google Gemini 2.5 Flash (cloud, cepat, function calling native). Opsional: Ollama lokal (DeepSeek R1, Llama 3.1, Qwen 2.5, dll) untuk privasi penuh & offline.",
+    answer: "Default: GPT-5.6 Luna via GripHub Router (cloud, reasoning mendalam dan akurat). Opsi lain: Google Gemini 2.5 Flash, dan Ollama lokal (DeepSeek R1, Llama 3.1, Qwen 2.5) untuk privasi penuh & offline.",
   },
   {
     category: "AI & Akurasi",
@@ -99,17 +99,17 @@ const FAQS: FAQItem[] = [
   {
     category: "Teknis",
     question: "Badge LLM 'Offline' / error 503?",
-    answer: "Backend tidak tersedia atau GEMINI_API_KEY tidak valid. Cek: 1) Backend Railway running, 2) API Key valid, 3) NEXT_PUBLIC_API_URL benar di Vercel.",
+    answer: "Backend tidak tersedia atau API Key GripHub/Gemini tidak valid. Cek: 1) Backend running, 2) API Key valid di .env/Variables, 3) NEXT_PUBLIC_API_URL benar di frontend.",
   },
   {
     category: "Teknis",
     question: "CORS error di console browser?",
-    answer: "ALLOWED_ORIGINS di backend (Railway) harus include domain Vercel frontend. Update di Railway Variables → Redeploy.",
+    answer: "ALLOWED_ORIGINS di backend harus include domain frontend. Update di .env/Variables → restart backend.",
   },
   {
     category: "Teknis",
     question: "Bisa deploy sendiri (self-host)?",
-    answer: "Ya. Frontend (Next.js) → Vercel/Netlify. Backend (FastAPI) → Railway/Render/VPS/Docker. LLM: Gemini API Key atau Ollama lokal. Lihat README & .env.example.",
+    answer: "Ya. Frontend (Next.js) → Vercel/Netlify. Backend (FastAPI) → Railway/Render/VPS/Docker. LLM: GripHub Router, Gemini API Key, atau Ollama lokal. Lihat README & .env.example.",
   },
   {
     category: "Teknis",
@@ -297,7 +297,7 @@ export default function HelpPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            { issue: "LLM Status 'Offline'", fix: "Cek backend Railway running & GEMINI_API_KEY valid. Health: /api/health", icon: WifiOff },
+            { issue: "LLM Status 'Offline'", fix: "Cek backend running & konfigurasi GripHub/Gemini valid. Health: /api/health", icon: WifiOff },
             { issue: "CORS Error / Network Error", fix: "Update ALLOWED_ORIGINS di Railway = domain Vercel frontend. Redeploy backend.", icon: AlertCircle },
             { issue: "Data Al-Qur'an/Hadits tidak muncul", fix: "Cek koneksi internet. API eksternal (equran.id, hadis-api) mungkin down sementara.", icon: Wifi },
             { issue: "Chat tidak merespons / loading terus", fix: "Refresh halaman. Cek console (F12) error. Backend mungkin cold-start (Railway gratis).", icon: RefreshCw },

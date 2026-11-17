@@ -32,10 +32,11 @@ Sistem menggunakan alur **LLM Function Calling / Tool Use** agar LLM dapat melak
                +------+              +------+
                v                             v
      +-------------------+      +---------------------+
-     |   LLM Provider    |      |  External APIs      |
-     |  - Gemini (cloud) |      |  - equran.id API    |
-     |  - Ollama (local) |      |  - hadis-api-id     |
-     +-------------------+      +---------------------+
+     |   LLM Provider           |      |  External APIs      |
+     |  - GripHub Router (cloud)|      |  - equran.id API    |
+     |  - Gemini (cloud)        |      |  - hadis-api-id     |
+     |  - Ollama (local)        |      +---------------------+
+     +--------------------------+
 ```
 
 **Stack:**
@@ -43,7 +44,7 @@ Sistem menggunakan alur **LLM Function Calling / Tool Use** agar LLM dapat melak
 | Layer | Teknologi |
 |-------|-----------|
 | Backend | Python 3.x, FastAPI 0.115, uvicorn, httpx (async), Pydantic 2.9 |
-| LLM | Google Gemini (`gemini-2.5-flash`) / Ollama (`deepseek-r1:8b`) |
+| LLM | GripHub Router (Default: `gpt-5.6-luna`) / Google Gemini (`gemini-2.5-flash`) / Ollama (`deepseek-r1:8b`) |
 | Web Frontend | Next.js 16, React 19, TypeScript 5, Tailwind CSS 4 |
 | Mobile | Kotlin 2.0, Jetpack Compose (Material3), Retrofit 2.11 |
 | Streamlit | Python Streamlit (quick UI alternative) |
@@ -193,6 +194,7 @@ AI_LLM_Qur'an_Hadits/
 │   │   └── hadith.py             # Integrasi Hadits API
 │   ├── llm/
 │   │   ├── factory.py            # Factory pattern LLM provider
+│   │   ├── griphub.py            # GripHub Router (OpenAI-compatible)
 │   │   ├── gemini.py             # Google Gemini + tool calling
 │   │   ├── ollama.py             # Ollama local LLM
 │   │   └── tools.py              # Tool definitions (JSON Schema)
@@ -235,14 +237,15 @@ AI_LLM_Qur'an_Hadits/
 
 ## 6. Konfigurasi LLM Provider
 
-Pilih provider LLM melalui variabel `LLM_PROVIDER` di file `.env`:
+Pilih provider LLM melalui variabel `LLM_PROVIDER` di file `.env` atau langsung switch melalui tombol dropdown provider pada halaman Chatbot:
 
 | Provider | `LLM_PROVIDER` | Model | Lokasi |
 |----------|----------------|-------|--------|
+| GripHub Router (Default) | `griphub` | `gpt-5.6-luna` | Cloud (OpenAI-compatible) |
 | Google Gemini | `gemini` | `gemini-2.5-flash` | Cloud |
 | Ollama (Local) | `ollama` | `deepseek-r1:8b` | `localhost:11434` |
 
-**Cara beralih:** Edit `.env` → ubah `LLM_PROVIDER=gemini` menjadi `LLM_PROVIDER=ollama`.
+**Cara beralih:** Edit `.env` → ubah `LLM_PROVIDER=griphub`, `gemini`, atau `ollama`, atau gunakan dropdown switcher model di header Chat AI.
 
 ---
 

@@ -54,7 +54,7 @@ const FEATURES: Feature[] = [
   {
     icon: Globe,
     title: "Multi-Provider LLM",
-    description: "Support Gemini (Google) dan Ollama (Local). Bisa pakai cloud atau self-hosted untuk privasi penuh.",
+    description: "Support GripHub Router (GPT-5.6 Luna), Google Gemini, dan Ollama (Local). Fleksibel memilih model cloud mutakhir atau self-hosted untuk privasi penuh.",
   },
   {
     icon: Shield,
@@ -68,6 +68,7 @@ const TECH_STACK: TechStack[] = [
   { name: "TypeScript", icon: "📘", color: "text-blue-600", description: "Type safety end-to-end" },
   { name: "Tailwind CSS v4", icon: "🎨", color: "text-cyan-600", description: "Utility-first styling, dark mode native" },
   { name: "FastAPI", icon: "⚡", color: "text-green-600", description: "High-performance Python API backend" },
+  { name: "GripHub Router", icon: "🌐", color: "text-emerald-600", description: "OpenAI-compatible router (GPT-5.6 Luna)" },
   { name: "Google Gemini", icon: "🤖", color: "text-violet-600", description: "Generative AI dengan function calling" },
   { name: "Ollama", icon: "🦙", color: "text-orange-600", description: "Local LLM inference (DeepSeek, Llama, dll)" },
   { name: "equran.id API", icon: "📖", color: "text-emerald-600", description: "Data Al-Qur'an resmi Indonesia" },
@@ -86,6 +87,7 @@ const CREATOR_INFO = {
 };
 
 const AI_MODELS = [
+  { name: "GPT-5.6 Luna", provider: "GripHub Router", type: "Cloud", bestFor: "Default: reasoning cerdas, respon komprehensif, performa tinggi" },
   { name: "Gemini 2.5 Flash", provider: "Google", type: "Cloud", bestFor: "Speed, cost-efficient, function calling native" },
   { name: "DeepSeek R1 8B", provider: "DeepSeek (via Ollama)", type: "Local", bestFor: "Reasoning, privacy, offline, free" },
   { name: "Llama 3.1 8B", provider: "Meta (via Ollama)", type: "Local", bestFor: "General chat, multilingual, open weights" },
@@ -242,10 +244,9 @@ export default function AboutPage() {
               </table>
             </div>
             <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/50">
-              <p className="text-sm text-emerald-800 dark:text-emerald-200">
-                <strong>Catatan:</strong> Default menggunakan <strong>Gemini 2.5 Flash</strong> (cloud, cepat, function calling native). 
-                Bisa diganti ke <strong>Ollama</strong> (local, gratis, privasi penuh) dengan set <code className="px-1.5 py-0.5 bg-white/50 dark:bg-slate-800/50 rounded text-xs font-mono">LLM_PROVIDER=ollama</code> 
-                di environment variables backend.
+              <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
+                <strong>Catatan:</strong> Default aktif saat ini menggunakan <strong>GPT-5.6 Luna via GripHub Router</strong> (cloud, reasoning cerdas, rujukan akurat). 
+                Bisa beralih ke <strong>Google Gemini</strong> atau <strong>Ollama Local</strong> (DeepSeek, Llama, Qwen) dengan mengatur variabel <code className="px-1.5 py-0.5 bg-white/50 dark:bg-slate-800/50 rounded text-xs font-mono">LLM_PROVIDER</code> di konfigurasi backend atau langsung melalui dropdown pemilih model AI di tampilan Chatbot.
               </p>
             </div>
           </section>
@@ -303,12 +304,13 @@ export default function AboutPage() {
                 <Sparkles className="w-5 h-5 text-emerald-600" /> Ucapan Terima Kasih
               </h3>
               <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                <li>• <strong>GripHub Router</strong> — Router OpenAI-compatible &amp; model GPT-5.6 Luna</li>
                 <li>• <strong>equran.id</strong> — API Al-Qur&apos;an resmi Indonesia</li>
                 <li>• <strong>hadis-api-id.vercel.app</strong> — API 9 kitab hadits sahih</li>
-                <li>• <strong>Google Gemini</strong> — Model AI generatif</li>
+                <li>• <strong>Google Gemini</strong> — Model AI generatif cloud</li>
                 <li>• <strong>Ollama Community</strong> — Local LLM inference engine</li>
-                <li>• <strong>Vercel & Railway</strong> — Platform deployment gratis</li>
-                <li>• <strong>Open Source Community</strong> — Library & tools yang digunakan</li>
+                <li>• <strong>Vercel &amp; Railway</strong> — Platform deployment gratis</li>
+                <li>• <strong>Open Source Community</strong> — Library &amp; tools yang digunakan</li>
               </ul>
             </div>
 
