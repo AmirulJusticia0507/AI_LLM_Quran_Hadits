@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useSyncExternalStore } from 'react';
 import type { Course } from '@/data/learning';
 import NasabLessonCharts from '@/components/NasabLessonCharts';
+import HabaibIndonesiaChart from '@/components/HabaibIndonesiaChart';
 import { useLanguage } from '@/context/LanguageContext';
 import { categoryEnglish, courseEnglish } from '@/data/learning-en';
 
@@ -159,6 +160,7 @@ export default function LearningCourse({ course }: { course: Course }) {
                   {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : point}</li>)}
                 </ul>
                 {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
+                {lesson.id === 'contoh-habaib-indonesia' && <HabaibIndonesiaChart />}
                 <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 p-4">
                   <h3 className="font-semibold text-sm mb-2">
                     {en ? 'Practice & application' : 'Latihan & penerapan'}
