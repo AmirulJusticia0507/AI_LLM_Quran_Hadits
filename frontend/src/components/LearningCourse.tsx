@@ -8,6 +8,7 @@ import NasabLessonCharts from '@/components/NasabLessonCharts';
 import HabaibIndonesiaChart from '@/components/HabaibIndonesiaChart';
 import MedicalPrinciplesChart from '@/components/MedicalPrinciplesChart';
 import MuslimScientistsChart from '@/components/MuslimScientistsChart';
+import FiqhLessonIllustration from '@/components/FiqhLessonIllustration';
 import { useLanguage } from '@/context/LanguageContext';
 import { categoryEnglish, courseEnglish } from '@/data/learning-en';
 
@@ -204,6 +205,7 @@ export default function LearningCourse({ course }: { course: Course }) {
                 <ul className="list-disc pl-5 space-y-2 text-sm leading-7">
                   {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.points[index] || point : en && englishMedical[lesson.id] ? englishMedical[lesson.id].points[index] || point : point}</li>)}
                 </ul>
+                {course.id === 'fiqh' && <FiqhLessonIllustration lessonId={lesson.id} english={en} />}
                 {lesson.id === 'sakaratul-alam-kubur' && (
                   <figure className="overflow-hidden rounded-2xl border border-indigo-200 dark:border-indigo-900">
                     <Image
