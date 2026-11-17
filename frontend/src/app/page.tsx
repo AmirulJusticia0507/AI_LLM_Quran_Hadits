@@ -135,6 +135,12 @@ const SUGGESTED_PROMPTS = [
     category: "Parenting Islami",
     icon: BookOpen,
   },
+  {
+    title: "Ulumul Qur'an & Asbabun Nuzul",
+    prompt: "Bagaimana sejarah pengumpulan Al-Qur'an dan pentingnya asbabun nuzul dalam menafsirkan ayat?",
+    category: "Ulumul Qur'an",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
