@@ -35,12 +35,18 @@ export default function LearningPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/praktik-ibadah" className="block rounded-2xl bg-emerald-700 p-6 text-white font-semibold">
-          Panduan Bergambar Wudhu dan Shalat Nabi
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Link href="/hijaiyah" className="block rounded-2xl bg-linear-to-br from-emerald-600 to-teal-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Dasar Membaca Qur&apos;an</span>
+          Panduan 29 Huruf Hijaiyah &amp; Khat Sambung →
         </Link>
-        <Link href="/panduan-ibadah" className="block rounded-2xl bg-teal-800 p-6 text-white font-semibold">
-          Panduan Jenazah, Yasinan, Haji dan Umrah
+        <Link href="/praktik-ibadah" className="block rounded-2xl bg-emerald-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Tata Cara Praktik</span>
+          Panduan Bergambar Wudhu dan Shalat Nabi →
+        </Link>
+        <Link href="/panduan-ibadah" className="block rounded-2xl bg-teal-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Fardhu Kifayah &amp; Manasik</span>
+          Panduan Jenazah, Yasinan, Haji dan Umrah →
         </Link>
       </div>
 

@@ -422,6 +422,7 @@ export default function TajweedPage() {
 
       <nav aria-label="Bagian pembelajaran" className="flex flex-wrap gap-4 text-sm text-emerald-700 dark:text-emerald-300 underline">
         <Link href="/belajar">← Pusat Belajar</Link>
+        <Link href="/hijaiyah" className="font-bold text-emerald-700 dark:text-emerald-300">✨ 29 Huruf Hijaiyah Interaktif</Link>
         <a href="#makhraj">17 Makhraj Huruf</a>
         <a href="#kaidah">20 Kaidah Tajwid</a>
       </nav>

@@ -41,6 +41,7 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
+| `/hijaiyah` | Panduan Interaktif 29 Huruf Hijaiyah: 4 bentuk sambung khat (tunggal, awal, tengah, akhir), harakat A-I-U, titik makhraj, dan kuis tebak huruf |
 | `/belajar` | Pusat Belajar Islam: 30 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah, Fitnah Dajjal & Akhir Zaman, Kisah 25 Nabi & Rasul, Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi, Fiqh Dakwah & Komunikasi, Malaikat Jin & Ruqyah Syar'iyyah, Adab Ikhtilaf & Moderasi Wasathiyyah) |
 | `/aqidah` | Aqidah & Hari Akhir: 9 kajian tauhid, malaikat, takdir, sakaratul maut, fitnah kubur, kiamat kubra, mahsyar, hisab, surga |
 | `/ushul-fiqh` | Ushul Fiqh & Kaidah Fiqhiyyah: 10 kajian sumber hukum Islam, qiyas, ijma', ijtihad, perbedaan mazhab |

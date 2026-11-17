@@ -106,6 +106,12 @@ export default function Footer() {
                   <span>Praktik Shalat Bergambar</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/hijaiyah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                  <span>29 Huruf Hijaiyah Interaktif</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
