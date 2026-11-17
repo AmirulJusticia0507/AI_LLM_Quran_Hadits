@@ -41,11 +41,12 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
-| `/belajar` | Pusat Belajar Islam: 11 Modul Interaktif (Tazkiyah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi Agama, Makanan Halal, Medis, Sirah, Tajwid, Balaghah) |
+| `/belajar` | Pusat Belajar Islam: 12 Modul Interaktif (Tazkiyah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah) |
 | `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
 | `/muamalah` | Fiqh Muamalah: 7 panduan anti-riba, gharar, utang-piutang, akad bisnis, paylater, pinjol, kripto |
 | `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |
 | `/komparasi` | Perbandingan Agama: 8 kajian bukti tauhid, kenabian Isa AS, komparasi teks Alkitab (Bibel), sejarah Trinitas & nubuat Muhammad ﷺ |
+| `/sains` | Sains & Sunnatullah: 9 kajian hukum alam, relativitas waktu, kosmologi Big Bang, pemuaian semesta, embriologi, siklus air |
 | `/makanan-halal` | Fiqh Makanan & Minuman: 6 panduan halalan thayyiban, sembelihan syar'i, hewan laut, titik kritis olahan |
 | `/medis` | Fiqh Medis Kontemporer: 6 panduan ikhtiar berobat, donor darah & organ, eutanasia, bayi tabung, otopsi |
 

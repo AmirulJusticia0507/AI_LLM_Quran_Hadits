@@ -99,6 +99,12 @@ const SUGGESTED_PROMPTS = [
     category: "Perbandingan Agama",
     icon: ScrollText,
   },
+  {
+    title: "Relativitas Waktu & Sains Al-Qur'an",
+    prompt: "Bagaimana penjelasan Al-Qur'an mengenai relativitas waktu (QS. Al-Hajj: 47, QS. Al-Ma'arij: 4), dentuman Big Bang, dan hukum alam (Sunnatullah)?",
+    category: "Sains & Kosmologi",
+    icon: Sparkles,
+  },
 ];
 
 interface ChatSession {
