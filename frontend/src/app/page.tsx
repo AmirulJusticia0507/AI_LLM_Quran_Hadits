@@ -147,6 +147,12 @@ const SUGGESTED_PROMPTS = [
     category: "Hukum Waris",
     icon: BookOpen,
   },
+  {
+    title: "Etika Digital & Akhlak Medsos",
+    prompt: "Bagaimana panduan Islam menjaga lisan dan jempol di media sosial, bahaya ghibah online, dan hukum hak cipta digital?",
+    category: "Etika Digital",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
