@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { KITAB } from "@/app/api/hadith/route";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   ScrollText, 
   Search, 
@@ -41,6 +42,16 @@ const TAGS: { id: string; tag: string }[] = [
   { id: "darimi", tag: "Sunan" },
 ];
 
+const TAG_EN: Record<string, string> = {
+  "Sahih Utama": "Primary Sahih",
+  "Sunan": "Sunan",
+  "Musnad": "Musnad",
+  "Muwatta": "Muwatta",
+  "Adab & Akhlak": "Manners & Ethics",
+  "Hadits Pokok": "Core Hadith",
+  "Fiqih Hadits": "Hadith Fiqh",
+};
+
 const KITAB_LIST = [
   ...TAGS.map(({ id, tag }) => ({ id, name: KITAB[id].name, maxHadith: KITAB[id].max, tag })),
   { id: "riyadhus-shalihin", name: "Riyadhus Shalihin", maxHadith: 1903, tag: "Adab & Akhlak" },
@@ -50,19 +61,27 @@ const KITAB_LIST = [
 ];
 
 /**
- * Turns fetch/HTTP failures into a message a reader can act on. The raw
- * "Failed to fetch" text only confuses visitors.
+ * Turns fetch/HTTP failures into a message a reader can act on.
  */
-function friendlyError(err: unknown, fallback: string, offlineHint: string) {
+function friendlyError(err: unknown, fallback: string, offlineHint: string, isEn: boolean) {
   if (typeof navigator !== "undefined" && !navigator.onLine) return offlineHint;
-  if (err instanceof TypeError) return "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
+  if (err instanceof TypeError) {
+    return isEn
+      ? "Unable to connect to server. Check your internet connection and try again."
+      : "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
+  }
   if (err instanceof Error && /failed to fetch|networkerror|load failed/i.test(err.message)) {
-    return "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
+    return isEn
+      ? "Unable to connect to server. Check your internet connection and try again."
+      : "Tidak dapat menghubungi server. Periksa koneksi internet lalu coba lagi.";
   }
   return err instanceof Error && err.message ? err.message : fallback;
 }
 
 export default function HadithPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
+
   const [kitab, setKitab] = useState("bukhari");
   const [nomor, setNomor] = useState(1);
   const [result, setResult] = useState<HadithResult | null>(null);
@@ -102,7 +121,7 @@ export default function HadithPage() {
       const data = await res.json().catch(() => null);
 
       if (!res.ok || !data || data.status === "error") {
-        throw new Error(data?.message || data?.detail || "Hadits tidak ditemukan");
+        throw new Error(data?.message || data?.detail || (isEn ? "Hadith not found" : "Hadits tidak ditemukan"));
       }
 
       setResult(data);
@@ -114,12 +133,13 @@ export default function HadithPage() {
     } catch (err: unknown) {
       const errorMessage = friendlyError(
         err,
-        "Gagal mengambil data hadits",
-        "Anda sedang offline. Hadits membutuhkan koneksi internet.",
+        isEn ? "Failed to retrieve hadith data" : "Gagal mengambil data hadits",
+        isEn ? "You are offline. Hadith requires an internet connection." : "Anda sedang offline. Hadits membutuhkan koneksi internet.",
+        isEn
       );
       Swal.fire({
         icon: "error",
-        title: "Gagal",
+        title: isEn ? "Failed" : "Gagal",
         text: errorMessage,
         confirmButtonColor: "#059669",
         customClass: {
@@ -130,16 +150,20 @@ export default function HadithPage() {
       setLoading(false);
     }
   };
-  // URL target is intentionally read once on initial client hydration.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const k = params.get("kitab") || ""; const n = Number(params.get("nomor"));
+    const k = params.get("kitab") || "";
+    const n = Number(params.get("nomor"));
     if (!KITAB_LIST.some(item => item.id === k) || !Number.isInteger(n) || n < 1) return;
-    const timer = window.setTimeout(() => { setKitab(k); setNomor(n); void fetchHadith(k, n); }, 0);
+    const timer = window.setTimeout(() => {
+      setKitab(k);
+      setNomor(n);
+      void fetchHadith(k, n);
+    }, 0);
     return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const getRandomHadith = () => {
     const randomNum = Math.floor(Math.random() * (selectedKitab.maxHadith || 100)) + 1;
@@ -161,7 +185,7 @@ export default function HadithPage() {
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data || data.status === "error") {
-        throw new Error(data?.message || data?.detail || "Pencarian gagal");
+        throw new Error(data?.message || data?.detail || (isEn ? "Search failed" : "Pencarian gagal"));
       }
       setSearchResults(data.matches ?? []);
       setSearchMeta({ scanned: data.scanned, total: data.total, partial: data.partial });
@@ -169,11 +193,12 @@ export default function HadithPage() {
     } catch (err: unknown) {
       Swal.fire({
         icon: "error",
-        title: "Gagal",
+        title: isEn ? "Failed" : "Gagal",
         text: friendlyError(
           err,
-          "Pencarian gagal",
-          "Anda sedang offline. Pencarian hadits membutuhkan koneksi internet.",
+          isEn ? "Search failed" : "Pencarian gagal",
+          isEn ? "You are offline. Hadith search requires an internet connection." : "Anda sedang offline. Pencarian hadits membutuhkan koneksi internet.",
+          isEn
         ),
         confirmButtonColor: "#059669",
         customClass: {
@@ -206,7 +231,7 @@ export default function HadithPage() {
 
   const copyHadith = () => {
     if (!result) return;
-    const textToCopy = `${result.kitab} - Hadits No. ${result.nomor}\n\n${result.teks_arab}\n\nTerjemahan:\n"${result.terjemahan}"`;
+    const textToCopy = `${result.kitab} - ${isEn ? "Hadith No." : "Hadits No."} ${result.nomor}\n\n${result.teks_arab}\n\n${isEn ? "Translation" : "Terjemahan"}:\n"${result.terjemahan}"`;
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -221,11 +246,25 @@ export default function HadithPage() {
     if (savedBookmarks.includes(bookmarkKey)) {
       updated = savedBookmarks.filter((k) => k !== bookmarkKey);
       setIsBookmarked(false);
-      Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Hadits dihapus dari bookmark', showConfirmButton: false, timer: 1500 });
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: isEn ? "Hadith removed from bookmarks" : "Hadits dihapus dari bookmark",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
       updated = [...savedBookmarks, bookmarkKey];
       setIsBookmarked(true);
-      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Hadits disimpan ke bookmark!', showConfirmButton: false, timer: 1500 });
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: isEn ? "Hadith saved to bookmarks!" : "Hadits disimpan ke bookmark!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
     localStorage.setItem("hadith_bookmarks", JSON.stringify(updated));
   };
@@ -267,7 +306,7 @@ export default function HadithPage() {
         toast: true,
         position: "top-end",
         icon: "info",
-        title: `${missing} bookmark gagal dimuat`,
+        title: isEn ? `${missing} bookmarks failed to load` : `${missing} bookmark gagal dimuat`,
         showConfirmButton: false,
         timer: 2800,
       });
@@ -277,8 +316,12 @@ export default function HadithPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <Link href="/matan" className="block rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-5 text-emerald-800 dark:text-emerald-200 hover:underline">
-        <span className="block font-bold">Baca Matan Kitab →</span>
-        <span className="block text-sm mt-1">Arba’in Nawawi dan Bulughul Maram, dengan pencarian serta pilihan bagian kitab.</span>
+        <span className="block font-bold">{isEn ? "Read Matan Books →" : "Baca Matan Kitab →"}</span>
+        <span className="block text-sm mt-1">
+          {isEn
+            ? "Arba'in An-Nawawi and Bulughul Maram, with keyword search and section browsing."
+            : "Arba’in Nawawi dan Bulughul Maram, dengan pencarian serta pilihan bagian kitab."}
+        </span>
       </Link>
       
       {/* Banner Header */}
@@ -288,13 +331,15 @@ export default function HadithPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 text-teal-300 text-xs font-semibold uppercase tracking-wider mb-2">
-              <ScrollText className="w-4 h-4" /> Kutubut Tis&apos;ah Digital
+              <ScrollText className="w-4 h-4" /> {isEn ? "Digital Kutubut Tis'ah" : "Kutubut Tis'ah Digital"}
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              Pencarian Kitab Hadits
+              {isEn ? "Hadith Collections Search" : "Pencarian Kitab Hadits"}
             </h1>
             <p className="text-sm text-teal-100/80 mt-1 max-w-xl">
-              Telusuri riwayat 9 Perawi Kitab Hadits Utama lengkap dengan teks Arab dan terjemahan Indonesia.
+              {isEn
+                ? "Explore narrations from the 9 Major Hadith Compilers complete with Arabic text and translations."
+                : "Telusuri riwayat 9 Perawi Kitab Hadits Utama lengkap dengan teks Arab dan terjemahan Indonesia."}
             </p>
           </div>
 
@@ -311,7 +356,7 @@ export default function HadithPage() {
               className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white text-xs font-bold transition-all active:scale-95 shrink-0 cursor-pointer"
             >
               <Shuffle className="w-4 h-4 text-teal-300" />
-              <span>Hadits Acak</span>
+              <span>{isEn ? "Random Hadith" : "Hadits Acak"}</span>
             </button>
           </div>
         </div>
@@ -322,14 +367,14 @@ export default function HadithPage() {
         <div className="glass-card rounded-3xl p-6 shadow-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Bookmark className="w-5 h-5 text-amber-500" /> Bookmark Hadits
+              <Bookmark className="w-5 h-5 text-amber-500" /> {isEn ? "Hadith Bookmarks" : "Bookmark Hadits"}
             </h2>
             <button onClick={() => setShowBookmarks(false)} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">
-              Tutup
+              {isEn ? "Close" : "Tutup"}
             </button>
           </div>
           {bookmarkedHadiths.length === 0 ? (
-            <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
+            <p className="text-sm text-slate-500 text-center py-8">{isEn ? "No saved bookmarks yet." : "Belum ada bookmark tersimpan."}</p>
           ) : (
             <div className="space-y-3">
               {bookmarkedHadiths.map((h, i) => (
@@ -345,7 +390,7 @@ export default function HadithPage() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <span className="px-2 py-0.5 rounded-full bg-teal-600 text-white text-[10px] font-bold">{h.kitab}</span>
-                    <span className="text-[10px] text-slate-500">Hadits #{h.nomor}</span>
+                    <span className="text-[10px] text-slate-500">{isEn ? `Hadith #${h.nomor}` : `Hadits #${h.nomor}`}</span>
                   </div>
                   <p className="arabic-text text-right text-lg text-slate-800 dark:text-teal-100 line-clamp-2">{h.teks_arab}</p>
                   <p className="text-xs text-slate-500 mt-1 line-clamp-1">{h.terjemahan}</p>
@@ -359,7 +404,7 @@ export default function HadithPage() {
       {/* Kitab Selector Grid */}
       <div className="space-y-3">
         <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-          📚 Pilih Kitab Perawi:
+          {isEn ? "📚 Select Hadith Compiler Book:" : "📚 Pilih Kitab Perawi:"}
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3">
           {KITAB_LIST.map((k) => (
@@ -382,12 +427,14 @@ export default function HadithPage() {
                     ? "bg-white/20 text-white"
                     : "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400"
                 }`}>
-                  {k.tag}
+                  {isEn ? (TAG_EN[k.tag] || k.tag) : k.tag}
                 </span>
                 <h3 className="font-bold text-sm mt-1.5 line-clamp-1">{k.name}</h3>
               </div>
               <p className={`text-[11px] mt-2 ${kitab === k.id ? "text-emerald-100" : "text-slate-400 dark:text-slate-500"}`}>
-                Maks: {k.maxHadith.toLocaleString()} Hadits
+                {isEn
+                  ? `Max: ${k.maxHadith.toLocaleString("en-US")} Hadiths`
+                  : `Maks: ${k.maxHadith.toLocaleString("id-ID")} Hadits`}
               </p>
             </button>
           ))}
@@ -397,7 +444,10 @@ export default function HadithPage() {
       {/* Pencarian Kata Kunci */}
       <div className="glass-card rounded-3xl p-6 shadow-xl space-y-4 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
         <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-          🔍 Cari Berdasarkan Kata Kunci <span className="normal-case font-normal">(di kitab {selectedKitab.name})</span>
+          {isEn ? "🔍 Search by Keyword " : "🔍 Cari Berdasarkan Kata Kunci "}
+          <span className="normal-case font-normal">
+            ({isEn ? `in book ${selectedKitab.name}` : `di kitab ${selectedKitab.name}`})
+          </span>
         </p>
         <form
           onSubmit={(e) => {
@@ -410,7 +460,7 @@ export default function HadithPage() {
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="mis. niat, shalat, puasa…"
+            placeholder={isEn ? "e.g. intention, prayer, fasting…" : "mis. niat, shalat, puasa…"}
             disabled={searching}
             className="flex-1 min-w-0 px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm disabled:opacity-50"
           />
@@ -424,7 +474,9 @@ export default function HadithPage() {
             ) : (
               <Search className="w-4 h-4" />
             )}
-            <span className="hidden sm:inline">{searching ? "Mencari…" : "Cari"}</span>
+            <span className="hidden sm:inline">
+              {searching ? (isEn ? "Searching…" : "Mencari…") : (isEn ? "Search" : "Cari")}
+            </span>
           </button>
         </form>
 
@@ -432,14 +484,24 @@ export default function HadithPage() {
           <div className="space-y-3 animate-in fade-in duration-300">
             {searchMeta && (
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Ditemukan <span className="font-bold text-emerald-600 dark:text-emerald-400">{searchResults.length}</span> hadits
-                {" "}• dipindai {searchMeta.scanned.toLocaleString("id-ID")} dari {selectedKitab.maxHadith.toLocaleString("id-ID")} hadits
-                {searchMeta.partial && " (hasil parsial — cakupan bertahap, saring per kitab untuk hasil lebih lengkap)"}
+                {isEn ? "Found " : "Ditemukan "}
+                <span className="font-bold text-emerald-600 dark:text-emerald-400">{searchResults.length}</span>
+                {isEn ? " hadiths" : " hadits"}
+                {" "}• {isEn ? "scanned " : "dipindai "}
+                {searchMeta.scanned.toLocaleString(isEn ? "en-US" : "id-ID")}
+                {isEn ? " of " : " dari "}
+                {selectedKitab.maxHadith.toLocaleString(isEn ? "en-US" : "id-ID")}
+                {isEn ? " hadiths" : " hadits"}
+                {searchMeta.partial && (isEn
+                  ? " (partial results — staged search, filter per book for complete results)"
+                  : " (hasil parsial — cakupan bertahap, saring per kitab untuk hasil lebih lengkap)")}
               </p>
             )}
             {searchResults.length === 0 ? (
               <p className="text-sm text-slate-500 text-center py-4">
-                Tidak ditemukan di {searchMeta?.scanned.toLocaleString("id-ID")} hadits pertama. Coba kata kunci lain atau kitab lain.
+                {isEn
+                  ? `Not found in the first ${searchMeta?.scanned.toLocaleString("en-US")} hadiths. Try another keyword or compiler.`
+                  : `Tidak ditemukan di ${searchMeta?.scanned.toLocaleString("id-ID")} hadits pertama. Coba kata kunci lain atau kitab lain.`}
               </p>
             ) : (
               <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -450,11 +512,11 @@ export default function HadithPage() {
                     className="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-500/50 transition-all cursor-pointer"
                   >
                     <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                      {selectedKitab.name} • Hadits #{h.number}
+                      {selectedKitab.name} • {isEn ? "Hadith" : "Hadits"} #{h.number}
                     </span>
                     {h.bab && (
                       <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                        Bab {h.nomor_bab}: {h.bab}
+                        {isEn ? "Chapter" : "Bab"} {h.nomor_bab}: {h.bab}
                       </p>
                     )}
                     <p className="arabic-text text-right text-lg text-slate-800 dark:text-teal-100 line-clamp-2 mt-1">{h.arab}</p>
@@ -472,7 +534,7 @@ export default function HadithPage() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="w-full sm:w-auto">
             <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
-              Kitab Terpilih:
+              {isEn ? "Selected Book:" : "Kitab Terpilih:"}
             </span>
             <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">
               {selectedKitab.name}
@@ -481,7 +543,7 @@ export default function HadithPage() {
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <label className="text-xs font-semibold text-slate-600 dark:text-slate-300 shrink-0">
-              Nomor Hadits:
+              {isEn ? "Hadith Number:" : "Nomor Hadits:"}
             </label>
             <button
               type="button"
@@ -516,12 +578,12 @@ export default function HadithPage() {
           {loading ? (
             <span className="flex items-center gap-2">
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Memuat Hadits...
+              {isEn ? "Loading Hadith..." : "Memuat Hadits..."}
             </span>
           ) : (
             <>
               <Search className="w-4 h-4" />
-              <span>Cari Hadits #{nomor}</span>
+              <span>{isEn ? `Search Hadith #${nomor}` : `Cari Hadits #${nomor}`}</span>
             </>
           )}
         </button>
@@ -538,21 +600,45 @@ export default function HadithPage() {
                 {result.kitab}
               </span>
               <span className="px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold text-xs border border-emerald-300/40 dark:border-emerald-700/50">
-                Hadits #{result.nomor}
+                {isEn ? `Hadith #${result.nomor}` : `Hadits #${result.nomor}`}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-                <button onClick={() => setFontSize((prev) => Math.max(1.4, prev - 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer">A-</button>
-                <button onClick={() => setFontSize((prev) => Math.min(3.2, prev + 0.2))} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer">A+</button>
+                <button
+                  onClick={() => setFontSize((prev) => Math.max(1.4, prev - 0.2))}
+                  className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer"
+                  title={isEn ? "Decrease text size" : "Kecilkan Teks Arab"}
+                >
+                  A-
+                </button>
+                <button
+                  onClick={() => setFontSize((prev) => Math.min(3.2, prev + 0.2))}
+                  className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer"
+                  title={isEn ? "Increase text size" : "Besarkan Teks Arab"}
+                >
+                  A+
+                </button>
               </div>
 
-              <button onClick={copyHadith} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Teks Hadits">
+              <button
+                onClick={copyHadith}
+                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer"
+                title={isEn ? "Copy Hadith Text" : "Salin Teks Hadits"}
+              >
                 {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
               </button>
 
-              <button onClick={toggleBookmark} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title="Simpan Bookmark">
+              <button
+                onClick={toggleBookmark}
+                className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
+                  isBookmarked
+                    ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"
+                }`}
+                title={isEn ? "Save Bookmark" : "Simpan Bookmark"}
+              >
                 {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
               </button>
             </div>
@@ -560,9 +646,11 @@ export default function HadithPage() {
 
           {result.bab && (
             <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Bab {result.nomor_bab}: {result.bab}
+              {isEn ? "Chapter" : "Bab"} {result.nomor_bab}: {result.bab}
               {result.nomor_dalam_bab
-                ? ` • Riwayat ke-${result.nomor_dalam_bab} dalam bab`
+                ? isEn
+                  ? ` • Narration #${result.nomor_dalam_bab} in chapter`
+                  : ` • Riwayat ke-${result.nomor_dalam_bab} dalam bab`
                 : ""}
             </p>
           )}
@@ -577,7 +665,7 @@ export default function HadithPage() {
           {/* Translation */}
           <div className="space-y-2">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
-              Terjemahan Bahasa Indonesia:
+              {isEn ? "Indonesian Translation:" : "Terjemahan Bahasa Indonesia:"}
             </span>
             {result.terjemahan ? (
               <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
@@ -585,7 +673,9 @@ export default function HadithPage() {
               </p>
             ) : (
               <p className="text-sm text-slate-500 dark:text-slate-400 italic">
-                Terjemahan tidak tersedia pada sumber untuk riwayat ini.
+                {isEn
+                  ? "Translation not available from source for this narration."
+                  : "Terjemahan tidak tersedia pada sumber untuk riwayat ini."}
               </p>
             )}
           </div>
@@ -597,17 +687,17 @@ export default function HadithPage() {
               disabled={nomor <= 1}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
             >
-              <ChevronLeft className="w-4 h-4" /> Sebelumnya
+              <ChevronLeft className="w-4 h-4" /> {isEn ? "Previous" : "Sebelumnya"}
             </button>
             <span className="text-xs text-slate-500 font-medium">
-              {nomor} / {selectedKitab.maxHadith.toLocaleString()}
+              {nomor} / {selectedKitab.maxHadith.toLocaleString(isEn ? "en-US" : "id-ID")}
             </span>
             <button
               onClick={goNextHadith}
               disabled={nomor >= selectedKitab.maxHadith}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all text-sm font-medium cursor-pointer"
             >
-              Selanjutnya <ChevronRight className="w-4 h-4" />
+              {isEn ? "Next" : "Selanjutnya"} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>

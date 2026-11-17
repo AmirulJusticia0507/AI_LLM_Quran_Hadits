@@ -2,22 +2,23 @@
 
 import { filterSurahs, selectSearchSurah } from "@/lib/surah-search";
 import {
-    Bookmark,
-    BookmarkCheck,
-    BookOpen,
-    BookOpenText,
-    Check,
-    ChevronLeft,
-    ChevronRight,
-    Copy,
-    Pause,
-    Search,
-    Volume2,
-    WifiOff
+  Bookmark,
+  BookmarkCheck,
+  BookOpen,
+  BookOpenText,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Pause,
+  Search,
+  Volume2,
+  WifiOff
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { useOnlineStatus } from "@/hooks/use-online-status";
+import { useLanguage } from "@/context/LanguageContext";
 import { loadQuranSurah, prepareOfflineQuran } from "@/lib/quran-offline-data";
 import {
   cacheAsbabunNuzul,
@@ -223,23 +224,26 @@ const POPULAR_SURAHS = [
 
 type BookmarkPanelProps = {
   readonly verses: QuranVerse[];
+  readonly isEn: boolean;
   readonly onClose: () => void;
   readonly onSelect: (verse: QuranVerse) => void;
 };
 
-function BookmarkPanel({ verses, onClose, onSelect }: BookmarkPanelProps) {
+function BookmarkPanel({ verses, isEn, onClose, onSelect }: BookmarkPanelProps) {
   return (
     <div className="glass-card rounded-3xl p-6 shadow-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <Bookmark className="w-5 h-5 text-amber-500" /> Bookmark Saya
+          <Bookmark className="w-5 h-5 text-amber-500" /> {isEn ? "My Bookmarks" : "Bookmark Saya"}
         </h2>
         <button onClick={onClose} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">
-          Tutup
+          {isEn ? "Close" : "Tutup"}
         </button>
       </div>
       {verses.length === 0 ? (
-        <p className="text-sm text-slate-500 text-center py-8">Belum ada bookmark tersimpan.</p>
+        <p className="text-sm text-slate-500 text-center py-8">
+          {isEn ? "No saved bookmarks yet." : "Belum ada bookmark tersimpan."}
+        </p>
       ) : (
         <div className="space-y-3">
           {verses.map((verse) => (
@@ -250,7 +254,9 @@ function BookmarkPanel({ verses, onClose, onSelect }: BookmarkPanelProps) {
             >
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold">{verse.surah}</span>
-                <span className="text-[10px] text-slate-500">Ayat {verse.nomor_ayat}</span>
+                <span className="text-[10px] text-slate-500">
+                  {isEn ? `Verse ${verse.nomor_ayat}` : `Ayat ${verse.nomor_ayat}`}
+                </span>
               </div>
               <p className="arabic-text text-right text-lg text-slate-800 dark:text-emerald-100">{verse.teks_arab}</p>
               <p className="text-xs text-slate-500 mt-1 line-clamp-1">{verse.terjemahan}</p>
@@ -265,26 +271,29 @@ function BookmarkPanel({ verses, onClose, onSelect }: BookmarkPanelProps) {
 type SurahReaderProps = {
   readonly verses: QuranVerse[];
   readonly fontSize: number;
+  readonly isEn: boolean;
   readonly onBack: () => void;
 };
 
-function SurahReader({ verses, fontSize, onBack }: SurahReaderProps) {
+function SurahReader({ verses, fontSize, isEn, onBack }: SurahReaderProps) {
   if (verses.length === 0) return null;
 
   return (
     <div id="quran-surah-reader" className="scroll-mt-6 space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-          Surah {verses[0]?.surah} — {verses.length} Ayat
+          Surah {verses[0]?.surah} — {verses.length} {isEn ? "Verses" : "Ayat"}
         </h2>
         <button onClick={onBack} className="text-xs text-emerald-600 hover:text-emerald-500 cursor-pointer">
-          Kembali ke Pencarian
+          {isEn ? "Back to Search" : "Kembali ke Pencarian"}
         </button>
       </div>
       {verses.map((verse) => (
         <div key={`${verse.nomor_surah}:${verse.nomor_ayat}`} className="glass-card rounded-3xl p-6 shadow-lg space-y-4 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold">Ayat {verse.nomor_ayat}</span>
+            <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold">
+              {isEn ? `Verse ${verse.nomor_ayat}` : `Ayat ${verse.nomor_ayat}`}
+            </span>
           </div>
           <div className="py-4 px-3 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/20 text-right">
             <p lang="ar" dir="rtl" className={`arabic-text text-slate-900 dark:text-emerald-100 font-bold leading-[1.6]! tracking-wide ${ARABIC_SIZES[fontSize.toFixed(1)]}`}>
@@ -307,6 +316,7 @@ type VerseToolbarProps = {
   readonly showTafsir: boolean;
   readonly copied: boolean;
   readonly isBookmarked: boolean;
+  readonly isEn: boolean;
   readonly onFontSizeChange: (change: number) => void;
   readonly onAudioToggle: () => void;
   readonly onTafsirToggle: () => void;
@@ -320,6 +330,7 @@ function VerseToolbar({
   showTafsir,
   copied,
   isBookmarked,
+  isEn,
   onFontSizeChange,
   onAudioToggle,
   onTafsirToggle,
@@ -333,32 +344,32 @@ function VerseToolbar({
           Surah {result.surah}
         </span>
         <span className="px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold text-xs border border-emerald-300/40 dark:border-emerald-700/50">
-          Ayat Ke-{result.nomor_ayat}
+          {isEn ? `Verse #${result.nomor_ayat}` : `Ayat Ke-${result.nomor_ayat}`}
         </span>
       </div>
 
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-          <button onClick={() => onFontSizeChange(-0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Kecilkan Teks Arab">A-</button>
-          <span className="text-[10px] text-slate-400 px-1">Ukuran</span>
-          <button onClick={() => onFontSizeChange(0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title="Besarkan Teks Arab">A+</button>
+          <button onClick={() => onFontSizeChange(-0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title={isEn ? "Decrease text size" : "Kecilkan Teks Arab"}>A-</button>
+          <span className="text-[10px] text-slate-400 px-1">{isEn ? "Size" : "Ukuran"}</span>
+          <button onClick={() => onFontSizeChange(0.2)} className="px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 cursor-pointer" title={isEn ? "Increase text size" : "Besarkan Teks Arab"}>A+</button>
         </div>
 
         {result.audio ? (
-          <button onClick={onAudioToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isPlaying ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isPlaying ? "Jeda Murottal" : "Putar Murottal"}>
+          <button onClick={onAudioToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isPlaying ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isPlaying ? (isEn ? "Pause Recitation" : "Jeda Murottal") : (isEn ? "Play Recitation" : "Putar Murottal")}>
             {isPlaying ? <Pause className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         ) : null}
 
-        <button onClick={onTafsirToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${showTafsir ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title="Lihat Tafsir">
+        <button onClick={onTafsirToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${showTafsir ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"}`} title={isEn ? "View Tafsir" : "Lihat Tafsir"}>
           <BookOpenText className="w-4 h-4" />
         </button>
 
-        <button onClick={onCopy} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title="Salin Ayat">
+        <button onClick={onCopy} className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer" title={isEn ? "Copy Verse" : "Salin Ayat"}>
           {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
         </button>
 
-        <button onClick={onBookmarkToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title="Simpan Bookmark">
+        <button onClick={onBookmarkToggle} className={`p-2.5 rounded-xl border transition-all cursor-pointer ${isBookmarked ? "bg-amber-500 text-white border-amber-600 shadow-md shadow-amber-500/20" : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:text-amber-500"}`} title={isEn ? "Save Bookmark" : "Simpan Bookmark"}>
           {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
         </button>
       </div>
@@ -367,6 +378,9 @@ function VerseToolbar({
 }
 
 export default function QuranPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
+
   const [surah, setSurah] = useState(1);
   const [ayat, setAyat] = useState(1);
   const [result, setResult] = useState<QuranVerse | null>(null);
@@ -404,8 +418,7 @@ export default function QuranPage() {
 
   // Asbabun nuzul needs the backend, so it is skipped (not fetched) while offline.
   const asbabRequestKey = result && viewMode === "single" ? `${result.nomor_surah}:${result.nomor_ayat}` : null;
-  // URL target is intentionally read once on initial client hydration.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (!asbabRequestKey) return;
     let active = true;
@@ -422,7 +435,7 @@ export default function QuranPage() {
       })
       .then((data) => {
         if (!active) return;
-        const text = data.asbabun_nuzul || "Tidak ada riwayat sebab turunnya ayat yang dijelaskan dalam sumber tafsir ini.";
+        const text = data.asbabun_nuzul || (isEn ? "No specific occasion of revelation mentioned in this tafsir source." : "Tidak ada riwayat sebab turunnya ayat yang dijelaskan dalam sumber tafsir ini.");
         setAsbabunNuzul(text);
         setAsbabLoading(false);
         cacheAsbabunNuzul(surahNumber, ayatNumber, text);
@@ -434,17 +447,18 @@ export default function QuranPage() {
         setAsbabunNuzul(
           fallback ||
             (isOffline
-              ? "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat."
-              : "Asbabun nuzul belum dapat dimuat. Periksa koneksi lalu tampilkan ayat kembali.")
+              ? (isEn
+                  ? "Occasion of revelation for this verse is not cached on this device. Arabic and translation remain readable offline. Open once while online to save."
+                  : "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat.")
+              : (isEn
+                  ? "Unable to load asbabun nuzul. Check connection and retry."
+                  : "Asbabun nuzul belum dapat dimuat. Periksa koneksi lalu tampilkan ayat kembali."))
         );
         setAsbabLoading(false);
       });
     return () => { active = false; };
-  }, [asbabRequestKey]);
+  }, [asbabRequestKey, isEn]);
 
-
-  // Playback uses the visible Arabic verse as its text alternative.
-  // Audio is controlled by the existing play/pause button, without a hidden media player.
   const audioUrl = result?.audio;
   useEffect(() => {
     if (!audioUrl) return;
@@ -466,7 +480,6 @@ export default function QuranPage() {
   }, [audioUrl]);
 
   const selectedSurahInfo = SURAH_LIST.find((s) => s.num === surah);
-
   const filteredSurahs = filterSurahs(SURAH_LIST, searchQuery);
   const hasSelection = filteredSurahs.some(s => s.num === surah);
   const requestVersion = useRef(0);
@@ -501,7 +514,7 @@ export default function QuranPage() {
         toast: true,
         position: "top-end",
         icon: "warning",
-        title: "Murottal membutuhkan koneksi internet",
+        title: isEn ? "Recitation requires an internet connection" : "Murottal membutuhkan koneksi internet",
         showConfirmButton: false,
         timer: 2200,
       });
@@ -528,7 +541,7 @@ export default function QuranPage() {
     setTafsirLoading(true);
 
     if (typeof navigator !== "undefined" && !navigator.onLine) {
-      setTafsir(cached || "Tafsir belum tersimpan di perangkat. Buka tafsir ini saat online agar bisa dibaca offline.");
+      setTafsir(cached || (isEn ? "Tafsir is not cached on this device yet. Open while online to read offline." : "Tafsir belum tersimpan di perangkat. Buka tafsir ini saat online agar bisa dibaca offline."));
       setTafsirLoading(false);
       return;
     }
@@ -540,11 +553,11 @@ export default function QuranPage() {
         body: JSON.stringify({ surah: surahNumber, ayat: ayatNumber }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Tafsir tidak ditemukan");
+      if (!res.ok) throw new Error(data.detail || (isEn ? "Tafsir not found" : "Tafsir tidak ditemukan"));
       setTafsir(data.tafsir);
       cacheTafsir(surahNumber, ayatNumber, data.tafsir);
     } catch {
-      setTafsir(getCachedTafsir(surahNumber, ayatNumber) || "Tafsir belum dapat dimuat. Periksa koneksi lalu coba lagi.");
+      setTafsir(getCachedTafsir(surahNumber, ayatNumber) || (isEn ? "Unable to load tafsir. Check your connection and try again." : "Tafsir belum dapat dimuat. Periksa koneksi lalu coba lagi."));
     } finally {
       setTafsirLoading(false);
     }
@@ -567,18 +580,18 @@ export default function QuranPage() {
     setCopied(false);
     resetMediaState();
 
-    // Offline: tidak ada asbabun nuzul dari server, pakai salinan lokal bila ada.
     const offline = typeof navigator !== "undefined" && !navigator.onLine;
     if (offline) {
       const cached = getCachedAsbabunNuzul(targetSurah, targetAyat);
       setAsbabunNuzul(
         cached ||
-          "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat."
+          (isEn
+            ? "Occasion of revelation for this verse is not cached on this device. Arabic and translation remain readable offline. Open once while online to save."
+            : "Asbabun nuzul untuk ayat ini belum tersimpan di cache perangkat. Teks Arab dan terjemahan ayat tetap dapat dibaca secara offline. Buka sekali saat online untuk menyimpannya ke perangkat.")
       );
       setAsbabLoading(false);
     } else {
       setAsbabunNuzul(null);
-      // Sudah ada jawaban untuk ayat yang sama sebelumnya -> jangan direset.
       const sameVerse = result?.nomor_surah === targetSurah && result?.nomor_ayat === targetAyat;
       setAsbabLoading(!sameVerse);
     }
@@ -597,13 +610,13 @@ export default function QuranPage() {
 
       if (offlineNow && isNetworkError(err)) {
         setPageNotice({
-          message:
-            `Data Al-Qur'an ${surahName} ayat ${targetAyat} belum tersimpan di perangkat ini. ` +
-            "Buka halaman Qur'an sekali saat online agar seluruh 114 surah tersimpan, lalu ayat bisa dibaca tanpa internet.",
+          message: isEn
+            ? `Qur'an data for ${surahName} verse ${targetAyat} is not cached on this device yet. Open the Qur'an page once while online to save all 114 surahs for offline reading.`
+            : `Data Al-Qur'an ${surahName} ayat ${targetAyat} belum tersimpan di perangkat ini. Buka halaman Qur'an sekali saat online agar seluruh 114 surah tersimpan, lalu ayat bisa dibaca tanpa internet.`,
         });
       } else {
         setPageNotice({
-          message: err instanceof Error ? err.message : "Gagal mengambil data ayat.",
+          message: err instanceof Error ? err.message : (isEn ? "Failed to retrieve verse data." : "Gagal mengambil data ayat."),
         });
       }
       setAsbabunNuzul(null);
@@ -615,15 +628,21 @@ export default function QuranPage() {
       }
     }
   };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const s = Number(params.get("surah")); const a = Number(params.get("ayat"));
+    const s = Number(params.get("surah"));
+    const a = Number(params.get("ayat"));
     const max = SURAH_LIST.find(item => item.num === s)?.verses;
     if (!max || !Number.isInteger(a) || a < 1 || a > max) return;
-    const timer = window.setTimeout(() => { setSurah(s); setAyat(a); void fetchVerse(s, a); }, 0);
+    const timer = window.setTimeout(() => {
+      setSurah(s);
+      setAyat(a);
+      void fetchVerse(s, a);
+    }, 0);
     return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const goPrevVerse = () => {
     if (ayat > 1) {
@@ -642,7 +661,7 @@ export default function QuranPage() {
 
   const copyVerse = () => {
     if (!result) return;
-    const textToCopy = `${result.surah} (${result.nomor_surah}:${result.nomor_ayat})\n\n${result.teks_arab}\n\nLatin: ${result.teks_latin}\n\nTerjemahan: "${result.terjemahan}"`;
+    const textToCopy = `${result.surah} (${result.nomor_surah}:${result.nomor_ayat})\n\n${result.teks_arab}\n\nLatin: ${result.teks_latin}\n\n${isEn ? "Translation" : "Terjemahan"}: "${result.terjemahan}"`;
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -657,11 +676,25 @@ export default function QuranPage() {
     if (savedBookmarks.includes(bookmarkKey)) {
       updated = savedBookmarks.filter((k) => k !== bookmarkKey);
       setIsBookmarked(false);
-      Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Bookmark dihapus', showConfirmButton: false, timer: 1500 });
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: isEn ? 'Bookmark removed' : 'Bookmark dihapus',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } else {
       updated = [...savedBookmarks, bookmarkKey];
       setIsBookmarked(true);
-      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Bookmark disimpan!', showConfirmButton: false, timer: 1500 });
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: isEn ? 'Bookmark saved!' : 'Bookmark disimpan!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
     localStorage.setItem("quran_bookmarks", JSON.stringify(updated));
   };
@@ -701,7 +734,9 @@ export default function QuranPage() {
         toast: true,
         position: "top-end",
         icon: "info",
-        title: offline ? `${missing} bookmark belum tersimpan di perangkat` : `${missing} bookmark gagal dimuat`,
+        title: offline
+          ? isEn ? `${missing} bookmarks not cached on device` : `${missing} bookmark belum tersimpan di perangkat`
+          : isEn ? `${missing} bookmarks failed to load` : `${missing} bookmark gagal dimuat`,
         showConfirmButton: false,
         timer: 2800,
       });
@@ -710,7 +745,6 @@ export default function QuranPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      
       {/* Header Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-emerald-800 via-teal-800 to-emerald-900 text-white p-6 md:p-8 shadow-xl shadow-emerald-900/10">
         <div className="absolute top-0 right-0 -mr-12 -mt-12 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -718,14 +752,15 @@ export default function QuranPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-2">
-              <BookOpen className="w-4 h-4" /> Al-Qur&apos;an Al-Karim Digital
+              <BookOpen className="w-4 h-4" /> {isEn ? "Digital Holy Qur'an" : "Al-Qur'an Al-Karim Digital"}
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              Pencarian Ayat Al-Qur&apos;an
+              {isEn ? "Qur'an Verse Search" : "Pencarian Ayat Al-Qur'an"}
             </h1>
             <p className="text-sm text-emerald-100/80 mt-1 max-w-xl">
-              Cari teks Arab, transliterasi Latin, dan terjemahan bahasa Indonesia yang otentik untuk 114 Surah.
-              Seluruh ayat tersimpan di perangkat, jadi tetap bisa dibaca tanpa internet.
+              {isEn
+                ? "Search authentic Arabic text, Latin transliteration, and translation for all 114 Surahs. Verses are stored locally for offline reading."
+                : "Cari teks Arab, transliterasi Latin, dan terjemahan bahasa Indonesia yang otentik untuk 114 Surah. Seluruh ayat tersimpan di perangkat, jadi tetap bisa dibaca tanpa internet."}
             </p>
           </div>
 
@@ -737,12 +772,20 @@ export default function QuranPage() {
               <Bookmark className="w-4 h-4" /> Bookmark
             </button>
             <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
-              <span className="text-xs text-emerald-200 uppercase font-semibold block">Total Surah</span>
-              <span className="text-2xl font-black text-white">114 Surah</span>
+              <span className="text-xs text-emerald-200 uppercase font-semibold block">
+                {isEn ? "Total Surahs" : "Total Surah"}
+              </span>
+              <span className="text-2xl font-black text-white">
+                {isEn ? "114 Surahs" : "114 Surah"}
+              </span>
             </div>
             <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
-              <span className="text-xs text-emerald-200 uppercase font-semibold block">Bisa Offline</span>
-              <span className="text-2xl font-black text-white">{isOnline ? "Siap" : "Aktif"}</span>
+              <span className="text-xs text-emerald-200 uppercase font-semibold block">
+                {isEn ? "Offline Mode" : "Bisa Offline"}
+              </span>
+              <span className="text-2xl font-black text-white">
+                {isOnline ? (isEn ? "Ready" : "Siap") : (isEn ? "Active" : "Aktif")}
+              </span>
             </div>
           </div>
         </div>
@@ -752,6 +795,7 @@ export default function QuranPage() {
       {showBookmarks && (
         <BookmarkPanel
           verses={bookmarkedVerses}
+          isEn={isEn}
           onClose={() => setShowBookmarks(false)}
           onSelect={(verse) => {
             requestVersion.current += 1;
@@ -782,7 +826,7 @@ export default function QuranPage() {
       {/* Popular Surah Quick Bar */}
       <div className="space-y-2">
         <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-          ⭐ Pintasan Surah Populer:
+          {isEn ? "⭐ Popular Surahs:" : "⭐ Pintasan Surah Populer:"}
         </p>
         <div className="flex flex-wrap gap-2">
           {POPULAR_SURAHS.map((s) => (
@@ -809,30 +853,28 @@ export default function QuranPage() {
 
       {/* Search & Selector Card */}
       <div className="glass-card rounded-3xl p-6 shadow-xl space-y-6 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100">
-        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
           {/* Surah Selector */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
-              Pilih Surah ({SURAH_LIST.length})
+              {isEn ? `Select Surah (${SURAH_LIST.length})` : `Pilih Surah (${SURAH_LIST.length})`}
             </label>
             <div className="space-y-2">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
-                  placeholder="Cari nama/nomor surah..."
+                  placeholder={isEn ? "Search surah name/number..." : "Cari nama/nomor surah..."}
                   value={searchQuery}
                   onChange={(e) => changeSearch(e.target.value)}
-                  aria-label="Cari nama atau nomor surah"
+                  aria-label={isEn ? "Search surah name or number" : "Cari nama atau nomor surah"}
                   className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <select
                 value={hasSelection ? surah : ""}
-                aria-label="Pilih surah"
+                aria-label={isEn ? "Select surah" : "Pilih surah"}
                 disabled={!filteredSurahs.length}
                 onChange={(e) => {
                   const val = Number(e.target.value);
@@ -847,10 +889,10 @@ export default function QuranPage() {
                 }}
                 className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-sm cursor-pointer"
               >
-                {!filteredSurahs.length && <option value="">Surah tidak ditemukan</option>}
+                {!filteredSurahs.length && <option value="">{isEn ? "Surah not found" : "Surah tidak ditemukan"}</option>}
                 {filteredSurahs.map((s) => (
                   <option key={s.num} value={s.num} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
-                    {s.num}. {s.name} ({s.verses} Ayat)
+                    {s.num}. {s.name} ({s.verses} {isEn ? "Verses" : "Ayat"})
                   </option>
                 ))}
               </select>
@@ -860,7 +902,7 @@ export default function QuranPage() {
           {/* Ayat Counter */}
           <div>
             <label htmlFor="quran-verse-number" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
-              Nomor Ayat (Maks: {selectedSurahInfo?.verses || 286})
+              {isEn ? `Verse Number (Max: ${selectedSurahInfo?.verses || 286})` : `Nomor Ayat (Maks: ${selectedSurahInfo?.verses || 286})`}
             </label>
             
             <div className="flex items-center gap-3 mt-2">
@@ -898,17 +940,21 @@ export default function QuranPage() {
           <button
             onClick={() => { setViewMode("single"); fetchVerse(); }}
             disabled={loading || !hasSelection}
-            className="min-h-12 px-4 py-3 bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-[0.99] font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
+            className="min-h-12 w-full px-4 py-3 bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl shadow-lg shadow-emerald-600/25 disabled:opacity-50 transition-all active:scale-[0.99] font-semibold text-sm leading-5 sm:text-base flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>{loadingAction === "verse" ? "Memuat ayat..." : "Memuat surah..."}</span>
+                <span>
+                  {loadingAction === "verse"
+                    ? (isEn ? "Loading verse..." : "Memuat ayat...")
+                    : (isEn ? "Loading surah..." : "Memuat surah...")}
+                </span>
               </span>
             ) : (
               <>
                 <Search aria-hidden="true" className="size-5 shrink-0" />
-                <span className="whitespace-nowrap">Tampilkan Ayat</span>
+                <span className="whitespace-nowrap">{isEn ? "Show Verse" : "Tampilkan Ayat"}</span>
               </>
             )}
           </button>
@@ -918,13 +964,13 @@ export default function QuranPage() {
       {/* Single Verse Result */}
       {result && viewMode === "single" && (
         <div className="glass-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300 relative border-2 border-emerald-500/30 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-slate-100">
-          
           <VerseToolbar
             result={result}
             isPlaying={isPlaying}
             showTafsir={showTafsir}
             copied={copied}
             isBookmarked={isBookmarked}
+            isEn={isEn}
             onFontSizeChange={(change) => setFontSize((previous) => Math.min(3.5, Math.max(1.5, previous + change)))}
             onAudioToggle={toggleAudio}
             onTafsirToggle={toggleTafsir}
@@ -939,37 +985,43 @@ export default function QuranPage() {
           </div>
 
           <div className="bg-slate-50 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
-            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">Transliterasi Latin:</span>
+            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">
+              {isEn ? "Latin Transliteration:" : "Transliterasi Latin:"}
+            </span>
             <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 italic leading-relaxed">&ldquo;{result.teks_latin}&rdquo;</p>
           </div>
 
           <div className="space-y-2">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">Terjemahan Bahasa Indonesia:</span>
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+              {isEn ? "Indonesian Translation:" : "Terjemahan Bahasa Indonesia:"}
+            </span>
             <p className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal bg-white dark:bg-slate-800/90 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm">
               {result.terjemahan}
             </p>
           </div>
 
           <div className="space-y-2">
-            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Asbabun Nuzul:</span>
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">
+              {isEn ? "Occasion of Revelation (Asbabun Nuzul):" : "Asbabun Nuzul:"}
+            </span>
             <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap bg-amber-50 dark:bg-amber-950/30 p-5 rounded-2xl border border-amber-200/60 dark:border-amber-800/40">
-              {asbabLoading ? "Memuat asbabun nuzul..." : asbabunNuzul}
+              {asbabLoading ? (isEn ? "Loading asbabun nuzul..." : "Memuat asbabun nuzul...") : asbabunNuzul}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Sumber: Tafsir Kemenag via EQuran.id</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {isEn ? "Source: Ministry of Religious Affairs (Kemenag) via EQuran.id" : "Sumber: Tafsir Kemenag via EQuran.id"}
+            </p>
           </div>
-
-
 
           {showTafsir && (
             <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
               <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                <BookOpenText className="w-3.5 h-3.5" /> Tafsir Ringkas:
+                <BookOpenText className="w-3.5 h-3.5" /> {isEn ? "Brief Exegesis (Tafsir):" : "Tafsir Ringkas:"}
               </span>
               <div className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed bg-amber-50 dark:bg-amber-950/30 p-5 rounded-2xl border border-amber-200/60 dark:border-amber-800/40 shadow-sm max-h-96 overflow-y-auto">
                 {tafsirLoading ? (
                   <span className="flex items-center gap-2 text-slate-500">
                     <span className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                    <span>Memuat tafsir…</span>
+                    <span>{isEn ? "Loading tafsir…" : "Memuat tafsir…"}</span>
                   </span>
                 ) : (
                   <p className="whitespace-pre-wrap wrap-break-word">{tafsir}</p>
@@ -979,32 +1031,32 @@ export default function QuranPage() {
           )}
 
           {/* Prev/Next Navigation */}
-          <nav aria-label="Navigasi ayat" className="grid grid-cols-2 items-center gap-3 pt-4 border-t border-slate-200/80 dark:border-slate-800/80 sm:grid-cols-[1fr_auto_1fr]">
+          <nav aria-label={isEn ? "Verse navigation" : "Navigasi ayat"} className="grid grid-cols-2 items-center gap-3 pt-4 border-t border-slate-200/80 dark:border-slate-800/80 sm:grid-cols-[1fr_auto_1fr]">
             <button
-              aria-label="Ayat sebelumnya"
+              aria-label={isEn ? "Previous verse" : "Ayat sebelumnya"}
               onClick={goPrevVerse}
               disabled={ayat <= 1}
               className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-all text-sm font-medium cursor-pointer"
             >
-              <ChevronLeft aria-hidden="true" className="size-4 shrink-0" /><span className="whitespace-nowrap">Sebelumnya</span>
+              <ChevronLeft aria-hidden="true" className="size-4 shrink-0" /><span className="whitespace-nowrap">{isEn ? "Previous" : "Sebelumnya"}</span>
             </button>
             <span className="col-span-2 row-start-1 text-center text-sm text-slate-500 dark:text-slate-400 font-medium tabular-nums sm:col-span-1 sm:col-start-2">
-              Ayat {ayat} / {selectedSurahInfo?.verses}
+              {isEn ? `Verse ${ayat} / ${selectedSurahInfo?.verses}` : `Ayat ${ayat} / ${selectedSurahInfo?.verses}`}
             </span>
             <button
-              aria-label="Ayat selanjutnya"
+              aria-label={isEn ? "Next verse" : "Ayat selanjutnya"}
               onClick={goNextVerse}
               disabled={ayat >= (selectedSurahInfo?.verses || 1)}
               className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-all text-sm font-medium cursor-pointer"
             >
-              <span className="whitespace-nowrap">Selanjutnya</span><ChevronRight aria-hidden="true" className="size-4 shrink-0" />
+              <span className="whitespace-nowrap">{isEn ? "Next" : "Selanjutnya"}</span><ChevronRight aria-hidden="true" className="size-4 shrink-0" />
             </button>
           </nav>
         </div>
       )}
 
       {/* Read-through Surah View */}
-      {viewMode === "surah" && <SurahReader verses={surahVerses} fontSize={fontSize} onBack={() => setViewMode("single")} />}
+      {viewMode === "surah" && <SurahReader verses={surahVerses} fontSize={fontSize} isEn={isEn} onBack={() => setViewMode("single")} />}
     </div>
   );
 }
