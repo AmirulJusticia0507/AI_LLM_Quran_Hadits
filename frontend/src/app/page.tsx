@@ -201,6 +201,12 @@ const SUGGESTED_PROMPTS = [
     category: "Fiqh Dakwah",
     icon: BookOpen,
   },
+  {
+    title: "Malaikat, Jin & Ruqyah Syar'iyyah",
+    prompt: "Bagaimana hakikat penciptaan malaikat dan jin, bahaya perdukunan klenik, serta tata cara ruqyah syar'iyyah mandiri sesuai sunnah?",
+    category: "Alam Ghaib",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

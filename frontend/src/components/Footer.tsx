@@ -119,7 +119,7 @@ export default function Footer() {
               className="inline-flex items-center gap-1.5 mb-3 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-full shadow-sm shadow-emerald-600/20 transition-all hover:scale-[1.02]"
             >
               <GraduationCap className="w-3.5 h-3.5" />
-              <span>Jelajahi 28 Modul Lengkap →</span>
+              <span>Jelajahi 29 Modul Lengkap →</span>
             </Link>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
               Modul Pilihan:

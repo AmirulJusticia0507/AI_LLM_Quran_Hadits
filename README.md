@@ -41,7 +41,7 @@ langsung dari UI tanpa restart server.
 | `/doa` | 267 doa & dzikir Hisnul Muslim (Arab, arti, sumber hadits, bookmark, salin, filter 132 kategori) |
 | `/kiblat` | Kompas kiblat live (sensor HP + GPS), derajat & jarak ke Ka'bah |
 | `/tajweed` | Panduan tajwid: Ghunnah, Idgham, Mad, Qalqalah, Waqaf |
-| `/belajar` | Pusat Belajar Islam: 28 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah, Fitnah Dajjal & Akhir Zaman, Kisah 25 Nabi & Rasul, Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi, Fiqh Dakwah & Komunikasi) |
+| `/belajar` | Pusat Belajar Islam: 29 Modul Interaktif (Tazkiyah, Aqidah, Ibadah, Munakahat, Muamalah, Integritas, Komparasi, Sains & Sunnatullah, Halal, Medis, Sirah, Tajwid, Balaghah, Ushul Fiqh, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Qur'an, Faraidh & Waris, Adab Digital, Fiqh Muslimah, Maqashid Syari'ah & Siyasah, Fitnah Dajjal & Akhir Zaman, Kisah 25 Nabi & Rasul, Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi, Fiqh Dakwah & Komunikasi, Malaikat Jin & Ruqyah Syar'iyyah) |
 | `/aqidah` | Aqidah & Hari Akhir: 9 kajian tauhid, malaikat, takdir, sakaratul maut, fitnah kubur, kiamat kubra, mahsyar, hisab, surga |
 | `/ushul-fiqh` | Ushul Fiqh & Kaidah Fiqhiyyah: 10 kajian sumber hukum Islam, qiyas, ijma', ijtihad, perbedaan mazhab |
 | `/musthalah-hadits` | Musthalah Hadits: 10 kajian sanad, matan, 5 syarat shahih, hasan, dha'if, ciri hadits palsu, Kutubut Tis'ah |
@@ -58,6 +58,7 @@ langsung dari UI tanpa restart server.
 | `/sahabat-surga` | 10 Sahabat Dijamin Surga: 10 kajian Khulafaur Rasyidin, Abdurrahman bin 'Auf, Abu 'Ubaidah, Sa'ad, Thalhah, Zubair, Sa'id |
 | `/lingkungan` | Fiqh Lingkungan: 10 kajian mandat khalifah, konservasi air wudhu, hak satwa, sedekah pohon, hima dan harim, zero waste |
 | `/fiqh-dakwah` | Fiqh Dakwah: 10 kajian Hikmah, Mau'izhah, Jidal bil Ahsan, dakwah bil hal, anti-takfiri, psikologi mad'u, diplomasi surat Nabi |
+| `/alam-ghaib` | Malaikat & Jin: 10 kajian hakikat malaikat, 10 malaikat utama, hafazhah, bangsa jin, tipu daya waswas, bahaya dukun, ruqyah syar'iyyah, barzakh |
 | `/munakahat` | Fiqh Munakahat: 10 panduan khitbah, rukun nikah, mahar, hak suami istri, talak, khulu', iddah |
 | `/muamalah` | Fiqh Muamalah: 7 panduan anti-riba, gharar, utang-piutang, akad bisnis, paylater, pinjol, kripto |
 | `/integritas` | Fiqh Integritas & Anti-Korupsi: 7 panduan amanah jabatan, bahaya risywah (suap), gratifikasi, ghulul |

@@ -3278,6 +3278,159 @@ export const fiqhDakwah: Course = {
   ],
 };
 
+export const alamGhaib: Course = {
+  id: 'alam-ghaib',
+  title: "Malaikat, Jin & Dunia Ghaib (Iman bil-Ghaib & Ruqyah Syar'iyyah)",
+  description: "Pahami hakikat penciptaan Malaikat, bangsa Jin, tipu daya setan, alam barzakh, dan benteng ruqyah syar'iyyah otentik.",
+  note: "Membentengi akidah tauhid umat dari syirik, takhayul, perdukunan, dan ramalan klenik berlandaskan nash Al-Qur'an dan As-Sunnah.",
+  lessons: [
+    {
+      id: 'asal-usul-malaikat',
+      title: 'Hakikat Penciptaan Malaikat dari Cahaya (Nur)',
+      category: 'Karakteristik Malaikat',
+      summary: 'Malaikat diciptakan dari cahaya, makhluk mulia tanpa hawa nafsu yang senantiasa patuh mutlak kepada perintah Allah.',
+      points: [
+        "Hadits shahih riwayat Aisyah radhiyallahu 'anha: Malaikat diciptakan dari cahaya, jin diciptakan dari nyala api murni, dan Adam dari tanah liat.",
+        'Tidak berjenis kelamin (bukan laki-laki dan bukan perempuan), tidak makan, tidak minum, dan tidak pernah berbuat maksiat sedikit pun (QS. At-Tahrim: 6).',
+        'Memiliki sayap yang berlipat-lipat (dua, tiga, empat, hingga ratusan seperti Malaikat Jibril yang memiliki 600 sayap).',
+        'Bisa menjelma dalam wujud laki-laki yang sangat tampan dan berwibawa atas izin Allah, seperti saat mengajarkan Islam, Iman, dan Ihsan kepada para Sahabat.'
+      ],
+      practice: 'Perkuat keimanan kepada hal ghaib dan tanamkan rasa malu berbuat maksiat karena para malaikat selalu hadir mencatat perbuatan kita.',
+      source: quran('66/6')
+    },
+    {
+      id: 'sepuluh-malaikat-utama',
+      title: '10 Malaikat Utama dan Tugas-Tugas Kosmisnya',
+      category: 'Tugas Malaikat',
+      summary: 'Mengenal nama dan amanah spesifik para pemimpin malaikat dalam mengatur urusan wahyu, rezeki, nyawa, dan hari akhir.',
+      points: [
+        'Jibril (Ruhul Qudus): Penyampai wahyu Ilahi kepada para Nabi dan Rasul serta pemimpin para malaikat.',
+        'Mikail: Penanggung jawab pembagian rezeki, tetesan air hujan, dan pertumbuhan tanaman di seluruh alam.',
+        'Israfil: Peniup terompet sangkakala pada hari kiamat dan hari kebangkitan kembali.',
+        "'Izrail (Malakul Maut): Pencabut nyawa seluruh makhluk bernyawa sesuai ajal yang telah ditetapkan tanpa terlambat sedetik pun.",
+        'Munkar dan Nakir: Penanya ruh manusia di alam barzakh (kubur) mengenai Rabb, Nabi, dan pedoman agamanya.',
+        'Raqib dan Atid: Pengawas dan pencatat seluruh amal baik dan buruk manusia tanpa ada yang terlewat sekecil zarrah pun.',
+        'Malik: Pemimpin malaikat Zabaniyah penjaga neraka yang tegas, berwibawa, dan tidak pernah tersenyum.',
+        'Ridwan: Malaikat penjaga surga yang penuh kelembutan menyambut hamba-hamba beriman yang bertakwa.'
+      ],
+      practice: 'Renungkan tugas Malaikat Maut dan Munkar-Nakir agar hati senantiasa ingat kematian dan mempersiapkan bekal terbaik setiap hari.',
+      source: quran('32/11')
+    },
+    {
+      id: 'hafazhah-dan-katibin',
+      title: 'Malaikat Penjaga (Hafazhah) & Pendamping Manusia',
+      category: 'Interaksi Gaib',
+      summary: 'Allah menugaskan malaikat untuk menjaga manusia dari marabahaya serta mendoakan kebaikan bagi orang yang beribadah.',
+      points: [
+        "Malaikat Mu'aqqibat (QS. Ar-Ra'd: 11): Malaikat yang bertugas bergiliran menjaga manusia dari arah depan dan belakang atas perintah Allah.",
+        'Bergantian Tugas di Waktu Shalat Fajar (Subuh) dan Ashar: Malaikat malam dan siang berkumpul lalu melapor kepada Allah mengenai kondisi shalat hamba-Nya.',
+        'Malaikat Pencari Majelis Ilmu (Halaqah): Malaikat yang berkeliling di bumi, membentangkan sayapnya dan menaungi majelis dzikir serta majelis ilmu.',
+        "Malaikat Mendoakan Orang yang Berinfaq: Setiap pagi dua malaikat berdoa, 'Ya Allah, berikanlah ganti bagi orang yang berinfaq, dan berikanlah kehancuran bagi orang yang bakhil.'"
+      ],
+      practice: 'Rutinkan shalat Subuh dan Ashar berjamaah tepat waktu serta sempatkan bersedekah di pagi hari agar didoakan para malaikat.',
+      source: hadith(555)
+    },
+    {
+      id: 'hakikat-bangsa-jin',
+      title: 'Hakikat Bangsa Jin, Iblis, & Sebab Pembangkangannya',
+      category: 'Dunia Jin',
+      summary: 'Jin adalah makhluk mukallaf yang diciptakan dari nyala api tanpa asap, memiliki kehendak bebas, ada yang muslim dan ada yang kafir.',
+      points: [
+        'Diciptakan sebelum manusia dari api yang sangat panas (marij min nar - QS. Ar-Rahman: 15).',
+        'Bangsa Jin memiliki kewajiban syariat untuk beribadah kepada Allah sama seperti manusia (QS. Adz-Dzariyat: 56).',
+        'Iblis berasal dari golongan jin (QS. Al-Kahfi: 50), membangkang karena kesombongan (takabbur) merasa lebih mulia dari Adam AS.',
+        'Jin hidup berketurunan, makan, minum, berkelompok, dan memiliki tingkatan pengetahuan serta keimanan layaknya manusia.'
+      ],
+      practice: 'Jauhi sifat sombong dan merasa lebih suci daripada orang lain, karena takabbur adalah awal mula laknat Iblis.',
+      source: quran('18/50')
+    },
+    {
+      id: 'perangkap-dan-waswas-setan',
+      title: 'Tipu Daya, Bisikan Waswas, & Strategi Menangkalnya',
+      category: 'Benteng Batin',
+      summary: 'Setan tidak memiliki kekuasaan memaksa fisik manusia, senjatanya hanyalah bisikan ragu, godaan hawa nafsu, dan kepalsuan angan-angan.',
+      points: [
+        "Kelemahan Tipu Daya Setan: QS. An-Nisa': 76 menegaskan bahwa sesungguhnya tipu daya setan itu sangatlah lemah bagi orang yang bertawakal.",
+        "Pintu Masuk Setan: Kemarahan yang tak terkendali, rasa kenyang berlebih, syahwat liar, keputusasaan, dan keragu-raguan dalam niat/wudhu (waswas).",
+        "Doa Perlindungan (Isti'adzah): Mengucapkan 'A'udzubillahi minasy-syaithanir-rajim' saat mulai marah atau terlintas bisikan maksiat.",
+        'Khutbah Iblis di Hari Kiamat: Iblis mengakui di depan para pengikutnya di neraka bahwa ia hanya mengajak dan manusia sendirilah yang menuruti ajakannya.'
+      ],
+      practice: 'Bila terlintas keraguan waswas dalam wudhu atau shalat, jangan ulangi secara berlebihan; abaikan bisikan itu dan berlindunglah kepada Allah.',
+      source: quran('14/22')
+    },
+    {
+      id: 'batasan-jin-dan-larangan-istianah',
+      title: 'Batasan Kemampuan Jin & Dosa Meminta Tolong kepada Jin',
+      category: 'Pemurnian Tauhid',
+      summary: 'Jin tidak mengetahui hal ghaib masa depan dan haram hukumnya menjadikan jin sebagai khodam atau pelindung.',
+      points: [
+        "Jin Tidak Tahu Hal Ghaib: Terbukti saat Nabi Sulaiman AS wafat bersandar pada tongkatnya, jin tetap bekerja keras karena tidak menyadari kewafatan beliau (QS. Saba': 14).",
+        "Larangan Al-Isti'anah bil Jin: Meminta bantuan atau perlindungan kepada jin justru hanya akan menambah dosa dan kesesatan (QS. Al-Jinn: 6).",
+        'Mitos Jin Khodam Penjaga: Menjadikan jin sebagai penjaga diri, benda pusaka, atau penglaris dagangan adalah pintu menuju kemusyrikan (syirik akbar).',
+        'Kemandirian Mukmin: Bergantung hanya kepada Allah dengan doa, shalat, dan tawakal tanpa perantara makhluk gaib.'
+      ],
+      practice: 'Bersihkan rumah dan diri dari jimat, rajah, keris yang dikeramatkan, atau perjanjian ghaib dengan jin demi menjaga kesucian tauhid.',
+      source: quran('72/6')
+    },
+    {
+      id: 'bahaya-perdukunan-dan-ramalan',
+      title: 'Hukum Perdukunan, Dukun Berkedok Spiritual, & Ramalan Zodiak',
+      category: 'Bahaya Syirik',
+      summary: 'Mendatangi dan mempercayai dukun atau peramal nasib dapat menghanguskan pahala shalat 40 hari hingga membatalkan keislaman.',
+      points: [
+        "Ancaman Shalat Tidak Diterima: 'Barangsiapa mendatangi peramal lalu menanyakan sesuatu kepadanya, maka tidak diterima shalatnya selama 40 hari' (HR. Muslim).",
+        "Kufur terhadap Al-Qur'an: 'Barangsiapa mendatangi dukun lalu membenarkan ucapannya, sungguh ia telah kufur terhadap apa yang diturunkan kepada Muhammad SAW' (HR. Abu Dawud).",
+        "Dukun Berkedok 'Orang Pintar': Mengaku tahu barang hilang, membaca masa depan, atau mengklaim bisa mengusir penyakit dengan syarat sesajen dan darah hewan sembelihan.",
+        'Ramalan Bintang & Horoskop Digital: Membaca dan mempercayai zodiak, kartu tarot, atau tes nasib online termasuk cabang dari peramalan yang dilarang syariat.'
+      ],
+      practice: 'Tolak segala bentuk konten ramalan nasib di media sosial dan yakini sepenuhnya bahwa rezeki, jodoh, dan maut mutlak rahasia Allah.',
+      source: hadith(5762)
+    },
+    {
+      id: 'ruqyah-syar-iyyah',
+      title: "Ruqyah Syar'iyyah: Doa & Bacaan Pelindung Mandiri",
+      category: 'Pengobatan Nabawi',
+      summary: "Terapi penyembuhan dan perlindungan ruhani dengan membaca ayat-ayat Al-Qur'an dan doa ma'tsur tanpa jimat atau mantra syirik.",
+      points: [
+        "Syarat Sah Ruqyah Syar'iyyah: Menggunakan kalamullah (Al-Qur'an), nama/sifat Allah, bahasa Arab/bahasa yang dipahami maknanya, serta meyakini kesembuhan murni dari Allah.",
+        'Surah dan Ayat Utama: Membaca Al-Fatihah, Ayat Kursi (QS. Al-Baqarah: 255), 2 ayat terakhir Al-Baqarah (284-286), serta Al-Ikhlas, Al-Falaq, dan An-Nas.',
+        "Doa Kesembuhan Nabawi: 'Allahumma Rabban-nas, adzhibil-ba'sa, isyfi antasy-syafi, la syifa-a illa syifa-uk, syifa-an la yughadiru saqama.'",
+        'Ruqyah Mandiri Setiap Hendak Tidur: Meniupkan ke kedua telapak tangan setelah membaca 3 Qul, lalu mengusap ke seluruh tubuh yang dapat dijangkau sebanyak 3 kali.'
+      ],
+      practice: 'Praktikkan ruqyah mandiri sebelum tidur malam ini dan bacakan doa perlindungan untuk anak-anak serta keluarga.',
+      source: hadith(5748)
+    },
+    {
+      id: 'hakikat-sihir-dan-penyakit-ain',
+      title: "Hakikat Sihir, Penyakit 'Ain (Pandangan Dengki), & Penangkalnya",
+      category: 'Perlindungan Ruhani',
+      summary: "Mengenal realitas penyakit 'ain dan sihir serta membiasakan doa berkah (tabrik) saat melihat sesuatu yang mengagumkan.",
+      points: [
+        "Penyakit 'Ain Itu Nyata: Sabda Nabi SAW, 'Ain itu benar adanya. Andaikan ada sesuatu yang mendahului takdir, sungguh 'ain itulah yang mendahuluinya' (HR. Muslim).",
+        "Penyebab 'Ain: Pandangan kagum bercampur dengki (hasad) atau takjub tanpa mendoakan keberkahan (tabrik).",
+        "Mengucapkan 'Barakallahu Fik' / 'Maa Syaa Allah': Wajib bagi setiap muslim saat melihat keindahan pada anak, harta, atau tubuh orang lain.",
+        'Sihir adalah Perbuatan Kufur: Termasuk dalam 7 dosa besar yang membinasakan (al-mubiqaat); pelakunya bersekutu dengan setan dan haram membalas sihir dengan sihir.'
+      ],
+      practice: "Biasakan mengucap 'Maa Syaa Allah Tabaarakallah' saat memposting atau memuji foto anak, kesuksesan, atau harta di media sosial.",
+      source: hadith(5740)
+    },
+    {
+      id: 'alam-barzakh-dan-pertanyaan-kubur',
+      title: 'Alam Barzakh: Pertanyaan Munkar-Nakir, Siksa & Nikmat Kubur',
+      category: 'Fase Akhirat',
+      summary: 'Kubur adalah persinggahan pertama menuju akhirat; menjadi taman surga bagi orang shalih atau jurang neraka bagi pendosa.',
+      points: [
+        "Tiga Pertanyaan Utama: 'Man Rabbuka?' (Siapa Tuhanmu?), 'Maa Dinuka?' (Apa Agamamu?), dan 'Man Nabiyyuka?' (Siapa Nabimu?).",
+        'Yang Menjawab Adalah Amal, Bukan Hafalan: Lisan orang beriman dikokohkan oleh Allah dengan perkataan yang teguh (QS. Ibrahim: 27).',
+        "Penyebab Utama Siksa Kubur: Hadits Nabi SAW menyebutkan dua dosa yang sering dianggap sepele: tidak menjaga kebersihan dari percikan air kencing (istinja') dan menyebarkan adu domba (namimah).",
+        'Penyelamat dari Siksa Kubur: Rutin membaca Surah Al-Mulk setiap malam, menjaga shalat 5 waktu, dan istiqamah dalam tauhid.'
+      ],
+      practice: "Rutin membaca Surah Al-Mulk sebelum tidur dan jaga kesucian diri dari najis kencing dengan istinja' yang sempurna.",
+      source: hadith(1374)
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -3307,4 +3460,5 @@ export const courseLinks = [
   { href: '/sirah', title: sirah.title, description: sirah.description },
   { href: '/tajweed', title: 'Ilmu Tajwid & Makhraj Huruf', description: '20 kaidah bacaan, 17 makhraj dalam 5 wilayah, serta latihan artikulasi huruf.' },
   { href: '/balaghoh', title: balaghoh.title, description: balaghoh.description },
+  { href: '/alam-ghaib', title: alamGhaib.title, description: alamGhaib.description },
 ];

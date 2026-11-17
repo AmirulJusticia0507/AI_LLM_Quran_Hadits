@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { courseLinks } from '@/data/learning';
 
 export const metadata: Metadata = {
-  title: 'Pusat Belajar Islam - 28 Modul Interaktif',
-  description: 'Pusat Belajar Islam 28 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Eskatologi, Fiqh Ibadah, Ushul Fiqh, Munakahat, Muamalah, Integritas Anti-Korupsi, Komparasi Agama, Sains & Sunnatullah, Pangan Halal, Fiqh Medis, Siroh Nabawiyah, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Quran, Faraidh & Hukum Waris, Adab & Etika Digital, Tokoh Muslimah Teladan & Fiqh Wanita, Maqashid Syariah & Siyasah Syari’ah, Fitnah Akhir Zaman & Al-Masih Ad-Dajjal, Kisah 25 Nabi & Rasul Allah, Sejarah Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi Islam, Fiqh Dakwah & Komunikasi Persuasif, Ilmu Tajwid, dan Ilmu Balaghah.',
+  title: 'Pusat Belajar Islam - 29 Modul Interaktif',
+  description: 'Pusat Belajar Islam 29 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Eskatologi, Fiqh Ibadah, Ushul Fiqh, Munakahat, Muamalah, Integritas Anti-Korupsi, Komparasi Agama, Sains & Sunnatullah, Pangan Halal, Fiqh Medis, Siroh Nabawiyah, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Quran, Faraidh & Hukum Waris, Adab & Etika Digital, Tokoh Muslimah Teladan & Fiqh Wanita, Maqashid Syariah & Siyasah Syari’ah, Fitnah Akhir Zaman & Al-Masih Ad-Dajjal, Kisah 25 Nabi & Rasul Allah, Sejarah Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi Islam, Fiqh Dakwah & Komunikasi Persuasif, Malaikat Jin & Dunia Ghaib (Ruqyah Syar’iyyah), Ilmu Tajwid, dan Ilmu Balaghah.',
 };
 
 export default function LearningPage() {
@@ -14,7 +14,7 @@ export default function LearningPage() {
         <p className="text-sm text-emerald-200">Ilmu • Amal • Akhlak</p>
         <h1 className="text-3xl sm:text-4xl font-bold">Pusat Belajar Islam</h1>
         <p className="text-emerald-100 leading-relaxed max-w-2xl">
-          Perdalam aqidah & eskatologi, rawat hati, pelajari fiqih ibadah, ushul fiqh, pernikahan, muamalah bisnis, etika integritas anti-korupsi, komparasi agama, sains Al-Qur’an, pangan halal, fiqih medis, kritik hadits, sejarah peradaban emas, parenting Islami, ulumul Qur&apos;an & metodologi tafsir, hukum waris faraidh, adab & etika digital bersosial media, tokoh muslimah teladan & fiqh wanita, maqashid syari&apos;ah & tata kelola publik (siyasah), fitnah akhir zaman & Al-Masih Ad-Dajjal, silsilah & mukjizat 25 nabi dan rasul, sejarah Islam Nusantara & kearifan Walisongo, 10 sahabat nabi dijamin surga, fiqh lingkungan & ekologi pelestarian alam, fiqh dakwah & seni komunikasi persuasif, teladani Rasulullah ﷺ, perbaiki tajwid, dan balaghah. 28 modul interaktif komprehensif siap diakses offline & online.
+          Perdalam aqidah & eskatologi, rawat hati, pelajari fiqih ibadah, ushul fiqh, pernikahan, muamalah bisnis, etika integritas anti-korupsi, komparasi agama, sains Al-Qur’an, pangan halal, fiqih medis, kritik hadits, sejarah peradaban emas, parenting Islami, ulumul Qur&apos;an & metodologi tafsir, hukum waris faraidh, adab & etika digital bersosial media, tokoh muslimah teladan & fiqh wanita, maqashid syari&apos;ah & tata kelola publik (siyasah), fitnah akhir zaman & Al-Masih Ad-Dajjal, silsilah & mukjizat 25 nabi dan rasul, sejarah Islam Nusantara & kearifan Walisongo, 10 sahabat nabi dijamin surga, fiqh lingkungan & ekologi pelestarian alam, fiqh dakwah & seni komunikasi persuasif, malaikat, jin & benteng ruqyah syar&apos;iyyah, teladani Rasulullah ﷺ, perbaiki tajwid, dan balaghah. 29 modul interaktif komprehensif siap diakses offline & online.
         </p>
       </header>
 
