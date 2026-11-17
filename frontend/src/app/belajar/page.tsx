@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { courseLinks } from '@/data/learning';
 
 export const metadata: Metadata = {
-  title: 'Pusat Belajar Islam - 18 Modul Interaktif',
-  description: 'Pusat Belajar Islam 18 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Eskatologi, Fiqh Ibadah, Ushul Fiqh, Munakahat, Muamalah, Integritas Anti-Korupsi, Komparasi Agama, Sains & Sunnatullah, Pangan Halal, Fiqh Medis, Siroh Nabawiyah, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ilmu Tajwid, dan Ilmu Balaghah.',
+  title: 'Pusat Belajar Islam - 19 Modul Interaktif',
+  description: 'Pusat Belajar Islam 19 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Eskatologi, Fiqh Ibadah, Ushul Fiqh, Munakahat, Muamalah, Integritas Anti-Korupsi, Komparasi Agama, Sains & Sunnatullah, Pangan Halal, Fiqh Medis, Siroh Nabawiyah, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Quran, Faraidh & Hukum Waris, Ilmu Tajwid, dan Ilmu Balaghah.',
 };
 
 export default function LearningPage() {
@@ -14,7 +14,7 @@ export default function LearningPage() {
         <p className="text-sm text-emerald-200">Ilmu • Amal • Akhlak</p>
         <h1 className="text-3xl sm:text-4xl font-bold">Pusat Belajar Islam</h1>
         <p className="text-emerald-100 leading-relaxed max-w-2xl">
-          Perdalam aqidah & eskatologi, rawat hati, pelajari fiqih ibadah, ushul fiqh, pernikahan, muamalah bisnis, etika integritas anti-korupsi, komparasi agama, sains Al-Qur’an, pangan halal, fiqih medis, kritik hadits, sejarah peradaban emas, parenting Islami, ulumul Qur&apos;an & metodologi tafsir, teladani Rasulullah ﷺ, perbaiki tajwid, dan balaghah. 18 modul interaktif komprehensif siap diakses offline & online.
+          Perdalam aqidah & eskatologi, rawat hati, pelajari fiqih ibadah, ushul fiqh, pernikahan, muamalah bisnis, etika integritas anti-korupsi, komparasi agama, sains Al-Qur’an, pangan halal, fiqih medis, kritik hadits, sejarah peradaban emas, parenting Islami, ulumul Qur&apos;an & metodologi tafsir, hukum waris faraidh, teladani Rasulullah ﷺ, perbaiki tajwid, dan balaghah. 19 modul interaktif komprehensif siap diakses offline & online.
         </p>
       </header>
 

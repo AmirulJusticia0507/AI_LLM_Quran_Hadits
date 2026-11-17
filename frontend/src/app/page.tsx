@@ -141,6 +141,12 @@ const SUGGESTED_PROMPTS = [
     category: "Ulumul Qur'an",
     icon: BookOpen,
   },
+  {
+    title: "Hukum Waris Islam (Faraidh)",
+    prompt: "Bagaimana aturan pembagian waris Islam antara Ashabul Furudh dan Ashabah serta filosofi rasio 2:1 pria dan wanita?",
+    category: "Hukum Waris",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
