@@ -559,7 +559,7 @@ export const medis: Course = {
   id: 'medis',
   title: 'Fiqh Medis & Kedokteran Kontemporer',
   description: 'Fatwa syariat kedokteran: ikhtiar pengobatan, kondisi darurat, donor darah & organ, hukum eutanasia, bayi tabung, dan otopsi jenazah.',
-  note: 'Disusun berdasarkan fatwa Majelis Ulama Indonesia (MUI), Majma’ al-Fiqh al-Islami (OKI), dan kaidah ushul fikih seputar perlindungan jiwa (Hifzhun Nafs).',
+  note: 'Disusun sebagai pengantar berdasarkan fatwa Majelis Ulama Indonesia (MUI), International Islamic Fiqh Academy (IIFA), dan kaidah perlindungan jiwa (Hifzhun Nafs). Ringkasan ini bersifat edukatif, bukan diagnosis atau pengganti konsultasi dokter, apoteker, maupun ahli fikih untuk kasus tertentu.',
   lessons: [
     {
       id: 'ikhtiar-sehat',
@@ -569,11 +569,17 @@ export const medis: Course = {
       points: [
         'Rasulullah ﷺ bersabda: "Berobatlah wahai hamba-hamba Allah, karena sesungguhnya Allah tidak menurunkan suatu penyakit melainkan menurunkan pula obatnya..." (HR. Abu Dawud no. 3855).',
         'Menjaga kelestarian jiwa (Hifzhun Nafs) adalah salah satu dari lima tujuan utama syariat Islam (Maqashid asy-Syari’ah).',
-        'Berobat tidak menafikan tawakal, melainkan menjalankan hukum sebab-akibat (sunnatullah) yang diciptakan Allah.',
-        'Hukum berobat berkisar antara wajib (jika penyakit mengancam nyawa), sunnah, hingga mubah tergantung diagnosis dokter terpercaya.',
+        'Berobat tidak menafikan tawakal. Ikhtiar mencakup mencari pertolongan tenaga kesehatan yang kompeten, memahami pilihan yang tersedia, dan menjalankan terapi sesuai arahan klinis.',
+        'Resolusi International Islamic Fiqh Academy membedakan hukum berobat menurut keadaan: dapat menjadi wajib bila meninggalkannya berisiko menyebabkan kematian, kehilangan fungsi organ, disabilitas, atau penularan penyakit; dianjurkan bila manfaatnya nyata tanpa risiko tersebut; boleh pada keadaan lain; dan dapat makruh bila risikonya lebih besar daripada penyakit yang hendak ditangani.',
+        'Penilaian kebutuhan dan risiko adalah persoalan klinis. Diagnosis, prognosis, kemungkinan manfaat, efek samping, serta alternatif perlu dijelaskan oleh tenaga kesehatan kepada pasien.',
+        'Pasien yang mampu mengambil keputusan berhak memberi persetujuan setelah memperoleh informasi. Pada keadaan gawat darurat, tindakan dapat mengikuti ketentuan darurat dan aturan medis yang berlaku.',
+        'Ringkasan ini tidak menetapkan diagnosis atau menyuruh seseorang memulai, menghentikan, maupun mengubah obat. Keputusan perawatan dibahas dengan dokter atau tenaga kesehatan yang merawat.',
       ],
-      practice: 'Jangan ragu memeriksakan diri ke dokter ahli dan mematuhi petunjuk medis yang tidak bertentangan dengan syariat.',
+      practice: 'Jika sakit, cari evaluasi dari tenaga kesehatan yang kompeten. Tanyakan manfaat, risiko, alternatif, dan tanda bahaya; jangan menunda pertolongan darurat atau mengubah terapi sendiri.',
       source: { label: 'HR. Abu Dawud no. 3855 (Anjuran Berobat)', href: 'https://sunnah.com/abudawud:3855' },
+      extraReferences: [
+        { label: 'International Islamic Fiqh Academy — Resolution No. 67 (5/7), Medical Treatments', href: 'https://iifa-aifi.org/en/32451.html' },
+      ],
     },
     {
       id: 'kaidah-darurat',
@@ -582,12 +588,17 @@ export const medis: Course = {
       summary: 'Keringanan syariat dalam penggunaan bahan medis ketika tidak ditemukan alternatif yang suci.',
       points: [
         'Kaidah Fiqhiyyah: "Adh-Dharuratu tubihu al-mahzhurat" (Keadaan darurat membolehkan hal-hal yang dilarang) (QS. Al-Baqarah: 173).',
-        'Kaidah Pembatas: "Adh-Dharuratu tuqaddaru biqadariha" (Kedaruratan diukur sesuai dengan kadar kebutuhannya saja).',
-        'Penggunaan obat atau vaksin yang mengandung unsur najis dibolehkan secara darurat dengan syarat: belum ada obat halal yang setara efektivitasnya, ada rekomendasi dokter Muslim terpercaya, dan darurat mengancam keselamatan jiwa.',
-        'Bila obat halal yang setara sudah tersedia, status darurat gugur dan kembali wajib menggunakan obat yang halal dan suci.',
+        'Kaidah pembatas: "Adh-dharuratu tuqaddaru bi qadariha"—keringanan mengikuti kadar kebutuhan, bukan izin umum untuk memakai semua bahan atau produk yang statusnya belum jelas.',
+        'Fatwa MUI No. 30 Tahun 2013 tentang Obat dan Pengobatan menetapkan bahan obat pada dasarnya harus suci dan halal. Penggunaan bahan haram/najis dapat dikecualikan pada darurat atau kebutuhan mendesak setara darurat yang mengancam jiwa, ketika belum ada bahan halal dan suci, serta ada rekomendasi tenaga medis kompeten dan tepercaya bahwa tidak tersedia obat halal.',
+        'Karena itu, label "darurat" tidak ditetapkan sendiri hanya dari kandungan atau kabar di media sosial. Tenaga kesehatan menilai kebutuhan klinis dan alternatif; otoritas fatwa menjelaskan ketentuan syariat yang relevan.',
+        'Jika alternatif halal dan suci yang sesuai tersedia, alasan keringanan perlu dinilai kembali. Bila keadaan berubah, keputusan terapi dibicarakan dengan dokter/apoteker; jangan menghentikan obat mendadak tanpa arahan klinis.',
+        'Fatwa MUI juga membedakan penggunaan obat untuk pemakaian luar dan memberi ketentuan tersendiri. Rincian hukum bergantung pada bahan, cara penggunaan, kebutuhan medis, dan fatwa yang berlaku.',
       ],
-      practice: 'Konsultasikan ketersediaan obat generik atau obat alternatif yang halal kepada apoteker dan dokter.',
+      practice: 'Tanyakan kepada dokter atau apoteker apakah bahan dan status obat diketahui, apakah ada alternatif yang sesuai, serta risiko mengganti atau menunda terapi. Untuk penetapan hukum, rujuk fatwa MUI atau ahli fikih yang memahami masalah medis.',
       source: quran('2/173'),
+      extraReferences: [
+        { label: 'Fatwa MUI No. 30 Tahun 2013 tentang Obat dan Pengobatan', href: 'https://www.mui.or.id/public/storage/fatwa/3f2314eb32ba3e70fd431bc7a2b6101c-lampiran.pdf' },
+      ],
     },
     {
       id: 'donor-darah-organ',

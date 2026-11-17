@@ -5,6 +5,7 @@ import { useState, useSyncExternalStore } from 'react';
 import type { Course } from '@/data/learning';
 import NasabLessonCharts from '@/components/NasabLessonCharts';
 import HabaibIndonesiaChart from '@/components/HabaibIndonesiaChart';
+import MedicalPrinciplesChart from '@/components/MedicalPrinciplesChart';
 import { useLanguage } from '@/context/LanguageContext';
 import { categoryEnglish, courseEnglish } from '@/data/learning-en';
 
@@ -71,6 +72,35 @@ export default function LearningCourse({ course }: { course: Course }) {
       'Do not assume that everyone with the Shihab or Smith surname uses the title Habib. Women from families recorded as Alawiyyin are commonly referred to as Syarifah; usage follows each family’s tradition.',
     ],
     practice: 'When referring to a figure, distinguish public titles, family names, and individually verified lineage. Use reliable sources and do not generalize about a family from its surname.',
+  };
+  const englishMedical: Record<string, { title: string; summary: string; points: string[]; practice: string }> = {
+    'ikhtiar-sehat': {
+      title: 'Seeking Treatment and Preserving Life (Hifz al-Nafs)',
+      summary: 'Protecting health and seeking care when ill can be part of worship and trust in Allah.',
+      points: [
+        'The Prophet ﷺ encouraged seeking treatment (Sunan Abi Dawud 3855). The hadith encourages care; it does not promise that every illness has a known or guaranteed cure.',
+        'Preserving life (hifz al-nafs) is one of the five higher objectives of Islamic law (maqasid al-shariah).',
+        'Seeking care is compatible with tawakkul: it means taking reasonable steps and consulting qualified health professionals.',
+        'The International Islamic Fiqh Academy says treatment can be obligatory when foregoing it risks death, loss of an organ or function, disability, or transmission; recommended when there is meaningful benefit without those risks; permissible in other cases; and disliked when the treatment risk is greater than the condition being treated.',
+        'Assessing need and risk is a clinical matter. A health professional should explain the diagnosis, prognosis, likely benefits, side effects, and alternatives.',
+        'A capable patient should be informed and give consent. Emergency care follows applicable clinical and legal rules.',
+        'This summary does not diagnose or tell anyone to start, stop, or change medication. Make treatment decisions with the clinician responsible for care.',
+      ],
+      practice: 'If you are unwell, seek an assessment from a qualified health professional. Ask about benefits, risks, alternatives, and warning signs; do not delay emergency care or change treatment on your own.',
+    },
+    'kaidah-darurat': {
+      title: 'Necessity Principles for Medicines and Treatment',
+      summary: 'Shariah concessions for medical ingredients are conditional and limited to the actual need.',
+      points: [
+        'The legal maxim “necessity permits prohibited matters” is supported in a specific context by Qur’an 2:173, which also limits the concession to necessity without desire for excess or transgression.',
+        'A limiting maxim says that necessity is measured according to its extent. This is not a blanket permission for every product whose ingredients or status are uncertain.',
+        'MUI Fatwa No. 30/2013 says medicines should ordinarily use pure and halal ingredients. It describes an exception for necessity or an equivalent life-threatening need when no halal and pure ingredient is available and a competent, trusted medical professional recommends it because no halal medicine is available.',
+        'A person should not declare a situation medically necessary based only on an ingredient list or social-media claim. Clinicians assess the medical need and alternatives; qualified scholars or fatwa bodies address the religious ruling.',
+        'If a suitable halal and pure alternative becomes available, reassess whether the concession still applies. Discuss any change with a doctor or pharmacist; do not abruptly stop treatment without clinical advice.',
+        'MUI gives separate details for external-use medicines. The ruling depends on the ingredient, route of use, medical need, and applicable fatwa.',
+      ],
+      practice: 'Ask a doctor or pharmacist about the medicine’s ingredients and status, suitable alternatives, and the risks of switching or delaying treatment. For a religious ruling, consult MUI guidance or a scholar familiar with medical questions.',
+    },
   };
   const categories = [allLabel, ...new Set(course.lessons.map(l => localizedCategory(l.category)))];
   const search = query.trim().toLocaleLowerCase('id');
@@ -152,20 +182,21 @@ export default function LearningCourse({ course }: { course: Course }) {
                 <span className="text-xs text-emerald-700 dark:text-emerald-300">
                   {localizedCategory(lesson.category)}{completed.includes(lesson.id) ? (en ? ' • Completed' : ' • Selesai dibaca') : ''}
                 </span>
-                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.title : lesson.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.summary : lesson.summary}</p>
+                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.title : en && englishMedical[lesson.id] ? englishMedical[lesson.id].title : lesson.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.summary : en && englishMedical[lesson.id] ? englishMedical[lesson.id].summary : lesson.summary}</p>
               </summary>
               <div className="pt-5 space-y-4">
                 <ul className="list-disc pl-5 space-y-2 text-sm leading-7">
-                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : point}</li>)}
+                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : en && englishMedical[lesson.id] ? englishMedical[lesson.id].points[index] || point : point}</li>)}
                 </ul>
                 {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
                 {lesson.id === 'contoh-habaib-indonesia' && <HabaibIndonesiaChart />}
+                {(lesson.id === 'ikhtiar-sehat' || lesson.id === 'kaidah-darurat') && <MedicalPrinciplesChart lessonId={lesson.id} />}
                 <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 p-4">
                   <h3 className="font-semibold text-sm mb-2">
                     {en ? 'Practice & application' : 'Latihan & penerapan'}
                   </h3>
-                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.practice : lesson.practice}</p>
+                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.practice : en && englishMedical[lesson.id] ? englishMedical[lesson.id].practice : lesson.practice}</p>
                 </div>
                 <a
                   href={lesson.source.href}
