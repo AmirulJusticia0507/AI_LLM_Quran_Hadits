@@ -183,6 +183,12 @@ const SUGGESTED_PROMPTS = [
     category: "Islam Nusantara",
     icon: BookOpen,
   },
+  {
+    title: "10 Sahabat Dijamin Masuk Surga",
+    prompt: "Siapa saja 10 sahabat yang dijamin masuk surga, keteladanan Abdurrahman bin Auf dan Abu Ubaidah ibnul Jarrah?",
+    category: "Sahabat Nabi",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
