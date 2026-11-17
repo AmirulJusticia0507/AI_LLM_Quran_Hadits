@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   Sparkles, 
   BookOpen, 
@@ -8,19 +9,21 @@ import {
   Bot, 
   Brain, 
   Globe, 
-  Shield,
-  Code,
-  Heart,
-  ArrowRight,
-  GitBranch,
-  Link2,
-  MessageCircle
+  Shield, 
+  Code, 
+  Heart, 
+  ArrowRight, 
+  GitBranch, 
+  Link2, 
+  MessageCircle 
 } from "lucide-react";
 
 interface Feature {
   icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
+  titleId: string;
+  titleEn: string;
+  descriptionId: string;
+  descriptionEn: string;
 }
 
 interface TechStack {
@@ -33,33 +36,45 @@ interface TechStack {
 const FEATURES: Feature[] = [
   {
     icon: Brain,
-    title: "AI Assistant Islami",
-    description: "Chatbot cerdas yang menjawab pertanyaan keislaman berdasarkan Al-Qur'an, Hadits sahih, dan ilmu tafsir/ fiqih.",
+    titleId: "AI Assistant Islami",
+    titleEn: "Islamic AI Assistant",
+    descriptionId: "Chatbot cerdas yang menjawab pertanyaan keislaman berdasarkan Al-Qur'an, Hadits sahih, dan ilmu tafsir/ fiqih.",
+    descriptionEn: "Intelligent chatbot answering Islamic questions based on Al-Qur'an, Sahih Hadith, and tafsir/fiqh scholarship.",
   },
   {
     icon: BookOpen,
-    title: "Al-Qur'an Digital (114 Surah)",
-    description: "Pencarian ayat lengkap dengan teks Arab, transliterasi Latin, dan terjemahan Indonesia. Mendukung baca per surah atau ayat spesifik.",
+    titleId: "Al-Qur'an Digital (114 Surah)",
+    titleEn: "Digital Al-Qur'an (114 Surahs)",
+    descriptionId: "Pencarian ayat lengkap dengan teks Arab, transliterasi Latin, dan terjemahan Indonesia. Mendukung baca per surah atau ayat spesifik.",
+    descriptionEn: "Complete verse lookup with Arabic text, Latin transliteration, and Indonesian translation. Read by surah or specific verse.",
   },
   {
     icon: ScrollText,
-    title: "Kutubut Tis'ah (9 Kitab Hadits)",
-    description: "Akses ke 9 kitab hadits utama: Bukhari, Muslim, Tirmidzi, Abu Dawud, Nasa'i, Ibnu Majah, Ahmad, Malik, Darimi.",
+    titleId: "Kutubut Tis'ah (9 Kitab Hadits)",
+    titleEn: "Kutubut Tis'ah (9 Hadith Books)",
+    descriptionId: "Akses ke 9 kitab hadits utama: Bukhari, Muslim, Tirmidzi, Abu Dawud, Nasa'i, Ibnu Majah, Ahmad, Malik, Darimi.",
+    descriptionEn: "Access to 9 major hadith books: Bukhari, Muslim, Tirmidhi, Abu Dawood, Nasa'i, Ibn Majah, Ahmad, Malik, Darimi.",
   },
   {
     icon: Bot,
-    title: "Function Calling & RAG",
-    description: "AI memanggil API Al-Qur'an & Hadits secara real-time saat dibutuhkan, memastikan rujukan akurat dan terverifikasi.",
+    titleId: "Function Calling & RAG",
+    titleEn: "Function Calling & RAG",
+    descriptionId: "AI memanggil API Al-Qur'an & Hadits secara real-time saat dibutuhkan, memastikan rujukan akurat dan terverifikasi.",
+    descriptionEn: "AI invokes Al-Qur'an & Hadith APIs in real-time as needed, ensuring accurate and verified source citations.",
   },
   {
     icon: Globe,
-    title: "Multi-Provider LLM",
-    description: "Support GripHub Router (GPT-5.6 Luna), Google Gemini, dan Ollama (Local). Fleksibel memilih model cloud mutakhir atau self-hosted untuk privasi penuh.",
+    titleId: "Multi-Provider LLM",
+    titleEn: "Multi-Provider LLM",
+    descriptionId: "Support GripHub Router (GPT-5.6 Luna), Google Gemini, dan Ollama (Local). Fleksibel memilih model cloud mutakhir atau self-hosted untuk privasi penuh.",
+    descriptionEn: "Supports GripHub Router (GPT-5.6 Luna), Google Gemini, and Ollama (Local). Flexible choice between state-of-the-art cloud and self-hosted privacy.",
   },
   {
     icon: Shield,
-    title: "Privacy & Offline Ready",
-    description: "Dengan Ollama, data tidak keluar dari server. Cocok untuk institusi, pesantren, atau penggunaan pribadi sensitif.",
+    titleId: "Privacy & Offline Ready",
+    titleEn: "Privacy & Offline Ready",
+    descriptionId: "Dengan Ollama, data tidak keluar dari server. Cocok untuk institusi, pesantren, atau penggunaan pribadi sensitif.",
+    descriptionEn: "With Ollama, data remains entirely on-premise. Ideal for institutions, Islamic boarding schools, and sensitive personal inquiries.",
   },
 ];
 
@@ -80,28 +95,60 @@ const TECH_STACK: TechStack[] = [
 const CREATOR_INFO = {
   name: "Amirul Putra Justicia",
   role: "Full-Stack Developer & AI Enthusiast",
-  bio: "Pengembang sistem Al-Hikmah AI dengan latar belakang pengembangan web modern dan minat mendalam pada teknologi AI untuk keislaman. Berkomitmen membangun tools yang bermanfaat untuk umat.",
   github: "https://github.com/AmirulJusticia0507",
   linkedin: "https://linkedin.com/in/amirul-justicia",
   whatsapp: "https://wa.me/6282134402383",
 };
 
 const AI_MODELS = [
-  { name: "GPT-5.6 Luna", provider: "GripHub Router", type: "Cloud", bestFor: "Default: reasoning cerdas, respon komprehensif, performa tinggi" },
-  { name: "Gemini 2.5 Flash", provider: "Google", type: "Cloud", bestFor: "Speed, cost-efficient, function calling native" },
-  { name: "DeepSeek R1 8B", provider: "DeepSeek (via Ollama)", type: "Local", bestFor: "Reasoning, privacy, offline, free" },
-  { name: "Llama 3.1 8B", provider: "Meta (via Ollama)", type: "Local", bestFor: "General chat, multilingual, open weights" },
-  { name: "Qwen 2.5 7B", provider: "Alibaba (via Ollama)", type: "Local", bestFor: "Multilingual, coding, efficient" },
+  { 
+    name: "GPT-5.6 Luna", 
+    provider: "GripHub Router", 
+    type: "Cloud", 
+    bestForId: "Default: reasoning cerdas, respon komprehensif, performa tinggi",
+    bestForEn: "Default: intelligent reasoning, comprehensive responses, high performance" 
+  },
+  { 
+    name: "Gemini 2.5 Flash", 
+    provider: "Google", 
+    type: "Cloud", 
+    bestForId: "Speed, cost-efficient, function calling native",
+    bestForEn: "Speed, cost-efficient, native function calling" 
+  },
+  { 
+    name: "DeepSeek R1 8B", 
+    provider: "DeepSeek (via Ollama)", 
+    type: "Local", 
+    bestForId: "Reasoning, privacy, offline, free",
+    bestForEn: "Reasoning, privacy, offline, free" 
+  },
+  { 
+    name: "Llama 3.1 8B", 
+    provider: "Meta (via Ollama)", 
+    type: "Local", 
+    bestForId: "General chat, multilingual, open weights",
+    bestForEn: "General chat, multilingual, open weights" 
+  },
+  { 
+    name: "Qwen 2.5 7B", 
+    provider: "Alibaba (via Ollama)", 
+    type: "Local", 
+    bestForId: "Multilingual, coding, efficient",
+    bestForEn: "Multilingual, coding, efficient" 
+  },
 ];
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState<"features" | "tech" | "ai" | "creator">("features");
+  const { language, t } = useLanguage();
+
+  const isEn = language === "en";
 
   const tabs = [
-    { id: "features", label: "Fitur Utama", icon: Sparkles },
-    { id: "tech", label: "Teknologi", icon: Code },
-    { id: "ai", label: "Model AI", icon: Brain },
-    { id: "creator", label: "Pembuat", icon: Heart },
+    { id: "features", label: t("about.tabs.features"), icon: Sparkles },
+    { id: "tech", label: t("about.tabs.tech"), icon: Code },
+    { id: "ai", label: t("about.tabs.ai"), icon: Brain },
+    { id: "creator", label: t("about.tabs.creator"), icon: Heart },
   ];
 
   return (
@@ -110,20 +157,19 @@ export default function AboutPage() {
       <section className="text-center space-y-6 animate-in fade-in duration-500">
         <div className="inline-flex items-center justify-center gap-3 px-5 py-2 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50">
           <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-          <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Al-Hikmah AI v2.0</span>
+          <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">{t("about.badge")}</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-linear-to-r from-emerald-700 via-teal-700 to-emerald-600 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-400 bg-clip-text text-transparent">
-          Tentang Sistem Al-Hikmah AI
+          {t("about.title")}
         </h1>
         <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Platform AI keislaman terintegrasi yang menggabungkan kecerdasan buatan modern dengan sumber rujukan otentik 
-          Al-Qur&apos;an dan Hadits sahih untuk menjawab pertanyaan keagamaan dengan akurat, terverifikasi, dan bertanggung jawab.
+          {t("about.description")}
         </p>
         <div className="flex items-center justify-center gap-6 text-sm text-slate-500 dark:text-slate-400 pt-4">
-          <span className="flex items-center gap-1.5"><BookOpen className="w-4 h-4" /> 114 Surah</span>
-          <span className="flex items-center gap-1.5"><ScrollText className="w-4 h-4" /> 9 Kitab Hadits</span>
-          <span className="flex items-center gap-1.5"><Bot className="w-4 h-4" /> Multi-LLM</span>
-          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" /> Privacy First</span>
+          <span className="flex items-center gap-1.5"><BookOpen className="w-4 h-4" /> {t("about.surah_count")}</span>
+          <span className="flex items-center gap-1.5"><ScrollText className="w-4 h-4" /> {t("about.hadith_books")}</span>
+          <span className="flex items-center gap-1.5"><Bot className="w-4 h-4" /> {t("about.multi_llm")}</span>
+          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" /> {t("about.privacy_first")}</span>
         </div>
       </section>
 
@@ -155,8 +201,8 @@ export default function AboutPage() {
         {activeTab === "features" && (
           <section className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Fitur Unggulan</h2>
-              <span className="text-sm text-slate-500 dark:text-slate-400">{FEATURES.length} Fitur</span>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t("about.features.title")}</h2>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{FEATURES.length} {t("about.features.count")}</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {FEATURES.map((feature, i) => {
@@ -169,8 +215,12 @@ export default function AboutPage() {
                     <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 w-fit mb-4 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-950/80 transition-colors">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{feature.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                      {isEn ? feature.titleEn : feature.titleId}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {isEn ? feature.descriptionEn : feature.descriptionId}
+                    </p>
                   </article>
                 );
               })}
@@ -182,8 +232,8 @@ export default function AboutPage() {
         {activeTab === "tech" && (
           <section className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Tumpukan Teknologi</h2>
-              <span className="text-sm text-slate-500 dark:text-slate-400">{TECH_STACK.length} Teknologi</span>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t("about.tech.title")}</h2>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{TECH_STACK.length} {t("about.tech.count")}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {TECH_STACK.map((tech, i) => (
@@ -210,17 +260,17 @@ export default function AboutPage() {
         {activeTab === "ai" && (
           <section className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Model AI yang Didukung</h2>
-              <span className="text-sm text-slate-500 dark:text-slate-400">{AI_MODELS.length} Model</span>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t("about.ai.title")}</h2>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{AI_MODELS.length} {t("about.ai.count")}</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    <th className="pb-3 px-4">Model</th>
-                    <th className="pb-3 px-4">Provider</th>
-                    <th className="pb-3 px-4">Tipe</th>
-                    <th className="pb-3 px-4">Kelebihan Utama</th>
+                    <th className="pb-3 px-4">{t("about.ai.th_model")}</th>
+                    <th className="pb-3 px-4">{t("about.ai.th_provider")}</th>
+                    <th className="pb-3 px-4">{t("about.ai.th_type")}</th>
+                    <th className="pb-3 px-4">{t("about.ai.th_best_for")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -237,7 +287,9 @@ export default function AboutPage() {
                           {model.type}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{model.bestFor}</td>
+                      <td className="py-4 px-4 text-slate-600 dark:text-slate-400">
+                        {isEn ? model.bestForEn : model.bestForId}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -245,8 +297,7 @@ export default function AboutPage() {
             </div>
             <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/50">
               <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
-                <strong>Catatan:</strong> Default aktif saat ini menggunakan <strong>GPT-5.6 Luna via GripHub Router</strong> (cloud, reasoning cerdas, rujukan akurat). 
-                Bisa beralih ke <strong>Google Gemini</strong> atau <strong>Ollama Local</strong> (DeepSeek, Llama, Qwen) dengan mengatur variabel <code className="px-1.5 py-0.5 bg-white/50 dark:bg-slate-800/50 rounded text-xs font-mono">LLM_PROVIDER</code> di konfigurasi backend atau langsung melalui dropdown pemilih model AI di tampilan Chatbot.
+                <strong>{t("about.ai.note_label")}</strong> {t("about.ai.note_text")}
               </p>
             </div>
           </section>
@@ -263,7 +314,7 @@ export default function AboutPage() {
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{CREATOR_INFO.name}</h2>
                 <p className="text-emerald-600 dark:text-emerald-400 font-medium">{CREATOR_INFO.role}</p>
               </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{CREATOR_INFO.bio}</p>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{t("about.creator.bio")}</p>
             </div>
 
             <div className="flex items-center justify-center gap-4">
@@ -301,7 +352,7 @@ export default function AboutPage() {
 
             <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
               <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-emerald-600" /> Ucapan Terima Kasih
+                <Sparkles className="w-5 h-5 text-emerald-600" /> {t("about.creator.thanks_title")}
               </h3>
               <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
                 <li>• <strong>GripHub Router</strong> — Router OpenAI-compatible &amp; model GPT-5.6 Luna</li>
@@ -315,8 +366,8 @@ export default function AboutPage() {
             </div>
 
             <div className="text-center text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-700">
-              <p>Dibangun dengan <Heart className="w-4 h-4 inline text-rose-500" /> untuk kemaslahatan umat</p>
-              <p className="mt-1">&quot;Manfaatkan ilmu sebelum hilang, dan sebarkan kebaikan sebelum terlambat&quot;</p>
+              <p>{t("about.creator.footer_love")} <Heart className="w-4 h-4 inline text-rose-500" /></p>
+              <p className="mt-1">&quot;{t("about.creator.quote")}&quot;</p>
             </div>
           </section>
         )}

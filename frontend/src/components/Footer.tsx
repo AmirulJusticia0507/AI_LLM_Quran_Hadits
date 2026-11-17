@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import VisitorStats from "@/components/VisitorStats";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   BookOpen,
   Sparkles,
@@ -16,6 +17,8 @@ import {
 } from "lucide-react";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="mt-16 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md transition-colors duration-300">
       <div className="container mx-auto px-4 py-10 max-w-6xl">
@@ -32,84 +35,84 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              Platform Asisten Keislaman berbasis Kecerdasan Buatan (AI) yang mengintegrasikan pencarian kontekstual Al-Qur&apos;an dan Hadits dengan rujukan sahih dan terpercaya.
+              {t("footer.brand.tagline")}
             </p>
             <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50 px-3 py-1.5 rounded-full w-fit">
               <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>Rujukan Sahih Al-Qur&apos;an &amp; Kutubut Tis&apos;ah</span>
+              <span>{t("footer.brand.badge")}</span>
             </div>
           </div>
 
           {/* Fitur Utama */}
           <div className="md:col-span-3">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-3">
-              Fitur Utama
+              {t("footer.features.title")}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Chatbot AI Keislaman</span>
+                  <span>{t("footer.features.chat")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/quran" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <BookOpen className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Al-Qur&apos;an &amp; Terjemahan</span>
+                  <span>{t("footer.features.quran")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/hadith" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <ScrollText className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Kumpulan Kitab Hadits</span>
+                  <span>{t("footer.features.hadith")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/jadwal" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Jadwal Shalat &amp; Hijriah</span>
+                  <span>{t("footer.features.jadwal")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/dzikir" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Fingerprint className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Dzikir Counter</span>
+                  <span>{t("footer.features.dzikir")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/asmaul" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Asmaul Husna</span>
+                  <span>{t("footer.features.asmaul")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/doa" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <HeartHandshake className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Doa Harian</span>
+                  <span>{t("footer.features.doa")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/kiblat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Compass className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Arah Kiblat</span>
+                  <span>{t("footer.features.kiblat")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/panduan-ibadah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <BookOpen className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Panduan Ibadah Lengkap</span>
+                  <span>{t("footer.features.panduan")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/praktik-ibadah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <BookOpen className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Praktik Shalat Bergambar</span>
+                  <span>{t("footer.features.praktik")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/hijaiyah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>29 Huruf Hijaiyah Interaktif</span>
+                  <span>{t("footer.features.hijaiyah")}</span>
                 </Link>
               </li>
             </ul>
@@ -118,17 +121,17 @@ export default function Footer() {
           {/* Pusat Belajar Islam */}
           <div className="md:col-span-3">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-3">
-              Pusat Belajar Islam
+              {t("footer.learn.title")}
             </h3>
             <Link
               href="/belajar"
               className="inline-flex items-center gap-1.5 mb-3 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-full shadow-sm shadow-emerald-600/20 transition-all hover:scale-[1.02]"
             >
               <GraduationCap className="w-3.5 h-3.5" />
-              <span>Jelajahi 30 Modul Lengkap →</span>
+              <span>{t("footer.learn.cta")}</span>
             </Link>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-              Modul Pilihan:
+              {t("footer.learn.selected")}
             </p>
             <ul className="space-y-1.5 text-sm">
               <li><Link href="/aqidah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Aqidah &amp; Eskatologi</Link></li>
@@ -147,35 +150,35 @@ export default function Footer() {
           {/* Informasi */}
           <div className="md:col-span-2">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-3">
-              Informasi
+              {t("footer.info.title")}
             </h3>
             <Link
               href="/masukan"
               className="inline-block mb-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:underline"
             >
-              Kirim Masukan via WhatsApp →
+              {t("footer.info.feedback")}
             </Link>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
-              Dikembangkan untuk memberikan kemudahan dalam mempelajari ajaran Islam. Selalu konfirmasikan hukum dan fatwa mendalam kepada ulama terpercaya.
+              {t("footer.info.disclaimer")}
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500">
-              © {new Date().getFullYear()} AI Qur&apos;an &amp; Hadits System.
+              © {new Date().getFullYear()} {t("footer.info.copyright")}
             </p>
           </div>
         </div>
 
         <div className="border-t border-slate-200/60 dark:border-slate-800/60 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
           <div className="flex items-center gap-1.5">
-            <span>Dibuat dengan</span>
+            <span>{t("footer.bottom.made_with")}</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" />
-            <span>untuk Ummat Islam</span>
+            <span>{t("footer.bottom.for_ummat")}</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-emerald-500 transition-colors">Privasi</Link>
+            <Link href="/privacy" className="hover:text-emerald-500 transition-colors">{t("footer.bottom.privacy")}</Link>
             <span>•</span>
-            <Link href="/terms" className="hover:text-emerald-500 transition-colors">Syarat &amp; Ketentuan</Link>
+            <Link href="/terms" className="hover:text-emerald-500 transition-colors">{t("footer.bottom.terms")}</Link>
             <span>•</span>
-            <Link href="/help" className="hover:text-emerald-500 transition-colors">Bantuan</Link>
+            <Link href="/help" className="hover:text-emerald-500 transition-colors">{t("footer.bottom.help")}</Link>
           </div>
         </div>
       </div>

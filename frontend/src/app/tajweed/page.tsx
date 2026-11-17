@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import MakhrajGuide from "@/components/MakhrajGuide";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   GraduationCap,
   Search,
@@ -375,6 +376,8 @@ const RULES: TajweedRule[] = [
 const LEVELS = ["Semua Level", "Dasar", "Menengah", "Lanjutan"] as const;
 
 export default function TajweedPage() {
+  const { language, t } = useLanguage();
+  const isEn = language === "en";
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("Semua");
   const [level, setLevel] = useState<(typeof LEVELS)[number]>("Semua Level");
@@ -403,31 +406,30 @@ export default function TajweedPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
           <div className="min-w-0">
             <div className="flex items-center gap-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-2">
-              <GraduationCap className="w-4 h-4" /> Ilmu Tajwid Praktis
+              <GraduationCap className="w-4 h-4" /> {isEn ? "Practical Tajweed Sciences" : "Ilmu Tajwid Praktis"}
             </div>
             <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
-              Ilmu Tajwid & Makhrajul Huruf
+              {t("tajweed.title")}
             </h1>
             <p className="text-xs sm:text-sm text-emerald-100/80 mt-1 max-w-xl">
-              Pelajari hukum nun sukun, mim sukun, mad, qalqalah, ghunnah, tafkhim-tarqiq, dan waqaf
-              dengan huruf, contoh ayat, durasi, dan kesalahan umum.
+              {t("tajweed.description")}
             </p>
           </div>
           <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center shrink-0">
-            <span className="text-xs text-emerald-200 uppercase font-semibold block">Total Kaidah</span>
-            <span className="text-2xl font-black text-white">{RULES.length} Kaidah</span>
+            <span className="text-xs text-emerald-200 uppercase font-semibold block">{isEn ? "Total Rules" : "Total Kaidah"}</span>
+            <span className="text-2xl font-black text-white">{RULES.length} {isEn ? "Rules" : "Kaidah"}</span>
           </div>
         </div>
       </div>
 
       <nav aria-label="Bagian pembelajaran" className="flex flex-wrap gap-4 text-sm text-emerald-700 dark:text-emerald-300 underline">
-        <Link href="/belajar">← Pusat Belajar</Link>
-        <Link href="/hijaiyah" className="font-bold text-emerald-700 dark:text-emerald-300">✨ 29 Huruf Hijaiyah Interaktif</Link>
-        <a href="#makhraj">17 Makhraj Huruf</a>
-        <a href="#kaidah">20 Kaidah Tajwid</a>
+        <Link href="/belajar">← {isEn ? "Learning Hub" : "Pusat Belajar"}</Link>
+        <Link href="/hijaiyah" className="font-bold text-emerald-700 dark:text-emerald-300">✨ {isEn ? "29 Interactive Hijaiyah Letters" : "29 Huruf Hijaiyah Interaktif"}</Link>
+        <a href="#makhraj">{isEn ? "17 Articulation Points" : "17 Makhraj Huruf"}</a>
+        <a href="#kaidah">{isEn ? "20 Tajweed Rules" : "20 Kaidah Tajwid"}</a>
       </nav>
       <MakhrajGuide />
-      <h2 id="kaidah" className="text-2xl font-bold scroll-mt-24">Kaidah Ilmu Tajwid</h2>
+      <h2 id="kaidah" className="text-2xl font-bold scroll-mt-24">{isEn ? "Tajweed Rules" : "Kaidah Ilmu Tajwid"}</h2>
       {/* Search & Filter */}
       <div className="rounded-3xl p-4 sm:p-6 shadow-xl space-y-4 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
         <div className="relative">
@@ -436,7 +438,7 @@ export default function TajweedPage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Cari: ghunnah, idgham, mad, qalqalah, waqaf, ب, نْ..."
+            placeholder={t("tajweed.search_placeholder")}
             className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
@@ -444,7 +446,7 @@ export default function TajweedPage() {
         <div className="space-y-3">
           <div>
             <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-              Kategori:
+              {isEn ? "Category:" : "Kategori:"}
             </p>
             <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((c) => (
@@ -457,7 +459,7 @@ export default function TajweedPage() {
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/60 hover:border-emerald-500"
                   }`}
                 >
-                  {c}
+                  {c === "Semua" ? (isEn ? "All" : "Semua") : c}
                 </button>
               ))}
             </div>
@@ -465,7 +467,7 @@ export default function TajweedPage() {
 
           <div>
             <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-              Level:
+              {isEn ? "Level:" : "Level:"}
             </p>
             <div className="flex flex-wrap gap-2">
               {LEVELS.map((l) => (
@@ -478,7 +480,7 @@ export default function TajweedPage() {
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/60 hover:border-teal-500"
                   }`}
                 >
-                  {l}
+                  {l === "Semua Level" ? (isEn ? "All Levels" : "Semua Level") : l === "Dasar" ? (isEn ? "Basic" : "Dasar") : l === "Menengah" ? (isEn ? "Intermediate" : "Menengah") : (isEn ? "Advanced" : "Lanjutan")}
                 </button>
               ))}
             </div>
@@ -486,7 +488,9 @@ export default function TajweedPage() {
         </div>
 
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Menampilkan <span className="font-bold text-emerald-600 dark:text-emerald-400">{filtered.length}</span> dari {RULES.length} kaidah
+          {isEn
+            ? <>Showing <span className="font-bold text-emerald-600 dark:text-emerald-400">{filtered.length}</span> of {RULES.length} rules</>
+            : <>Menampilkan <span className="font-bold text-emerald-600 dark:text-emerald-400">{filtered.length}</span> dari {RULES.length} kaidah</>}
         </p>
       </div>
 
@@ -558,27 +562,27 @@ export default function TajweedPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-500/20">
                       <p className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <BookOpen className="w-3.5 h-3.5" /> Cara Baca
+                        <BookOpen className="w-3.5 h-3.5" /> {t("tajweed.card.how_to")}
                       </p>
                       <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{rule.howTo}</p>
                     </div>
                     <div className="p-3.5 rounded-2xl bg-teal-50/70 dark:bg-teal-950/40 border border-teal-500/20">
                       <p className="text-[11px] font-bold text-teal-700 dark:text-teal-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" /> Durasi
+                        <Clock className="w-3.5 h-3.5" /> {t("tajweed.card.duration")}
                       </p>
                       <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-semibold">{rule.duration}</p>
                       <p className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider mt-2.5 mb-1 flex items-center gap-1.5">
-                        <Volume2 className="w-3.5 h-3.5" /> Dengung?
+                        <Volume2 className="w-3.5 h-3.5" /> {t("tajweed.card.ghunnah")}
                       </p>
                       <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        {rule.duration.toLowerCase().includes("ghunnah") ? "Ya, dengung dari hidung" : "Lihat durasi di atas"}
+                        {rule.duration.toLowerCase().includes("ghunnah") ? t("tajweed.card.ghunnah_yes") : t("tajweed.card.ghunnah_see")}
                       </p>
                     </div>
                   </div>
 
                   <div className="space-y-2.5">
                     <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                      Contoh Ayat:
+                      {t("tajweed.card.examples")}
                     </p>
                     {rule.examples.map((ex, idx) => (
                       <div
@@ -599,7 +603,7 @@ export default function TajweedPage() {
 
                   <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50">
                     <p className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" /> Kesalahan Umum
+                      <AlertTriangle className="w-3.5 h-3.5" /> {t("tajweed.card.mistakes")}
                     </p>
                     <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-200">{rule.mistakes}</p>
                   </div>
@@ -607,7 +611,7 @@ export default function TajweedPage() {
                   <div className="p-3.5 rounded-2xl bg-emerald-600 text-white flex items-start gap-2.5">
                     <Sparkles className="w-4 h-4 shrink-0 mt-0.5" />
                     <p className="text-xs sm:text-sm leading-relaxed">
-                      Tanya AI untuk latihan: <span className="font-semibold">“Berikan 3 contoh {rule.name} beserta cara bacanya”</span> di menu Chat AI.
+                      {t("tajweed.card.ask_ai_prefix")} <span className="font-semibold">{isEn ? `“Give 3 examples of ${rule.name} and how to recite them”` : `“Berikan 3 contoh ${rule.name} beserta cara bacanya”`}</span> {t("tajweed.card.ask_ai_suffix")}
                     </p>
                   </div>
                 </div>
@@ -619,7 +623,7 @@ export default function TajweedPage() {
 
       {filtered.length === 0 && (
         <div className="text-center py-12 text-sm text-slate-500 dark:text-slate-400">
-          Tidak ada kaidah yang cocok dengan pencarian. Coba kata kunci lain seperti “mad”, “mim”, atau “waqaf”.
+          {t("tajweed.no_results")}
         </div>
       )}
     </div>

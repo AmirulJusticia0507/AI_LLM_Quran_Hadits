@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   MessageSquare, 
   BookOpen, 
@@ -167,6 +168,8 @@ const SHORTCUTS = [
 ];
 
 export default function HelpPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [activeCategory, setActiveCategory] = useState("Semua");
   const categories = ["Semua", ...Array.from(new Set(FAQS.map(f => f.category)))];
 
@@ -175,20 +178,24 @@ export default function HelpPage() {
       <header className="text-center space-y-4 animate-in fade-in duration-500">
         <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/50 dark:border-blue-800/50">
           <LifeBuoy className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">Bantuan & Panduan</span>
+          <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+            {isEn ? "Help & Guides" : "Bantuan & Panduan"}
+          </span>
         </div>
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-          Pusat Bantuan Al-Hikmah AI
+          {isEn ? "Al-Hikmah AI Help Center" : "Pusat Bantuan Al-Hikmah AI"}
         </h1>
         <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Temukan jawaban cepat, panduan fitur, dan solusi masalah umum. Masih bingung? Hubungi kami di GitHub.
+          {isEn
+            ? "Find quick answers, feature guides, and troubleshooting solutions. Need further assistance? Contact us on GitHub."
+            : "Temukan jawaban cepat, panduan fitur, dan solusi masalah umum. Masih bingung? Hubungi kami di GitHub."}
         </p>
       </header>
 
       {/* Quick Guides */}
       <section className="space-y-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <Zap className="w-6 h-6 text-emerald-600" /> Panduan Cepat Fitur Utama
+          <Zap className="w-6 h-6 text-emerald-600" /> {isEn ? "Quick Feature Guides" : "Panduan Cepat Fitur Utama"}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {GUIDES.map((guide, i) => {
@@ -293,7 +300,7 @@ export default function HelpPage() {
       {/* Troubleshooting */}
       <section className="space-y-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <AlertCircle className="w-6 h-6 text-rose-600" /> Troubleshooting Cepat
+          <AlertCircle className="w-6 h-6 text-rose-600" /> {isEn ? "Quick Troubleshooting" : "Troubleshooting Cepat"}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
@@ -322,7 +329,7 @@ export default function HelpPage() {
       {/* Contact */}
       <section className="space-y-6 pt-6 border-t border-slate-200/60 dark:border-slate-800/60">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <Mail className="w-6 h-6 text-emerald-600" /> Masih Butuh Bantuan?
+          <Mail className="w-6 h-6 text-emerald-600" /> {isEn ? "Still Need Help?" : "Masih Butuh Bantuan?"}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a

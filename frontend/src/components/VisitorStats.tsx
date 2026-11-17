@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
+import { useLanguage } from "@/context/LanguageContext";
 
 type Stats = { visitors_today: number; total_views: number };
 function randomId() {
@@ -24,6 +25,10 @@ function visitorId() {
 export default function VisitorStats() {
   const pathname = usePathname();
   const [stats, setStats] = useState<Stats | null>(null);
+  const { language, t } = useLanguage();
+
+  const locale = language === "en" ? "en-US" : "id-ID";
+
   useEffect(() => {
     if (pathname.startsWith('/admin')) return;
     let cancelled = false;
@@ -37,8 +42,19 @@ export default function VisitorStats() {
     }, 250);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [pathname]);
+
   return <div className="mt-4 text-xs text-slate-500 dark:text-slate-400 space-y-1">
-    {stats ? <p><Link href="/admin/pengunjung" className="underline underline-offset-4 hover:text-emerald-600">Pengunjung hari ini: <strong>{stats.visitors_today.toLocaleString("id-ID")}</strong></Link> · Total kunjungan: <strong>{stats.total_views.toLocaleString("id-ID")}</strong></p> : <p>Statistik kunjungan belum tersedia. <Link href="/admin/pengunjung" className="underline">Riwayat pengunjung (admin)</Link></p>}
-    <p>Perkiraan browser unik per hari (WIB); total kunjungan menghitung pembukaan halaman.</p>
+    {stats ? (
+      <p>
+        <Link href="/admin/pengunjung" className="underline underline-offset-4 hover:text-emerald-600">
+          {t("stats.today")} <strong>{stats.visitors_today.toLocaleString(locale)}</strong>
+        </Link> · {t("stats.total")} <strong>{stats.total_views.toLocaleString(locale)}</strong>
+      </p>
+    ) : (
+      <p>
+        {t("stats.unavailable")} <Link href="/admin/pengunjung" className="underline">{t("stats.admin")}</Link>
+      </p>
+    )}
+    <p>{t("stats.note")}</p>
   </div>;
 }

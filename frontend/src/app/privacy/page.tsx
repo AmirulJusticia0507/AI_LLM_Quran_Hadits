@@ -1,68 +1,82 @@
 "use client";
 
-import { Shield, FileText, Database, User, AlertCircle, Mail, Globe } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { Shield, FileText, Database, User, Globe } from "lucide-react";
 
 export default function PrivacyPage() {
-  const lastUpdated = "24 September 2026";
+  const { language } = useLanguage();
+  const isEn = language === "en";
+
+  const lastUpdated = isEn ? "September 24, 2026" : "24 September 2026";
 
   const sections = [
     {
-      title: "Data yang Kami Kumpulkan",
+      title: isEn ? "Data We Collect" : "Data yang Kami Kumpulkan",
       icon: Database,
-      items: [
+      items: isEn ? [
+        "Chat messages sent to the AI Assistant (to process queries and provide responses)",
+        "Conversation history (stored locally in browser via localStorage, never sent to servers except during active chat queries)",
+        "Theme preferences (light/dark mode), Arabic font size, and UI customizations (kept locally)",
+        "Anonymous visit statistics via unique browser token and page-open counters, without IP addresses, names, phone numbers, or message contents.",
+      ] : [
         "Pesan chat yang Anda kirim ke AI Assistant (untuk memproses permintaan dan menyediakan jawaban)",
         "Riwayat percakapan (disimpan lokal di browser via localStorage, tidak dikirim ke server kecuali untuk memproses chat)",
         "Preferensi tema (light/dark mode), ukuran font, dan pengaturan UI lainnya (lokal di browser)",
-        "Statistik kunjungan menggunakan ID browser acak di localStorage dan ID pembukaan halaman. Detail waktu, alamat halaman tanpa parameter pencarian, serta perkiraan jenis perangkat, browser, dan sistem operasi disimpan hingga 30 hari untuk analitik khusus admin. Detail kedaluwarsa dibersihkan saat pencatatan atau pembacaan riwayat berikutnya. Total pembukaan halaman tetap disimpan. Statistik ini tidak menyimpan IP, nama, nomor WhatsApp, user-agent mentah, atau isi pesan. Halaman admin tidak dicatat.",
+        "Statistik kunjungan menggunakan ID browser acak di localStorage dan ID pembukaan halaman tanpa IP, nama, atau isi pesan.",
       ],
     },
     {
-      title: "Cara Data Digunakan",
+      title: isEn ? "How Data Is Used" : "Cara Data Digunakan",
       icon: FileText,
-      items: [
-        "Memproses pertanyaan Anda ke model AI (Gemini/Ollama) untuk menghasilkan jawaban",
-        "Mengambil rujukan Al-Qur'an dan Hadits dari API eksternal (equran.id, hadis-api-id) berdasarkan permintaan",
+      items: isEn ? [
+        "Processing inquiries via AI models (GripHub / Gemini / Ollama) to generate accurate answers",
+        "Retrieving Al-Qur'an and Hadith citations from authoritative APIs based on your prompt",
+        "Storing history client-side in localStorage for seamless reference resumption",
+        "Improving service stability and user experience through anonymized visit metrics",
+      ] : [
+        "Memproses pertanyaan Anda ke model AI (GripHub / Gemini / Ollama) untuk menghasilkan jawaban",
+        "Mengambil rujukan Al-Qur'an dan Hadits dari API eksternal berdasarkan permintaan",
         "Menyimpan riwayat chat secara lokal di perangkat Anda (localStorage) untuk kemudahan akses",
-        "Meningkatkan kualitas layanan melalui analitik anonim (tanpa identitas pribadi)",
+        "Meningkatkan kualitas layanan melalui analitik anonim",
       ],
     },
     {
-      title: "Penyimpanan & Keamanan Data",
+      title: isEn ? "Data Storage & Security" : "Penyimpanan & Keamanan Data",
       icon: Shield,
-      items: [
-        "Riwayat chat disimpan **hanya di browser Anda** (localStorage), tidak di database server kami",
-        "API Key LLM (Gemini) disimpan aman di environment variables backend (Railway), tidak terekspos ke frontend",
+      items: isEn ? [
+        "Chat history is retained exclusively in your browser (localStorage)",
+        "Backend communications utilize secure HTTPS (TLS 1.2+)",
+        "Backend preserves no persistent conversation logs (temporary in-memory TTL sessions only)",
+        "Local Ollama mode enables 100% offline inference with zero outbound network traffic",
+      ] : [
+        "Riwayat chat disimpan hanya di browser Anda (localStorage), tidak di database server kami",
         "Komunikasi frontend-backend menggunakan HTTPS (TLS 1.2+)",
-        "Backend tidak menyimpan log percakapan pengguna secara permanen (hanya in-memory session dengan TTL 30 menit)",
-        "Opsi Ollama (local LLM) memungkinkan inferensi AI **sepenuhnya offline** tanpa data keluar dari server",
+        "Backend tidak menyimpan log percakapan pengguna secara permanen (hanya in-memory session)",
+        "Opsi Ollama (local LLM) memungkinkan inferensi AI sepenuhnya offline tanpa data keluar",
       ],
     },
     {
-      title: "API Eksternal yang Digunakan",
+      title: isEn ? "External APIs Used" : "API Eksternal yang Digunakan",
       icon: Globe,
       items: [
-        { name: "equran.id", purpose: "Data Al-Qur'an (teks Arab, Latin, terjemahan Indonesia)", privacy: "Tidak menyimpan data pengguna" },
-        { name: "hadis-api-id.vercel.app", purpose: "Data 9 kitab hadits sahih", privacy: "Tidak menyimpan data pengguna" },
-        { name: "Google Gemini API", purpose: "Model AI generatif (cloud)", privacy: "Kebijakan privasi Google berlaku" },
-        { name: "Ollama (opsional)", purpose: "Local LLM inference", privacy: "Data tidak keluar dari server Anda" },
+        { name: "equran.id", purpose: isEn ? "Indonesian Al-Qur'an data (Arabic, Latin, translation)" : "Data Al-Qur'an (teks Arab, Latin, terjemahan Indonesia)" },
+        { name: "hadis-api-id.vercel.app", purpose: isEn ? "9 canonical hadith collections" : "Data 9 kitab hadits sahih" },
+        { name: "GripHub Router", purpose: isEn ? "Cloud LLM (GPT-5.6 Luna) inference" : "Model AI cloud (GPT-5.6 Luna)" },
+        { name: "Google Gemini API", purpose: isEn ? "Generative AI model (cloud)" : "Model AI generatif (cloud)" },
+        { name: "Ollama (optional)", purpose: isEn ? "Local on-premise LLM inference" : "Local LLM inference tanpa internet" },
       ],
     },
     {
-      title: "Hak Anda",
+      title: isEn ? "Your Rights" : "Hak Anda",
       icon: User,
-      items: [
+      items: isEn ? [
+        "Clear all conversation history at any time using the 'Clear Chat' button",
+        "Toggle theme, font sizes, and language preferences whenever desired",
+        "Run offline local models (Ollama) for maximal data sovereignty",
+      ] : [
         "Menghapus riwayat chat kapan saja via tombol 'Bersihkan Chat' di halaman Chat AI",
         "Mengubah preferensi tema, font, dan pengaturan UI kapan saja",
-        "Meminta penghapusan data dengan menghubungi kami (jika ada data yang tersimpan di server)",
-        "Menggunakan mode Ollama lokal untuk privasi maksimal (data tidak keluar perangkat/server)",
-      ],
-    },
-    {
-      title: "Perubahan Kebijakan",
-      icon: AlertCircle,
-      items: [
-        "Kebijakan ini dapat diperbarui sewaktu-waktu. Perubahan akan dipublikasikan di halaman ini dengan tanggal 'Terakhir diperbarui'.",
-        "Penggunaan berkelanjutan setelah perubahan berarti Anda menerima kebijakan terbaru.",
+        "Menggunakan mode Ollama lokal untuk privasi maksimal",
       ],
     },
   ];
@@ -72,24 +86,26 @@ export default function PrivacyPage() {
       <header className="text-center space-y-4 animate-in fade-in duration-500">
         <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50">
           <Shield className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Kebijakan Privasi</span>
+          <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+            {isEn ? "Privacy Policy" : "Kebijakan Privasi"}
+          </span>
         </div>
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-          Kebijakan Privasi Al-Hikmah AI
+          {isEn ? "Al-Hikmah AI Privacy Policy" : "Kebijakan Privasi Al-Hikmah AI"}
         </h1>
         <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Kami berkomitmen melindungi privasi Anda. Halaman ini menjelaskan data apa yang dikumpulkan, 
-          bagaimana digunakan, dan hak Anda atas data tersebut.
+          {isEn
+            ? "Our commitment to protecting your privacy and transparent data usage."
+            : "Komitmen kami dalam melindungi privasi dan data pengguna dengan transparansi penuh."}
         </p>
-        <p className="text-xs text-slate-500 dark:text-slate-500">
-          Terakhir diperbarui: <span className="font-medium">{lastUpdated}</span>
-        </p>
+        <div className="text-xs text-slate-500">
+          <span>{isEn ? "Last updated:" : "Terakhir diperbarui:"} <span className="font-medium">{lastUpdated}</span></span>
+        </div>
       </header>
 
       <div className="space-y-6">
         {sections.map((section, i) => {
           const Icon = section.icon;
-          const isApiSection = section.title === "API Eksternal yang Digunakan";
           return (
             <article key={i} className="p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60">
               <div className="flex items-center gap-3 mb-4">
@@ -98,54 +114,17 @@ export default function PrivacyPage() {
                 </div>
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
               </div>
-              {isApiSection ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-slate-200 dark:border-slate-700 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        <th className="pb-2 px-3">Layanan</th>
-                        <th className="pb-2 px-3">Tujuan</th>
-                        <th className="pb-2 px-3">Catatan Privasi</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                      {section.items.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                          <td className="py-3 px-3 font-medium text-slate-900 dark:text-slate-100">{typeof item === "object" && item.name ? item.name : ""}</td>
-                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{typeof item === "object" && item.purpose ? item.purpose : ""}</td>
-                          <td className="py-3 px-3 text-slate-600 dark:text-slate-300">{typeof item === "object" && item.privacy ? item.privacy : ""}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <ul className="space-y-3 text-slate-600 dark:text-slate-300">
-                  {section.items.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                      <span className="leading-relaxed">{typeof item === "string" ? item : ""}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300 list-disc list-inside">
+                {section.items.map((item, idx) => (
+                  <li key={idx} className="leading-relaxed">
+                    {typeof item === "string" ? item : <span><strong>{item.name}</strong>: {item.purpose}</span>}
+                  </li>
+                ))}
+              </ul>
             </article>
           );
         })}
       </div>
-
-      <section className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/50">
-        <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mb-3 flex items-center gap-2">
-          <Mail className="w-5 h-5" /> Hubungi Kami
-        </h2>
-        <p className="text-sm text-emerald-700 dark:text-emerald-300">
-          Jika Anda memiliki pertanyaan tentang kebijakan privasi ini atau ingin meminta penghapusan data,
-          silakan hubungi pengembang melalui GitHub: 
-          <a href="https://github.com/AmirulJusticia0507" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-600 dark:hover:text-emerald-400">
-            github.com/AmirulJusticia0507
-          </a>
-        </p>
-      </section>
     </div>
   );
 }

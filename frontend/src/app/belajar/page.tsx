@@ -1,20 +1,19 @@
-import type { Metadata } from 'next';
+"use client";
+
 import Link from 'next/link';
 import { courseLinks } from '@/data/learning';
-
-export const metadata: Metadata = {
-  title: 'Pusat Belajar Islam - 30 Modul Interaktif',
-  description: 'Pusat Belajar Islam 30 Modul Lengkap: Tazkiyatun Nafs, Aqidah & Eskatologi, Fiqh Ibadah, Ushul Fiqh, Munakahat, Muamalah, Integritas Anti-Korupsi, Komparasi Agama, Sains & Sunnatullah, Pangan Halal, Fiqh Medis, Siroh Nabawiyah, Musthalah Hadits, Peradaban Islam, Parenting Islami, Ulumul Quran, Faraidh & Hukum Waris, Adab & Etika Digital, Tokoh Muslimah Teladan & Fiqh Wanita, Maqashid Syariah & Siyasah Syari’ah, Fitnah Akhir Zaman & Al-Masih Ad-Dajjal, Kisah 25 Nabi & Rasul Allah, Sejarah Islam Nusantara & Walisongo, 10 Sahabat Dijamin Surga, Fiqh Lingkungan & Ekologi Islam, Fiqh Dakwah & Komunikasi Persuasif, Malaikat Jin & Dunia Ghaib, Adab Ikhtilaf & Moderasi Beragama (Islam Wasathiyyah), Ilmu Tajwid, dan Ilmu Balaghah.',
-};
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function LearningPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
       <header className="rounded-3xl bg-linear-to-br from-emerald-800 to-teal-950 p-8 sm:p-12 text-white space-y-4">
-        <p className="text-sm text-emerald-200">Ilmu • Amal • Akhlak</p>
-        <h1 className="text-3xl sm:text-4xl font-bold">Pusat Belajar Islam</h1>
+        <p className="text-sm text-emerald-200">{t("belajar.subtitle")}</p>
+        <h1 className="text-3xl sm:text-4xl font-bold">{t("belajar.title")}</h1>
         <p className="text-emerald-100 leading-relaxed max-w-2xl">
-          Perdalam aqidah & eskatologi, rawat hati, pelajari fiqih ibadah, ushul fiqh, pernikahan, muamalah bisnis, etika integritas anti-korupsi, komparasi agama, sains Al-Qur’an, pangan halal, fiqih medis, kritik hadits, sejarah peradaban emas, parenting Islami, ulumul Qur&apos;an & metodologi tafsir, hukum waris faraidh, adab & etika digital bersosial media, tokoh muslimah teladan & fiqh wanita, maqashid syari&apos;ah & tata kelola publik (siyasah), fitnah akhir zaman & Al-Masih Ad-Dajjal, silsilah & mukjizat 25 nabi dan rasul, sejarah Islam Nusantara & kearifan Walisongo, 10 sahabat nabi dijamin surga, fiqh lingkungan & ekologi pelestarian alam, fiqh dakwah & seni komunikasi persuasif, malaikat, jin & benteng ruqyah syar&apos;iyyah, adab ikhtilaf & toleransi antar-madzhab (Islam wasathiyyah), teladani Rasulullah ﷺ, perbaiki tajwid, dan balaghah. 30 modul interaktif komprehensif siap diakses offline & online.
+          {t("belajar.description")}
         </p>
       </header>
 
@@ -30,23 +29,23 @@ export default function LearningPage() {
             </span>
             <h2 className="text-xl font-bold mt-4 mb-3">{course.title}</h2>
             <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{course.description}</p>
-            <p className="mt-6 text-sm font-semibold text-emerald-700 dark:text-emerald-300">Mulai belajar →</p>
+            <p className="mt-6 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{t("belajar.start")}</p>
           </Link>
         ))}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Link href="/hijaiyah" className="block rounded-2xl bg-linear-to-br from-emerald-600 to-teal-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
-          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Dasar Membaca Qur&apos;an</span>
-          Panduan 29 Huruf Hijaiyah &amp; Khat Sambung →
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">{t("belajar.hijaiyah.badge")}</span>
+          {t("belajar.hijaiyah.cta")}
         </Link>
         <Link href="/praktik-ibadah" className="block rounded-2xl bg-emerald-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
-          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Tata Cara Praktik</span>
-          Panduan Bergambar Wudhu dan Shalat Nabi →
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">{t("belajar.praktik.badge")}</span>
+          {t("belajar.praktik.cta")}
         </Link>
         <Link href="/panduan-ibadah" className="block rounded-2xl bg-teal-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
-          <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Fardhu Kifayah &amp; Manasik</span>
-          Panduan Jenazah, Yasinan, Haji dan Umrah →
+          <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">{t("belajar.panduan.badge")}</span>
+          {t("belajar.panduan.cta")}
         </Link>
       </div>
 
@@ -54,12 +53,12 @@ export default function LearningPage() {
         href="/matan"
         className="block rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-6 text-emerald-800 dark:text-emerald-200 hover:underline"
       >
-        <span className="block font-bold">Perpustakaan Matan Kitab →</span>
-        <span className="block text-sm mt-2">Baca Arba’in Nawawi dan Bulughul Maram beserta rujukan sumbernya.</span>
+        <span className="block font-bold">{t("belajar.matan.title")}</span>
+        <span className="block text-sm mt-2">{t("belajar.matan.desc")}</span>
       </Link>
 
       <p className="text-sm text-slate-500 dark:text-slate-400">
-        Materi dasar disertai rujukan untuk dipelajari lebih lanjut. Latihan bacaan Al-Qur’an sebaiknya disimak langsung oleh guru.
+        {t("belajar.disclaimer")}
       </p>
     </div>
   );

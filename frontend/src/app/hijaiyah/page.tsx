@@ -7,12 +7,16 @@ import {
   Search, 
   CheckCircle2, 
   HelpCircle, 
-  ArrowRight,
-  X
+  ArrowRight, 
+  X 
 } from "lucide-react";
 import { HIJAIYAH_LETTERS, HijaiyahLetter } from "@/data/hijaiyah";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function HijaiyahPage() {
+  const { language, t } = useLanguage();
+  const isEn = language === "en";
+
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<string>("Semua");
   const [activeMode, setActiveMode] = useState<"card" | "connected" | "harakat" | "quiz">("card");
@@ -70,20 +74,20 @@ export default function HijaiyahPage() {
       <header className="rounded-3xl bg-linear-to-br from-emerald-800 via-teal-900 to-emerald-950 p-6 sm:p-10 text-white space-y-4 shadow-xl shadow-emerald-900/10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-700/60 text-xs font-semibold tracking-wider text-emerald-200">
           <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-          <span>Fonetika Dasar Al-Qur&apos;an</span>
+          <span>{t("hijaiyah.badge")}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Panduan Interaktif 29 Huruf Hijaiyah
+          {t("hijaiyah.title")}
         </h1>
         <p className="text-emerald-100 text-sm sm:text-base leading-relaxed max-w-3xl">
-          Kenali 29 huruf Al-Qur&apos;an dari Alif hingga Ya lengkap dengan bentuk penulisan sambung (awal, tengah, akhir), harakat fathah/kasrah/dhammah, titik makhraj artikulasi, dan sifat bunyi huruf.
+          {t("hijaiyah.description")}
         </p>
         <div className="flex flex-wrap gap-4 pt-2 text-xs text-emerald-200">
-          <span>✓ 29 Huruf Lengkap</span>
+          <span>✓ {isEn ? "29 Complete Letters" : "29 Huruf Lengkap"}</span>
           <span>•</span>
-          <span>✓ 4 Bentuk Sambung</span>
+          <span>✓ {isEn ? "4 Cursive Forms" : "4 Bentuk Sambung"}</span>
           <span>•</span>
-          <span>✓ Vokal Fathah, Kasrah &amp; Dhammah</span>
+          <span>✓ {isEn ? "Fathah, Kasrah & Dhammah" : "Vokal Fathah, Kasrah & Dhammah"}</span>
           <span>•</span>
           <span>✓ 100% Offline-Ready</span>
         </div>
@@ -100,7 +104,7 @@ export default function HijaiyahPage() {
                 : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
             }`}
           >
-            Kartu Huruf
+            {t("hijaiyah.modes.card")}
           </button>
           <button
             onClick={() => setActiveMode("connected")}
@@ -110,7 +114,7 @@ export default function HijaiyahPage() {
                 : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
             }`}
           >
-            Bentuk Sambung (Khat)
+            {t("hijaiyah.modes.connected")}
           </button>
           <button
             onClick={() => setActiveMode("harakat")}
@@ -120,7 +124,7 @@ export default function HijaiyahPage() {
                 : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
             }`}
           >
-            Harakat (A - I - U)
+            {t("hijaiyah.modes.harakat")}
           </button>
           <button
             onClick={() => setActiveMode("quiz")}
@@ -131,7 +135,7 @@ export default function HijaiyahPage() {
             }`}
           >
             <HelpCircle className="w-4 h-4" />
-            <span>Kuis Tebak Huruf</span>
+            <span>{t("hijaiyah.modes.quiz")}</span>
           </button>
         </div>
 
@@ -141,7 +145,7 @@ export default function HijaiyahPage() {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Cari huruf / nama..."
+              placeholder={t("hijaiyah.search_placeholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-emerald-500"
@@ -153,7 +157,9 @@ export default function HijaiyahPage() {
       {/* Filter Wilayah Makhraj */}
       {activeMode !== "quiz" && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider mr-1">Makhraj:</span>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider mr-1">
+            {isEn ? "Makhraj Region:" : "Makhraj:"}
+          </span>
           {regions.map((region) => (
             <button
               key={region}
@@ -164,7 +170,7 @@ export default function HijaiyahPage() {
                   : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
               }`}
             >
-              {region}
+              {region === "Semua" ? (isEn ? "All" : "Semua") : region}
             </button>
           ))}
         </div>
@@ -193,7 +199,7 @@ export default function HijaiyahPage() {
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">/{letter.latin}/</p>
               </div>
               <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold group-hover:underline">
-                Lihat Detail →
+                {isEn ? "View Details →" : "Lihat Detail →"}
               </span>
             </div>
           ))}
@@ -207,12 +213,12 @@ export default function HijaiyahPage() {
             <thead className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Nama Huruf</th>
-                <th className="py-3 px-4 text-center">Tunggal</th>
-                <th className="py-3 px-4 text-center">Awal Kata</th>
-                <th className="py-3 px-4 text-center">Tengah Kata</th>
-                <th className="py-3 px-4 text-center">Akhir Kata</th>
-                <th className="py-3 px-4">Bisa Sambung Depan?</th>
+                <th className="py-3 px-4">{isEn ? "Letter Name" : "Nama Huruf"}</th>
+                <th className="py-3 px-4 text-center">{isEn ? "Isolated" : "Tunggal"}</th>
+                <th className="py-3 px-4 text-center">{isEn ? "Initial" : "Awal Kata"}</th>
+                <th className="py-3 px-4 text-center">{isEn ? "Medial" : "Tengah Kata"}</th>
+                <th className="py-3 px-4 text-center">{isEn ? "Final" : "Akhir Kata"}</th>
+                <th className="py-3 px-4">{isEn ? "Connects Forward?" : "Bisa Sambung Depan?"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -237,11 +243,11 @@ export default function HijaiyahPage() {
                   <td className="py-3 px-4">
                     {l.canConnectForward ? (
                       <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">
-                        ✓ Bisa disambung
+                        {isEn ? "✓ Connectable" : "✓ Bisa disambung"}
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-xs text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-full">
-                        ✕ Tidak bisa
+                        {isEn ? "✕ Non-connecting" : "✕ Tidak bisa"}
                       </span>
                     )}
                   </td>
@@ -299,13 +305,17 @@ export default function HijaiyahPage() {
       {activeMode === "quiz" && (
         <div className="max-w-md mx-auto p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl space-y-6 text-center">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span>Skor: <strong className="text-emerald-600 text-sm font-bold">{quizScore}</strong> poin</span>
-            <span>Huruf ke-{quizIndex + 1} dari {HIJAIYAH_LETTERS.length}</span>
+            <span>
+              {t("hijaiyah.quiz.score")} <strong className="text-emerald-600 text-sm font-bold">{quizScore}</strong> {isEn ? "pts" : "poin"}
+            </span>
+            <span>
+              {isEn ? `Letter ${quizIndex + 1} of ${HIJAIYAH_LETTERS.length}` : `Huruf ke-${quizIndex + 1} dari ${HIJAIYAH_LETTERS.length}`}
+            </span>
           </div>
 
           <div className="py-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
             <span className="text-xs text-emerald-700 dark:text-emerald-300 uppercase tracking-widest font-semibold block mb-2">
-              Tebak Nama Huruf Ini:
+              {t("hijaiyah.quiz.guess")}
             </span>
             <div className="text-7xl font-arabic text-emerald-800 dark:text-emerald-200 font-bold">
               {currentQuizLetter.arabic}
@@ -342,11 +352,11 @@ export default function HijaiyahPage() {
               <p className="text-sm">
                 {quizSelectedAnswer === currentQuizLetter.name ? (
                   <span className="text-emerald-600 font-bold flex items-center justify-center gap-1">
-                    <CheckCircle2 className="w-4 h-4" /> Masya Allah, Jawaban Anda Benar! (+10)
+                    <CheckCircle2 className="w-4 h-4" /> {t("hijaiyah.quiz.correct")}
                   </span>
                 ) : (
                   <span className="text-rose-600 font-medium">
-                    Kurang tepat. Jawaban yang benar adalah <strong>{currentQuizLetter.name}</strong> ({currentQuizLetter.latin}).
+                    {t("hijaiyah.quiz.incorrect")} <strong>{currentQuizLetter.name}</strong> ({currentQuizLetter.latin}).
                   </span>
                 )}
               </p>
@@ -354,7 +364,7 @@ export default function HijaiyahPage() {
                 onClick={handleNextQuiz}
                 className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition-all"
               >
-                <span>Lanjut Huruf Berikutnya</span>
+                <span>{t("hijaiyah.quiz.next")}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -379,35 +389,37 @@ export default function HijaiyahPage() {
               </div>
               <div>
                 <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400">
-                  Huruf ke-{selectedLetter.id} • Wilayah {selectedLetter.region}
+                  {isEn ? `Letter #${selectedLetter.id} • Region ${selectedLetter.region}` : `Huruf ke-${selectedLetter.id} • Wilayah ${selectedLetter.region}`}
                 </span>
                 <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
                   {selectedLetter.name}
                 </h2>
-                <p className="text-sm text-slate-500">Transliterasi: <code className="font-mono">{selectedLetter.latin}</code></p>
+                <p className="text-sm text-slate-500">
+                  {isEn ? "Transliteration:" : "Transliterasi:"} <code className="font-mono">{selectedLetter.latin}</code>
+                </p>
               </div>
             </div>
 
             {/* Posisi Penulisan Sambung */}
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                Bentuk Penulisan Sambung (Khat):
+                {isEn ? "Connected Script Forms (Khat):" : "Bentuk Penulisan Sambung (Khat):"}
               </h3>
               <div className="grid grid-cols-4 gap-2 text-center text-xs">
                 <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700">
-                  <span className="text-slate-400 block text-[10px] mb-1">Tunggal</span>
+                  <span className="text-slate-400 block text-[10px] mb-1">{isEn ? "Isolated" : "Tunggal"}</span>
                   <span className="text-2xl font-arabic text-emerald-700 dark:text-emerald-400">{selectedLetter.isolated}</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700">
-                  <span className="text-slate-400 block text-[10px] mb-1">Awal</span>
+                  <span className="text-slate-400 block text-[10px] mb-1">{isEn ? "Initial" : "Awal"}</span>
                   <span className="text-2xl font-arabic text-teal-700 dark:text-teal-400">{selectedLetter.initial}</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700">
-                  <span className="text-slate-400 block text-[10px] mb-1">Tengah</span>
+                  <span className="text-slate-400 block text-[10px] mb-1">{isEn ? "Medial" : "Tengah"}</span>
                   <span className="text-2xl font-arabic text-cyan-700 dark:text-cyan-400">{selectedLetter.medial}</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700">
-                  <span className="text-slate-400 block text-[10px] mb-1">Akhir</span>
+                  <span className="text-slate-400 block text-[10px] mb-1">{isEn ? "Final" : "Akhir"}</span>
                   <span className="text-2xl font-arabic text-blue-700 dark:text-blue-400">{selectedLetter.final}</span>
                 </div>
               </div>
@@ -416,7 +428,7 @@ export default function HijaiyahPage() {
             {/* Contoh 4 Harakat */}
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                Pelafalan Berharakat:
+                {isEn ? "Vowel Pronunciations:" : "Pelafalan Berharakat:"}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
                 <div className="p-2 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40">
@@ -442,19 +454,19 @@ export default function HijaiyahPage() {
             <div className="space-y-3 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 text-sm">
               <div>
                 <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">
-                  Tempat Makhraj:
+                  {t("hijaiyah.modal.makhraj")}
                 </span>
                 <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm mt-0.5">{selectedLetter.makhraj}</p>
               </div>
               <div>
                 <span className="text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">
-                  Sifat Huruf:
+                  {t("hijaiyah.modal.sifat")}
                 </span>
                 <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm mt-0.5 font-mono">{selectedLetter.sifat}</p>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
-                  Catatan Artikulasi:
+                  {isEn ? "Articulation Notes:" : "Catatan Artikulasi:"}
                 </span>
                 <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-0.5 leading-relaxed">{selectedLetter.description}</p>
               </div>
@@ -464,7 +476,7 @@ export default function HijaiyahPage() {
               onClick={() => setSelectedLetter(null)}
               className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-colors"
             >
-              Tutup Rincian
+              {t("hijaiyah.modal.close")}
             </button>
           </div>
         </div>
@@ -478,7 +490,7 @@ export default function HijaiyahPage() {
         >
           <div>
             <h4 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 transition-colors">
-              Pelajari Hukum Tajwid Lengkap →
+              {isEn ? "Learn Complete Tajweed Rules →" : "Pelajari Hukum Tajwid Lengkap →"}
             </h4>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               Ghunnah, Idgham, Ikhfa, Iqlab, Mad &amp; Waqaf
@@ -492,10 +504,10 @@ export default function HijaiyahPage() {
         >
           <div>
             <h4 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-teal-600 transition-colors">
-              Praktik Membaca Al-Qur&apos;an 30 Juz →
+              {isEn ? "Practice Reading 30 Juz of Al-Qur'an →" : "Praktik Membaca Al-Qur'an 30 Juz →"}
             </h4>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-              114 Surah lengkap offline dengan audio murottal
+              {isEn ? "114 Surahs complete offline with murottal audio" : "114 Surah lengkap offline dengan audio murottal"}
             </p>
           </div>
           <ArrowRight className="w-5 h-5 text-teal-600 group-hover:translate-x-1 transition-transform" />
