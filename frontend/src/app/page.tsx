@@ -8,6 +8,7 @@ import { readChatStream, type ChatStreamEvent } from "@/lib/chat-stream";
 import { ensureMessageIds, makeMessage, type Message, type Reference } from "@/lib/chat-message";
 import { extractReferences } from "@/lib/references";
 import ReferencePanel from "@/components/ReferencePanel";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Send,
   Trash2,
@@ -292,6 +293,8 @@ function statusText(status: "checking" | "online" | "offline", provider: string)
 }
 
 export default function ChatPage() {
+  const { language } = useLanguage();
+  const isEn = language === "en";
   const [sessions, setSessions] = useState<ChatSession[]>(loadSessions);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const activeId = pinnedId ?? sessions[0]?.id ?? "";
@@ -446,7 +449,7 @@ export default function ChatPage() {
       return;
     }
     const rec = new SR();
-    rec.lang = "id-ID";
+    rec.lang = isEn ? "en-US" : "id-ID";
     rec.interimResults = false;
     rec.onresult = (ev) => {
       let chunk = "";
@@ -614,7 +617,7 @@ export default function ChatPage() {
       const res = await fetch(`${API_URL}/api/chat/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, session_id: sessionId }),
+        body: JSON.stringify({ message: userMessage, session_id: sessionId, language }),
       });
 
       const isStreaming = res.ok && res.headers.get("content-type")?.includes("text/event-stream");
@@ -797,7 +800,7 @@ export default function ChatPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 truncate">
-              <span>Chatbot AI Keislaman</span>
+              <span>{isEn ? "Islamic AI Chatbot" : "Chatbot AI Keislaman"}</span>
               <button
                 onClick={() => {
                   loadProviders();
@@ -810,7 +813,7 @@ export default function ChatPage() {
               </button>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-              Tanyakan masalah agama, Al-Qur&apos;an, Hadits & Tafsir secara responsif
+              {isEn ? "Ask religious matters, Al-Qur'an, Hadith & Tafsir responsively" : "Tanyakan masalah agama, Al-Qur'an, Hadits & Tafsir secara responsif"}
             </p>
           </div>
         </div>
@@ -826,7 +829,7 @@ export default function ChatPage() {
             title="Riwayat percakapan"
           >
             <History className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Riwayat ({sessions.length})</span>
+            <span className="hidden sm:inline">{isEn ? `History (${sessions.length})` : `Riwayat (${sessions.length})`}</span>
           </button>
           <button
             onClick={createSession}
@@ -834,7 +837,7 @@ export default function ChatPage() {
             title="Mulai percakapan baru"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Chat Baru</span>
+            <span className="hidden sm:inline">{isEn ? "New Chat" : "Chat Baru"}</span>
           </button>
           {messages.length > 0 && (
             <>
@@ -844,9 +847,9 @@ export default function ChatPage() {
               title="Bagikan sesi ini secara publik"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Bagikan</span>
+              <span className="hidden sm:inline">{isEn ? "Share" : "Bagikan"}</span>
             </button>
-            <button onClick={unshareSession} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-300" title="Cabut tautan publik">Cabut publikasi</button>
+            <button onClick={unshareSession} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-300" title={isEn ? "Revoke public link" : "Cabut tautan publik"}>{isEn ? "Revoke link" : "Cabut publikasi"}</button>
             </>
           )}
           {messages.length > 0 && (
@@ -856,7 +859,7 @@ export default function ChatPage() {
               title="Hapus pesan di sesi ini"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Bersihkan</span>
+              <span className="hidden sm:inline">{isEn ? "Clear" : "Bersihkan"}</span>
             </button>
           )}
         </div>
@@ -911,13 +914,13 @@ export default function ChatPage() {
                 onClick={copyAllSession}
                 className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all active:scale-95 cursor-pointer"
               >
-                <Copy className="w-3.5 h-3.5" /> Salin Semua
+                <Copy className="w-3.5 h-3.5" /> {isEn ? "Copy All" : "Salin Semua"}
               </button>
               <button
                 onClick={exportSession}
                 className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all active:scale-95 cursor-pointer"
               >
-                <Download className="w-3.5 h-3.5" /> Unduh .md
+                <Download className="w-3.5 h-3.5" /> {isEn ? "Export .md" : "Unduh .md"}
               </button>
             </div>
           )}
@@ -928,7 +931,7 @@ export default function ChatPage() {
       {showProviders && (
         <div className="mb-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg p-3 space-y-1.5 animate-in fade-in slide-in-from-top-2 duration-200">
           <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-            Model AI
+            {isEn ? "AI Model" : "Model AI"}
           </p>
           {providers.length === 0 && (
             <p className="text-xs text-slate-500 px-1 py-1">Memuat daftar model…</p>
@@ -985,14 +988,18 @@ export default function ChatPage() {
                 Assalamu&apos;alaikum Wr. Wb.
               </h2>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-                Selamat datang di <span className="font-semibold text-emerald-600 dark:text-emerald-400">Al-Hikmah AI</span>. Ajukan pertanyaan seputar hukum Islam, ayat Al-Qur&apos;an, hadits sahih, maupun panduan ibadah.
+                {isEn ? (
+                  <>Welcome to <span className="font-semibold text-emerald-600 dark:text-emerald-400">Al-Hikmah AI</span>. Inquire about Islamic rulings, Al-Qur&apos;an verses, authentic hadith, and worship guides.</>
+                ) : (
+                  <>Selamat datang di <span className="font-semibold text-emerald-600 dark:text-emerald-400">Al-Hikmah AI</span>. Ajukan pertanyaan seputar hukum Islam, ayat Al-Qur&apos;an, hadits sahih, maupun panduan ibadah.</>
+                )}
               </p>
             </div>
 
             {/* Quick Prompt Cards Grid */}
             <div className="w-full pt-2 sm:pt-4">
               <p className="text-[10px] sm:text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 text-left">
-                💡 Contoh Pertanyaan Populer:
+                {isEn ? "💡 Popular Question Examples:" : "💡 Contoh Pertanyaan Populer:"}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                 {SUGGESTED_PROMPTS.map((item) => {
@@ -1058,7 +1065,7 @@ export default function ChatPage() {
                   {msg.role === "assistant" ? (
                     <><Sparkles className="w-3.5 h-3.5" /> Al-Hikmah Assistant</>
                   ) : (
-                    <><User className="w-3.5 h-3.5" /> Anda</>
+                    <><User className="w-3.5 h-3.5" /> {isEn ? "You" : "Anda"}</>
                   )}
                 </span>
                 <div className="flex items-center gap-0.5">
@@ -1205,7 +1212,7 @@ export default function ChatPage() {
                 handleSend();
               }
             }}
-            placeholder="Tanyakan hal tentang Al-Qur'an, Hadits, Fiqih... (Enter kirim, Shift+Enter baris baru)"
+            placeholder={isEn ? "Ask about Al-Qur'an, Hadith, Fiqh... (Enter to send, Shift+Enter for newline)" : "Tanyakan hal tentang Al-Qur'an, Hadits, Fiqih... (Enter kirim, Shift+Enter baris baru)"}
             disabled={loading}
             className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none text-sm sm:text-base disabled:opacity-50 min-w-0 resize-none overflow-y-auto max-h-40 leading-relaxed"
           />

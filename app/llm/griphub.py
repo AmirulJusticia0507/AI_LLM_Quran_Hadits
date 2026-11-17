@@ -6,7 +6,7 @@ import httpx
 
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
-from app.llm.prompt import SYSTEM_PROMPT
+from app.llm.prompt import SYSTEM_PROMPT, get_system_prompt
 from app.llm.tools import TOOLS, source_from_tool
 
 
@@ -56,9 +56,9 @@ class GripHubLLM:
             return {"status": "error", "message": "Argumen rujukan tidak valid."}
         return {"status": "error", "message": "Fungsi rujukan tidak dikenal."}
 
-    async def chat_stream(self, user_message, session_id=None, history=None):
+    async def chat_stream(self, user_message, session_id=None, history=None, language="id"):
         recent_history = list(history[-self.history_messages:]) if history and self.history_messages else []
-        messages = [{"role": "system", "content": SYSTEM_PROMPT},
+        messages = [{"role": "system", "content": get_system_prompt(language)},
                     *recent_history,
                     {"role": "user", "content": user_message}]
         answer = ""

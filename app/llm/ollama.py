@@ -5,7 +5,7 @@ import os
 
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
-from app.llm.prompt import SYSTEM_PROMPT
+from app.llm.prompt import SYSTEM_PROMPT, get_system_prompt
 from app.llm.tools import source_from_tool
 
 load_dotenv()
@@ -75,15 +75,16 @@ class OllamaLLM:
             )
         return {"status": "error", "message": "Unknown function"}
 
-    async def chat(self, user_message: str, history: list[dict] = None, session_id: str = None) -> str:
+    async def chat(self, user_message: str, history: list[dict] = None, session_id: str = None, language: str = "id", **kwargs) -> str:
         try:
+            prompt = get_system_prompt(language)
             messages = list(history) if history else []
             messages.append({"role": "user", "content": user_message})
 
             response = ollama.chat(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "system", "content": prompt},
                     *messages,
                 ],
                 tools=TOOLS,
@@ -102,7 +103,7 @@ class OllamaLLM:
                 final_response = ollama.chat(
                     model=self.model,
                     messages=[
-                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "system", "content": prompt},
                         *messages,
                     ],
                 )
@@ -122,11 +123,12 @@ class OllamaLLM:
         except Exception as e:
             return f"Maaf, terjadi kesalahan: {str(e)}"
 
-    async def chat_stream(self, user_message: str, history: list[dict] = None, session_id: str = None):
+    async def chat_stream(self, user_message: str, history: list[dict] = None, session_id: str = None, language: str = "id", **kwargs):
         """SSE-compatible local flow with tool-result provenance."""
+        prompt = get_system_prompt(language)
         messages = list(history) if history else []
         messages.append({"role": "user", "content": user_message})
-        response = ollama.chat(model=self.model, messages=[{"role": "system", "content": SYSTEM_PROMPT}, *messages], tools=TOOLS)
+        response = ollama.chat(model=self.model, messages=[{"role": "system", "content": prompt}, *messages], tools=TOOLS)
         message = response["message"]
         sources = []
         if message.get("tool_calls"):
@@ -136,7 +138,7 @@ class OllamaLLM:
                 source = source_from_tool(name, args, result)
                 if source: sources.append(source)
                 messages.extend([{"role": "assistant", "content": "", "tool_calls": message["tool_calls"]}, {"role": "tool", "content": str(result)}])
-            final = ollama.chat(model=self.model, messages=[{"role": "system", "content": SYSTEM_PROMPT}, *messages])
+            final = ollama.chat(model=self.model, messages=[{"role": "system", "content": prompt}, *messages])
             answer = final["message"]["content"]
         else:
             answer = message["content"]

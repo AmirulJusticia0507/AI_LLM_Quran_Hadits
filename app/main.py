@@ -148,7 +148,7 @@ async def chat(req: ChatRequest):
         )
     try:
         history = session_mgr.get_history(req.session_id)
-        response = await llm.chat(req.message, history=history, session_id=req.session_id)
+        response = await llm.chat(req.message, history=history, session_id=req.session_id, language=req.language)
         return {"status": "success", "response": response, "session_id": req.session_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -169,7 +169,7 @@ async def chat_stream(req: ChatRequest):
 
     async def event_generator():
         current_llm = llm
-        kwargs = {"session_id": req.session_id}
+        kwargs = {"session_id": req.session_id, "language": req.language}
         if llm_provider == "griphub":
             kwargs["history"] = session_mgr.get_history(req.session_id)
         chat_store.add_message(req.session_id, "user", req.message)
@@ -190,7 +190,10 @@ async def chat_stream(req: ChatRequest):
         # source. Do not publish that answer: tool-call evidence is required.
         claims_dalil = bool(re.search(r"\b(?:QS\.?|Q\.S\.?|HR\.?|H\.R\.?|hadits riwayat)\b", answer, re.I))
         if claims_dalil and not sources:
-            answer = "Maaf, saya tidak dapat menampilkan klaim dalil karena sumber terverifikasi belum berhasil diperoleh. Silakan coba pertanyaan yang lebih spesifik atau buka koleksi Al-Qur'an dan Hadits."
+            if str(req.language).lower().startswith("en"):
+                answer = "Sorry, I cannot present citation claims because verified references could not be retrieved from the tools. Please try a more specific question or browse the Qur'an and Hadith collections directly."
+            else:
+                answer = "Maaf, saya tidak dapat menampilkan klaim dalil karena sumber terverifikasi belum berhasil diperoleh. Silakan coba pertanyaan yang lebih spesifik atau buka koleksi Al-Qur'an dan Hadits."
             buffered = [json.dumps({"type": "token", "text": answer}), json.dumps({"type": "done"})]
         for chunk in buffered:
             yield f"data: {chunk}\n\n"

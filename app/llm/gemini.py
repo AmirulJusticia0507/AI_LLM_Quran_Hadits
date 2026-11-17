@@ -8,7 +8,7 @@ import os
 from app.api.quran import QuranAPI
 from app.api.hadith import HadithAPI
 from app.llm.tools import TOOLS, source_from_tool
-from app.llm.prompt import SYSTEM_PROMPT
+from app.llm.prompt import SYSTEM_PROMPT, get_system_prompt
 
 load_dotenv()
 
@@ -39,17 +39,18 @@ class GeminiLLM:
         self.hadith_api = HadithAPI()
         self.chats: dict[str, object] = {}
 
-    def _get_chat(self, session_id: str):
-        if session_id not in self.chats:
+    def _get_chat(self, session_id: str, language: str = "id"):
+        chat_key = f"{session_id}:{language}"
+        if chat_key not in self.chats:
             model = genai.GenerativeModel(
                 model_name=self.model_name,
-                system_instruction=SYSTEM_PROMPT,
+                system_instruction=get_system_prompt(language),
                 tools=TOOLS,
                 safety_settings=SAFETY_SETTINGS,
                 generation_config=GENERATION_CONFIG,
             )
-            self.chats[session_id] = model.start_chat(history=[])
-        return self.chats[session_id]
+            self.chats[chat_key] = model.start_chat(history=[])
+        return self.chats[chat_key]
 
     async def _execute_tool(self, function_call) -> dict:
         name = function_call.name
@@ -83,9 +84,9 @@ class GeminiLLM:
         except (AttributeError, IndexError):
             return ""
 
-    async def chat(self, user_message: str, history: list[dict] = None, session_id: str = None) -> str:
+    async def chat(self, user_message: str, history: list[dict] = None, session_id: str = None, language: str = "id", **kwargs) -> str:
         try:
-            chat_session = self._get_chat(session_id or "default")
+            chat_session = self._get_chat(session_id or "default", language=language)
             response = chat_session.send_message(
                 user_message,
                 safety_settings=SAFETY_SETTINGS,
@@ -131,10 +132,10 @@ class GeminiLLM:
                 return "Maaf, jawaban diblokir oleh filter keamanan. Silakan coba dengan pertanyaan yang lebih spesifik."
             return f"Maaf, terjadi kesalahan: {error_msg}"
 
-    async def chat_stream(self, user_message: str, session_id: str = None):
+    async def chat_stream(self, user_message: str, session_id: str = None, language: str = "id", **kwargs):
         """Generator for SSE streaming."""
         try:
-            chat_session = self._get_chat(session_id or "default")
+            chat_session = self._get_chat(session_id or "default", language=language)
 
             response = chat_session.send_message(
                 user_message,

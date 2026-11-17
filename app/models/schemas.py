@@ -6,6 +6,7 @@ import uuid
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=2000, description="Pesan dari user")
     session_id: str = Field(default_factory=lambda: str(uuid.uuid4()), description="Session ID percakapan")
+    language: str = Field(default="id", description="Bahasa respon AI: 'id' atau 'en'")
 
 
 class QuranVerseRequest(BaseModel):
