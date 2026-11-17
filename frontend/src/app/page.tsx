@@ -171,6 +171,12 @@ const SUGGESTED_PROMPTS = [
     category: "Akhir Zaman",
     icon: BookOpen,
   },
+  {
+    title: "Kisah 25 Nabi & Rasul Ulul Azmi",
+    prompt: "Bagaimana silsilah 25 Nabi Allah, mukjizat Nabi Ibrahim dan Nabi Musa, serta keteladanan 5 Rasul Ulul Azmi?",
+    category: "Kisah Nabi",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {
