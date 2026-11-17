@@ -6,6 +6,7 @@ import type { Course } from '@/data/learning';
 import NasabLessonCharts from '@/components/NasabLessonCharts';
 import HabaibIndonesiaChart from '@/components/HabaibIndonesiaChart';
 import MedicalPrinciplesChart from '@/components/MedicalPrinciplesChart';
+import MuslimScientistsChart from '@/components/MuslimScientistsChart';
 import { useLanguage } from '@/context/LanguageContext';
 import { categoryEnglish, courseEnglish } from '@/data/learning-en';
 
@@ -102,6 +103,19 @@ export default function LearningCourse({ course }: { course: Course }) {
       practice: 'Ask a doctor or pharmacist about the medicine’s ingredients and status, suitable alternatives, and the risks of switching or delaying treatment. For a religious ruling, consult MUI guidance or a scholar familiar with medical questions.',
     },
   };
+  const englishScientists = {
+    title: 'More Muslim Scholars: Medicine, Mathematics, Engineering, and Mapping',
+    summary: 'Selected scholars from different periods and regions who worked in medicine, pharmacy, philosophy, mathematics, astronomy, mechanical engineering, and geography.',
+    points: [
+      'Medicine and surgery: Al-Razi wrote clinical and medical works; Al-Zahrawi compiled al-Tasrif, a medical encyclopedia with a major section on surgery; Ibn al-Nafis described blood passing through the lungs and rejected the idea that it crossed the heart’s ventricular septum; Ibn al-Baytar compiled a major work on medicinal substances and plants.',
+      'Mathematics, astronomy, and natural sciences: Al-Kindi wrote on mathematics and several sciences; Nasir al-Din al-Tusi developed astronomical and mathematical work and worked at the Maragha Observatory. Their work grew through translation, debate, and development across generations.',
+      'Philosophy and music: Al-Farabi is known for works on logic, philosophy, and music; Ibn Rushd wrote philosophical commentaries and also worked in medicine, law, and religious scholarship in al-Andalus.',
+      'Mechanical engineering: Al-Jazari described mechanical devices, water clocks, and automata in his Book of Knowledge of Ingenious Mechanical Devices. His work shows the combination of design, practical knowledge, and workshop skill in his era.',
+      'Geography and cartography: Al-Idrisi compiled geographical works and a world map for the court of Sicily in the twelfth century, drawing on the geographical knowledge and travel accounts available in his time.',
+      'This is a selection, not a ranking or complete list. Labels such as “first inventor” or “father of modern science” need care: scientific achievements often developed gradually, building on earlier work and involving networks across languages and faiths.',
+    ],
+    practice: 'Choose one scholar and explore an original work or reliable history-of-science study. Note the field, work, historical context, and what the sources actually support without overstating the claim.',
+  };
   const categories = [allLabel, ...new Set(course.lessons.map(l => localizedCategory(l.category)))];
   const search = query.trim().toLocaleLowerCase('id');
   const filtered = course.lessons.filter(l =>
@@ -182,21 +196,22 @@ export default function LearningCourse({ course }: { course: Course }) {
                 <span className="text-xs text-emerald-700 dark:text-emerald-300">
                   {localizedCategory(lesson.category)}{completed.includes(lesson.id) ? (en ? ' • Completed' : ' • Selesai dibaca') : ''}
                 </span>
-                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.title : en && englishMedical[lesson.id] ? englishMedical[lesson.id].title : lesson.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.summary : en && englishMedical[lesson.id] ? englishMedical[lesson.id].summary : lesson.summary}</p>
+                <h2 className="inline ml-2 text-lg font-bold">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.title : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.title : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.title : en && englishMedical[lesson.id] ? englishMedical[lesson.id].title : lesson.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.summary : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.summary : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.summary : en && englishMedical[lesson.id] ? englishMedical[lesson.id].summary : lesson.summary}</p>
               </summary>
               <div className="pt-5 space-y-4">
                 <ul className="list-disc pl-5 space-y-2 text-sm leading-7">
-                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : en && englishMedical[lesson.id] ? englishMedical[lesson.id].points[index] || point : point}</li>)}
+                  {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.points[index] || point : en && englishMedical[lesson.id] ? englishMedical[lesson.id].points[index] || point : point}</li>)}
                 </ul>
                 {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
                 {lesson.id === 'contoh-habaib-indonesia' && <HabaibIndonesiaChart />}
+                {lesson.id === 'ilmuwan-muslim-lintas-bidang' && <MuslimScientistsChart />}
                 {(lesson.id === 'ikhtiar-sehat' || lesson.id === 'kaidah-darurat') && <MedicalPrinciplesChart lessonId={lesson.id} />}
                 <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 p-4">
                   <h3 className="font-semibold text-sm mb-2">
                     {en ? 'Practice & application' : 'Latihan & penerapan'}
                   </h3>
-                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.practice : en && englishMedical[lesson.id] ? englishMedical[lesson.id].practice : lesson.practice}</p>
+                  <p className="text-sm leading-relaxed">{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.practice : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.practice : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.practice : en && englishMedical[lesson.id] ? englishMedical[lesson.id].practice : lesson.practice}</p>
                 </div>
                 <a
                   href={lesson.source.href}

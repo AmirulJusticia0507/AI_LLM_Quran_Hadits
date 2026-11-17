@@ -32,6 +32,7 @@ export const courseEnglish: Record<string, { title: string; description: string;
 
 export const categoryEnglish: Record<string, string> = {
   'Landasan': 'Foundations', 'Perbaikan diri': 'Self-improvement', 'Akhlak hati': 'Character of the heart',
+  'Tokoh Ilmuwan': 'Scholars and scientists',
   'Persiapan': 'Preparation', 'Akad Nikah': 'Marriage contract', 'Kehidupan Keluarga': 'Family life',
   'Penyelesaian Masalah': 'Conflict resolution', 'Pasca Perceraian': 'After divorce',
   'Prinsip Integritas': 'Integrity principles', 'Kejahatan Finansial': 'Financial crimes', 'Keadilan Publik': 'Public justice', 'Pertanggungjawaban': 'Accountability',
