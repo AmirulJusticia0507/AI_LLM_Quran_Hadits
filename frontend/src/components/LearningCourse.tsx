@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useSyncExternalStore } from 'react';
 import type { Course } from '@/data/learning';
 import NasabLessonCharts from '@/components/NasabLessonCharts';
@@ -203,6 +204,21 @@ export default function LearningCourse({ course }: { course: Course }) {
                 <ul className="list-disc pl-5 space-y-2 text-sm leading-7">
                   {lesson.points.map((point, index) => <li key={point}>{en && lesson.id === 'nasab-habaib-ba-alawi' ? englishNasab.points[index] || point : en && lesson.id === 'contoh-habaib-indonesia' ? englishExamples.points[index] || point : en && lesson.id === 'ilmuwan-muslim-lintas-bidang' ? englishScientists.points[index] || point : en && englishMedical[lesson.id] ? englishMedical[lesson.id].points[index] || point : point}</li>)}
                 </ul>
+                {lesson.id === 'sakaratul-alam-kubur' && (
+                  <figure className="overflow-hidden rounded-2xl border border-indigo-200 dark:border-indigo-900">
+                    <Image
+                      src="/images/ibadah/sakaratul-barzakh.png"
+                      alt={en ? 'Symbolic sunset landscape and a luminous arch representing reflection on death and the unseen Barzakh, not a literal depiction.' : 'Lanskap senja simbolis dengan gerbang bercahaya, sebagai ajakan merenungkan kematian dan alam Barzakh, bukan gambaran literal.'}
+                      width={1536}
+                      height={1024}
+                      sizes="(max-width: 768px) 100vw, 768px"
+                      className="h-auto w-full"
+                    />
+                    <figcaption className="bg-indigo-50 px-4 py-3 text-xs leading-5 text-indigo-950 dark:bg-indigo-950/40 dark:text-indigo-100">
+                      {en ? 'A symbolic illustration for reflection. The unseen is not depicted literally.' : 'Ilustrasi simbolis untuk renungan. Alam gaib tidak digambarkan secara harfiah.'}
+                    </figcaption>
+                  </figure>
+                )}
                 {lesson.id === 'nasab-habaib-ba-alawi' && <NasabLessonCharts />}
                 {lesson.id === 'contoh-habaib-indonesia' && <HabaibIndonesiaChart />}
                 {lesson.id === 'ilmuwan-muslim-lintas-bidang' && <MuslimScientistsChart />}
