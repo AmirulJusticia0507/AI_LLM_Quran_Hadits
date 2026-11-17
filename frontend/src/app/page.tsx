@@ -165,6 +165,12 @@ const SUGGESTED_PROMPTS = [
     category: "Siyasah Syari'ah",
     icon: BookOpen,
   },
+  {
+    title: "Fitnah Dajjal & Turunnya Nabi Isa",
+    prompt: "Bagaimana ciri-ciri fisik Dajjal menurut hadits shahih, benteng perlindungan surah Al-Kahfi, dan turunnya Nabi Isa AS di Babul Ludd?",
+    category: "Akhir Zaman",
+    icon: BookOpen,
+  },
 ];
 
 interface ChatSession {

@@ -49,6 +49,7 @@ export default function Footer() {
               <li><Link href="/adab-digital" className="hover:underline">Adab & Etika Digital Islami</Link></li>
               <li><Link href="/muslimah" className="hover:underline">Tokoh Muslimah Teladan & Fiqh Wanita</Link></li>
               <li><Link href="/siyasah" className="hover:underline">Maqashid Syari&apos;ah & Siyasah Publik</Link></li>
+              <li><Link href="/fitnah-akhir-zaman" className="hover:underline">Eskatologi Dajjal & Akhir Zaman</Link></li>
               <li><Link href="/munakahat" className="hover:underline">Fiqh Pernikahan</Link></li>
               <li><Link href="/muamalah" className="hover:underline">Fiqh Muamalah & Bisnis</Link></li>
               <li><Link href="/integritas" className="hover:underline">Fiqh Anti-Korupsi</Link></li>
