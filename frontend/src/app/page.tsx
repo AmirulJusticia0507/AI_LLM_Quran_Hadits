@@ -81,6 +81,18 @@ const SUGGESTED_PROMPTS = [
     category: "Integritas & Hukum",
     icon: ShieldCheck,
   },
+  {
+    title: "Prinsip Muamalah & Hukum Riba",
+    prompt: "Jelaskan bahaya riba, perbedaan riba nasi'ah dan fadhl, serta hukum paylater dalam ekonomi syariah.",
+    category: "Muamalah & Bisnis",
+    icon: BookOpen,
+  },
+  {
+    title: "Titik Kritis Makanan & Halal Lifestyle",
+    prompt: "Bagaimana kriteria makanan halalan thayyiban, hukum hewan laut, dan titik kritis gelatin dalam pangan?",
+    category: "Pangan Halal",
+    icon: Sparkles,
+  },
 ];
 
 interface ChatSession {
