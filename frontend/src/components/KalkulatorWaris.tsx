@@ -143,7 +143,7 @@ export default function KalkulatorWaris() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-      <header className="rounded-3xl bg-gradient-to-br from-teal-800 to-emerald-950 text-white p-8 space-y-2">
+      <header className="rounded-3xl bg-linear-to-br from-teal-800 to-emerald-950 text-white p-8 space-y-2">
         <p className="text-xs uppercase tracking-widest text-teal-200">Al-Hikmah • Kalkulator Islami</p>
         <h1 className="text-3xl font-bold">Kalkulator Waris (Faraidh)</h1>
         <p className="text-teal-100 text-sm">Hitung pembagian harta waris Islam sesuai Al-Qur'an dan mazhab Syafi'i.</p>

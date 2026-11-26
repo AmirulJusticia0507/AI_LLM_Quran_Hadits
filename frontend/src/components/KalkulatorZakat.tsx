@@ -67,7 +67,7 @@ export default function KalkulatorZakat() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-      <header className="rounded-3xl bg-gradient-to-br from-emerald-800 to-teal-950 text-white p-8 space-y-2">
+      <header className="rounded-3xl bg-linear-to-br from-emerald-800 to-teal-950 text-white p-8 space-y-2">
         <p className="text-xs uppercase tracking-widest text-emerald-200">Al-Hikmah • Kalkulator Islami</p>
         <h1 className="text-3xl font-bold">Kalkulator Zakat</h1>
         <p className="text-emerald-100 text-sm">Hitung zakat mal, penghasilan, dan fitrah sesuai ketentuan syariat.</p>
