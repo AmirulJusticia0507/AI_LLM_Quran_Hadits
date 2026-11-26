@@ -7009,6 +7009,126 @@ export const sejarahPendidikanIslam: Course = {
   ]
 };
 
+export const fiqhHariRaya: Course = {
+  id: 'fiqh-hari-raya',
+  title: 'Fiqh Hari Raya & Bulan-Bulan Mulia',
+  description: 'Sunnah Shalat Ied, adab takbiran, silaturahim hari raya, serta amalan shahih di bulan Muharram, Rajab, Sya\'ban, dan Dzulhijjah.',
+  note: 'Hari raya dalam Islam bukan sekadar perayaan budaya, melainkan puncak syukur atas ketaatan yang dihiasi dzikir, zakat, dan silaturahim.',
+  lessons: [
+    {
+      id: 'sunnah-shalat-ied-dan-takbiran',
+      title: 'Sunnah Hari Raya Idul Fitri & Idul Adha',
+      category: 'Hari Raya',
+      summary: 'Mandi sebelum Shalat Ied, memakai pakaian terbaik, bertakbir, makan sebelum Shalat Idul Fitri, dan menunda makan hingga selesai Shalat Idul Adha.',
+      points: [
+        'Makan Sebelum vs Sesudah Shalat Ied (HR. Bukhari): Pada Idul Fitri disunnahkan makan kurma (ganjil) sebelum berangkat shalat; pada Idul Adha disunnahkan makan setelah shalat (dari daging qurban jika ada).',
+        'Rute Berangkat & Pulang Berbeda: Nabi SAW berjalan kaki menuju lapangan/masjid melalui satu jalan dan pulang melalui jalan lain untuk menyapa lebih banyak saudara.',
+        'Takbiran: Takbir Mursal Idul Fitri sejak terbenam matahari akhir Ramadan hingga imam naik mimbar Ied; Takbir Muqayyad Idul Adha sejak Subuh hari Arafah (9 Dzulhijjah) hingga Ashar 13 Dzulhijjah.',
+        'Ucapan Selamat Hari Raya: "Taqabbalallahu minna wa minkum" (semoga Allah menerima amal kami dan amal kalian).'
+      ],
+      practice: 'Hidupkan malam dan pagi hari raya dengan takbir, pakaian bersih terbaik, serta menyapa tetangga yang jarang ditemui.',
+      source: hadith(953)
+    },
+    {
+      id: 'keutamaan-empat-bulan-haram',
+      title: 'Empat Bulan Haram (Al-Asyhurul Hurum) & Muharram',
+      category: 'Bulan Mulia',
+      summary: 'Allah memuliakan empat bulan haram: Dzulqa\'dah, Dzulhijjah, Muharram, dan Rajab (QS. At-Taubah: 36); dosa dan pahala di bulan ini lebih diperhatikan.',
+      points: [
+        'Empat Bulan Haram: Tiga berurutan (Dzulqa\'dah, Dzulhijjah, Muharram) dan satu terpisah (Rajab).',
+        'Keutamaan Bulan Muharram: Sebaik-baik puasa setelah Ramadan adalah puasa di bulan Allah, Muharram (HR. Muslim), khususnya Puasa Tasu\'a (9 Muharram) dan Asyura (10 Muharram) yang menghapus dosa setahun lalu.',
+        'Menjauhi Dosa di Bulan Haram: Para ulama menasihatkan agar lebih berhati-hati menjaga lisan dan perbuatan di bulan-bulan mulia ini.'
+      ],
+      practice: 'Tandai tanggal 9 dan 10 Muharram di Kalender Hijriah aplikasi ini untuk menunaikan puasa sunnah Tasu\'a dan Asyura.',
+      source: quran('9/36')
+    },
+    {
+      id: 'amalan-syaban-dan-dzulhijjah',
+      title: 'Amalan Shahih di Bulan Sya\'ban & 10 Hari Awal Dzulhijjah',
+      category: 'Bulan Mulia',
+      summary: 'Nabi SAW memperbanyak puasa sunnah di bulan Sya\'ban sebagai pemanasan menuju Ramadan, dan menegaskan amal di 10 hari pertama Dzulhijjah paling dicintai Allah.',
+      points: [
+        'Bulan Sya\'ban (HR. Bukhari-Muslim): Nabi SAW berpuasa paling banyak di bulan Sya\'ban (setelah Ramadan); tempat laporan amal tahunan diangkat kepada Allah.',
+        '10 Hari Pertama Dzulhijjah (HR. Bukhari): "Tidak ada hari-hari di mana amal shalih lebih dicintai Allah melebihi 10 hari pertama Dzulhijjah" — perbanyak takbir, tahmid, sedekah, dan Puasa Arafah (9 Dzulhijjah).',
+        'Puasa Arafah (9 Dzulhijjah): Menghapus dosa setahun yang lalu dan setahun yang akan datang bagi yang tidak sedang berhaji (HR. Muslim).'
+      ],
+      practice: 'Siapkan target khusus untuk 10 hari pertama Dzulhijjah: tilawah, sedekah harian, dzikir, dan puasa Arafah.',
+      source: hadith(969)
+    }
+  ]
+};
+
+export const adabJalanRaya: Course = {
+  id: 'adab-jalan-raya',
+  title: 'Adab Berkendara, Lalu Lintas, & Keselamatan Jalan',
+  description: 'Hak jalan dalam hadits Nabi SAW, doa berkendara, larangan membahayakan pengguna jalan, dan etika bermobilitas yang amanah.',
+  note: 'Menyingkirkan gangguan dari jalan adalah cabang keimanan (HR. Muslim); mematuhi rambu demi keselamatan nyawa adalah wujud nyata hifzhun nafs.',
+  lessons: [
+    {
+      id: 'lima-hak-jalan-nabi',
+      title: 'Hak-Hak Jalan dalam Hadits Rasulullah SAW',
+      category: 'Etika Sosial',
+      summary: 'Nabi SAW menetapkan etika menggunakan fasilitas umum jalan raya: menjaga pandangan, tidak mengganggu/menyakiti pengguna lain, menjawab salam, dan amar ma\'ruf.',
+      points: [
+        'Hadits Hak Jalan (HR. Bukhari-Muslim): Jika kalian terpaksa duduk/beraktivitas di pinggir jalan, berikan hak jalan: menundukkan pandangan, tidak menyakiti orang lewat (tidak menutup trotoar/parkir sembarangan), menjawab salam, serta mengajak pada kebaikan.',
+        'Menyingkirkan Duri/Gangguan: Memindahkan batu, paku, atau lubang berbahaya dari jalan bernilai sedekah dan cabang iman.',
+        'Larangan Parkir Sembarangan: Mengambil hak jalan umum atau menutup akses garasi tetangga termasuk menyakiti sesama Muslim.'
+      ],
+      practice: 'Pastikan kendaraan Anda diparkir di tempat semestinya tanpa menghalangi trotoar pejalan kaki atau akses keluar-masuk tetangga.',
+      source: hadith(2465)
+    },
+    {
+      id: 'keselamatan-berkendara-hifzhun-nafs',
+      title: 'Keselamatan Lalu Lintas sebagai Bagian dari Hifzhun Nafs',
+      category: 'Keselamatan',
+      summary: 'Memakai helm/sabuk pengaman, mengecek rem, tidak menerobos lampu merah, dan tidak melawan arus adalah kewajiban menjaga nyawa diri dan orang lain.',
+      points: [
+        'Kaidah "La Dharara wa la Dhirar" (HR. Ibnu Majah): Dilarang membahayakan diri sendiri maupun membahayakan orang lain di jalan raya.',
+        'Kewajiban Menaati Aturan Lalu Lintas: Rambu lalu lintas dibuat pemerintah (ulil amri) untuk kemaslahatan bersama; melanggarnya hingga membahayakan nyawa berpotensi dosa.',
+        'Doa Naik Kendaraan (QS. Az-Zukhruf: 13–14): "Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin, wa inna ila Rabbina lamunqalibun."'
+      ],
+      practice: 'Selalu baca doa naik kendaraan sebelum memutar kunci kontak dan jaga emosi agar tidak mudah marah (road rage) saat macet.',
+      source: quran('43/13')
+    }
+  ]
+};
+
+export const lembagaIslamIndonesia: Course = {
+  id: 'lembaga-islam-indonesia',
+  title: 'Mengenal Organisasi & Lembaga Islam di Indonesia',
+  description: 'Peran historis dan kontribusi dakwah, pendidikan, serta sosial NU, Muhammadiyah, Persis, MUI, BAZNAS, dan BWI.',
+  note: 'Keberagaman organisasi Islam di Indonesia adalah kekayaan amal kolektif umat selama saling bersinergi dan menjaga ukhuwah.',
+  lessons: [
+    {
+      id: 'nu-muhammadiyah-persis',
+      title: 'NU, Muhammadiyah, & Ormas Islam Pelopor Kebangsaan',
+      category: 'Ormas Islam',
+      summary: 'Muhammadiyah (1912), Persis (1923), dan Nahdlatul Ulama (1926) masing-masing berperan besar dalam pendidikan, rumah sakit, pesantren, dan kemerdekaan RI.',
+      points: [
+        'Muhammadiyah (KH. Ahmad Dahlan, 1912): Pelopor modernisasi sekolah Islam, ratusan universitas, serta jaringan rumah sakit dan panti asuhan di seluruh Nusantara.',
+        'Nahdlatul Ulama / NU (KH. Hasyim Asy\'ari, 1926): Penjaga tradisi pesantren, kitab kuning Ahlussunnah Wal Jama\'ah, serta penggerak Resolusi Jihad 1945 mempertahankan kemerdekaan.',
+        'Persis, Al-Irsyad, Mathla\'ul Anwar, Wahdah Islamiyah, & Hidayatullah: Turut memperkaya dakwah, pendidikan, dan pemberdayaan umat di berbagai daerah.',
+        'Prinsip Ukhuwah: Perbedaan furu\'iyyah tidak menghalangi kerja sama sosial, kemanusiaan, dan pembangunan bangsa.'
+      ],
+      practice: 'Hormati kontribusi setiap ormas Islam di Indonesia dan hindari sikap fanatisme golongan yang memecah masjid maupun keluarga.',
+      source: quran('3/103')
+    },
+    {
+      id: 'mui-baznas-bwi',
+      title: 'Peran MUI, BAZNAS, & BWI dalam Tata Kelola Umat',
+      category: 'Lembaga Nasional',
+      summary: 'MUI menjadi wadah musyawarah ulama dan fatwa DSN-MUI; BAZNAS mengelola zakat nasional; BWI membina wakaf produktif.',
+      points: [
+        'Majelis Ulama Indonesia (MUI): Didirikan tahun 1975 sebagai rumah besar ulama lintas ormas; menerbitkan fatwa keagamaan dan fatwa ekonomi syariah (DSN-MUI).',
+        'BAZNAS (Badan Amil Zakat Nasional): Lembaga resmi negara sesuai UU No. 23/2011 yang menghimpun dan menyalurkan zakat, infak, dan sedekah secara akuntabel.',
+        'BWI (Badan Wakaf Indonesia): Lembaga independen negara yang membina para nadzir dan mengembangkan aset wakaf produktif nasional.'
+      ],
+      practice: 'Salurkan zakat dan wakaf Anda melalui BAZNAS, BWI, atau LAZ resmi yang diawasi secara transparan agar dampaknya terukur.',
+      source: quran('9/60')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -7092,4 +7212,7 @@ export const courseLinks = [
   { href: '/fiqh-ketenagakerjaan', title: fiqhKetenagakerjaan.title, description: fiqhKetenagakerjaan.description },
   { href: '/harmoni-rumah-tangga', title: harmoniRumahTangga.title, description: harmoniRumahTangga.description },
   { href: '/sejarah-pendidikan-islam', title: sejarahPendidikanIslam.title, description: sejarahPendidikanIslam.description },
+  { href: '/fiqh-hari-raya', title: fiqhHariRaya.title, description: fiqhHariRaya.description },
+  { href: '/adab-jalan-raya', title: adabJalanRaya.title, description: adabJalanRaya.description },
+  { href: '/lembaga-islam-indonesia', title: lembagaIslamIndonesia.title, description: lembagaIslamIndonesia.description },
 ];
