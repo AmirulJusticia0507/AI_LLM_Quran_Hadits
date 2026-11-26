@@ -6140,6 +6140,239 @@ export const kepemimpinanIslami: Course = {
   ]
 };
 
+export const fiqhDarahWanita: Course = {
+  id: 'fiqh-darah-wanita',
+  title: 'Fiqh Darah Wanita: Haid, Nifas, & Istihadhah',
+  description: 'Panduan detail membedakan darah haid, nifas, dan istihadhah, batas harinya, serta hukum shalat, puasa, dan qadha.',
+  note: 'Memahami fiqh darah wanita adalah kewajiban fardhu \'ain bagi setiap muslimah agar ibadahnya sah dan tenang.',
+  lessons: [
+    {
+      id: 'membedakan-haid-dan-suci',
+      title: 'Mengenal Darah Haid: Batas Hari, Warna, & Larangan',
+      category: 'Haid',
+      summary: 'Dalam Mazhab Syafi\'i, batas minimal haid adalah sehari semalam (24 jam), umumnya 6–7 hari, dan maksimal 15 hari 15 malam.',
+      points: [
+        'Batas Masa Suci Minimal: Jarak minimal antara dua haid adalah 15 hari suci.',
+        'Tanda Suci: Berhentinya darah secara total (kering ketika diusap kapas) atau keluarnya cairan putih bening (qashshah baidha\').',
+        'Ibadah yang Dilarang Saat Haid: Shalat, puasa, thawaf di Ka\'bah, menyentuh mushaf Al-Qur\'an langsung, berdiam di masjid, dan berhubungan suami istri (QS. Al-Baqarah: 222).',
+        'Kewajiban Qadha: Wanita haid hanya wajib mengqadha puasa Ramadan yang tertinggal dan tidak wajib mengqadha shalat (HR. Bukhari-Muslim).'
+      ],
+      practice: 'Catat tanggal mulai dan selesai haid setiap bulan agar Anda mengenali pola siklus normal diri sendiri.',
+      source: quran('2/222')
+    },
+    {
+      id: 'hukum-darah-nifas',
+      title: 'Darah Nifas Pasca Melahirkan & Keguguran',
+      category: 'Nifas',
+      summary: 'Nifas adalah darah yang keluar setelah melahirkan; umumnya 40 hari dan maksimal 60 hari menurut Mazhab Syafi\'i.',
+      points: [
+        'Kapan Mulai Dihitung?: Dihitung sejak bayi lahir (darah sebelum melahirkan belum disebut nifas, melainkan masih wajib shalat semampunya jika belum haid).',
+        'Jika Berhenti Sebelum 40 Hari: Wanita wajib langsung mandi besar dan shalat saat darah sudah benar-benar berhenti, tanpa harus menunggu 40 hari.',
+        'Keguguran: Jika janin sudah berbentuk manusia (umumnya ≥ 80–90 hari kehamilan) maka darahnya adalah nifas; jika masih berupa segumpal darah awal, sebagian ulama menyebutnya istihadhah/fasad.'
+      ],
+      practice: 'Siapkan catatan hari pertama melahirkan agar mudah memantau berakhirnya masa nifas.',
+      source: hadith(320)
+    },
+    {
+      id: 'istihadhah-dan-tata-cara-shalat',
+      title: 'Istihadhah (Darah Penyakit) & Tata Cara Shalatnya',
+      category: 'Istihadhah',
+      summary: 'Darah yang keluar melewati batas maksimal haid (15 hari) atau nifas (60 hari) disebut istihadhah; wanita istihadhah tetap wajib shalat dan puasa.',
+      points: [
+        'Cara Menentukan Haid vs Istihadhah: Pertama, lihat sifat darah (tamyiz — darah hitam/kental adalah haid, darah merah encer istihadhah); kedua, ikuti kebiasaan siklus bulan sebelumnya (misal 7 hari).',
+        'Tata Cara Shalat Wanita Istihadhah (HR. Bukhari): Bersihkan area kemaluan, pakai pembalut yang rapat, lalu berwudhu setiap kali hendak shalat setelah masuk waktunya.',
+        'Satu Wudhu Satu Shalat Wajib: Wudhu tersebut sah dipakai untuk shalat fardhu yang bersangkutan beserta shalat sunnah pengiringnya selama belum batal karena hal lain (buang angin/kecil).'
+      ],
+      practice: 'Jika mengalami pendarahan berkepanjangan melebihi 15 hari, segera konsultasi medis ke dokter obgyn sekaligus gunakan panduan istihadhah agar shalat tetap terjaga.',
+      source: hadith(306)
+    }
+  ]
+};
+
+export const fiqhPropertiGadai: Course = {
+  id: 'fiqh-properti-gadai',
+  title: 'Fiqh Properti, KPR Syariah, & Gadai (Rahn)',
+  description: 'Rincian akad Murabahah, Musyarakah Mutanaqisah, Rahn (gadai syariah), serta akad Salam & Istishna\' untuk pre-order.',
+  note: 'Memilih akad properti dan pembiayaan halal menjaga ketenangan rumah tangga dan keberkahan aset jangka panjang.',
+  lessons: [
+    {
+      id: 'kpr-syariah-murabahah-mmq',
+      title: 'KPR Syariah: Akad Murabahah vs Musyarakah Mutanaqisah (MMQ)',
+      category: 'Properti Syariah',
+      summary: 'KPR syariah menghindari pinjaman berbunga (riba) dengan menggantinya menjadi jual beli margin tetap (Murabahah) atau kepemilikan bersama bertahap (MMQ).',
+      points: [
+        'Akad Murabahah (Jual Beli Margin Tetap): Bank/developer membeli rumah lalu menjualnya ke nasabah dengan harga pokok + margin yang disepakati di awal; cicilan tetap hingga lunas tanpa bunga mengambang.',
+        'Akad Musyarakah Mutanaqisah (MMQ): Bank dan nasabah patungan membeli rumah; porsi kepemilikan bank dibeli nasabah bertahap setiap bulan disertai sewa (ujrah) atas porsi milik bank.',
+        'Aturan Denda Keterlambatan (Ta\'zir): Bank syariah tidak boleh mengambil denda sebagai keuntungan pribadi; denda ta\'zir (jika ada) wajib disalurkan ke dana sosial/infak (Fatwa DSN-MUI).',
+        'Waspada KPR Syariah Bodong: Pastikan legalitas sertifikat tanah (SHM/IMB), rekam jejak developer, dan pengawasan DPS resmi jika melalui lembaga keuangan.'
+      ],
+      practice: 'Gunakan fitur Simulasi Pembiayaan Murabahah di aplikasi ini untuk membandingkan total harga jual sebelum menandatangani akad rumah.',
+      source: quran('2/275')
+    },
+    {
+      id: 'gadai-syariah-rahn',
+      title: 'Gadai Syariah (Rahn): Aturan Jaminan & Biaya Titipan',
+      category: 'Gadai (Rahn)',
+      summary: 'Dalam Rahn, barang jaminan (marhun) tetap milik penggadai; pemberi pinjaman tidak boleh memanfaatkannya kecuali sekadar biaya nyata pemeliharaan.',
+      points: [
+        'Dasar Hukum (QS. Al-Baqarah: 283 & HR. Bukhari): Nabi SAW pernah menggadaikan baju besinya kepada seorang Yahudi di Madinah untuk membeli gandum.',
+        'Larangan Mengambil Manfaat Barang Gadai: Pemberi utang haram menyewakan atau memakai kendaraan/rumah gadai demi keuntungan utang (termasuk riba).',
+        'Ujrah Penitipan (Ijarah): Pada pegadaian syariah resmi (DSN-MUI), biaya penitipan/asuransi brankas dihitung berdasarkan biaya nyata penyimpanan, bukan persentase besaran pinjaman.',
+        'Jika Gagal Bayar: Barang jaminan dijual secara adil; jika hasil jual melebihi utang, kelebihannya wajib dikembalikan ke pemilik barang.'
+      ],
+      practice: 'Jika butuh dana mendesak dengan jaminan emas, pilih layanan Rahn syariah resmi daripada gadai berbunga atau pinjol ilegal.',
+      source: quran('2/283')
+    },
+    {
+      id: 'preorder-salam-istishna',
+      title: 'Jual Beli Pre-Order: Akad Salam & Istishna\'',
+      category: 'Muamalah Modern',
+      summary: 'Meski menjual barang yang belum ada dilarang, Islam membolehkan pre-order lewat akad Salam (bayar penuh di muka) dan Istishna\' (pesan buat/properti).',
+      points: [
+        'Akad Salam (Pre-Order Barang Komoditas): Pembayaran wajib lunas 100% di awal akad, dengan spesifikasi barang, jumlah, dan tanggal pengiriman yang jelas (HR. Bukhari-Muslim).',
+        'Akad Istishna\' (Pesan Pembuatan / Konstruksi): Cocok untuk pesan jahit baju, furnitur, atau bangun rumah indent; pembayaran boleh dicicil sesuai progres pembangunan.',
+        'Kunci Kehalalan Pre-Order: Kejelasan spesifikasi, tenggat serah terima, dan tidak menjual sesuatu yang tidak mampu diserahterimakan penjual.'
+      ],
+      practice: 'Saat menjual produk pre-order, cantumkan spesifikasi ukuran/bahan, estimasi tanggal kirim, dan skema pembayaran secara tertulis.',
+      source: hadith(2240)
+    }
+  ]
+};
+
+export const adabTidurMimpi: Course = {
+  id: 'adab-tidur-mimpi',
+  title: 'Adab Tidur, Bangun Malam, & Memahami Mimpi',
+  description: 'Sunnah sebelum tidur, adab bangun malam, serta membedakan 3 jenis mimpi menurut hadits Rasulullah SAW.',
+  note: 'Tidur dengan adab sunnah mengubah sepertiga umur manusia menjadi pahala ibadah dan penjagaan malaikat.',
+  lessons: [
+    {
+      id: 'sunnah-sebelum-tidur',
+      title: 'Rangkaian Sunnah Rasulullah SAW Sebelum Tidur',
+      category: 'Adab Tidur',
+      summary: 'Berwudhu, mengibas tempat tidur 3 kali, berbaring miring ke kanan, membaca Ayat Kursi & 3 Qul, serta berdoa menutup hari.',
+      points: [
+        'Wudhu & Mengibas Tempat Tidur (HR. Bukhari-Muslim): Wudhu sebelum tidur didoakan malaikat sepanjang malam; kibas seprai sambil membaca Bismillah untuk menjaga kebersihan.',
+        'Posisi Tidur Sunnah: Miring ke sisi kanan (dengan tangan kanan di bawah pipi jika nyaman) dan dilarang tidur tengkurap tanpa uzur.',
+        'Benteng Dzikir Sebelum Tidur: Membaca Ayat Kursi (penjaga dari setan hingga Subuh), 2 ayat terakhir Al-Baqarah, serta meniup telapak tangan dengan Al-Ikhlas, Al-Falaq, An-Nas 3x lalu mengusapkannya ke tubuh.',
+        'Doa Tidur & Maafkan Manusia: "Bismika Allahumma amutu wa ahya" serta membersihkan hati dari dendam sebelum memejamkan mata.'
+      ],
+      practice: 'Mulai malam ini, lakukan urutan 3 langkah cepat sebelum tidur: wudhu, Ayat Kursi, dan 3 Qul.',
+      source: hadith(6314)
+    },
+    {
+      id: 'tiga-jenis-mimpi-islam',
+      title: 'Memahami Tiga Jenis Mimpi & Sikap Saat Mimpi Buruk',
+      category: 'Adab Mimpi',
+      summary: 'Rasulullah SAW membagi mimpi menjadi kabar gembira dari Allah, bisikan pikiran sendiri (bunga tidur), dan gangguan setan.',
+      points: [
+        '1. Ru\'ya Shadiqah (Mimpi Baik dari Allah): Bersyukurlah, puji Allah, dan ceritakan hanya kepada orang yang tulus mencintai Anda (HR. Bukhari).',
+        '2. Haditsun Nafs (Bunga Tidur): Cerminan kekhawatiran, aktivitas, atau obsesi harian kita — tidak memiliki makna gaib.',
+        '3. Takhwif Minal Syaithan (Mimpi Buruk dari Setan): Jangan panik dan jangan diceritakan kepada siapa pun! Meludah kecil ke kiri 3x, baca Ta\'awudz 3x, ubah posisi tidur, dan shalat jika terjaga (HR. Muslim).',
+        'Haram Mengarang Mimpi Palsu: Berdusta mengaku bermimpi melihat sesuatu yang tidak dilihat diancam hukuman berat di akhirat (HR. Bukhari).'
+      ],
+      practice: 'Jika terbangun karena mimpi buruk, jangan langsung menceritakannya ke grup chat; cukup berlindung kepada Allah dan ubah posisi tidur.',
+      source: hadith(6985)
+    },
+    {
+      id: 'adab-bangun-malam',
+      title: 'Adab Bangun Tidur & Menghidupkan Sepertiga Malam',
+      category: 'Bangun Malam',
+      summary: 'Mengucap hamdalah ("Alhamdulillahilladzi ahyana ba\'da ma amatana..."), mencuci tangan, dan menunaikan Tahajud atau shalat Subuh tepat waktu.',
+      points: [
+        'Melepas 3 Ikatan Setan Saat Bangun (HR. Bukhari-Muslim): Ikatan pertama lepas dengan dzikir bangun tidur, kedua dengan wudhu, ketiga dengan shalat — sehingga jiwa menjadi bersemangat.',
+        'Mencuci Tangan Sebelum Memasukkan ke Wadah Air: Sunnah higienitas Nabi SAW karena tangan tidak tahu di mana ia bermalam.',
+        'Membaca 10 Ayat Terakhir Ali \'Imran: Sunnah Nabi SAW saat bangun untuk shalat malam sambil menatap langit.'
+      ],
+      practice: 'Latih diri langsung mengucap hamdalah dan doa bangun tidur begitu mata terbuka sebelum menyentuh ponsel.',
+      source: hadith(1142)
+    }
+  ]
+};
+
+export const ilmuwanMuslim: Course = {
+  id: 'ilmuwan-muslim',
+  title: 'Biografi Ilmuwan Muslim Perintis Sains Modern',
+  description: 'Mengenal karya dan metode ilmiah Ibnu al-Haytham, Al-Khawarizmi, Ibnu Sina, Al-Jazari, dan Al-Biruni.',
+  note: 'Para ilmuwan Muslim tidak memisahkan laboratorium dari masjid; bagi mereka meneliti hukum alam adalah membaca ayat-ayat kauniyah Allah.',
+  lessons: [
+    {
+      id: 'ibnu-al-haytham-al-khawarizmi',
+      title: 'Ibnu al-Haytham (Bapak Optik) & Al-Khawarizmi (Bapak Aljabar)',
+      category: 'Matematika & Fisika',
+      summary: 'Ibnu al-Haytham merumuskan metode ilmiah berbasis eksperimen modern; Al-Khawarizmi melahirkan Aljabar dan konsep Algoritma.',
+      points: [
+        'Al-Hasan Ibnu al-Haytham (965–1040 M): Menulis Kitab al-Manazir (Book of Optics); membuktikan bahwa mata melihat karena pantulan cahaya masuk ke mata dan merintis prinsip kamera obscura.',
+        'Perintis Metode Ilmiah: Ia menegaskan bahwa kebenaran teori harus diuji lewat eksperimen berulang, bukan sekadar asumsi filosofis.',
+        'Muhammad bin Musa Al-Khawarizmi (780–850 M): Bekerja di Baitul Hikmah Baghdad; bukunya Al-Jabr wal-Muqabalah menjadi asal kata "Aljabar", dan namanya diabadikan menjadi istilah "Algoritma".'
+      ],
+      practice: 'Saat menulis kode komputer atau menghitung persamaan matematika, ingatlah warisan intelektual Al-Khawarizmi dan niatkan ilmu untuk kebaikan.',
+      source: quran('3/190')
+    },
+    {
+      id: 'ibnu-sina-al-zahrawi-kedokteran',
+      title: 'Ibnu Sina & Az-Zahrawi: Pelopor Kedokteran & Bedah Modern',
+      category: 'Kedokteran',
+      summary: 'Karya Al-Qanun fit-Thibb milik Ibnu Sina menjadi buku ajar fakultas kedokteran Eropa selama lebih dari 500 tahun.',
+      points: [
+        'Ibnu Sina / Avicenna (980–1037 M): Hafal Al-Qur\'an di usia 10 tahun; menyusun Al-Qanun fit-Thibb yang merumuskan konsep karantina penyakit menular (40 hari / al-arba\'iniyyah) dan uji klinis obat.',
+        'Abul Qasim Az-Zahrawi (936–1013 M): Dokter bedah terbesar dari Cordoba (Andalusia); merancang lebih dari 200 instrumen bedah modern (pisau bedah, benang jahit catgut yang larut di tubuh).',
+        'Rumah Sakit Islam (Bimaristan): Sudah memiliki bangsal terpisah, apotek, perpustakaan, serta layanan gratis bagi seluruh warga tanpa memandang agama.'
+      ],
+      practice: 'Teladani etos Ibnu Sina yang selalu shalat dua rakaat memohon petunjuk Allah setiap kali menemui kesulitan memahami masalah ilmiah.',
+      source: quran('26/80')
+    },
+    {
+      id: 'al-jazari-al-biruni-maryam',
+      title: 'Al-Jazari, Al-Biruni, & Maryam al-Asturlabi: Teknik & Astronomi',
+      category: 'Teknik & Astronomi',
+      summary: 'Al-Jazari menciptakan mekanisme poros engkol & robotika awal; Al-Biruni mengukur keliling bumi dengan presisi luar biasa.',
+      points: [
+        'Badi\'uzzaman Al-Jazari (1136–1206 M): Insinyur mekanik yang merancang pompa air otomatis, jam gajah, dan mekanisme crankshaft-connecting rod (fondasi mesin modern).',
+        'Abu Rayhan Al-Biruni (973–1048 M): Mengukur jari-jari dan keliling bumi dari puncak gunung di India hanya dengan selisih kurang dari 1% dibanding pengukuran satelit modern.',
+        'Maryam al-Asturlabi (Abad ke-10 M): Ilmuwan muslimah asal Aleppo yang mahir merancang astrolab canggih untuk navigasi, penentuan waktu shalat, dan arah kiblat.'
+      ],
+      practice: 'Dorong generasi muda Muslim untuk menguasai sains, AI, teknik, dan kedokteran dengan landasan akhlak Al-Qur\'an.',
+      source: quran('55/5')
+    }
+  ]
+};
+
+export const kaligrafiIslam: Course = {
+  id: 'kaligrafi-islam',
+  title: 'Sejarah & Jenis Kaligrafi Islam (Khat Arab)',
+  description: 'Mengenal 6 gaya khat utama (Naskhi, Tsuluts, Riq\'ah, Diwani, Kufi, Farisi) dan perannya dalam peradaban Islam.',
+  note: 'Seni kaligrafi Islam lahir dari kecintaan umat menjaga keindahan tulisan wahyu Al-Qur\'an dan hadits.',
+  lessons: [
+    {
+      id: 'sejarah-perkembangan-khat',
+      title: 'Lahirnya Seni Khat Arab & Tokoh Ibnu Muqlah',
+      category: 'Sejarah Khat',
+      summary: 'Dari tulisan Kufi geometris tanpa titik di awal Islam, kaligrafi berkembang menjadi seni presisi geometris berkat kaidah Ibnu Muqlah.',
+      points: [
+        'Khat Kufi (Gaya Tertua): Berbentuk tegas, menyudut, dan geometris; dipakai menulis mushaf-mushaf Utsmani awal dan dekorasi masjid.',
+        'Revolusi Ibnu Muqlah (Abad ke-10 M): Merumuskan standar proporsi huruf berdasarkan titik pena bambu (qalam) dan lingkaran huruf Alif (Al-Khat al-Mansub).',
+        'Pena Qalam & Tinta Alami: Kaligrafer tradisional memotong miring ujung pena bambu/alang-alang dengan sudut khusus untuk menghasilkan ketebalan garis yang harmonis.'
+      ],
+      practice: 'Perhatikan tulisan mushaf Al-Qur\'an di rumah Anda — amati keteraturan tinggi huruf Alif dan lengkungan huruf Nun.',
+      source: quran('68/1')
+    },
+    {
+      id: 'enam-gaya-khat-utama',
+      title: 'Mengenal 6 Gaya Khat Utama (Al-Aqlam As-Sittah & Modern)',
+      category: 'Jenis Khat',
+      summary: 'Setiap gaya khat punya fungsi berbeda: Naskhi untuk mushaf & buku, Tsuluts untuk judul & masjid, Riq\'ah untuk tulisan tangan cepat.',
+      points: [
+        '1. Khat Naskhi: Paling jelas, seimbang, dan mudah dibaca — menjadi standar penulisan Mushaf Al-Qur\'an dan buku cetak modern.',
+        '2. Khat Tsuluts: Paling megah dan artistik — banyak menghiasi kubah masjid, pintu Ka\'bah, dan judul kaligrafi.',
+        '3. Khat Riq\'ah: Ringkas, sederhana, dan cepat ditulis — menjadi standar tulisan tangan sehari-hari di dunia Arab.',
+        '4. Khat Diwani & Farisi (Nasta\'liq): Diwani lahir di istana Utsmani dengan lengkungan anggun; Farisi/Nasta\'liq populer untuk puisi dan naskah Asia Selatan/Persia.'
+      ],
+      practice: 'Buka halaman 29 Huruf Hijaiyah di aplikasi ini untuk membandingkan bentuk dasar huruf sebelum belajar menulis khat Naskhi.',
+      source: quran('96/4')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -6205,4 +6438,9 @@ export const courseLinks = [
   { href: '/fiqh-sumpah-kaffarah', title: fiqhSumpahKaffarah.title, description: fiqhSumpahKaffarah.description },
   { href: '/fiqh-wasiat-hibah', title: fiqhWasiatHibah.title, description: fiqhWasiatHibah.description },
   { href: '/kepemimpinan-islami', title: kepemimpinanIslami.title, description: kepemimpinanIslami.description },
+  { href: '/fiqh-darah-wanita', title: fiqhDarahWanita.title, description: fiqhDarahWanita.description },
+  { href: '/fiqh-properti-gadai', title: fiqhPropertiGadai.title, description: fiqhPropertiGadai.description },
+  { href: '/adab-tidur-mimpi', title: adabTidurMimpi.title, description: adabTidurMimpi.description },
+  { href: '/ilmuwan-muslim', title: ilmuwanMuslim.title, description: ilmuwanMuslim.description },
+  { href: '/kaligrafi-islam', title: kaligrafiIslam.title, description: kaligrafiIslam.description },
 ];

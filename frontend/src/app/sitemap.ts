@@ -19,6 +19,8 @@ const ROUTES = [
   "/adab-lisan-majelis", "/mutabaah-yaumiyah", "/kalkulator-qurban",
   "/tadabbur-asmaul-husna", "/tadabbur-surat-pilihan", "/fiqh-sumpah-kaffarah",
   "/fiqh-wasiat-hibah", "/kepemimpinan-islami", "/kalkulator-kaffarah", "/doa-asmaul-husna",
+  "/fiqh-darah-wanita", "/fiqh-properti-gadai", "/adab-tidur-mimpi", "/ilmuwan-muslim",
+  "/kaligrafi-islam", "/simulasi-murabahah", "/panduan-haid",
   "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/about", "/help", "/masukan", "/privacy", "/terms"
 ];
 

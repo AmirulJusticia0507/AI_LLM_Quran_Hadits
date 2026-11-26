@@ -99,6 +99,14 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Panduan Berdoa</span>
           Pemilih Doa &amp; Asmaul Husna
         </Link>
+        <Link href="/simulasi-murabahah" className="block rounded-2xl bg-linear-to-br from-emerald-700 to-cyan-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Ekonomi Syariah</span>
+          Simulasi KPR Murabahah
+        </Link>
+        <Link href="/panduan-haid" className="block rounded-2xl bg-linear-to-br from-rose-700 to-purple-950 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-rose-200 mb-1">Fiqh Muslimah</span>
+          Panduan Haid &amp; Istihadhah
+        </Link>
       </div>
 
       <Link
