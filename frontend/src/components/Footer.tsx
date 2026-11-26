@@ -144,6 +144,12 @@ export default function Footer() {
               <li><Link href="/peradaban" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Sejarah Peradaban Islam</Link></li>
               <li><Link href="/munakahat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Pernikahan</Link></li>
               <li><Link href="/muamalah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Muamalah &amp; Bisnis</Link></li>
+              <li><Link href="/zakat-kontemporer" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Zakat Kontemporer</Link></li>
+              <li><Link href="/fiqh-ramadan" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Ramadan Lengkap</Link></li>
+              <li><Link href="/ekonomi-syariah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ekonomi Syariah</Link></li>
+              <li><Link href="/kalkulator-zakat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Zakat</Link></li>
+              <li><Link href="/kalkulator-waris" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Waris</Link></li>
+              <li><Link href="/kuis-islam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kuis Islam Harian</Link></li>
             </ul>
           </div>
 

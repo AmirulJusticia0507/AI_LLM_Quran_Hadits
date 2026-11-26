@@ -12,7 +12,7 @@ const navItems = [
   { href: "/quran", labelKey: "nav.quran", icon: BookOpen, badge: "30 Juz" },
   { href: "/hadith", labelKey: "nav.hadith", icon: ScrollText, badge: "9 Kitab" },
   { href: "/rujukan", labelKey: "nav.references", icon: Network, badge: "Sumber" },
-  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "30 Modul Islam" },
+  { href: "/belajar", labelKey: "nav.belajar", icon: GraduationCap, badge: "39 Modul Islam" },
   { href: "/about", labelKey: "nav.about", icon: Info, badge: "Info" },
 ];
 
