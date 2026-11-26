@@ -6574,6 +6574,247 @@ export const ilmuMantikMunazharah: Course = {
   ]
 };
 
+export const fiqhJinayatHudud: Course = {
+  id: 'fiqh-jinayat-hudud',
+  title: 'Fiqh Jinayat, Diyat, & Keadilan Pidana Islam',
+  description: 'Memahami konsep Qishash, Diyat, Hudud, Ta\'zir, syarat pembuktian ketat, serta larangan main hakim sendiri dalam Islam.',
+  note: 'Tujuan utama hukum pidana Islam (Maqashid) adalah menjaga jiwa, akal, harta, dan kehormatan — bukan sekadar menghukum, melainkan mencegah kejahatan dan melindungi masyarakat.',
+  lessons: [
+    {
+      id: 'prinsip-pidana-dan-larangan-main-hakim',
+      title: 'Prinsip Keadilan Pidana Islam & Larangan Main Hakim Sendiri',
+      category: 'Dasar Jinayat',
+      summary: 'Eksekusi hukuman dalam Islam hanya menjadi wewenang pengadilan dan pemerintah sah (ulil amri); individu atau massa haram main hakim sendiri.',
+      points: [
+        'Tiga Kategori Hukuman: Hudud (sanksi tetap dalam nash), Qishash-Diyat (kejahatan terhadap jiwa/fisik dengan opsi pemaafan korban), dan Ta\'zir (sanksi kebijakan hakim sesuai maslahah).',
+        'Kewenangan Mutlak Negara: Sejak zaman Nabi SAW dan Khulafaur Rasyidin, penjatuhan hukuman wajib lewat pembuktian hakim di pengadilan — bukan oleh warga secara sepihak.',
+        'Kaidah Emas "Idra\'ul Hudud bisy-Syubuhat" (HR. Tirmidzi): Tolaklah penerapan hukum had apabila masih ada keraguan (syubhat) sekecil apa pun dalam pembuktian.'
+      ],
+      practice: 'Tolak segala bentuk persekusi atau main hakim sendiri di lingkungan masyarakat maupun media sosial; serahkan penegakan hukum ke jalur resmi yang adil.',
+      source: quran('5/8')
+    },
+    {
+      id: 'qishash-diyat-dan-pemaafan',
+      title: 'Qishash, Diyat (Ganti Rugi), & Kemuliaan Pemaafan Korban',
+      category: 'Perlindungan Jiwa',
+      summary: 'Pada kasus pembunuhan atau pelukaan, Al-Qur\'an memberi hak kepada keluarga korban untuk memilih qishash, menerima diyat (ganti rugi), atau memaafkan.',
+      points: [
+        'Hikmah Qishash (QS. Al-Baqarah: 179): "Dalam qishash itu ada jaminan kelangsungan hidup bagimu" — mencegah aksi balas dendam antarsuku tak berkesudahan.',
+        'Diyat (Kompensasi Finansial): Jika pembunuhan tidak disengaja (misal kecelakaan lalu lintas murni) atau keluarga korban memaafkan qishash, berlaku diyat untuk menopang keluarga korban.',
+        'Anjuran Memaafkan (QS. Al-Ma\'idah: 45): Islam sangat memuji keluarga korban yang memilih memaafkan sebagai sedekah berpahala besar.'
+      ],
+      practice: 'Pahami bahwa syariat Islam menyeimbangkan hak keadilan bagi korban dengan pintu maaf dan pemulihan sosial.',
+      source: quran('2/179')
+    },
+    {
+      id: 'standar-pembuktian-dan-tazir',
+      title: 'Ketatnya Syarat Pembuktian & Fleksibilitas Ta\'zir Modern',
+      category: 'Sistem Peradilan',
+      summary: 'Syarat pembuktian hudud sangat ketat (misal 4 saksi mata langsung yang melihat jelas tanpa keraguan); kejahatan modern seperti korupsi & siber ditangani lewat Ta\'zir.',
+      points: [
+        'Melindungi Kehormatan dari Tuduhan Palsu (Qadzaf): Menuduh orang baik berzina tanpa 4 saksi mata langsung justru membuat si penuduh dihukum cambuk 80 kali (QS. An-Nur: 4).',
+        'Prinsip Ta\'zir untuk Kejahatan Modern: Korupsi, penipuan online, peredaran narkoba, dan pencemaran lingkungan dihukum hakim lewat penjara, denda, atau penyitaan aset demi efek jera.',
+        'Keadilan Tanpa Pandang Bulu (HR. Bukhari-Muslim): Nabi SAW menegaskan hukum berlaku sama bagi rakyat biasa maupun bangsawan.'
+      ],
+      practice: 'Jangan pernah menyebarkan tuduhan aib seseorang tanpa bukti hukum sah, karena tuduhan palsu termasuk dosa besar.',
+      source: quran('24/4')
+    }
+  ]
+};
+
+export const aqidahAhlussunnah: Course = {
+  id: 'aqidah-ahlussunnah',
+  title: 'Sejarah & Manhaj Aqidah Ahlussunnah Wal Jama\'ah',
+  description: 'Mengenal perkembangan akidah dari generasi Salaf hingga perumusan Imam Al-Asy\'ari dan Al-Maturidi yang menjaga persatuan umat.',
+  note: 'Seluruh madzhab Ahlussunnah Wal Jama\'ah sepakat pada Rukun Iman yang enam dan menjauhi pengkafiran sesama Muslim secara serampangan.',
+  lessons: [
+    {
+      id: 'aqidah-generasi-salaf',
+      title: 'Kemurnian Aqidah Generasi Salaf (Sahabat & Tabi\'in)',
+      category: 'Sejarah Akidah',
+      summary: 'Pada masa Nabi SAW dan sahabat, umat Islam menerima ayat dan hadits akidah dengan iman penuh tanpa perdebatan filsafat yang memecah belah.',
+      points: [
+        'Ciri Akidah Salaf: Menetapkan sifat-sifat Allah sesuai Al-Qur\'an dan Hadits shahih tanpa menyerupakan-Nya dengan makhluk (la tasybih) dan tanpa menolak maknanya (la ta\'thil).',
+        'Sikap Imam Malik tentang Ayat Istiwa\': "Istiwa\' itu maknanya diketahui, caranya (kaifiyah) tidak terjangkau akal, mengimaninya wajib, dan memperdebatkannya secara liar adalah bid\'ah."',
+        'Munculnya Tantangan Pemikiran: Ketika wilayah Islam meluas dan buku filsafat Yunani diterjemahkan, muncul aliran ekstrem seperti Khawarij, Mu\'tazilah, dan Mujassimah.'
+      ],
+      practice: 'Fokuskan pembelajaran akidah pada pengenalan Allah yang menumbuhkan rasa cinta, takut, dan harap dalam ibadah.',
+      source: quran('42/11')
+    },
+    {
+      id: 'manhaj-asyari-maturidi-atsari',
+      title: 'Imam Al-Asy\'ari, Al-Maturidi, & Ahlul Hadits (Atsari)',
+      category: 'Manhaj Ahlussunnah',
+      summary: 'Para ulama Ahlussunnah membela akidah murni memakai kombinasi dalil wahyu (naqli) dan argumen akal sehat (aqli) untuk membantah keraguan filsafat.',
+      points: [
+        'Imam Abul Hasan Al-Asy\'ari (260–324 H): Awalnya mendalami Mu\'tazilah lalu kembali ke manhaj Imam Ahmad bin Hanbal; merumuskan 20 sifat wajib Allah untuk memudahkan umat melawan penyimpangan filsafat.',
+        'Imam Abu Manshur Al-Maturidi (w. 333 H): Ulama besar Samarkand pengikut Imam Abu Hanifah yang merumuskan metode serupa di Asia Tengah.',
+        'Manhaj Atsari / Ahlul Hadits: Diikuti ulama hadits seperti Imam Ahmad, Bukhari, dan Ibnu Qudamah yang memprioritaskan lafaz nash tanpa takwil panjang kecuali darurat.',
+        'Titik Temu Persatuan: Mayoritas ulama dunia (Imam Nawawi, Ibnu Hajar, Al-Ghazali, Shalahuddin al-Ayyubi, hingga ulama Nusantara) bernaung dalam payung besar Ahlussunnah Wal Jama\'ah.'
+      ],
+      practice: 'Hindari menyesatkan atau mengkafirkan sesama Muslim hanya karena perbedaan metode penjelasan akidah di internal Ahlussunnah.',
+      source: quran('3/103')
+    },
+    {
+      id: 'kaidah-menghindari-takfir',
+      title: 'Kaidah Ulama: Bahaya Mudah Mengkafirkan (Takfir)',
+      category: 'Etika Akidah',
+      summary: 'Rasulullah SAW memperingatkan bahwa siapa yang memanggil saudaranya "kafir" padahal tidak demikian, maka tuduhan itu kembali kepada dirinya sendiri (HR. Bukhari-Muslim).',
+      points: [
+        'Hukum Asal Muslim: Siapa yang shalat menghadap kiblat dan bersyahadat tidak boleh dikeluarkan dari Islam kecuali dengan bukti qath\'i yang menghilangkan seluruh uzur.',
+        'Beda Kesalahan Fikih/Cabang vs Kekufuran: Perbedaan qunut, jumlah tarawih, atau metode hisab-rukyat sama sekali bukan urusan kufur-iman.',
+        'Menjaga Ukhuwah: Fokus membimbing masyarakat dengan hikmah dan kasih sayang sebagaimana dakwah para nabi.'
+      ],
+      practice: 'Jaga lisan dari melabeli kelompok atau sesama Muslim dengan sebutan sesat atau kafir.',
+      source: hadith(6104)
+    }
+  ]
+};
+
+export const fiqhSosialKemanusiaan: Course = {
+  id: 'fiqh-sosial-kemanusiaan',
+  title: 'Fiqh Sosial, Filantropi, & Hak Kaum Rentan',
+  description: 'Konsep keadilan sosial Islam, kewajiban sosial terhadap fakir miskin, hak penyandang disabilitas, dan ta\'awun kemanusiaan.',
+  note: 'Kesalehan ritual dalam Islam tidak sempurna tanpa kesalehan sosial; QS. Al-Ma\'un menegur orang yang shalat namun mengabaikan anak yatim dan fakir miskin.',
+  lessons: [
+    {
+      id: 'dimensi-sosial-ibadah',
+      title: 'Kesalehan Sosial dalam Al-Qur\'an (QS. Al-Ma\'un & Al-Balad)',
+      category: 'Fiqh Sosial',
+      summary: 'Al-Qur\'an menggandengkan shalat dengan zakat, serta menilai kemuliaan jalan menanjak (al-\'aqabah) berupa membebaskan budak dan memberi makan saat kelaparan.',
+      points: [
+        'Teguran QS. Al-Ma\'un: Orang yang mendustakan agama adalah yang menghardik anak yatim dan tidak mendorong memberi makan orang miskin.',
+        'Jalan Menanjak Al-Balad (QS. 90:12–16): Membebaskan orang terjerat hutang/perbudakan dan menyantuni yatim serta fakir yang terhimpit.',
+        'Kewajiban Kolektif (Fardhu Kifayah): Jika di suatu kampung ada warga kelaparan atau tidak mampu berobat padahal tetangganya mampu, seluruh warga mampu ikut berdosa.'
+      ],
+      practice: 'Sisihkan sebagian anggaran bulanan Anda secara rutin untuk program bantuan pangan atau pendidikan anak yatim di sekitar tempat tinggal.',
+      source: quran('107/1')
+    },
+    {
+      id: 'hak-penyandang-disabilitas',
+      title: 'Islam Memuliakan Penyandang Disabilitas & Kaum Rentan',
+      category: 'Inklusi Sosial',
+      summary: 'Rasulullah SAW mengangkat sahabat tunanetra (Abdullah bin Ummi Maktum) menjadi muadzin Masjid Nabawi sekaligus pelaksana tugas wali kota Madinah saat beliau safar.',
+      points: [
+        'Teguran QS. \'Abasa: Allah langsung menegur Nabi SAW agar memuliakan Abdullah bin Ummi Maktum yang datang bertanya dengan tulus.',
+        'Keringanan Ibadah (Rukhsah): Allah memberi keringanan bagi penyandang disabilitas dari kewajiban yang di luar batas fisiknya (QS. An-Nur: 61, Al-Fath: 17).',
+        'Aksesibilitas Masjid: Membangun masjid dengan jalur landai (ramp) kursi roda dan fasilitas wudhu ramah lansia & difabel adalah bagian dari memakmurkan rumah Allah.'
+      ],
+      practice: 'Usulkan kepada pengurus masjid setempat agar menyediakan akses kursi roda atau kursi shalat yang nyaman bagi lansia dan difabel.',
+      source: quran('80/1')
+    },
+    {
+      id: 'etika-filantropi-anti-pamer',
+      title: 'Etika Filantropi: Menjaga Martabat Penerima Bantuan',
+      category: 'Filantropi Islam',
+      summary: 'Sedekah yang tulus tidak disertai ungkit-mengungkit (mann) maupun menyakiti perasaan penerima (adza) — QS. Al-Baqarah: 264.',
+      points: [
+        'Menjaga Kehormatan Mustahiq: Hindari memotret wajah penerima santunan dalam kondisi memelas untuk konten pribadi tanpa izin atau tujuan laporan lembaga resmi.',
+        'Sedekah Sembunyi-sembunyi (HR. Bukhari-Muslim): Salah satu dari 7 golongan yang dinaungi Allah adalah yang bersedekah hingga tangan kirinya tidak tahu apa yang diberi tangan kanannya.',
+        'Pemberdayaan Jangka Panjang: Memberi beasiswa keterampilan atau modal usaha bebas riba agar penerima kelak menjadi pemberi zakat.'
+      ],
+      practice: 'Saat memberi bantuan langsung ke tetangga yang membutuhkan, sampaikan dengan bahasa santun seolah itu hadiah silaturahim.',
+      source: quran('2/264')
+    }
+  ]
+};
+
+export const takhrijHadits: Course = {
+  id: 'takhrij-hadits',
+  title: 'Ilmu Takhrij Hadits & Kitab Kutubus Sittah',
+  description: 'Cara melacak sumber hadits, mengenal karakter kitab Bukhari hingga Ibnu Majah, serta mewaspadai hadits palsu di internet.',
+  note: 'Sanad adalah bagian dari agama; tanpa sanad dan verifikasi (takhrij), siapa saja bisa berkata apa saja atas nama Nabi SAW (Abdullah bin Mubarak).',
+  lessons: [
+    {
+      id: 'mengenal-kutubus-sittah',
+      title: 'Mengenal Karakter 6 Kitab Hadits Utama (Kutubus Sittah)',
+      category: 'Kitab Hadits',
+      summary: 'Shahih Bukhari dan Muslim adalah kitab paling otentik setelah Al-Qur\'an; empat kitab Sunan melengkapinya dengan fokus bab fikih.',
+      points: [
+        'Shahih Bukhari & Shahih Muslim (Ash-Shahihain): Seluruh hadits musnad di dalamnya berderajat shahih; jika suatu hadits diriwayatkan keduanya disebut Muttafaq \'Alaih.',
+        'Sunan Abu Dawud: Fokus mengumpulkan hadits-hadits hukum fikih (sekitar 4.800–5.200 hadits) yang menjadi rujukan utama para ahli fikih.',
+        'Jami\' At-Tirmidzi: Keunggulannya mencantumkan penilaian derajat hadits langsung dan menyebutkan pendapat madzhab fikih para ulama.',
+        'Sunan An-Nasa\'i & Sunan Ibnu Majah: An-Nasa\'i terkenal sangat ketat menyaring perawi; Ibnu Majah melengkapi bab fikih namun memuat sebagian hadits dha\'if sehingga wajib dicek derajatnya.'
+      ],
+      practice: 'Buka menu Hadits di aplikasi Al-Hikmah AI ini untuk mencoba menelusuri satu tema ibadah di berbagai kitab Kutubus Sittah.',
+      source: hadith(1631)
+    },
+    {
+      id: 'cara-takhrij-hadits-era-digital',
+      title: 'Cara Praktis Takhrij (Melacak Keaslian) Hadits di Era Digital',
+      category: 'Metode Takhrij',
+      summary: 'Jangan langsung menyebarkan kutipan berlabel "HR. Bukhari" di grup WhatsApp sebelum mengecek kata kunci Arabnya di sumber resmi.',
+      points: [
+        'Langkah 1 — Cek Kata Kunci Arab: Ambil potongan kalimat inti dalam bahasa Arab atau istilah kunci (misal kata "kebersihan", "menuntut ilmu ke negeri Cina").',
+        'Langkah 2 — Cek Status Derajatnya: Apakah Shahih, Hasan, Dha\'if (lemah), atau Maudhu\' (palsu/buatan)?',
+        'Ciri Hadits Palsu Populer: Bahasanya janggal, menjanjikan pahala fantastis untuk amal sangat kecil atau ancaman neraka mengerikan untuk dosa sepele, atau tidak ditemukan di kitab hadits mana pun.'
+      ],
+      practice: 'Jika menerima broadcast pesan berisi hadits tanpa nomor dan kitab yang jelas, cek dulu lewat fitur Pencarian Hadits atau AI sebelum meneruskannya.',
+      source: hadith(107)
+    },
+    {
+      id: 'sikap-terhadap-hadits-dhaif',
+      title: 'Sikap Ulama Terhadap Hadits Dha\'if & Ancaman Hadits Palsu',
+      category: 'Integritas Riwayat',
+      summary: 'Hadits palsu (maudhu\') haram mutlak diriwayatkan kecuali untuk memperingatkan kepalsuannya; hadits dha\'if ringan boleh untuk motivasi (fadhail a\'mal) dengan syarat ketat.',
+      points: [
+        'Ancaman Mutawatir Nabi SAW (HR. Bukhari-Muslim): "Barangsiapa berdusta atas namaku dengan sengaja, hendaklah ia menempati tempat duduknya di neraka."',
+        'Syarat Imam Ibnu Hajar Memakai Hadits Dha\'if dalam Fadhail A\'mal: Kelemahannya tidak parah, bernaung di bawah dalil pokok yang shahih, tidak diyakini pasti dari Nabi SAW, dan tidak menetapkan hukum halal-haram baru.'
+      ],
+      practice: 'Biasakan mengutip hadits dari sumber Shahihain atau kitab terverifikasi saat menyampaikan nasihat agama.',
+      source: hadith(107)
+    }
+  ]
+};
+
+export const manajemenWaktuIslami: Course = {
+  id: 'manajemen-waktu-islami',
+  title: 'Manajemen Waktu & Produktivitas Muslim',
+  description: 'Mengatur waktu berbasis shalat lima waktu, mencari keberkahan pagi, dan menyeimbangkan hak Allah, keluarga, serta pekerjaan.',
+  note: '"Demi masa, sesungguhnya manusia benar-benar berada dalam kerugian..." (QS. Al-\'Ashr: 1–2); waktu adalah modal hidup yang tak pernah bisa dibeli ulang.',
+  lessons: [
+    {
+      id: 'keberkahan-waktu-pagi',
+      title: 'Menjemput Keberkahan Pagi (Bukur) & Lima Blok Waktu Shalat',
+      category: 'Produktivitas Islami',
+      summary: 'Rasulullah SAW mendoakan keberkahan umatnya pada waktu pagi hari (ba\'da Subuh); shalat lima waktu adalah jadwal alami terbaik membagi fokus kerja.',
+      points: [
+        'Doa Keberkahan Pagi (HR. Abu Dawud & Tirmidzi): "Allahumma barik li-ummati fi bukuriha" — waktu setelah Subuh adalah jam paling produktif untuk berpikir, belajar, dan mencari rezeki.',
+        'Time-Blocking Berbasis Shalat: Subuh–Dhuha (kerja fokus mendalam), Dzuhur (istirahat sejenak / qailulah 15–20 menit), Ashar (evaluasi & tugas ringan), Maghrib–Isya\' (keluarga & ilmu).',
+        'Dua Nikmat yang Sering Melalaikan (HR. Bukhari): Kesehatan dan waktu luang (al-faragh).'
+      ],
+      practice: 'Jangan langsung tidur lagi setelah Shalat Subuh; manfaatkan 60 menit pertama pagi hari untuk tilawah, olahraga ringan, atau pekerjaan terpenting Anda.',
+      source: quran('103/1')
+    },
+    {
+      id: 'keseimbangan-hidup-hadits-salman',
+      title: 'Keseimbangan Hidup: Nasihat Salman al-Farisi kepada Abu Darda\'',
+      category: 'Work-Life Balance',
+      summary: 'Islam menolak ekstremitas kerja tanpa ibadah maupun ibadah ekstrem hingga mengabaikan kesehatan dan keluarga.',
+      points: [
+        'Hadits Shahih Bukhari: Salman menasihati Abu Darda\': "Sesungguhnya Tuhanmu punya hak atasmu, dirimu (tubuhmu) punya hak atasmu, dan keluargamu punya hak atasmu; berikanlah setiap yang berhak itu haknya."',
+        'Dibenarkan Rasulullah SAW: Nabi SAW bersabda bahwa ucapan Salman tersebut benar.',
+        'Jeda Qailulah (Tidur Siang Singkat): Sunnah tidur singkat sebelum atau sekitar Dzuhur membantu memulihkan fokus hingga malam untuk shalat malam dan produktivitas.'
+      ],
+      practice: 'Jadwalkan waktu khusus bebas gawai (device-free time) bersama pasangan atau orang tua setiap hari setelah Maghrib atau Isya\'.',
+      source: hadith(1968)
+    },
+    {
+      id: 'melawan-taswif-dan-distraksi',
+      title: 'Melawan Penyakit Taswif (Menunda-nunda) & Distraksi Digital',
+      category: 'Manajemen Diri',
+      summary: 'Ulama salaf memperingatkan bahwa "nanti/besok" (saufa) adalah tentara iblis yang paling sering memakan umur manusia tanpa amal.',
+      points: [
+        'Nasihat Ibnu Umar RA (HR. Bukhari): "Jika engkau berada di sore hari jangan menunggu pagi, dan jika di pagi hari jangan menunggu sore."',
+        'Fokus pada Hal Bermanfaat (HR. Tirmidzi): "Di antara tanda kebaikan Islam seseorang adalah meninggalkan hal yang tidak bermanfaat baginya."',
+        'Audit Screen Time: Kurangi scrolling tanpa tujuan; ubah waktu tunggu menjadi dzikir ringan atau membaca 1–2 halaman buku/Al-Qur\'an.'
+      ],
+      practice: 'Cek fitur Screen Time / Digital Wellbeing di ponsel Anda hari ini dan tetapkan batas waktu harian untuk media sosial hiburan.',
+      source: hadith(2317)
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -6648,4 +6889,9 @@ export const courseLinks = [
   { href: '/fiqh-sembelihan-halal', title: fiqhSembelihanHalal.title, description: fiqhSembelihanHalal.description },
   { href: '/masjid-bersejarah', title: masjidBersejarah.title, description: masjidBersejarah.description },
   { href: '/ilmu-mantik-munazharah', title: ilmuMantikMunazharah.title, description: ilmuMantikMunazharah.description },
+  { href: '/fiqh-jinayat-hudud', title: fiqhJinayatHudud.title, description: fiqhJinayatHudud.description },
+  { href: '/aqidah-ahlussunnah', title: aqidahAhlussunnah.title, description: aqidahAhlussunnah.description },
+  { href: '/fiqh-sosial-kemanusiaan', title: fiqhSosialKemanusiaan.title, description: fiqhSosialKemanusiaan.description },
+  { href: '/takhrij-hadits', title: takhrijHadits.title, description: takhrijHadits.description },
+  { href: '/manajemen-waktu-islami', title: manajemenWaktuIslami.title, description: manajemenWaktuIslami.description },
 ];
