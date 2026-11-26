@@ -4539,6 +4539,602 @@ export const fiqhRamadan: Course = {
   ]
 };
 
+export const sharafDasar: Course = {
+  id: 'sharaf-dasar',
+  title: 'Ilmu Sharaf Dasar',
+  description: 'Pelajari morfologi bahasa Arab: wazan fi\'il, tasrif istilahi & lughawi, isim fa\'il, isim maf\'ul, dan masdar.',
+  note: 'Jika Nahwu adalah ayah ilmu bahasa Arab untuk membaca baris akhir, Sharaf adalah ibunya untuk memahami asal & pecahan makna kata.',
+  lessons: [
+    {
+      id: 'pengantar-sharaf-wazan',
+      title: 'Konsep Akar Kata & Wazan (Timbangan Kata)',
+      category: 'Dasar Sharaf',
+      summary: 'Mayoritas kata kerja Arab berakar dari 3 huruf (tsulatsi mujarrad) yang ditimbang dengan pola فَعَلَ (fa-\'a-la).',
+      points: [
+        'Akar Tiga Huruf: Hampir semua kata Arab dibangun dari 3 huruf konsonan utama, misalnya ك - ت - ب (k-t-b = menulis).',
+        'Wazan فَعَلَ: Huruf pertama disebut Fa\' Fi\'il, kedua \'Ain Fi\'il, dan ketiga Lam Fi\'il.',
+        'Contoh Pecahan: كَتَبَ (telah menulis), يَكْتُبُ (sedang menulis), كَاتِبٌ (penulis), مَكْتُوبٌ (yang ditulis), كِتَابٌ (buku).',
+        'Enam Bab Tsulatsi Mujarrad: Dibedakan berdasarkan harakat \'Ain Fi\'il di bentuk lampau (madhi) dan sekarang (mudhari\').',
+        'Manfaat Tadabbur: Mengenali akar kata membantu langsung menebak inti makna kata baru dalam Al-Qur\'an.'
+      ],
+      practice: 'Ambil akar kata ع - ل - م (\'a-l-m = tahu) lalu temukan minimal 4 kata turunannya dalam Al-Qur\'an (misal: \'alim, ya\'lamu, \'ilm, ma\'lum).',
+      source: quran('12/2')
+    },
+    {
+      id: 'tasrif-istilahi',
+      title: 'Tasrif Istilahi: 10 Perubahan Bentuk Kata',
+      category: 'Tasrif',
+      summary: 'Tasrif istilahi mengubah satu akar kata menjadi berbagai fungsi makna: kata kerja, pelaku, objek, tempat, hingga alat.',
+      points: [
+        'Fi\'il Madhi (فَعَلَ): Kata kerja lampau (telah mengerjakan). Contoh: نَصَرَ (telah menolong).',
+        'Fi\'il Mudhari\' (يَفْعُلُ): Kata kerja sedang/akan dikerjakan. Contoh: يَنْصُرُ (sedang menolong).',
+        'Masdar (فَعْلًا): Kata benda abstrak/gerund. Contoh: نَصْرًا (pertolongan).',
+        'Isim Fa\'il (فَاعِلٌ) & Isim Maf\'ul (مَفْعُولٌ): Pelaku (نَاصِرٌ = penolong) dan objek yang dikenai perbuatan (مَنْصُورٌ = yang ditolong).',
+        'Fi\'il Amar & Nahyi: Kata perintah (اُنْصُرْ = tolonglah!) dan kata larangan (لَا تَنْصُرْ = jangan tolong!).',
+        'Isim Zaman, Makan & Alat: Penunjuk waktu/tempat (مَفْعَلٌ = tempat/waktu) dan alat (مِفْعَلٌ / مِفْتَاحٌ = kunci).'
+      ],
+      practice: 'Hafalkan tasrif istilahi untuk pola فَعَلَ - يَفْعُلُ - فَعْلًا - فَاعِلٌ - مَفْعُولٌ - اُفْعُلْ - لَا تَفْعُلْ.',
+      source: quran('110/1')
+    },
+    {
+      id: 'tasrif-lughawi',
+      title: 'Tasrif Lughawi: Perubahan Kata Berdasarkan Pelaku (Dhamir)',
+      category: 'Tasrif',
+      summary: 'Kata kerja Arab berubah akhiran atau awalannya mengikuti 14 kata ganti (orang ke-1, ke-2, ke-3; tunggal, ganda, jamak; laki-laki, perempuan).',
+      points: [
+        'Ghaib (Orang ke-3): هُوَ (dia lk), هُمَا (mereka berdua), هُمْ (mereka lk), هِيَ (dia pr), هُمَا, هُنَّ (mereka pr).',
+        'Mukhathab (Orang ke-2): أَنْتَ (kamu lk), أَنْتُمَا, أَنْتُمْ (kalian lk), أَنْتِ (kamu pr), أَنْتُمَا, أَنْتُنَّ.',
+        'Mutakallim (Orang ke-1): أَنَا (saya) dan نَحْنُ (kami/kita).',
+        'Contoh Madhi (كَتَبَ): كَتَبَ (dia lk), كَتَبُوا (mereka lk), كَتَبَتْ (dia pr), كَتَبْتَ (kamu lk), كَتَبْتُ (saya), كَتَبْنَا (kami).',
+        'Contoh Mudhari\' (يَكْتُبُ): تَكْتُبُ (kamu lk / dia pr), أَكْتُبُ (saya), نَكْتُبُ (kami).'
+      ],
+      practice: 'Perhatikan akhiran -تُمْ (-tum) dan -نَا (-na) saat membaca Al-Qur\'an untuk langsung tahu siapa pelakunya (kalian atau kami).',
+      source: quran('2/183')
+    },
+    {
+      id: 'fiil-mazid-makna',
+      title: 'Tsulatsi Mazid (Kata Kerja Berimbuhan)',
+      category: 'Pola Lanjutan',
+      summary: 'Penambahan 1, 2, atau 3 huruf pada akar kata mengubah nuansa makna menjadi kausatif (membuat jadi), saling, atau meminta.',
+      points: [
+        'Wazan أَفْعَلَ (Af\'ala): Mengubah kata intransitif menjadi transitif/membuat jadi. Contoh: نَزَلَ (turun) → أَنْزَلَ (menurunkan).',
+        'Wazan فَعَّلَ (Fa\'\'ala): Bermakna intensitas atau bertahap. Contoh: نَزَّلَ (menurunkan secara berangsur-angsur, QS. 3:3).',
+        'Wazan فَاعَلَ (Fā\'ala): Bermakna saling berinteraksi antara dua pihak. Contoh: جَاهَدَ / قَاتَلَ (saling berjuang/berperang).',
+        'Wazan تَفَعَّلَ & تَفَاعَلَ: Bermakna proses bertahap atau saling. Contoh: تَعَلَّمَ (belajar), تَعَاوَنُوا (saling menolong).',
+        'Wazan اِسْتَفْعَلَ (Istaf\'ala): Bermakna memohon/meminta. Contoh: غَفَرَ (mengampuni) → اِسْتَغْفَرَ (memohon ampun).'
+      ],
+      practice: 'Bandingkan kata أَنْزَلَ dan نَزَّلَ di QS. Ali \'Imran: 3 untuk merasakan indahnya ketelitian makna Al-Qur\'an lewat Ilmu Sharaf.',
+      source: quran('3/3')
+    },
+    {
+      id: 'isim-musytaq',
+      title: 'Mengenal Isim Musytaq (Kata Benda Turunan)',
+      category: 'Morfologi Isim',
+      summary: 'Kata benda turunan menyimpan informasi sifat pelaku, objek, perbandingan (superlatif), hingga bentuk mubalaghah (sangat).',
+      points: [
+        'Isim Fa\'il (فَاعِلٌ) & Isim Maf\'ul (مَفْعُولٌ): Contoh عَابِدٌ (orang yang beribadah) dan مَعْبُودٌ (yang disembah).',
+        'Shighah Mubalaghah: Menunjukkan sifat yang sangat kuat/sering. Contoh: غَفَّارٌ (Maha Pengampun), رَحِيمٌ (Maha Penyayang), عَلِيمٌ (Maha Mengetahui).',
+        'Isim Tafdhil (أَفْعَلُ): Menunjukkan makna "lebih" atau "paling". Contoh: أَكْبَرُ (Maha Besar / paling besar), أَحْسَنُ (paling baik).',
+        'Isim Makan (مَفْعَلٌ / مَفْعِلٌ): Menunjukkan tempat. Contoh: سَجَدَ (sujud) → مَسْجِدٌ (tempat sujud/masjid).'
+      ],
+      practice: 'Saat mengucap "Allahu Akbar", sadari bahwa "Akbar" berpola أَفْعَلُ (Isim Tafdhil) yang berarti Allah Mahabesar di atas segalanya.',
+      source: quran('95/4')
+    }
+  ]
+};
+
+export const tadabburJuzAmma: Course = {
+  id: 'tadabbur-juz-amma',
+  title: 'Tadabbur Juz \'Amma',
+  description: 'Intisari tema, asbabun nuzul ringkas, dan pelajaran hidup dari surat-surat Juz \'Amma (An-Naba\' hingga An-Nas).',
+  note: 'Juz \'Amma paling sering dibaca dalam shalat sehari-hari; memahami maknanya menghidupkan kekhusyukan shalat kita.',
+  lessons: [
+    {
+      id: 'tema-besar-juz-amma',
+      title: 'Peta Besar Juz \'Amma: Mengguncang Hati Tentang Akhirat',
+      category: 'Pengantar',
+      summary: 'Mayoritas surat Juz \'Amma adalah surat Makkiyah dengan ayat pendek, ritme kuat, fokus pada Tauhid, Hari Kiamat, dan penyucian jiwa.',
+      points: [
+        '37 Surat Pendek: Mulai dari QS. An-Naba\' (78) sampai QS. An-Nas (114).',
+        'Karakteristik Makkiyah: Kalimat ringkas namun menggetarkan jiwa, banyak sumpah Allah atas fenomena alam (matahari, waktu dhuha, malam).',
+        'Tema Sentral: Kepastian Hari Kiamat, pertanggungjawaban amal sekecil dzarrah, dan ketenangan jiwa bersama Allah.',
+        'Tips Shalat Khusyuk: Pahami makna minimal 10 surat yang paling sering Anda baca saat shalat wajib & sunnah.'
+      ],
+      practice: 'Pilih 3 surat pendek yang biasa Anda baca dalam shalat hari ini, lalu baca terjemah dan intisari maknanya sebelum tidur.',
+      source: quran('78/1')
+    },
+    {
+      id: 'an-naba-hingga-al-ala',
+      title: 'An-Naba\' hingga Al-A\'la: Kepastian Kiamat & Keagungan Pencipta',
+      category: 'Bagian Awal Juz 30',
+      summary: 'Surat-surat awal Juz \'Amma mengingatkan dahsyatnya hari kebangkitan, catatan amal oleh malaikat, dan kesucian jiwa.',
+      points: [
+        'An-Naba\' & An-Nazi\'at: Menjawab keraguan kaum musyrikin tentang hari kebangkitan dengan bukti penciptaan langit, gunung, dan tidur.',
+        '\'Abasa: Teguran lembut Allah kepada Nabi SAW agar tidak mengabaikan orang fakir/buta (Ibnu Ummi Maktum) demi melayani pembesar Quraisy.',
+        'Al-Infithar & Al-Muthaffifin: Malaikat Kiraman Katibin mencatat setiap perbuatan; ancaman keras bagi pelaku kecurangan timbangan & bisnis.',
+        'Al-A\'la: Surat favorit Nabi SAW saat Shalat Jumat, Ied, dan Witir; penegasan "Sungguh beruntung orang yang menyucikan diri" (QS. 87:14).'
+      ],
+      practice: 'Hindari segala bentuk kecurangan kecil dalam kerja, waktu, maupun takaran sebagai pengamalan QS. Al-Muthaffifin.',
+      source: quran('87/14')
+    },
+    {
+      id: 'al-fajr-hingga-at-tin',
+      title: 'Al-Fajr hingga At-Tin: Ujian Hidup, Harapan, & Kemuliaan Manusia',
+      category: 'Bagian Tengah Juz 30',
+      summary: 'Kelompok surat ini mengobati kesedihan jiwa, menuntun cara menyikapi ujian kelapangan/kesempitan, dan memuliakan anak yatim.',
+      points: [
+        'Al-Fajr: Meluruskan salah paham bahwa kekayaan = tanda dimuliakan Allah dan kesempitan = tanda dihinakan (QS. 89:15–16).',
+        'Adh-Dhuha & Al-Insyirah: Surat pelipur lara saat Nabi SAW sedih; janji Allah "Sesungguhnya bersama kesulitan ada kemudahan" (QS. 94:5–6).',
+        'Asy-Syams: Kunci keberhasilan hidup ada pada tazkiyatun nafs (QS. 91:9–10).',
+        'At-Tin: Manusia diciptakan dalam bentuk terbaik (ahsani taqwim), namun bisa jatuh ke tempat serendah-rendahnya jika tanpa iman & amal shalih.'
+      ],
+      practice: 'Saat merasa tertekan atau overthinking, bacalah QS. Adh-Dhuha dan Al-Insyirah secara perlahan sambil merenungi artinya.',
+      source: quran('94/5')
+    },
+    {
+      id: 'al-alaq-hingga-al-humazah',
+      title: 'Al-\'Alaq hingga Al-Humazah: Iqra\', Lailatul Qadar, & Timbangan Amal',
+      category: 'Bagian Akhir Juz 30',
+      summary: 'Wahyu pertama memerintahkan membaca dengan nama Tuhan, disusul kemuliaan Lailatul Qadar dan ketelitian hisab.',
+      points: [
+        'Al-\'Alaq: Wahyu pertama "Iqra\'" — memadukan ilmu pengetahuan dan tauhid, serta larangan sombong karena merasa serba cukup.',
+        'Al-Qadr: Satu malam Lailatul Qadar lebih mulia daripada seribu bulan (± 83 tahun).',
+        'Az-Zalzalah: Kebaikan dan keburukan seberat biji dzarrah pun akan diperlihatkan balasannya (QS. 99:7–8).',
+        'Al-\'Ashr: Imam Syafi\'i berkata seandainya Allah hanya menurunkan surat ini, sudah cukup menjadi hujjah bagi manusia (iman, amal shalih, saling menasihati dalam kebenaran & kesabaran).'
+      ],
+      practice: 'Jangan pernah meremehkan kebaikan kecil (senyum, menyingkirkan duri, sedekah receh) karena QS. Az-Zalzalah menjamin semuanya dihitung.',
+      source: quran('103/1')
+    },
+    {
+      id: 'al-fil-hingga-an-nas',
+      title: 'Al-Fil hingga Al-Mu\'awwidzat: Tauhid Murni & Benteng Perlindungan',
+      category: 'Penutup Al-Qur\'an',
+      summary: 'Surat-surat penutup Al-Qur\'an meneguhkan syukur nikmat, kemurnian tauhid (Al-Ikhlas), dan perlindungan dari kejahatan lahir-batin.',
+      points: [
+        'Quraisy & Al-Ma\'un: Ibadah shalat tidak boleh terpisah dari kepedulian sosial terhadap anak yatim dan fakir miskin.',
+        'Al-Kafirun: Prinsip toleransi yang tegas — saling menghormati tanpa mencampuradukkan akidah (lakum dinukum waliyadin).',
+        'Al-Ikhlas: Menyamai sepertiga Al-Qur\'an karena merangkum tauhid murni akan keesaan dan kesempurnaan Allah.',
+        'Al-Falaq & An-Nas: Benteng perlindungan utama pagi, petang, dan sebelum tidur dari sihir, hasad, serta bisikan waswas setan.'
+      ],
+      practice: 'Rutinkan membaca Al-Ikhlas, Al-Falaq, dan An-Nas masing-masing 3x pada dzikir pagi, petang, dan sebelum tidur.',
+      source: quran('112/1')
+    }
+  ]
+};
+
+export const fiqhHajiUmrah: Course = {
+  id: 'fiqh-haji-umrah',
+  title: 'Fiqh Haji & Umrah (Manasik Lengkap)',
+  description: 'Panduan lengkap syarat, rukun, wajib haji & umrah, miqat, larangan ihram, dam, dan badal haji sesuai sunnah.',
+  note: 'Ibadah haji dan umrah adalah perjalanan ruhani meneladani Nabi Ibrahim AS dan Rasulullah SAW; sahnya bergantung pada ilmu manasik.',
+  lessons: [
+    {
+      id: 'syarat-rukun-wajib-haji',
+      title: 'Membedakan Syarat, Rukun, dan Wajib Haji/Umrah',
+      category: 'Dasar Manasik',
+      summary: 'Rukun tidak bisa diganti dengan dam (membatalkan ibadah jika ditinggal); wajib haji tetap sah ibadahnya namun wajib membayar dam.',
+      points: [
+        'Syarat Wajib (Istitha\'ah): Islam, baligh, berakal, merdeka, dan mampu secara fisik, finansial, serta keamanan perjalanan (QS. 3:97).',
+        'Rukun Haji (5/6): Ihram (niat), Wuquf di Arafah, Tawaf Ifadhah, Sa\'i, Tahallul (cukur), dan Tertib.',
+        'Wajib Haji: Ihram dari Miqat, Mabit di Muzdalifah, Mabit di Mina, Melontar Jumrah, Tawaf Wada\', dan menjauhi larangan ihram.',
+        'Rukun Umrah: Ihram dari Miqat, Tawaf, Sa\'i, Tahallul, dan Tertib (tanpa Wuquf di Arafah).'
+      ],
+      practice: 'Buat checklist pribadi yang membedakan mana Rukun (tak tergantikan) dan mana Wajib (kena dam jika terlewat) sebelum berangkat.',
+      source: quran('3/97')
+    },
+    {
+      id: 'jenis-haji-miqat',
+      title: 'Tiga Jenis Pelaksanaan Haji & Batas Miqat',
+      category: 'Persiapan Ihram',
+      summary: 'Jamaah memilih Tamattu\', Ifrad, atau Qiran, dan wajib berniat ihram sebelum melewati batas wilayah Miqat Makani.',
+      points: [
+        'Haji Tamattu\' (paling banyak dipilih jamaah Indonesia): Umrah dahulu di bulan haji, tahallul, lalu berihram haji saat 8 Dzulhijjah (wajib bayar Dam Hadyu).',
+        'Haji Ifrad: Mengerjakan haji saja terlebih dahulu, baru umrah setelahnya (tidak wajib dam).',
+        'Haji Qiran: Menggabungkan niat haji dan umrah sekaligus dalam satu ihram (wajib bayar dam).',
+        'Miqat Jamaah Indonesia: Yalamlam (jika langsung ke Jeddah/Makkah lewat udara) atau Bir Ali / Dzulhulaifah (jika dari Madinah).'
+      ],
+      practice: 'Bagi calon jamaah gelombang Madinah, siapkan kain ihram sejak di hotel Madinah agar siap berniat di Masjid Bir Ali.',
+      source: hadith(1526)
+    },
+    {
+      id: 'larangan-ihram-dam',
+      title: 'Larangan Ihram & Ketentuan Dam (Denda)',
+      category: 'Aturan Ihram',
+      summary: 'Saat berihram, jamaah menanggalkan kemewahan duniawi dan menaati larangan khusus sebagai simbol kesetaraan di hadapan Allah.',
+      points: [
+        'Larangan Khusus Laki-laki: Memakai pakaian berjahit (yang membentuk lekuk tubuh) dan menutup kepala secara langsung.',
+        'Larangan Khusus Perempuan: Memakai cadar/niqab dan sarung tangan.',
+        'Larangan Umum: Memakai wewangian, memotong kuku/rambut, membunuh hewan buruan, akad nikah, berjima\', serta bertengkar/berkata kotor (QS. 2:197).',
+        'Dam Tamattu\'/Qiran: Menyembelih 1 ekor kambing; jika tidak mampu, berpuasa 10 hari (3 hari di Tanah Suci, 7 hari setelah pulang ke tanah air).'
+      ],
+      practice: 'Siapkan sabun/pelembap tanpa parfum selama ihram agar tidak tanpa sengaja melanggar larangan wewangian.',
+      source: quran('2/197')
+    },
+    {
+      id: 'rangkaian-puncak-haji',
+      title: 'Rangkaian Puncak Haji: 8–13 Dzulhijjah',
+      category: 'Puncak Ibadah',
+      summary: 'Dari Tarwiyah di Mina, puncak Wuquf di Arafah, Mabit di Muzdalifah, hingga Lempar Jumrah dan Tawaf Ifadhah.',
+      points: [
+        '8 Dzulhijjah (Tarwiyah): Berihram haji dan menuju Mina untuk bermalam (sunnah).',
+        '9 Dzulhijjah (Wuquf di Arafah): Puncak haji ("Al-Hajju \'Arafah" — HR. Tirmidzi). Memperbanyak dzikir, doa, dan istighfar sejak tergelincir matahari hingga Maghrib.',
+        'Malam 10 Dzulhijjah (Muzdalifah): Mabit dan mengumpulkan kerikil untuk melontar jumrah.',
+        '10 Dzulhijjah (Hari Nahr): Melontar Jumrah Aqabah (7 kerikil), menyembelih hadyu, tahallul awal (cukur rambut), lalu Tawaf Ifadhah & Sa\'i.',
+        '11–13 Dzulhijjah (Hari Tasyrik): Mabit di Mina dan melontar 3 Jumrah (Ula, Wustha, Aqabah) masing-masing 7 kerikil; boleh Nafar Awal (12) atau Nafar Tsani (13).'
+      ],
+      practice: 'Siapkan daftar doa pribadi untuk dipanjatkan saat Wuquf di Arafah, karena doa hari Arafah adalah sebaik-baik doa.',
+      source: hadith(1526)
+    },
+    {
+      id: 'badal-haji-umrah-sunnah',
+      title: 'Badal Haji, Haji Mabrur, & Adab Ziarah Madinah',
+      category: 'Penyempurnaan',
+      summary: 'Menghajikan orang tua yang wafat atau uzur tetap diperbolehkan, dan kemabruran haji tampak dari akhlak setelah pulang.',
+      points: [
+        'Syarat Badal Haji: Orang yang membadalkan harus sudah pernah menunaikan haji untuk dirinya sendiri terlebih dahulu (HR. Abu Dawud).',
+        'Siapa yang Boleh Dibadalkan: Orang yang sudah wafat (dan sempat berniat/mampu) atau orang tua renta/sakit permanen yang mustahil bepergian.',
+        'Tawaf Wada\': Tawaf perpisahan wajib sebelum meninggalkan Makkah (kecuali wanita haid/nifas mendapat keringanan).',
+        'Ziarah Nabawi: Berziarah ke Masjid Nabawi Madinah dan mengucapkan salam di makam Nabi SAW, Abu Bakar, dan Umar dengan penuh adab tanpa perbuatan syirik.'
+      ],
+      practice: 'Jaga lisan, kesabaran, dan kedermawanan selama manasik maupun sepulangnya ke tanah air sebagai tanda haji mabrur.',
+      source: hadith(1521)
+    }
+  ]
+};
+
+export const fiqhQurbanAqiqah: Course = {
+  id: 'fiqh-qurban-aqiqah',
+  title: 'Fiqh Qurban & Aqiqah',
+  description: 'Syarat sah hewan qurban & aqiqah, waktu penyembelihan, aturan pembagian daging, dan hukum qurban patungan.',
+  note: 'Menumpahkan darah hewan qurban dengan ikhlas adalah simbol ketaatan total meneladani Nabi Ibrahim AS dan Ismail AS.',
+  lessons: [
+    {
+      id: 'hukum-keutamaan-qurban',
+      title: 'Hukum, Waktu, & Keutamaan Qurban (Udhiyah)',
+      category: 'Qurban',
+      summary: 'Qurban berhukum sunnah muakkadah bagi yang mampu (wajib menurut Hanafiyah), disembelih pada 10–13 Dzulhijjah.',
+      points: [
+        'Dalil Utama: QS. Al-Kautsar: 2 — "Maka dirikanlah shalat karena Tuhanmu dan berqurbanlah."',
+        'Waktu Sah: Dimulai setelah selesai Shalat Idul Adha (10 Dzulhijjah) hingga terbenam matahari 13 Dzulhijjah (Hari Tasyrik).',
+        'Menyembelih Sebelum Shalat Ied: Tidak terhitung qurban, hanya menjadi sedekah daging biasa (HR. Bukhari).',
+        'Sunnah Bagi Shohibul Qurban: Disunnahkan tidak memotong kuku dan rambut sejak 1 Dzulhijjah hingga hewan disembelih (HR. Muslim).'
+      ],
+      practice: 'Niatkan menyisihkan tabungan qurban bulanan sejak awal tahun Hijriah agar ringan saat Dzulhijjah tiba.',
+      source: quran('108/2')
+    },
+    {
+      id: 'syarat-hewan-patungan',
+      title: 'Syarat Sah Hewan, Umur Minimal, & Patungan',
+      category: 'Qurban',
+      summary: 'Hewan harus cukup umur, sehat tanpa cacat yang mengurangi daging, dan patungan maksimal 7 orang hanya untuk sapi/unta.',
+      points: [
+        'Jenis & Umur Minimal: Domba (≥ 1 tahun / sudah tanggal gigi seri), Kambing kacang (≥ 2 tahun), Sapi/Kerbau (≥ 2 tahun), Unta (≥ 5 tahun).',
+        '4 Cacat yang Tidak Sah (HR. Tirmidzi): Buta jelas, sakit parah, pincang parah, dan kurus kering tak bersumsum.',
+        'Aturan Patungan: 1 kambing/domba untuk 1 orang (pahalanya boleh diniatkan untuk sekeluarga serumah). 1 sapi/unta boleh patungan maksimal 7 orang.',
+        'Arisan Qurban: Dibolehkan selama akadnya jelas sebagai tabungan/utang yang halal tanpa unsur spekulasi atau penipuan.'
+      ],
+      practice: 'Periksa gigi dan kondisi fisik hewan secara langsung atau melalui lembaga penyalur amanah sebelum membeli.',
+      source: hadith(1960)
+    },
+    {
+      id: 'pembagian-daging-kulit',
+      title: 'Tata Cara Penyembelihan & Pembagian Daging',
+      category: 'Qurban',
+      summary: 'Hewan disembelih dengan pisau tajam menghadap kiblat sambil membaca Bismillah; daging tidak boleh dijadikan upah jagal.',
+      points: [
+        'Adab Menyembelih: Menajamkan pisau di luar pandangan hewan, membaringkan di sisi kiri, membaca "Bismillahi Allahu Akbar", dan memutus saluran napas & makan.',
+        'Pembagian Daging: Dianjurkan dibagi 3 bagian — 1/3 untuk shohibul qurban & keluarga, 1/3 dihadiahkan (kerabat/tetangga), 1/3 disedekahkan ke fakir miskin.',
+        'Larangan Upah dari Bagian Hewan: Haram memberi upah tukang potong dari daging atau kulit qurban (HR. Bukhari-Muslim); upah wajib dibayar uang terpisah.',
+        'Qurban Online / Luar Daerah: Sah secara fikih melalui akad wakalah (perwakilan) ke lembaga tepercaya untuk didistribusikan ke wilayah rawan pangan.'
+      ],
+      practice: 'Pastikan panitia qurban di lingkungan Anda menyiapkan anggaran upah jagal terpisah dan tidak menjual kulit untuk upah.',
+      source: hadith(1960)
+    },
+    {
+      id: 'fiqh-aqiqah-anak',
+      title: 'Fiqh Aqiqah & Penyambutan Kelahiran Anak',
+      category: 'Aqiqah',
+      summary: 'Aqiqah adalah sembelihan rasa syukur kelahiran anak: 2 kambing untuk laki-laki dan 1 kambing untuk perempuan.',
+      points: [
+        'Hukum & Waktu Utama: Sunnah muakkadah bagi orang tua yang mampu; waktu terbaik hari ke-7 kelahiran (bisa hari ke-14, ke-21, atau kapan pun mampu).',
+        'Jumlah Hewan: 2 ekor kambing setara untuk bayi laki-laki, dan 1 ekor kambing untuk bayi perempuan (HR. Abu Dawud).',
+        'Rangkaian Sunnah Hari ke-7: Menyembelih aqiqah, mencukur rambut bayi lalu bersedekah perak/uang seberat rambutnya, dan memberi nama yang baik.',
+        'Penyajian Daging: Berbeda dengan qurban yang lebih utama dibagikan mentah, daging aqiqah lebih utama dimasak terlebih dahulu lalu dibagikan atau dihidangkan.'
+      ],
+      practice: 'Jika saat kecil belum diaqiqahkan oleh orang tua, sebagian ulama (seperti Hasan Al-Bashri & Ahmad) membolehkan seseorang mengaqiqahkan dirinya sendiri saat dewasa.',
+      source: hadith(1960)
+    }
+  ]
+};
+
+export const psikologiIslam: Course = {
+  id: 'psikologi-islam',
+  title: 'Psikologi Islam & Kesehatan Mental',
+  description: 'Mengenal struktur jiwa dalam Islam (nafs, qalb, ruh, aql) serta cara mengatasi cemas, stres, dan kesedihan.',
+  note: 'Islam tidak mengabaikan luka batin; Al-Qur\'an adalah syifa\' (penawar) bagi penyakit yang ada di dalam dada (QS. Yunus: 57).',
+  lessons: [
+    {
+      id: 'struktur-jiwa-islam',
+      title: 'Anatomi Jiwa Manusia: Qalb, Nafs, \'Aql, & Ruh',
+      category: 'Konsep Jiwa',
+      summary: 'Psikologi Islam memandang manusia secara utuh: jasmani, akal, qalb (pusat emosi & iman), serta ruh yang terhubung kepada Allah.',
+      points: [
+        'Qalb (Hati/Kalbu): Pusat kesadaran spiritual dan emosional; bisa sehat (qalbun salim), sakit, atau berkarat.',
+        'Nafs (Jiwa/Ego): Memiliki tiga tingkat — Nafs Ammarah (mendorong keburukan), Lawwamah (menyesali salah), dan Muthmainnah (jiwa yang tenang).',
+        '\'Aql (Akal): Alat menimbang, memahami realitas, dan menahan diri dari impuls merusak.',
+        'Ruh: Unsur ilahiyah yang membutuhkan asupan dzikir, ibadah, dan tujuan hidup yang bermakna.'
+      ],
+      practice: 'Saat emosi memuncak, latih jeda 10 detik untuk bertanya: apakah respon ini datang dari nafs ammarah atau akal & kalbu yang tenang?',
+      source: quran('89/27')
+    },
+    {
+      id: 'mengatasi-cemas-overthinking',
+      title: 'Terapi Al-Qur\'an Mengatasi Cemas (Anxiety) & Overthinking',
+      category: 'Kesehatan Mental',
+      summary: 'Kecemasan lahir dari takut masa depan dan sesal masa lalu; Islam menawarkannya obat tawakal, qana\'ah, dan dzikir.',
+      points: [
+        'Pemetaan Abu Zayd al-Balkhi (Abad ke-9 M): Ilmuwan Muslim ini sudah membedakan stres fisik dan gangguan kejiwaan (al-huzn wal-faza\') 1000 tahun sebelum psikologi modern.',
+        'Bedakan Wilayah Ikhtiar & Takdir: Manusia hanya dituntut memaksimalkan ikhtiar; hasil akhir diserahkan penuh kepada Allah (tawakal).',
+        'Doa Nabawi Anti-Cemas: "Allahumma inni a\'udzu bika minal hammi wal hazan..." (berlindung dari cemas masa depan & sedih masa lalu — HR. Bukhari).',
+        'Ketenangan Lewat Dzikir: "Ingatlah, hanya dengan mengingat Allah hati menjadi tenang" (QS. Ar-Ra\'d: 28).'
+      ],
+      practice: 'Tulis satu hal yang sedang Anda cemaskan hari ini; pisahkan kolom "Bisa Saya Kendalikan" dan "Saya Serahkan ke Allah".',
+      source: quran('13/28')
+    },
+    {
+      id: 'berdamai-dengan-kesedihan',
+      title: 'Berdamai dengan Luka, Duka, & Kesedihan',
+      category: 'Kesehatan Mental',
+      summary: 'Menangis dan bersedih itu manusiawi—Nabi SAW pun menangis saat wafat putra beliau—selama tidak berputus asa dari rahmat Allah.',
+      points: [
+        'Validasi Emosi: Saat Ibrahim (putra Nabi SAW) wafat, mata beliau meneteskan air mata sambil berkata: "Hati bersedih, mata menangis, namun kami hanya mengucap yang diridhai Allah" (HR. Bukhari).',
+        'Larangan Putus Asa: Kesedihan tidak sama dengan keputusasaan; rahmat Allah selalu lebih luas dari dosa dan ujian.',
+        'Curhat kepada Allah (Baths & Huzn): Meneladani Nabi Ya\'qub AS — "Sesungguhnya hanya kepada Allah aku mengadukan kesusahan dan kesedihanku" (QS. 12:86).',
+        'Ikhtiar Medis & Psikolog: Mengonsumsi obat atau berkonsultasi ke psikolog/psikiater saat mengalami depresi klinis termasuk ikhtiar berobat yang dianjurkan syariat.'
+      ],
+      practice: 'Hilangkan stigma bahwa depresi berarti kurang iman; dukung teman yang sedang berjuang menjaga kesehatan mentalnya dengan empati.',
+      source: quran('12/86')
+    },
+    {
+      id: 'membangun-resiliensi-syukur',
+      title: 'Resiliensi Spiritual: Sabar, Syukur, & Memaafkan',
+      category: 'Terapi Positif',
+      summary: 'Orang beriman memiliki ketahanan mental unik: bersyukur saat lapang dan bersabar saat diuji, keduanya bernilai kebaikan.',
+      points: [
+        'Hadits Keajaiban Mukmin (HR. Muslim): Semua urusannya baik — mendapat nikmat lalu bersyukur, mendapat musibah lalu bersabar.',
+        'Journaling Syukur: Menghitung nikmat kecil (nafas, sehat, iman) terbukti menumbuhkan optimisme psikologis.',
+        'Terapi Pemaafan (\'Afw): Memaafkan bukan membenarkan kezaliman, melainkan melepaskan racun dendam dari dada kita sendiri (QS. 42:40).',
+        'Kualitas Tidur & Ritual Malam: Wudhu sebelum tidur, membaca ayat kursi, dan melepaskan beban harian membantu sistem saraf beristirahat.'
+      ],
+      practice: 'Sebelum tidur malam ini, catat 3 hal kecil yang patut Anda syukuri hari ini dan maafkan satu kesalahan orang lain demi ketenangan hati.',
+      source: quran('42/40')
+    }
+  ]
+};
+
+export const imamMadzhab: Course = {
+  id: 'imam-madzhab',
+  title: 'Biografi 4 Imam Madzhab & Ulama Besar',
+  description: 'Perjalanan hidup, metode ijtihad, dan kitab utama Imam Abu Hanifah, Malik, Syafi\'i, Ahmad, serta ulama Nusantara.',
+  note: 'Para imam madzhab saling menghormati, berguru satu sama lain, dan tidak pernah mengklaim diri paling benar mutlak.',
+  lessons: [
+    {
+      id: 'imam-abu-hanifah',
+      title: 'Imam Abu Hanifah (80–150 H): Sang Ahli Ra\'yi & Pedagang Amanah',
+      category: '4 Imam Madzhab',
+      summary: 'Pendiri Madzhab Hanafi di Kufah; cerdas dalam analogi hukum (qiyas) dan istihsan, serta teguh menjaga integritas dari jabatan politik.',
+      points: [
+        'Profil: Nu\'man bin Tsabit, lahir di Kufah (Irak); seorang saudagar kain sutra yang sangat jujur dan dermawan.',
+        'Metode Ijtihad: Al-Qur\'an, Sunnah, Fatwa Sahabat, Qiyas, Istihsan (kemaslahatan lebih kuat), dan \'Urf (adat yang baik).',
+        'Karya & Murid: Pemikirannya dibukukan oleh dua murid utamanya — Imam Abu Yusuf dan Imam Muhammad asy-Syaibani (Kitab Al-Mabsuth).',
+        'Integritas: Menolak jabatan hakim agung demi menjaga independensi fatwa meski harus dipenjara hingga wafat.'
+      ],
+      practice: 'Teladani etika bisnis Imam Abu Hanifah: jika barang dagangan ada cacat kecil, wajib diungkap sebelum akad.',
+      source: quran('16/43')
+    },
+    {
+      id: 'imam-malik',
+      title: 'Imam Malik bin Anas (93–179 H): Imam Darul Hijrah di Madinah',
+      category: '4 Imam Madzhab',
+      summary: 'Pendiri Madzhab Maliki; sangat memuliakan hadits Nabi SAW dan tradisi ulama penduduk Madinah (\'Amal Ahlil Madinah).',
+      points: [
+        'Profil: Menetap seumur hidup di Madinah; tidak pernah menunggang hewan di kota Madinah karena menghormati jasad Rasulullah SAW.',
+        'Kitab Agung Al-Muwaththa\': Salah satu kitab hadits dan fikih tertua yang masih lestari hingga hari ini.',
+        'Metode Ijtihad: Memberi bobot tinggi pada praktik kolektif penduduk Madinah dan prinsip Maslahah Mursalah (kemaslahatan umum).',
+        'Keteguhan: Pernah dicambuk penguasa karena mempertahankan fatwa bahwa talak karena paksaan tidak sah.'
+      ],
+      practice: 'Tirulah adab Imam Malik: selalu bersuci dan berpenampilan rapi sebelum mempelajari atau membacakan hadits Nabi SAW.',
+      source: hadith(1631)
+    },
+    {
+      id: 'imam-syafii',
+      title: 'Imam Asy-Syafi\'i (150–204 H): Peletak Batu Pertama Ushul Fiqh',
+      category: '4 Imam Madzhab',
+      summary: 'Murid Imam Malik sekaligus guru Imam Ahmad; memadukan metode ahli hadits Madinah dan ahli ra\'yi Irak dalam madzhab Syafi\'i.',
+      points: [
+        'Profil: Muhammad bin Idris asy-Syafi\'i; hafal Al-Qur\'an usia 7 tahun dan hafal Al-Muwaththa\' usia 10 tahun; banyak dianut di Asia Tenggara termasuk Indonesia.',
+        'Karya Monumental: Ar-Risalah (kitab Ushul Fiqh pertama di dunia) dan Al-Umm (ensiklopedia fikih).',
+        'Qaul Qadim & Qaul Jadid: Beliau merevisi fatwa lamanya (Irak) setelah pindah ke Mesir dan menemukan dalil/konteks baru — teladan kelapangan ilmiah.',
+        'Nasihat Emas: "Pendapatku benar namun berpotensi salah, pendapat selainku salah namun berpotensi benar."'
+      ],
+      practice: 'Biasakan sikap ilmiah Imam Syafi\'i: siap merevisi pendapat lama jika menemukan dalil yang lebih kuat.',
+      source: quran('39/18')
+    },
+    {
+      id: 'imam-ahmad-hanbal',
+      title: 'Imam Ahmad bin Hanbal (164–241 H): Penjaga Sunnah & Kitab Al-Musnad',
+      category: '4 Imam Madzhab',
+      summary: 'Pendiri Madzhab Hanbali; ahli hadits besar yang menghafal ratusan ribu riwayat dan tabah menghadapi fitnah Khalqul Qur\'an.',
+      points: [
+        'Profil: Lahir di Baghdad; menempuh perjalanan jauh ke berbagai negeri demi mengumpulkan hadits shahih.',
+        'Kitab Al-Musnad: Memuat sekitar 27.000–30.000 hadits yang menjadi salah satu referensi hadits terbesar umat Islam.',
+        'Prinsip Fikih: Berpegang ketat pada nash Al-Qur\'an dan hadits; dalam bab muamalah sangat luas (hukum asal muamalah adalah mubah sampai ada dalil larangan).',
+        'Keteguhan Iman: Disiksa dan dipenjara saat peristiwa Mihnah demi mempertahankan akidah Ahlussunnah bahwa Al-Qur\'an adalah Kalamullah.'
+      ],
+      practice: 'Pelajari satu hadits beserta maknanya setiap pekan sebagai bentuk cinta pada warisan ilmu para ahli hadits.',
+      source: hadith(1631)
+    },
+    {
+      id: 'ulama-nusantara',
+      title: 'Jejak Ulama Nusantara di Panggung Dunia',
+      category: 'Ulama Nusantara',
+      summary: 'Ulama Nusantara seperti Syekh Nawawi al-Bantani, Syekh Ahmad Khatib al-Minangkabawi, hingga pendiri ormas Islam mewarisi sanad keilmuan global.',
+      points: [
+        'Syekh Nawawi al-Bantani (1813–1897): Dijuluki Sayyid Ulama al-Hijaz; menulis lebih dari 100 kitab berbahasa Arab termasuk Tafsir Marah Labid.',
+        'Syekh Mahfudz at-Tarmasi & Syekh Yasin al-Fadani: Raksasa ilmu hadits dan sanad keilmuan dari Nusantara yang diakui di Makkah.',
+        'KH. Hasyim Asy\'ari & KH. Ahmad Dahlan: Sama-sama murid Syekh Ahmad Khatib al-Minangkabawi; berjuang mendidik umat lewat NU dan Muhammadiyah.',
+        'Semangat Persatuan: Perbedaan organisasi dan metode dakwah tidak menghalangi ukhuwah dalam memajukan bangsa.'
+      ],
+      practice: 'Kenali sejarah dan karya salah satu ulama daerah Anda untuk menumbuhkan rasa syukur atas estafet dakwah di Indonesia.',
+      source: quran('58/11')
+    }
+  ]
+};
+
+export const fiqhKontemporer: Course = {
+  id: 'fiqh-kontemporer',
+  title: 'Fiqh Kontemporer & Fatwa Modern',
+  description: 'Hukum paylater, dropship & affiliate, donor organ, hak cipta digital, hingga etika penggunaan AI dalam Islam.',
+  note: 'Syariat Islam selalu hidup dan relevan menjawab persoalan zaman lewat ijtihad jama\'i (kolektif) para ulama ahli.',
+  lessons: [
+    {
+      id: 'paylater-cicilan-digital',
+      title: 'Hukum PayLater, Kartu Kredit, & Cicilan Online',
+      category: 'Muamalah Digital',
+      summary: 'Utang yang mensyaratkan tambahan bunga atau denda keterlambatan yang menjadi pendapatan pemberi pinjaman termasuk riba.',
+      points: [
+        'Prinsip Riba Qardh: "Setiap piutang yang menarik manfaat/tambahan (yang disyaratkan di awal) adalah riba."',
+        'PayLater Konvensional: Umumnya mengenakan bunga cicilan atau biaya layanan persentase atas pinjaman serta denda keterlambatan — tidak sesuai syariah.',
+        'Jual Beli Kredit (Murabahah) vs Pinjaman: Penjual menjual barang secara kredit dengan harga lebih tinggi dari tunai boleh jika disepakati di awal tanpa bunga majemuk; beda dengan aplikasi pinjaman pihak ketiga berbunga.',
+        'Alternatif Halal: Gunakan metode bayar tunai, tabungan terencana, atau pembiayaan syariah yang terdaftar DSN-MUI.'
+      ],
+      practice: 'Periksa fitur pembayaran otomatis di aplikasi belanja Anda; nonaktifkan PayLater berbunga agar terhindar dari transaksi riba.',
+      source: quran('2/275')
+    },
+    {
+      id: 'dropship-affiliate',
+      title: 'Hukum Dropship, Reseller, & Program Affiliate',
+      category: 'Bisnis Online',
+      summary: 'Menjual barang yang belum dimiliki terlarang kecuali melalui akad yang benar seperti Wakalah (perwakilan) atau Salam (pesanan).',
+      points: [
+        'Larangan Dasar: Nabi SAW melarang menjual barang yang belum berada dalam kepemilikan/penguasaan penjual (HR. Abu Dawud).',
+        'Solusi Dropship Halal: Gunakan akad Wakalah bil Ujrah (menjadi agen/perwakilan resmi supplier dengan izin jual) atau beli dulu baru jual.',
+        'Program Affiliate: Sah dan halal (akad Samsarah/makelar atau Ju\'alah/sayembara) selama produk yang dipromosikan halal dan promosinya jujur tanpa klaim palsu.',
+        'Fake Order / Review Palsu: Memesan fiktif atau membayar ulasan palsu untuk menaikkan rating hukumnya haram karena mengandung penipuan (ghisy).'
+      ],
+      practice: 'Jika berjualan sistem dropship, pastikan Anda sudah mendapat izin resmi dari pemilik stok dan menjelaskan estimasi pengiriman dengan jujur.',
+      source: hadith(2072)
+    },
+    {
+      id: 'donor-organ-bioteknologi',
+      title: 'Donor Organ, Transfusi Darah, & Bioteknologi Medis',
+      category: 'Fiqh Medis Modern',
+      summary: 'Mayoritas ulama dan MUI membolehkan donor darah serta donor organ (dalam kondisi darurat menyelamatkan nyawa) tanpa diperjualbelikan.',
+      points: [
+        'Transfusi Darah: Mubah bahkan berpahala besar karena menyelamatkan nyawa manusia (QS. Al-Ma\'idah: 32).',
+        'Donor Organ Saat Hidup: Boleh untuk organ yang bisa beregenerasi atau berpasangan (misal sebagian hati atau satu ginjal) selama tidak membahayakan nyawa pendonor.',
+        'Donor Setelah Wafat: Boleh berdasarkan wasiat sah sebelumnya atau izin ahli waris jika sangat mendesak menyelamatkan nyawa pasien lain (Fatwa MUI).',
+        'Larangan Komersialisasi: Tubuh manusia bukan komoditas; jual beli organ tubuh hukumnya haram mutlak.'
+      ],
+      practice: 'Ikutlah kegiatan donor darah berkala sebagai sedekah nyawa yang nyata bagi sesama.',
+      source: quran('5/32')
+    },
+    {
+      id: 'hak-cipta-pembajakan',
+      title: 'Hak Cipta Digital, Pembajakan Software, & Konten',
+      category: 'Etika Digital',
+      summary: 'Fatwa MUI dan Majma\' Fiqh Islami menetapkan bahwa hak cipta adalah harta bernilai (mal) yang wajib dilindungi; membajaknya termasuk mencuri.',
+      points: [
+        'Status Hak Cipta: Karya tulis, software, desain, dan video termasuk Haq Ibtikar (hak kekayaan intelektual) yang dilindungi syariat (Fatwa MUI No. 1/2003).',
+        'Software/Film Bajakan: Mengunduh, memakai untuk komersial, atau memperjualbelikan crack/bajakan tanpa izin pemilik hak cipta adalah perbuatan zalim.',
+        'Alternatif Legal: Manfaatkan software open-source gratis (Linux, LibreOffice, GIMP, dll) atau versi free/lisensi resmi.',
+        'Plagiarisme Karya Ilmiah: Mengakui karya orang lain sebagai milik sendiri dilarang keras dan merusak keberkahan ilmu.'
+      ],
+      practice: 'Mulai ganti aplikasi bajakan di perangkat Anda dengan software gratis/open-source atau berlangganan lisensi resmi yang terjangkau.',
+      source: quran('4/29')
+    },
+    {
+      id: 'etika-ai-islam',
+      title: 'Etika Penggunaan AI (Kecerdasan Buatan) dalam Islam',
+      category: 'Teknologi Masa Depan',
+      summary: 'AI adalah alat bantu (wasilah); hukumnya mengikuti niat, input data, kejujuran atribusi, dan dampak kemaslahatannya.',
+      points: [
+        'Alat Bantu, Bukan Pengganti Ulama: Untuk fatwa agama, AI hanya membantu mencari referensi awal; verifikasi hukum tetap merujuk Al-Qur\'an, Hadits shahih, dan ulama.',
+        'Larangan Deepfake & Hoaks: Menggunakan AI untuk memalsukan suara/wajah orang lain guna menipu atau memfitnah termasuk dosa besar kebohongan.',
+        'Kejujuran Akademik & Kerja: Mengklaim tulisan penuh hasil AI sebagai karya pribadi tanpa transparansi melanggar etika amanah.',
+        'Pemanfaatan Maslahah: Mengembangkan AI untuk akses Al-Qur\'an, dakwah, pendidikan, dan medis bernilai amal jariyah.'
+      ],
+      practice: 'Selalu cek ulang dalil ayat atau nomor hadits yang diberikan AI langsung ke mushaf dan kitab hadits terpercaya.',
+      source: quran('49/6')
+    }
+  ]
+};
+
+export const ilmuQiraat: Course = {
+  id: 'ilmu-qiraat',
+  title: 'Ilmu Qira\'at & Sejarah Mushaf',
+  description: 'Mengenal 7 & 10 Qira\'at mutawatir, sejarah penulisan Mushaf Utsmani, serta rasm dan tanda waqaf.',
+  note: 'Keragaman qira\'at yang mutawatir bukan pertentangan, melainkan rahmat Allah yang memperkaya makna dan memudahkan lisan umat.',
+  lessons: [
+    {
+      id: 'sabatu-ahruf-qiraat',
+      title: 'Hadits Sab\'atu Ahruf & Pengertian Ilmu Qira\'at',
+      category: 'Dasar Qira\'at',
+      summary: 'Rasulullah SAW bersabda Al-Qur\'an diturunkan atas tujuh huruf (dialek/ragam bacaan) untuk memberi kemudahan bagi umat Islam.',
+      points: [
+        'Hadits Shahih (HR. Bukhari-Muslim): Nabi SAW mengonfirmasi bacaan Umar bin Khattab dan Hisyam bin Hakim yang berbeda dialek sama-sama benar sesuai turunnya wahyu.',
+        'Definisi Qira\'at: Ragam tata cara pelafalan kalimat Al-Qur\'an yang bersanad mutawatir hingga Rasulullah SAW.',
+        'Tiga Syarat Qira\'at Shahih: Sesuai kaidah bahasa Arab, sesuai dengan tulisan Mushaf Utsmani (secara rasm), dan memiliki sanad yang mutawatir.',
+        'Bukan Karangan Pribadi: Perbedaan qira\'at murni bersumber dari talaqqi (wahyu langsung), bukan ijtihad atau tebakan.'
+      ],
+      practice: 'Pahami bahwa perbedaan bunyi bacaan seperti "Maliki" (pendek/panjang di Al-Fatihah) keduanya mutawatir dan saling melengkapi makna Raja & Pemilik Hari Pembalasan.',
+      source: hadith(2419)
+    },
+    {
+      id: 'sepuluh-imam-qiraat',
+      title: 'Mengenal Imam Qira\'at Tujuh & Sepuluh',
+      category: 'Imam & Perawi',
+      summary: 'Ibnu Mujahid merangkum 7 Imam Qira\'at utama, lalu Ibnu al-Jazari melengkapinya menjadi 10 Imam Qira\'at Mutawatir.',
+      points: [
+        'Qira\'at Populer di Dunia Islam: Riwayat Hafs \'an \'Ashim (dominan di Indonesia, Timur Tengah, dan mayoritas dunia Islam).',
+        'Riwayat Warsy & Qalun \'an Nafi\': Banyak dipakai di Afrika Utara (Maroko, Aljazair, Tunisia, Libya).',
+        'Riwayat Ad-Duri \'an Abi \'Amr: Banyak dipakai di wilayah Sudan dan sebagian Afrika Timur.',
+        'Karya Rujukan: Matan Asy-Syathibiyyah (7 Qira\'at) dan Thayyibatun Nasyr karya Imam Ibnu al-Jazari (10 Qira\'at).'
+      ],
+      practice: 'Dengarkan contoh murattal Riwayat Warsy atau Qalun di platform audio Qur\'an tepercaya untuk mengenal kekayaan qira\'at umat Islam.',
+      source: quran('15/9')
+    },
+    {
+      id: 'sejarah-mushaf-utsmani',
+      title: 'Sejarah Penulisan Mushaf: Era Nabi, Abu Bakar, hingga Utsman',
+      category: 'Sejarah Mushaf',
+      summary: 'Al-Qur\'an dijaga lewat dua jalur sekaligus: hafalan dada para sahabat dan catatan tertulis resmi sejak masa Nabi SAW.',
+      points: [
+        'Masa Nabi SAW: Ditulis oleh para juru tulis wahyu (Zaid bin Tsabit, Ali, Mu\'awiyah) di atas pelepah kurma, kulit, dan tulang, namun belum dijilid satu buku.',
+        'Masa Abu Bakar Ash-Shiddiq: Atas usul Umar bin Khattab setelah Perang Yamamah (banyak huffaz syahid), Zaid bin Tsabit mengumpulkan semua catatan menjadi satu Mushaf induk.',
+        'Masa Utsman bin Affan: Wilayah Islam meluas; terjadi perselisihan dialek. Utsman menyalin ulang menjadi beberapa Mushaf resmi (Mushaf Al-Imam) yang dikirim ke kota-kota besar Islam.',
+        'Penambahan Titik & Harakat: Abul Aswad ad-Du\'ali dan Khalil bin Ahmad menambahkan titik huruf dan harakat pada era Tabi\'in untuk memudahkan pembaca non-Arab.'
+      ],
+      practice: 'Bersyukurlah atas nikmat Mushaf tercetak yang lengkap harakatnya hari ini; jaga adab menyentuh dan membacanya.',
+      source: quran('15/9')
+    },
+    {
+      id: 'rasm-utsmani-tanda-waqaf',
+      title: 'Mengenal Rasm Utsmani & Perbedaan Tanda Mushaf',
+      category: 'Teknis Mushaf',
+      summary: 'Mushaf Madinah dan Mushaf Standar Indonesia sama-sama memakai Riwayat Hafs \'an \'Ashim, hanya berbeda gaya penulisan harakat & tanda waqaf.',
+      points: [
+        'Rasm Utsmani: Sistem ejaan khusus mushaf Utsman (misal kata "Shalat" ditulis dengan wawu: صلوة) yang dipertahankan karena menampung ragam qira\'at dan hikmah makna.',
+        'Mushaf Madinah vs Standar Indonesia: Isi ayat dan harakat bacaannya 100% sama; perbedaannya pada simbol sukun, tanwin sejajar/miring, dan bentuk tanda waqaf.',
+        'Tanda Waqaf Penting: م (Waqaf Lazim - wajib berhenti), لا (Jangan berhenti), ج (Boleh berhenti/lanjut), صلى (Lebih utama lanjut), قلى (Lebih utama berhenti).',
+        'Shifr Mustadir (bulatan penuh di atas huruf): Huruf tersebut tidak dibaca baik saat lanjut maupun berhenti (contoh: أُولَٰئِكَ).'
+      ],
+      practice: 'Perhatikan tanda waqaf قلى (qila) dan صلى (shala) pada halaman Al-Qur\'an Anda hari ini agar berhenti di tempat yang tepat.',
+      source: quran('73/4')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -4579,4 +5175,12 @@ export const courseLinks = [
   { href: '/hukum-keluarga-indonesia', title: hukumKeluargaIndonesia.title, description: hukumKeluargaIndonesia.description },
   { href: '/ekonomi-syariah', title: ekonomiSyariah.title, description: ekonomiSyariah.description },
   { href: '/fiqh-ramadan', title: fiqhRamadan.title, description: fiqhRamadan.description },
+  { href: '/sharaf-dasar', title: sharafDasar.title, description: sharafDasar.description },
+  { href: '/tadabbur-juz-amma', title: tadabburJuzAmma.title, description: tadabburJuzAmma.description },
+  { href: '/fiqh-haji-umrah', title: fiqhHajiUmrah.title, description: fiqhHajiUmrah.description },
+  { href: '/fiqh-qurban-aqiqah', title: fiqhQurbanAqiqah.title, description: fiqhQurbanAqiqah.description },
+  { href: '/psikologi-islam', title: psikologiIslam.title, description: psikologiIslam.description },
+  { href: '/imam-madzhab', title: imamMadzhab.title, description: imamMadzhab.description },
+  { href: '/fiqh-kontemporer', title: fiqhKontemporer.title, description: fiqhKontemporer.description },
+  { href: '/ilmu-qiraat', title: ilmuQiraat.title, description: ilmuQiraat.description },
 ];

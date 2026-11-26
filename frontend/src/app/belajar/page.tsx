@@ -63,6 +63,18 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-purple-200 mb-1">Uji Pemahaman</span>
           Kuis Islam Harian
         </Link>
+        <Link href="/kalkulator-fidyah" className="block rounded-2xl bg-linear-to-br from-rose-700 to-amber-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-rose-200 mb-1">Alat Hitung Puasa</span>
+          Kalkulator Fidyah &amp; Qadha
+        </Link>
+        <Link href="/flashcard-quran" className="block rounded-2xl bg-linear-to-br from-emerald-700 to-cyan-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Latihan Mufrodat</span>
+          Flashcard Kosakata Al-Qur&apos;an
+        </Link>
+        <Link href="/kalender-hijriah" className="block rounded-2xl bg-linear-to-br from-sky-700 to-indigo-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-sky-200 mb-1">Kalender &amp; Puasa Sunnah</span>
+          Konverter Tanggal Hijriah
+        </Link>
       </div>
 
       <Link
