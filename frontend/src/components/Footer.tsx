@@ -152,6 +152,8 @@ export default function Footer() {
               <li><Link href="/kalkulator-fidyah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Fidyah</Link></li>
               <li><Link href="/flashcard-quran" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Flashcard Al-Qur&apos;an</Link></li>
               <li><Link href="/kalender-hijriah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalender Hijriah</Link></li>
+              <li><Link href="/tracker-khatam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tracker Khatam 30 Juz</Link></li>
+              <li><Link href="/kalkulator-safar" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Safar</Link></li>
               <li><Link href="/kuis-islam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kuis Islam Harian</Link></li>
             </ul>
           </div>

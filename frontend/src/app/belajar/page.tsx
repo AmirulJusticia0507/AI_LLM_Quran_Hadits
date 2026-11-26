@@ -75,6 +75,14 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-sky-200 mb-1">Kalender &amp; Puasa Sunnah</span>
           Konverter Tanggal Hijriah
         </Link>
+        <Link href="/tracker-khatam" className="block rounded-2xl bg-linear-to-br from-emerald-700 to-teal-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Tilawah &amp; Tahfidz</span>
+          Tracker Khatam 30 Juz
+        </Link>
+        <Link href="/kalkulator-safar" className="block rounded-2xl bg-linear-to-br from-teal-700 to-cyan-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Panduan Musafir</span>
+          Kalkulator Safar Jama&apos;-Qashar
+        </Link>
       </div>
 
       <Link

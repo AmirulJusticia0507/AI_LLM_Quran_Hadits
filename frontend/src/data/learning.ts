@@ -5135,6 +5135,455 @@ export const ilmuQiraat: Course = {
   ]
 };
 
+export const fiqhSafar: Course = {
+  id: 'fiqh-safar',
+  title: 'Fiqh Safar, Jama\'-Qashar, & Shalat Sunnah',
+  description: 'Panduan lengkap shalat di perjalanan, syarat jarak qashar, tata cara jama\' taqdim/ta\'khir, dan shalat sunnah.',
+  note: 'Allah SWT menyukai jika keringanan (rukhsah) dari-Nya diambil sebagaimana Dia menyukai kewajiban-Nya dijalankan (HR. Ahmad).',
+  lessons: [
+    {
+      id: 'syarat-safar-qashar',
+      title: 'Syarat Perjalanan Safar & Hukum Qashar',
+      category: 'Shalat Musafir',
+      summary: 'Qashar meringkas shalat 4 rakaat (Dzuhur, Ashar, Isya\') menjadi 2 rakaat saat menempuh safar halal minimal ± 81–89 km.',
+      points: [
+        'Jarak Minimal: Mayoritas ulama menetapkan 4 burud / 16 farsakh (± 81–89 km, patokan aman 85 km).',
+        'Shalat yang Di-Qashar: Hanya shalat 4 rakaat (Dzuhur, Ashar, Isya\') menjadi 2 rakaat; Subuh tetap 2 dan Maghrib tetap 3.',
+        'Batas Hari Mukim: Menurut Mazhab Syafi\'i, jika berniat tinggal di kota tujuan ≥ 4 hari penuh (selain hari datang & pulang), status musafir berhenti setibanya di tujuan.',
+        'Bermakmum ke Imam Mukim: Jika musafir shalat di belakang imam penduduk setempat, wajib menyempurnakan 4 rakaat mengikuti imam.'
+      ],
+      practice: 'Sebelum bepergian ke luar kota, ukur jarak tempuh tujuan Anda dan niatkan mengambil rukhsah qashar jika memenuhi syarat.',
+      source: quran('4/101')
+    },
+    {
+      id: 'tata-cara-jama',
+      title: 'Shalat Jama\' Taqdim & Jama\' Ta\'khir',
+      category: 'Shalat Musafir',
+      summary: 'Jama\' menggabungkan Dzuhur dengan Ashar atau Maghrib dengan Isya\' di salah satu waktunya; tidak boleh menggabungkan Subuh atau Ashar dengan Maghrib.',
+      points: [
+        'Pasangan Sah: Dzuhur + Ashar, dan Maghrib + Isya\'.',
+        'Jama\' Taqdim: Dikerjakan di waktu shalat pertama (Dzuhur atau Maghrib) — syarat: berniat jama\' saat shalat pertama dan berurutan (muwalah) tanpa jeda panjang.',
+        'Jama\' Ta\'khir: Dikerjakan di waktu shalat kedua (Ashar atau Isya\') — syarat: berniat jama\' ta\'khir sebelum waktu shalat pertama habis.',
+        'Jama\' Karena Hujan / Sakit: Dibolehkan menurut jumhur ulama meski tidak safar bila ada masyaqqah (kesulitan nyata), seperti hujan lebat di masjid atau sakit berat.'
+      ],
+      practice: 'Biasakan memasang niat jama\' ta\'khir dalam hati sebelum waktu Dzuhur habis jika kendaraan baru berhenti di waktu Ashar.',
+      source: hadith(1110)
+    },
+    {
+      id: 'shalat-di-kendaraan',
+      title: 'Tata Cara Shalat di Pesawat, Kereta, & Kapal',
+      category: 'Praktik Perjalanan',
+      summary: 'Shalat wajib diupayakan berdiri menghadap kiblat jika memungkinkan; jika tidak mampu di kursi penumpang, tetap wajib shalat semampunya tepat waktu.',
+      points: [
+        'Jangan Menunda Hingga Keluar Waktu: Shalat fardhu wajib dikerjakan pada waktunya meski sedang berada di udara atau laut (QS. An-Nisa: 103).',
+        'Wudhu & Tayammum: Gunakan air secukupnya (bisa dengan botol semprot kecil di kursi/toilet); tayammum hanya jika benar-benar tidak ada air atau dilarang memakai air.',
+        'Posisi di Pesawat/Kereta: Jika ada ruang aman & diizinkan awak kabin, berdiri menghadap kiblat; jika harus duduk di kursi, menghadap arah kendaraan lalu rukuk & sujud dengan isyarat menunduk (sujud lebih rendah dari rukuk).',
+        'Shalat Sunnah di Kendaraan: Boleh dikerjakan di atas kendaraan menghadap ke mana saja arah kendaraan melaju (HR. Bukhari).'
+      ],
+      practice: 'Siapkan botol spray kecil (± 60 ml) untuk berwudhu praktis saat perjalanan jauh dengan kereta atau pesawat.',
+      source: quran('4/103')
+    },
+    {
+      id: 'shalat-sunnah-harian',
+      title: 'Rangkaian Shalat Sunnah Harian & Khusus',
+      category: 'Shalat Sunnah',
+      summary: 'Shalat Rawatib, Dhuha, Tahajud, Witir, dan Istikharah menambal kekurangan shalat wajib dan menguatkan kedekatan dengan Allah.',
+      points: [
+        'Rawatib Muakkadah (12 Rakaat): 2 sebelum Subuh, 4 sebelum Dzuhur, 2 setelah Dzuhur, 2 setelah Maghrib, 2 setelah Isya\' — dijanjikan rumah di surga (HR. Muslim).',
+        'Shalat Dhuha (2–8 Rakaat): Sejak matahari naik setinggi tombak hingga sebelum Dzuhur; sedekah atas 360 persendian tubuh.',
+        'Tahajud & Witir: Sebaik-baik shalat setelah shalat wajib adalah shalat malam (HR. Muslim); tutup malam dengan witir ganjil (1 atau 3 rakaat).',
+        'Shalat Khusus: Istikharah (memohon pilihan terbaik), Gerhana (Kusuf/Khusuf), dan Istisqa\' (memohon hujan saat kemarau panjang).'
+      ],
+      practice: 'Mulai jaga 2 rakaat sunnah Qabliyah Subuh dan 1 rakaat Witir sebelum tidur sebagai pondasi shalat sunnah harian.',
+      source: hadith(1180)
+    }
+  ]
+};
+
+export const fiqhHiburan: Course = {
+  id: 'fiqh-hiburan',
+  title: 'Fiqh Seni, Hiburan, & Gaya Hidup Muslim',
+  description: 'Pandangan ulama tentang musik, fotografi, adab berpakaian, batas bercanda, dan olahraga dalam Islam.',
+  note: 'Islam tidak melarang kegembiraan dan keindahan ("Sesungguhnya Allah itu Indah dan mencintai keindahan" — HR. Muslim), selama dalam koridor adab syariat.',
+  lessons: [
+    {
+      id: 'musik-seni-suara',
+      title: 'Seni Suara & Musik dalam Pandangan Para Ulama',
+      category: 'Seni & Hiburan',
+      summary: 'Ulama berbeda pendapat tentang alat musik; semuanya sepakat musik yang melalaikan ibadah, berisi lirik maksiat/syirik, atau memicu ikhtilat hukumnya haram.',
+      points: [
+        'Pendapat Mayoritas (4 Madzhab Klasik): Alat musik petik dan tiup umumnya dilarang berdasarkan hadits Bukhari tentang al-ma\'azif, kecuali rebana/duff pada walimah dan hari raya.',
+        'Pendapat Sebagian Ulama (Ibnu Hazm, Al-Ghazali, Al-Qaradawi): Membolehkan nyanyian dan musik selama liriknya baik, tidak mengundang syahwat, dan tidak melalaikan kewajiban.',
+        'Kesepakatan Ulama: Haram mutlak jika berisi lirik kotor/syirik, disertai khamar/ikhtilat bebas, atau membuat meninggalkan shalat.',
+        'Seni Tilawah & Nasyid Islami: Mengalunkan Al-Qur\'an dengan suara indah dan syair pembangkit semangat kebaikan sangat dianjurkan.'
+      ],
+      practice: 'Seleksi playlist hiburan Anda; hindari lagu berlirik maksiat dan imbangi dengan mendengarkan murattal Al-Qur\'an setiap hari.',
+      source: quran('31/6')
+    },
+    {
+      id: 'fotografi-lukisan-patung',
+      title: 'Hukum Patung, Lukisan, & Fotografi Digital',
+      category: 'Seni Visual',
+      summary: 'Patung makhluk bernyawa yang disembah atau menandingi ciptaan Allah dilarang keras; mayoritas ulama kontemporer membolehkan fotografi sebagai penangkapan cahaya.',
+      points: [
+        'Patung 3D Bernyawa: Dilarang keras dalam hadits shahih karena historisnya menjadi pintu berhala dan kesyirikan (kecuali mainan anak-anak menurut jumhur).',
+        'Fotografi & Video: Mayoritas ulama kontemporer (termasuk MUI dan Darul Ifta\') membolehkan foto/video karena sekadar merekam bayangan/cahaya, bukan "menciptakan" bentuk baru.',
+        'Syarat Konten Visual: Wajib menutup aurat, tidak mengumbar syahwat, dan tidak merendahkan martabat manusia.',
+        'Kaligrafi & Ornamen Alam: Seni kaligrafi Al-Qur\'an dan motif flora/geometris berkembang pesat sebagai puncak estetika peradaban Islam.'
+      ],
+      practice: 'Pastikan foto dan video yang Anda unggah ke media sosial menjaga aurat dan tidak mengandung unsur pamer berlebihan (riya\').',
+      source: hadith(2105)
+    },
+    {
+      id: 'adab-berpakaian-perhiasan',
+      title: 'Adab Berpakaian, Perhiasan, & Penampilan',
+      category: 'Gaya Hidup',
+      summary: 'Pakaian Muslim berfungsi menutup aurat dan menghiasi diri tanpa kesombongan (isbal sombong), serta bebas dari tasyabbuh lawan jenis.',
+      points: [
+        'Emas & Sutra bagi Laki-laki: Diharamkan bagi laki-laki memakai perhiasan emas dan pakaian sutra murni (HR. Tirmidzi), namun dibolehkan bagi perempuan.',
+        'Larangan Tasyabbuh Lawan Jenis: Laki-laki dilarang menyerupai pakaian/penampilan perempuan dan sebaliknya (HR. Bukhari).',
+        'Kebersihan & Wewangian: Nabi SAW sangat menjaga kebersihan gigi (siwak), rambut, jenggot, kuku, dan menyukai minyak wangi.',
+        'Tato & Operasi Pengubah Ciptaan: Tato permanen dan mengubah bentuk tubuh demi kecantikan semata dilarang (kecuali pengobatan cacat/luka).'
+      ],
+      practice: 'Periksa lemari pakaian Anda; pilih busana yang bersih, rapi, menutup aurat sempurna, dan jauh dari kesombongan.',
+      source: quran('7/26')
+    },
+    {
+      id: 'olahraga-bercanda',
+      title: 'Olahraga, Game, & Batas Bercanda dalam Islam',
+      category: 'Hiburan Harian',
+      summary: 'Rasulullah SAW pun berlomba lari bersama Aisyah RA dan bercanda dengan sahabat — namun candaan beliau selalu jujur dan tidak menyakiti.',
+      points: [
+        'Anjuran Olahraga: Memanah, berkuda, berenang, dan lari dianjurkan karena mukmin yang kuat lebih dicintai Allah daripada mukmin yang lemah (HR. Muslim).',
+        'Batas Bercanda: Boleh bercanda untuk mencairkan suasana, namun haram berbohong demi membuat orang tertawa (HR. Abu Dawud) serta haram memperolok agama atau fisik orang lain (QS. 49:11).',
+        'Game & Hiburan Digital: Mubah sebagai pelepas penat jika bebas judi/gacha uang nyata, bebas pornografi, dan tidak melalaikan shalat atau amanah keluarga/kerja.',
+        'Manajemen Waktu: Setiap detik waktu luang dan kesehatan akan ditanya pertanggungjawabannya di hari kiamat.'
+      ],
+      practice: 'Jadwalkan olahraga rutin minimal 3x seminggu dengan niat menjaga amanah kesehatan tubuh dari Allah.',
+      source: hadith(2664)
+    }
+  ]
+};
+
+export const metodeTahfidz: Course = {
+  id: 'metode-tahfidz',
+  title: 'Metode Tahfidz & Muraja\'ah Al-Qur\'an',
+  description: 'Strategi menghafal Al-Qur\'an di tengah kesibukan, metode tikrar & talaqqi, serta kiat menjaga hafalan.',
+  note: 'Menghafal Al-Qur\'an bukan soal kecerdasan semata, melainkan soal keistiqamahan, menjaga maksiat, dan doa.',
+  lessons: [
+    {
+      id: 'niat-adab-hamilul-quran',
+      title: 'Meluruskan Niat & Adab Penghafal Al-Qur\'an',
+      category: 'Persiapan Ruhani',
+      summary: 'Al-Qur\'an adalah cahaya Allah yang tidak akan menetap nyaman di hati yang dipenuhi riya\' dan maksiat.',
+      points: [
+        'Niat Ikhlas: Menghafal demi meraih ridha Allah dan syafaat Al-Qur\'an, bukan demi gelar atau pujian manusia.',
+        'Jauhi Maksiat Mata & Lisan: Imam Syafi\'i diingatkan gurunya (Waki\') bahwa ilmu adalah cahaya Allah yang tidak diberikan kepada pelaku maksiat.',
+        'Satu Mushaf Tetap (Mushaf Pojok): Gunakan satu jenis cetakan mushaf (misal Mushaf Madinah 15 baris) agar memori visual posisi ayat terekam kuat.',
+        'Perbaiki Tajwid Dulu (Tahsin): Jangan terburu menghafal sebelum bacaan benar secara makhraj dan tajwid lewat guru.'
+      ],
+      practice: 'Pilih satu mushaf cetak khusus yang nyaman di mata dan jangan gonta-ganti mushaf selama proses menghafal.',
+      source: quran('54/17')
+    },
+    {
+      id: 'teknik-tikrar-talaqqi',
+      title: 'Teknik Tikrar (Pengulangan) & Talaqqi Bersanad',
+      category: 'Metode Menghafal',
+      summary: 'Metode paling teruji sejak zaman Nabi SAW adalah talaqqi (setoran lisan ke guru) dan tikrar (mengulang-ulang ayat hingga menempel di lisan).',
+      points: [
+        'Metode 3T + 1M: Tahsin (perbaiki bacaan), Tasmi\'/Talaqqi (setor ke guru), Tikrar (ulang 20–40 kali per ayat), dan Muraja\'ah (mengulang hafalan lama).',
+        'Potong Per Ayat / Per Tema: Hafal ayat 1 ulang 10x, hafal ayat 2 ulang 10x, lalu gabungkan ayat 1–2 ulang 10x.',
+        'Pahami Terjemahannya: Mengetahui arti ayat membantu otak menghubungkan alur cerita atau hukum antar-ayat sehingga hafalan lebih awet.',
+        'Waktu Emas Menghafal: Setelah Shalat Subuh (pikiran masih segar) dan antara Maghrib–Isya\'.'
+      ],
+      practice: 'Coba hafalkan 3–5 baris Al-Qur\'an ba\'da Subuh besok dengan teknik mengulang masing-masing 15 kali sambil melihat terjemahnya.',
+      source: quran('73/4')
+    },
+    {
+      id: 'strategi-murajaah',
+      title: 'Kunci Utama: Manajemen Muraja\'ah (Agar Tidak Lupa)',
+      category: 'Menjaga Hafalan',
+      summary: 'Rasulullah SAW mengibaratkan hafalan Al-Qur\'an lebih cepat lepas daripada unta yang tidak diikat; kuncinya adalah muraja\'ah harian.',
+      points: [
+        'Hadits Pengikat Unta (HR. Bukhari-Muslim): Jika terus dijaga dan dibaca, hafalan menetap; jika ditinggalkan, cepat hilang.',
+        'Aturan Emas 1:3 atau 80/20: Porsi muraja\'ah hafalan lama harus jauh lebih besar daripada menambah hafalan baru.',
+        'Bawa dalam Shalat: Baca surat/halaman yang baru dihafal di dalam shalat sunnah (Tahajud, Dhuha, Rawatib) untuk menguji kekuatan hafalan.',
+        'Audio Murattal saat Berkendara: Putar ulang juz yang sedang dimuraja\'ah saat di perjalanan.'
+      ],
+      practice: 'Tetapkan porsi muraja\'ah wajib sebelum menambah hafalan baru; jika target muraja\'ah hari ini terlewat, tunda dulu hafalan baru.',
+      source: hadith(2419)
+    },
+    {
+      id: 'tahfidz-untuk-pekerja',
+      title: 'Program Tahfidz Realistis untuk Pekerja & Pelajar Sibuk',
+      category: 'Manajemen Waktu',
+      summary: 'Menghafal 3–5 baris sehari secara konsisten akan menuntaskan seluruh Al-Qur\'an dalam beberapa tahun dengan hafalan yang kokoh.',
+      points: [
+        'Prinsip Sedikit Tapi Istiqamah: 5 baris/hari = 1 halaman dalam 3 hari = 1 juz dalam 2 bulan.',
+        'Manfaatkan Waktu Tunggu: 10 menit sebelum adzan di masjid atau jeda istirahat siang sangat cukup untuk mengulang 1 halaman.',
+        'Cari Partner Sima\'an: Miliki teman setoran mingguan (baik tatap muka atau via panggilan suara) agar ada akuntabilitas.',
+        'Mulai dari Surat Favorit & Juz 30/29: Mengumpulkan kemenangan kecil membangun rasa percaya diri.'
+      ],
+      practice: 'Gunakan fitur Tracker Khatam & Tahfidz di aplikasi ini untuk memantau konsistensi tilawah dan hafalan Anda.',
+      source: hadith(2419)
+    }
+  ]
+};
+
+export const adabMenuntutIlmu: Course = {
+  id: 'adab-menuntut-ilmu',
+  title: 'Adab Menuntut Ilmu (Ta\'limul Muta\'allim)',
+  description: 'Etika murid kepada guru, adab terhadap kitab, manajemen waktu belajar, dan cara mengatasi futur.',
+  note: 'Para ulama salaf mempelajari adab selama puluhan tahun sebelum mendalami ilmu; karena ilmu tanpa adab hanya melahirkan kesombongan.',
+  lessons: [
+    {
+      id: 'keutamaan-ilmu-syarat',
+      title: '6 Syarat Meraih Ilmu Bermanfaat (Syair Imam Syafi\'i)',
+      category: 'Fondasi Ilmu',
+      summary: 'Imam Syafi\'i merangkum syarat keberhasilan belajar menjadi enam hal: kecerdasan, semangat, kesungguhan, bekal, bimbingan guru, dan waktu yang panjang.',
+      points: [
+        'Dzaka\' (Kecerdasan) & Hirsh (Semangat Tinggi): Rasa ingin tahu yang tulus untuk mengenal Allah dan agama-Nya.',
+        'Ijtihad (Kesungguhan) & Bulghah (Bekal/Biaya): Siap berkorban tenaga, waktu, dan harta demi ilmu.',
+        'Shuhbatu Ustadz (Bimbingan Guru): Tidak cukup otodidak dari internet tanpa guru; guru meluruskan salah paham.',
+        'Thulu Zaman (Waktu Panjang & Sabar): Ilmu tidak diraih instan dalam semalam, butuh proses bertahap dari dasar ke lanjutan.'
+      ],
+      practice: 'Tuliskan 6 syarat dari syair Imam Syafi\'i ini di halaman depan buku catatan kajian Anda.',
+      source: quran('58/11')
+    },
+    {
+      id: 'adab-kepada-guru',
+      title: 'Adab Murid kepada Guru & Majelis Ilmu',
+      category: 'Adab Berguru',
+      summary: 'Keberkahan ilmu mengalir lewat kerendahan hati murid kepada gurunya, sebagaimana adab Nabi Musa AS kepada Nabi Khidir AS.',
+      points: [
+        'Menghormati Guru Tanpa Kultus: Mendengarkan penjelasan dengan fokus, tidak memotong pembicaraan, dan berbicara santun.',
+        'Teladan Musa & Khidir (QS. Al-Kahfi: 66–70): Nabi Musa yang seorang Rasul Ulul Azmi tetap merendah memohon izin belajar kepada Khidir AS.',
+        'Mendoakan Guru: Doakan kebaikan dan kesehatan guru setiap selesai belajar atau dalam sujud.',
+        'Adab Bertanya: Bertanya untuk memahami kebenaran, bukan untuk menguji atau menjatuhkan guru.'
+      ],
+      practice: 'Kirimkan ucapan terima kasih dan doa kebaikan kepada guru ngaji atau ustadz yang pernah membimbing Anda.',
+      source: quran('18/66')
+    },
+    {
+      id: 'adab-terhadap-kitab',
+      title: 'Adab Terhadap Kitab, Catatan, & Mengikat Ilmu',
+      category: 'Metode Belajar',
+      summary: '"Ikatlah ilmu dengan tulisan" (HR. Thabrani); ulama memuliakan buku sebagai wadah ilmu dan menyusun catatan secara sistematis.',
+      points: [
+        'Menjaga Kehormatan Buku: Meletakkan mushaf dan kitab agama di tempat terhormat, tidak menaruhnya di lantai atau menjadikannya bantal.',
+        'Mencatat Poin Penting: Jangan mengandalkan ingatan semata saat kajian; buat ringkasan poin dan dalilnya.',
+        'Mudzakarah (Diskusi & Mengajar): Ilmu bertambah ketika diajarkan atau didiskusikan ulang bersama teman seperjuangan.',
+        'Mengamalkan Ilmu: Imam Ahmad tidak menulis satu hadits pun kecuali setelah berusaha mengamalkannya.'
+      ],
+      practice: 'Siapkan satu buku catatan khusus kajian (fisik atau digital terstruktur) dan tuliskan minimal 3 poin pelajaran setiap selesai mendengar ceramah.',
+      source: hadith(1631)
+    },
+    {
+      id: 'mengatasi-futur',
+      title: 'Mengatasi Futur (Lelah & Malas Belajar Agama)',
+      category: 'Manajemen Diri',
+      summary: 'Setiap hati punya masa semangat (syirrah) dan masa melambat (fatrah); kuncinya jangan sampai berhenti total dari ketaatan.',
+      points: [
+        'Pahami Siklus Iman (HR. Ahmad): Masa fatrah itu wajar; selama tetap menjaga kewajiban dan tidak melanggar batas halal-haram, ia tetap di atas petunjuk.',
+        'Cari Lingkungan Saleh: Bergabung dengan halaqah atau komunitas belajar membantu menjaga ritme saat semangat individu turun.',
+        'Turunkan Target Sementara: Jika sedang lelah, kurangi porsi (misal baca 1 halaman saja), tapi jangan putus sama sekali.',
+        'Doa Memohon Tambahan Ilmu: "Rabbi zidni \'ilma" (QS. Thaha: 114).'
+      ],
+      practice: 'Saat merasa malas membuka buku atau kajian, mulailah dengan membaca 5 menit saja bersama secangkir teh agar momentum kembali hidup.',
+      source: quran('20/114')
+    }
+  ]
+};
+
+export const birrulWalidain: Course = {
+  id: 'birrul-walidain',
+  title: 'Birrul Walidain, Hak Tetangga, & Silaturahim',
+  description: 'Cara berbakti kepada orang tua saat hidup maupun wafat, menyikapi perbedaan pendapat, dan adab bertetangga.',
+  note: 'Keridhaan Allah tergantung pada keridhaan orang tua, dan murka Allah tergantung pada murka keduanya (HR. Tirmidzi).',
+  lessons: [
+    {
+      id: 'kedudukan-birrul-walidain',
+      title: 'Kedudukan Bakti kepada Orang Tua Setelah Tauhid',
+      category: 'Birrul Walidain',
+      summary: 'Al-Qur\'an berulang kali menggandengkan perintah menyembah Allah saja dengan berbuat baik kepada ibu dan bapak (QS. Al-Isra\': 23).',
+      points: [
+        'Larangan "Ah" (Uff): Jangankan membentak atau memukul, mengucap kata keluhan ringan "ah" saja dilarang keras (QS. 17:23).',
+        'Prioritas Ibu 3 Kali Lebih Besar: Hadits shahih menuntun bakti utama kepada ibu yang mengandung, melahirkan, dan menyusui dalam kepayahan.',
+        'Pintu Surga Paling Tengah: Menjaga orang tua di masa senjanya adalah kesempatan emas meraih surga (HR. Tirmidzi).',
+        'Doa Wajib Anak: "Rabbighfir li wa liwalidayya warhamhuma kama rabbayani shaghira."'
+      ],
+      practice: 'Hubungi orang tua Anda hari ini (atau kunjungi jika dekat), tanyakan kabar kesehatannya dengan nada suara paling lembut.',
+      source: quran('17/23')
+    },
+    {
+      id: 'orang-tua-berbeda-pendapat',
+      title: 'Menyikapi Orang Tua yang Keras atau Berbeda Keyakinan',
+      category: 'Birrul Walidain',
+      summary: 'Tidak ada ketaatan dalam kemaksiatan kepada Allah, namun tetap wajib menemani dan memperlakukan keduanya dengan santun di dunia.',
+      points: [
+        'Prinsip QS. Luqman: 15: Jika orang tua memaksa syirik/maksiat jangan ditaati, tetapi tetap pergauli keduanya di dunia dengan cara yang ma\'ruf (baik).',
+        'Kisah Asma\' binti Abu Bakar: Nabi SAW memerintahkan Asma\' tetap menyambung silaturahim dan memberi hadiah kepada ibunya yang masih musyrik (HR. Bukhari).',
+        'Menasihati dengan Lembut: Teladani Nabi Ibrahim AS yang memanggil ayahnya "Ya Abati" (wahai ayahku tersayang) meski berbeda keyakinan.',
+        'Batas Ketaatan Setelah Menikah: Suami tetap wajib berbakti kepada ibunya tanpa menzalimi hak istri; istri menghormati mertua dan menjaga keharmonisan kedua keluarga.'
+      ],
+      practice: 'Jika ada perbedaan pendapat dengan orang tua soal urusan duniawi, utamakan mengalah dengan senyum selama tidak melanggar syariat.',
+      source: quran('31/15')
+    },
+    {
+      id: 'bakti-setelah-wafat',
+      title: 'Cara Berbakti kepada Orang Tua yang Telah Wafat',
+      category: 'Birrul Walidain',
+      summary: 'Kematian tidak memutus bakti seorang anak; doa anak shaleh, melunasi utang, dan memuliakan sahabat orang tua terus mengalirkan pahala.',
+      points: [
+        '5 Amal Bakti Pasca Wafat (HR. Abu Dawud): Mendoakan & memintakan ampun, melaksanakan wasiat yang syar\'i, menyambung silaturahim kerabatnya, dan memuliakan teman dekat orang tua.',
+        'Melunasi Utang & Nadzar Puasa/Haji: Anak membantu melunasi utang harta maupun amanah ibadah orang tua.',
+        'Sedekah Jariyah Atas Nama Orang Tua: Mewakafkan mushaf, membangun sumur/fasilitas masjid diniatkan pahalanya untuk almarhum ayah/ibu (HR. Bukhari tentang Sa\'ad bin Ubadah).',
+        'Menjaga Nama Baik: Tidak melakukan perbuatan yang membuat orang lain mencela orang tua kita.'
+      ],
+      practice: 'Sisihkan sedekah hari Jumat ini dan niatkan pahalanya untuk kedua orang tua (baik yang masih hidup maupun yang sudah wafat).',
+      source: hadith(1631)
+    },
+    {
+      id: 'hak-tetangga-silaturahim',
+      title: 'Memuliakan Tetangga & Menyambung Silaturahim',
+      category: 'Adab Sosial',
+      summary: 'Jibril terus mewasiatkan hak tetangga kepada Nabi SAW hingga beliau mengira tetangga akan ikut mendapat warisan (HR. Bukhari-Muslim).',
+      points: [
+        'Syarat Iman: "Barangsiapa beriman kepada Allah dan hari akhir, hendaklah ia memuliakan tetangganya dan tidak menyakitinya" (HR. Bukhari).',
+        'Berbagi Masakan & Hadiah: Nabi SAW berpesan agar memperbanyak kuah masakan untuk dibagikan ke tetangga sekitar.',
+        'Hak Tetangga Non-Muslim: Tetap berhak atas kebaikan sosial, keamanan, dan pertolongan darurat.',
+        'Silaturahim Sejati: Bukan sekadar membalas kunjungan orang yang baik kepada kita, melainkan menyambung kembali hubungan kerabat yang sempat terputus (HR. Bukhari).'
+      ],
+      practice: 'Kirimkan makanan ringan atau buah ke tetangga sebelah rumah minggu ini tanpa menunggu momen khusus.',
+      source: hadith(6018)
+    }
+  ]
+};
+
+export const baitulMaqdis: Course = {
+  id: 'baitul-maqdis',
+  title: 'Baitul Maqdis & Masjid Al-Aqsha dalam Sejarah',
+  description: 'Kedudukan Masjid Al-Aqsha dalam Islam, Isra\' Mi\'raj, sejarah pembebasan, dan keutamaan bumi Syam.',
+  note: 'Masjid Al-Aqsha adalah bagian tak terpisahkan dari akidah dan sejarah umat Islam sepanjang masa.',
+  lessons: [
+    {
+      id: 'keutamaan-masjid-aqsha',
+      title: 'Masjid Al-Aqsha: Kiblat Pertama & Tiga Masjid Suci',
+      category: 'Kedudukan Syariat',
+      summary: 'Masjid Al-Aqsha adalah masjid kedua yang dibangun di bumi setelah Masjidil Haram dan salah satu dari tiga masjid yang dianjurkan safar ibadah ke sana.',
+      points: [
+        'Tiga Masjid Utama (HR. Bukhari-Muslim): Tidak dianjurkan bersusah payah safar ibadah kecuali ke Masjidil Haram, Masjid Nabawi, dan Masjid Al-Aqsha.',
+        'Kiblat Pertama: Nabi SAW dan para sahabat shalat menghadap Baitul Maqdis selama ± 16–17 bulan di Madinah sebelum kiblat dipindahkan ke Ka\'bah (QS. Al-Baqarah: 144).',
+        'Kawasan Al-Aqsha yang Sebenarnya: Seluruh kompleks seluas ± 14,4 hektare (mencakup Masjid Qibli berkubah abu-abu maupun Dome of the Rock/Qubbat As-Sakhrah berkubah emas).',
+        'Keberkahan Sekitarnya: Allah menyebut Al-Aqsha sebagai tempat yang "Kami berkahi sekelilingnya" (QS. Al-Isra\': 1).'
+      ],
+      practice: 'Kenali perbedaan bangunan Masjid Qibli dan Kubah Shakhrah agar tidak salah mengira keseluruhan kompleks Al-Aqsha.',
+      source: quran('17/1')
+    },
+    {
+      id: 'isra-miraj-al-aqsha',
+      title: 'Peristiwa Isra\' Mi\'raj: Ikatan Makkah & Baitul Maqdis',
+      category: 'Sirah & Akidah',
+      summary: 'Allah SWT memperjalankan Nabi SAW dari Masjidil Haram ke Masjid Al-Aqsha sebelum naik ke Sidratul Muntaha sebagai pengukuhan estafet risalah para nabi.',
+      points: [
+        'Imam Seluruh Nabi: Di Masjid Al-Aqsha, Nabi Muhammad SAW mengimami seluruh nabi dan rasul sebelum Mi\'raj — simbol penyatuan tauhid seluruh nabi.',
+        'Pelajaran Risalah: Baitul Maqdis adalah amanah yang diwariskan dari Nabi Ibrahim, Ishaq, Ya\'qub, Dawud, Sulaiman, hingga Nabi Muhammad SAW.',
+        'Oleh-oleh Shalat Lima Waktu: Perintah shalat fardhu diterima langsung di atas langit ketujuh setelah perjalanan dimulai dari Masjid Al-Aqsha.'
+      ],
+      practice: 'Setiap shalat lima waktu, ingatlah bahwa perintah shalat turun dalam satu rangkaian peristiwa Isra\' Mi\'raj yang menghubungkan Makkah dan Al-Aqsha.',
+      source: quran('17/1')
+    },
+    {
+      id: 'pembebasan-umar-shalahuddin',
+      title: 'Pembebasan Umar bin Khattab & Shalahuddin al-Ayyubi',
+      category: 'Sejarah Islam',
+      summary: 'Dua pembebasan agung Baitul Maqdis dalam sejarah Islam menjadi teladan keadilan, tanpa balas dendam, dan jaminan kebebasan beragama.',
+      points: [
+        'Pembebasan Damai oleh Umar bin Khattab (15 H / 637 M): Umar datang sendiri menerima kunci kota dari Patriark Sophronius dan menandatangani Perjanjian Umariyah yang melindungi gereja serta penduduk.',
+        'Umar Shalat di Luar Gereja Makam Kudus: Beliau menolak shalat di dalam gereja agar tidak dijadikan alasan umat Islam mengambil alih gereja di kemudian hari.',
+        'Pembebasan Shalahuddin al-Ayyubi (583 H / 1187 M): Setelah 88 tahun dikuasai Tentara Salib, Shalahuddin merebut kembali Al-Aqsha dan memaafkan penduduk sipil tanpa pembantaian.',
+        'Persiapan Spiritual Sebelum Pembebasan: Shalahuddin dan gurunya (Nuruddin Zanki) terlebih dahulu menyatukan umat dan memberantas kemaksiatan.'
+      ],
+      practice: 'Pelajari kisah keadilan Perjanjian Umariyah sebagai bukti bagaimana Islam menjaga hak minoritas saat memimpin.',
+      source: quran('5/8')
+    },
+    {
+      id: 'sikap-muslim-kini',
+      title: 'Peran & Kepedulian Muslim Terhadap Bumi Syam',
+      category: 'Refleksi Masa Kini',
+      summary: 'Kepedulian terhadap Baitul Maqdis diwujudkan lewat ilmu sejarah yang benar, doa qunut nazilah, kepedulian kemanusiaan, dan memperbaiki kualitas diri.',
+      points: [
+        'Ikatan Ukhuwah: Perumpamaan orang beriman seperti satu tubuh; jika satu anggota sakit, seluruh tubuh merasakan demamnya (HR. Muslim).',
+        'Doa & Bantuan Kemanusiaan: Mengirimkan doa terbaik serta menyalurkan bantuan kemanusiaan melalui lembaga resmi terpercaya.',
+        'Memperbaiki Kualitas Umat: Kebangkitan peradaban selalu dimulai dari ketakwaan, ilmu pengetahuan, persatuan, dan amanah di negeri masing-masing.'
+      ],
+      practice: 'Sertakan doa keselamatan dan kedamaian bagi saudara-saudara yang tertindas di Palestina dan seluruh dunia Islam dalam doa harian Anda.',
+      source: hadith(2586)
+    }
+  ]
+};
+
+export const khulafaurRasyidin: Course = {
+  id: 'khulafaur-rasyidin',
+  title: 'Kepemimpinan Khulafaur Rasyidin',
+  description: 'Keteladanan keadilan dan kebijakan Abu Bakar, Umar, Utsman, Ali, serta Umar bin Abdul Aziz.',
+  note: 'Rasulullah SAW bersabda: "Berpegang teguhlah kalian pada sunnahku dan sunnah Khulafaur Rasyidin yang mendapat petunjuk" (HR. Abu Dawud).',
+  lessons: [
+    {
+      id: 'abu-bakar-ketegasan',
+      title: 'Abu Bakar Ash-Shiddiq (11–13 H): Ketegasan di Masa Krisis',
+      category: 'Khulafaur Rasyidin',
+      summary: 'Pidato pelantikan Abu Bakar meletakkan dasar demokrasi pertanggungjawaban pemimpin: "Taati aku selama aku menaati Allah."',
+      points: [
+        'Pidato Inaugurasi Agung: "Jika aku berbuat baik bantulah aku, jika aku menyimpang luruskanlah aku; yang lemah di antara kalian kuat di sisiku hingga kuambilkan haknya."',
+        'Menyelamatkan Negara dari Disintegrasi: Tegas menghadapi nabi palsu dan penolak zakat agar syariat tidak terpecah setelah wafatnya Nabi SAW.',
+        'Pengumpulan Mushaf Al-Qur\'an: Mengambil keputusan visioner atas usul Umar bin Khattab demi menyelamatkan Al-Qur\'an.'
+      ],
+      practice: 'Teladani kerendahan hati Abu Bakar: terbuka menerima koreksi meski berada di posisi pimpinan.',
+      source: hadith(3660)
+    },
+    {
+      id: 'umar-keadilan-tata-kelola',
+      title: 'Umar bin Khattab (13–23 H): Arsitek Keadilan & Tata Kelola Negara',
+      category: 'Khulafaur Rasyidin',
+      summary: 'Umar membangun sistem administrasi negara modern: Baitul Mal, tunjangan sosial rakyat, kalender Hijriah, dan pengawasan ketat pejabat.',
+      points: [
+        'Ronda Malam & Tanggung Jawab Sosial: Umar memikul sendiri karung gandum di punggungnya untuk ibu dan anak-anak kelaparan di pinggiran Madinah.',
+        'Reformasi Institusi: Membentuk Diwan (kementerian), gaji tetap hakim dan tentara, penetapan tahun Hijriah, dan audit harta pejabat sebelum & sesudah menjabat.',
+        'Keadilan Tanpa Pandang Bulu: Melindungi hak rakyat kecil meski harus menegur gubernur atau anaknya sendiri.'
+      ],
+      practice: 'Bagi yang memegang amanah tim/organisasi, biasakan mengecek kondisi anggota yang paling bawah dan mendengar keluhan langsung tanpa sekat.',
+      source: quran('4/58')
+    },
+    {
+      id: 'utsman-ali-kedermawanan-hikmah',
+      title: 'Utsman bin Affan & Ali bin Abi Thalib: Dermawan & Bijaksana',
+      category: 'Khulafaur Rasyidin',
+      summary: 'Utsman mewariskan penyatuan Mushaf Al-Qur\'an dan wakaf abadi; Ali mewariskan kedalaman ilmu, keadilan peradilan, dan kesabaran menghadapi fitnah.',
+      points: [
+        'Utsman bin Affan (23–35 H): Membentuk armada laut pertama Islam dan membukukan Mushaf Al-Imam agar umat Islam bersatu di atas satu bacaan standar.',
+        'Ali bin Abi Thalib (35–40 H): Cendekiawan ulung ("Aku kota ilmu dan Ali pintunya"); terkenal dengan surat wasiat kepemimpinan penuh hikmah kepada Gubernur Mesir Malik al-Asytar.',
+        'Menjaga Darah Sesama Muslim: Utsman memilih mengorbankan nyawanya sendiri daripada memicu perang saudara di Madinah.'
+      ],
+      practice: 'Pelajari surat Ali bin Abi Thalib kepada Malik al-Asytar tentang prinsip keadilan bagi semua golongan rakyat.',
+      source: hadith(3700)
+    },
+    {
+      id: 'umar-bin-abdul-aziz',
+      title: 'Umar bin Abdul Aziz (99–101 H): Khalifah Rasyid Kelima',
+      category: 'Teladan Keadilan',
+      summary: 'Hanya memerintah 2,5 tahun namun berhasil menghapus kemiskinan hingga amil zakat kesulitan mencari penerima zakat.',
+      points: [
+        'Reformasi Dimulai dari Diri & Keluarga: Mengembalikan seluruh aset mewah keluarganya ke Baitul Mal pada hari pertama menjabat dan memilih hidup sederhana.',
+        'Memadamkan Api Perpecahan: Menghentikan cacian politik di mimbar Jumat dan menggantinya dengan pembacaan QS. An-Nahl: 90 (perintah keadilan & ihsan).',
+        'Kemakmuran Merata: Mengoptimalkan distribusi zakat, meringankan pajak zalim, dan membiayai pernikahan pemuda serta pelunasan utang warga miskin.'
+      ],
+      practice: 'Ingatlah prinsip Umar bin Abdul Aziz: perubahan besar selalu dimulai dari membersihkan integritas diri sendiri terlebih dahulu.',
+      source: quran('16/90')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -5183,4 +5632,11 @@ export const courseLinks = [
   { href: '/imam-madzhab', title: imamMadzhab.title, description: imamMadzhab.description },
   { href: '/fiqh-kontemporer', title: fiqhKontemporer.title, description: fiqhKontemporer.description },
   { href: '/ilmu-qiraat', title: ilmuQiraat.title, description: ilmuQiraat.description },
+  { href: '/fiqh-safar', title: fiqhSafar.title, description: fiqhSafar.description },
+  { href: '/fiqh-hiburan', title: fiqhHiburan.title, description: fiqhHiburan.description },
+  { href: '/metode-tahfidz', title: metodeTahfidz.title, description: metodeTahfidz.description },
+  { href: '/adab-menuntut-ilmu', title: adabMenuntutIlmu.title, description: adabMenuntutIlmu.description },
+  { href: '/birrul-walidain', title: birrulWalidain.title, description: birrulWalidain.description },
+  { href: '/baitul-maqdis', title: baitulMaqdis.title, description: baitulMaqdis.description },
+  { href: '/khulafaur-rasyidin', title: khulafaurRasyidin.title, description: khulafaurRasyidin.description },
 ];
