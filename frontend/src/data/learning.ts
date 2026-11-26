@@ -6373,6 +6373,207 @@ export const kaligrafiIslam: Course = {
   ]
 };
 
+export const fiqhPasien: Course = {
+  id: 'fiqh-pasien',
+  title: 'Fiqh Pasien, Rumah Sakit, & Ibadah Saat Sakit',
+  description: 'Panduan bersuci dan shalat bagi pasien dengan infus, gips, atau kateter, shalat berbaring, serta hukum obat saat puasa.',
+  note: '"Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya" (QS. Al-Baqarah: 286); sakit tidak menggugurkan shalat, melainkan meringankan caranya.',
+  lessons: [
+    {
+      id: 'bersuci-pasien-infus-gips',
+      title: 'Cara Wudhu & Tayammum Pasien (Infus, Gips, & Kateter)',
+      category: 'Thaharah Pasien',
+      summary: 'Bagian tubuh yang diperban atau digips cukup diusap dengan tangan basah; pasien yang tidak mampu memakai air dapat bertayammum di dinding/debu suci.',
+      points: [
+        'Luka Diperban / Gips / Infus (Mash \'alal Jabirah): Basuh kulit sehat di sekitarnya dengan air, sedangkan bagian yang tertutup gips/plester cukup diusap lembut dengan air (atau tayammum sebagai pengganti bagian yang tidak boleh kena air menurut Syafi\'iyah).',
+        'Pasien Terpasang Kateter (Da\'imul Hadats): Tetap wajib shalat; bersihkan najis semampunya, berwudhu/tayammum setiap masuk waktu shalat, lalu langsung shalat tanpa batal meski air seni masih mengalir ke kantong kateter.',
+        'Tayammum Praktis di RS: Gunakan debu suci yang disiapkan di kain/bantal atau permukaan bersih berdebu; tepuk dua kali lalu usap wajah dan kedua telapak tangan hingga pergelangan.'
+      ],
+      practice: 'Bagi keluarga penunggu pasien di RS, siapkan botol spray air dan tisu basah/handuk kecil agar pasien tetap nyaman bersuci.',
+      source: quran('5/6')
+    },
+    {
+      id: 'tata-cara-shalat-berbaring',
+      title: 'Tata Cara Shalat Duduk, Berbaring, & Isyarat',
+      category: 'Shalat Pasien',
+      summary: 'Hadits Imran bin Hushain (HR. Bukhari): Shalatlah sambil berdiri; jika tidak mampu maka duduk; jika tidak mampu maka berbaring miring.',
+      points: [
+        'Shalat Duduk: Duduk di kursi atau di atas tempat tidur; rukuk dengan menundukkan kepala/punggung sedikit, sujud dengan membungkuk lebih rendah (atau sujud normal jika mampu di lantai).',
+        'Shalat Berbaring Miring ke Kanan: Wajah dan dada menghadap kiblat (jika tempat tidur bisa diarahkan); jika tempat tidur tidak dapat diputar ke kiblat, shalat menghadap arah mana saja sesuai kemampuan.',
+        'Shalat Telentang: Kaki diarahkan ke kiblat dengan kepala sedikit diganjal bantal menghadap kiblat; rukuk dan sujud dilakukan dengan isyarat kepala atau kedipan mata.',
+        'Boleh Menjama\' Shalat (Dzuhur+Ashar / Maghrib+Isya\'): Pasien yang mengalami kesulitan berat atau jadwal operasi boleh menjama\' shalat tanpa mengqasharnya.'
+      ],
+      practice: 'Ingatkan anggota keluarga yang sedang dirawat di rumah sakit bahwa shalat tetap wajib dikerjakan semampunya dan bisa dilakukan sambil berbaring.',
+      source: hadith(1117)
+    },
+    {
+      id: 'obat-medis-saat-puasa',
+      title: 'Hukum Obat Medis & Tindakan Dokter Saat Puasa Ramadan',
+      category: 'Puasa & Medis',
+      summary: 'Suntikan non-nutrisi, obat tetes mata, oksigen murni, dan cek darah tidak membatalkan puasa; infus nutrisi dan cuci darah (hemodialisis) membatalkan.',
+      points: [
+        'Tidak Membatalkan Puasa (Mayoritas Ulama & Majma\' Fiqh): Suntikan obat IM/IV bukan nutrisi, tes darah/gula darah, obat tetes mata/telinga (selama gendang telinga utuh), oksigen biasa, dan sikat gigi tanpa tertelan.',
+        'Obat Inhaler Asma: Ada perbedaan pendapat ulama; sebagian besar mufti kontemporer membolehkan untuk darurat sesak napas ringan (lebih hati-hati: jika ragu, berbuka dan qadha).',
+        'Membatalkan Puasa: Infus cairan glukosa/nutrisi, transfusi darah, serta cuci darah (hemodialisis) yang mengeluarkan lalu memasukkan kembali darah bersama cairan nutrisi.',
+        'Keringanan Pasien Kronis: Penderita sakit menahun yang tidak ada harapan sembuh untuk berpuasa cukup membayar fidyah.'
+      ],
+      practice: 'Konsultasikan jadwal minum obat rutin (seperti obat diabetes/hipertensi) kepada dokter sebelum Ramadan agar dosis bisa disesuaikan ke waktu sahur & buka.',
+      source: quran('2/184')
+    }
+  ]
+};
+
+export const fiqhSembelihanHalal: Course = {
+  id: 'fiqh-sembelihan-halal',
+  title: 'Fiqh Sembelihan Halal (JULEHA) & Bahan Pangan',
+  description: 'Syarat penyembelihan syar\'i, hukum pemingsanan (stunning), dan titik kritis bahan pangan modern seperti gelatin dan emulsifier.',
+  note: 'Memastikan kehalalan daging dan bahan olahan bukan sekadar aturan kuliner, melainkan penentu diterimanya doa (HR. Muslim).',
+  lessons: [
+    {
+      id: 'syarat-penyembelihan-syari',
+      title: 'Rukun & Syarat Penyembelihan Syar\'i (Standar JULEHA)',
+      category: 'Penyembelihan',
+      summary: 'Hewan darat halal wajib disembelih oleh Muslim (atau Ahli Kitab yang sah menurut syarat ketat), menyebut nama Allah, dan memutus saluran napas & makan.',
+      points: [
+        'Penyembelih: Muslim yang berakal sehat (atau mumayyiz); wajib membaca "Bismillah" dengan sadar saat menyembelih.',
+        'Alat Sembelih: Pisau/benda tajam dari logam/batu selain tulang dan kuku; memotong sekali tekan dengan cepat agar tidak menyiksa hewan (ihsan — HR. Muslim).',
+        '3–4 Saluran yang Diputus: Saluran napas (hulqum/trakea), saluran makan (mari\'/esofagus), dan dua urat leher (wadajain) tanpa memutus tulang leher sebelum hewan mati.',
+        'Hewan Mati Sebelum Disembelih (Bangkai): Haram mutlak dimakan.'
+      ],
+      practice: 'Saat membeli daging di pasar atau menyembelih qurban, pastikan juru sembelihnya Muslim yang memahami rukun sembelihan syar\'i.',
+      source: quran('6/118')
+    },
+    {
+      id: 'hukum-stunning-dan-mesin',
+      title: 'Hukum Pemingsanan Hewan (Stunning) & Penyembelihan Mekanis',
+      category: 'Industri Halal',
+      summary: 'Fatwa MUI membolehkan stunning (pemingsanan ringan) hanya sebagai alat bantu memudahkan penyembelihan selama hewan dipastikan masih hidup (hayat mustaqirrah) saat disembelih.',
+      points: [
+        'Syarat Ketat Stunning (Fatwa MUI): Hanya boleh membuat hewan pingsan sementara (tidak mematikan dan tidak menyiksa permanen); jika hewan mati akibat stunning sebelum pisau menyentuh leher, dagingnya menjadi bangkai (haram).',
+        'Penyembelihan Ayam Mekanis (RPH Modern): Dibolehkan dengan syarat operator Muslim membaca Bismillah per batch/saat menyalakan mesin dan memantau setiap ekor yang terlewat agar disembelih manual.',
+        'Bangkai Ikan & Belalang: Dikecualikan dari kewajiban sembelihan — seluruh hewan laut yang hidup di air halal bangkainya (HR. Abu Dawud).'
+      ],
+      practice: 'Pilih daging ayam/sapi kemasan yang telah memiliki sertifikat halal resmi BPJPH/MUI agar rantai sembelihannya terjamin.',
+      source: hadith(1955)
+    },
+    {
+      id: 'titik-kritis-bahan-pangan',
+      title: 'Mengenali Titik Kritis Bahan Pangan Modern',
+      category: 'Literasi Halal',
+      summary: 'Produk olahan sering memakai turunan hewani atau alkohol tersembunyi seperti gelatin, rennet keju, L-cysteine, emulsifier, dan mirin.',
+      points: [
+        'Gelatin & Kolagen (Permen kenyal, marshmallow, kapsul obat): Berasal dari tulang/kulit sapi atau babi — wajib bersertifikat halal.',
+        'Emulsifier (E471 / Mono-digliserida) & Shortening: Bisa berasal dari lemak nabati atau lemak hewani (babi/sapi tidak disembelih syar\'i).',
+        'Keju & Enzim Rennet: Rennet hewani dari lambung anak sapi harus berasal dari sembelihan halal, atau gunakan rennet mikroba/nabati.',
+        'Mirin, Sake, Angciu, & Rum dalam Masakan: Mengandung khamar/arak masakan — haram digunakan dalam masakan meski alkoholnya menguap saat dipanaskan (Fatwa MUI).'
+      ],
+      practice: 'Biasakan membaca daftar komposisi (ingredients) dan memastikan logo Halal resmi saat membeli makanan kemasan atau bumbu dapur impor.',
+      source: quran('2/168')
+    }
+  ]
+};
+
+export const masjidBersejarah: Course = {
+  id: 'masjid-bersejarah',
+  title: 'Sejarah & Keutamaan Masjid Bersejarah',
+  description: 'Mengenal Masjidil Haram, Masjid Nabawi, Masjid Al-Aqsha, Masjid Quba, Qiblatain, Cordoba, hingga masjid Nusantara.',
+  note: 'Masjid bukan sekadar tempat sujud, melainkan pusat pembinaan umat, pendidikan, musyawarah, dan mercusuar peradaban Islam.',
+  lessons: [
+    {
+      id: 'tiga-masjid-suci-dan-quba',
+      title: 'Tiga Masjid Suci & Masjid Quba (Masjid Pertama dalam Islam)',
+      category: 'Masjid Utama',
+      summary: 'Satu shalat di Masjidil Haram bernilai 100.000 kali, di Masjid Nabawi 1.000 kali, di Al-Aqsha 250–500 kali, dan shalat di Quba berpahala umrah.',
+      points: [
+        'Masjidil Haram (Makkah): Dibangun pondasinya oleh Nabi Ibrahim & Ismail AS di sekitar Ka\'bah; kiblat seluruh umat Islam.',
+        'Masjid Nabawi (Madinah): Dibangun langsung oleh Rasulullah SAW dan para sahabat saat tiba di Madinah; di dalamnya terdapat Raudhah ("taman dari taman-taman surga").',
+        'Masjid Al-Aqsha (Yerusalem): Kiblat pertama umat Islam dan titik awal Mi\'raj Nabi SAW.',
+        'Masjid Quba (Madinah): Masjid pertama yang dibangun Nabi SAW saat hijrah; bersuci dari rumah lalu shalat sunnah 2 rakaat di sana berpahala seperti umrah (HR. Tirmidzi).'
+      ],
+      practice: 'Jika berkesempatan umrah/haji ke Madinah, luangkan waktu berwudhu dari hotel untuk shalat sunnah di Masjid Quba.',
+      source: hadith(1190)
+    },
+    {
+      id: 'masjid-bersejarah-dunia-islam',
+      title: 'Masjid Qiblatain, Masjid Cordoba, & Hagia Sophia',
+      category: 'Warisan Dunia',
+      summary: 'Dari tempat turunnya wahyu pemindahan kiblat hingga monumen arsitektur Andalusia dan Konstantinopel.',
+      points: [
+        'Masjid Qiblatain (Madinah): Tempat Nabi SAW dan sahabat memutar arah shalat dari Baitul Maqdis ke Ka\'bah di tengah-tengah shalat Dzuhur/Ashar setelah turunnya QS. Al-Baqarah: 144.',
+        'Masjid Agung Cordoba (Spanyol): Dibangun Dinasti Umayyah Andalusia (785 M) dengan ratusan lengkungan pilar merah-putih ikonik dan menjadi pusat keilmuan Eropa.',
+        'Masjid Al-Azhar (Kairo, Mesir): Didirikan tahun 970 M dan bertahan lebih dari seribu tahun sebagai universitas Islam tertua yang masih aktif melahirkan ulama dunia.',
+        'Masjid Sultan Ahmed (Masjid Biru) & Aya Sofya (Istanbul): Simbol kejayaan arsitektur kesultanan Utsmani.'
+      ],
+      practice: 'Pelajari fungsi sosial masjid di masa Nabi SAW agar masjid di lingkungan kita juga ramah anak, musafir, dan pelajar.',
+      source: quran('2/144')
+    },
+    {
+      id: 'masjid-bersejarah-nusantara',
+      title: 'Masjid Bersejarah di Indonesia & Kearifan Arsitekturnya',
+      category: 'Masjid Nusantara',
+      summary: 'Masjid Agung Demak, Menara Kudus, dan Baiturrahman Aceh memadukan fungsi ibadah murni dengan kearifan budaya lokal tanpa meninggalkan syariat.',
+      points: [
+        'Masjid Agung Demak (1479 M): Dibangun para Walisongo dengan atap tumpang tiga (simbol Iman, Islam, Ihsan) dan empat soko guru kayu jati.',
+        'Masjid Menara Kudus (1549 M): Dibangun Sunan Kudus dengan akulturasi arsitektur bata merah yang merangkul masyarakat lokal dengan damai.',
+        'Masjid Raya Baiturrahman (Banda Aceh): Masjid bersejarah Kesultanan Aceh yang menjadi benteng perjuangan sekaligus selamat kokoh saat Tsunami Aceh 2004.',
+        'Adab Memakmurkan Masjid (QS. At-Taubah: 18): Menjaga kebersihan, shalat tahiyatul masjid 2 rakaat sebelum duduk, dan menghindari transaksi jual beli di ruang shalat.'
+      ],
+      practice: 'Biasakan shalat Tahiyatul Masjid 2 rakaat setiap kali memasuki masjid sebelum duduk.',
+      source: quran('9/18')
+    }
+  ]
+};
+
+export const ilmuMantikMunazharah: Course = {
+  id: 'ilmu-mantik-munazharah',
+  title: 'Ilmu Mantik & Etika Berdiskusi (Munazharah)',
+  description: 'Dasar logika berpikir lurus dalam tradisi ulama Islam, mengenali sesat pikir (fallacy), dan adab berdebat ilmiah.',
+  note: 'Al-Qur\'an mengajak manusia berpikir lurus ("afala ta\'qilun"); ulama besar seperti Al-Ghazali menulis kitab Mantik untuk menjaga nalar umat dari kesesatan argumen.',
+  lessons: [
+    {
+      id: 'pengantar-ilmu-mantik',
+      title: 'Mengenal Ilmu Mantik (Logika Lurus) dalam Tradisi Ulama',
+      category: 'Dasar Mantik',
+      summary: 'Ilmu Mantik adalah aturan berpikir untuk menjaga akal agar tidak salah mengambil kesimpulan; digunakan ulama dalam Ushul Fiqh (Qiyas) dan Akidah.',
+      points: [
+        'Tashawwur (Konsep) & Tashdiq (Putusan): Memahami definisi suatu istilah secara tepat sebelum menghukuminya benar atau salah ("Al-hukmu \'ala syai\'in far\'un \'an tashawwurihi").',
+        'Qiyas / Silogisme Sederhana: Premis mayor + premis minor → kesimpulan. Contoh: Semua yang memabukkan adalah khamar; minuman X memabukkan → maka X adalah khamar.',
+        'Pembagian Dalalah (Penunjukan Makna): Membedakan makna hakiki, makna kelaziman, dan istilah syar\'i vs istilah bahasa.'
+      ],
+      practice: 'Sebelum mengomentari isu keagamaan atau berita viral, pastikan Anda sudah memahami definisi istilah yang diperdebatkan dengan tepat.',
+      source: quran('17/36')
+    },
+    {
+      id: 'mengenali-sesat-pikir',
+      title: 'Mengenali Sesat Pikir (Mughalathah / Logical Fallacy)',
+      category: 'Nalar Kritis',
+      summary: 'Banyak perdebatan kusir di media sosial terjadi karena sesat pikir: menyerang pribadi (ad hominem), menyamakan dua hal berbeda, atau generalisasi terburu-buru.',
+      points: [
+        'Menyerang Pribadi (Ad Hominem): Mengabaikan argumen ilmiah lawan lalu menghina fisik, suku, atau masa lalunya.',
+        'Generalisasi Berlebihan (Ta\'mim): Menilai seluruh kelompok atau ormas sesat hanya karena kesalahan satu-dua oknum.',
+        'Menyamakan Tanpa \'Illat yang Sama (Qiyas Ma\'al Fariq): Membandingkan dua hukum yang sebab utamanya berbeda jauh.',
+        'Otoritas Tanpa Dalil: Memaksakan pendapat hanya karena tokoh terkenal mengucapkannya tanpa menguji kesesuaian dengan Al-Qur\'an & Hadits.'
+      ],
+      practice: 'Saat membaca komentar perdebatan di internet, latih diri memisahkan mana argumen berdalil dan mana serangan emosional.',
+      source: quran('49/6')
+    },
+    {
+      id: 'adab-munazharah-imam-syafii',
+      title: 'Adab Berdebat Ilmiah (Munazharah) Ala Imam Asy-Syafi\'i',
+      category: 'Etika Diskusi',
+      summary: 'Tujuan diskusi dalam Islam bukan mengalahkan lawan atau mencari tepuk tangan, melainkan mencari kebenaran — meski kebenaran itu muncul lewat lisan lawan.',
+      points: [
+        'Pesan Emas Imam Syafi\'i: "Aku tidak pernah berdiskusi dengan seseorang kecuali aku berharap Allah menampakkan kebenaran lewat lisannya."',
+        'Syarat Berdiskusi (QS. An-Nahl: 125): Dengan hikmah (ilmu), nasihat yang baik, dan bantahlah dengan cara yang paling santun (ahsan).',
+        'Kapan Harus Berhenti Berdebat? (HR. Abu Dawud): Nabi SAW menjamin rumah di pinggiran surga bagi orang yang meninggalkan perdebatan kusir meski ia berada di pihak yang benar.',
+        'Mengakui Kesalahan dengan Lapang Dada: Rujuk ilal haq (kembali kepada kebenaran) jauh lebih mulia daripada mempertahankan gengsi.'
+      ],
+      practice: 'Jika diskusi di media sosial sudah berubah menjadi saling ejek, undur diri dengan santun dan doakan kebaikan bagi lawan bicara.',
+      source: quran('16/125')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -6443,4 +6644,8 @@ export const courseLinks = [
   { href: '/adab-tidur-mimpi', title: adabTidurMimpi.title, description: adabTidurMimpi.description },
   { href: '/ilmuwan-muslim', title: ilmuwanMuslim.title, description: ilmuwanMuslim.description },
   { href: '/kaligrafi-islam', title: kaligrafiIslam.title, description: kaligrafiIslam.description },
+  { href: '/fiqh-pasien', title: fiqhPasien.title, description: fiqhPasien.description },
+  { href: '/fiqh-sembelihan-halal', title: fiqhSembelihanHalal.title, description: fiqhSembelihanHalal.description },
+  { href: '/masjid-bersejarah', title: masjidBersejarah.title, description: masjidBersejarah.description },
+  { href: '/ilmu-mantik-munazharah', title: ilmuMantikMunazharah.title, description: ilmuMantikMunazharah.description },
 ];
