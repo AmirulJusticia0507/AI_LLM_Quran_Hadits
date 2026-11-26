@@ -15,6 +15,8 @@ const ROUTES = [
   "/kuis-islam", "/kalkulator-fidyah", "/flashcard-quran", "/kalender-hijriah",
   "/fiqh-safar", "/fiqh-hiburan", "/metode-tahfidz", "/adab-menuntut-ilmu", "/birrul-walidain",
   "/baitul-maqdis", "/khulafaur-rasyidin", "/tracker-khatam", "/kalkulator-safar",
+  "/fiqh-jamaah-sujud", "/kisah-pilihan-quran", "/sejarah-dinasti-islam", "/panduan-muallaf",
+  "/adab-lisan-majelis", "/mutabaah-yaumiyah", "/kalkulator-qurban",
   "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/about", "/help", "/masukan", "/privacy", "/terms"
 ];
 

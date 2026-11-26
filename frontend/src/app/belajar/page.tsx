@@ -83,6 +83,14 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Panduan Musafir</span>
           Kalkulator Safar Jama&apos;-Qashar
         </Link>
+        <Link href="/mutabaah-yaumiyah" className="block rounded-2xl bg-linear-to-br from-emerald-700 to-green-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Muhasabah Harian</span>
+          Mutaba&apos;ah Yaumiyah
+        </Link>
+        <Link href="/kalkulator-qurban" className="block rounded-2xl bg-linear-to-br from-amber-700 to-orange-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-amber-200 mb-1">Panduan Panitia</span>
+          Kalkulator Daging Qurban
+        </Link>
       </div>
 
       <Link

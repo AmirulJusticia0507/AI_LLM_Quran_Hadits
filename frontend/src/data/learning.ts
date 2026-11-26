@@ -5584,6 +5584,310 @@ export const khulafaurRasyidin: Course = {
   ]
 };
 
+export const fiqhJamaahSujud: Course = {
+  id: 'fiqh-jamaah-sujud',
+  title: 'Fiqh Shalat Berjamaah, Masbuq, & Sujud Khusus',
+  description: 'Panduan lengkap shalat berjamaah, makmum masbuq, syarat imam, serta sujud sahwi, sujud tilawah, dan sujud syukur.',
+  note: 'Shalat berjamaah lebih utama 27 derajat daripada shalat sendirian (HR. Bukhari-Muslim).',
+  lessons: [
+    {
+      id: 'keutamaan-syarat-jamaah',
+      title: 'Keutamaan Jamaah, Syarat Imam, & Meluruskan Shaf',
+      category: 'Shalat Berjamaah',
+      summary: 'Orang yang paling berhak menjadi imam adalah yang paling baik bacaan Al-Qur\'annya, lalu paling paham sunnah; shaf harus lurus dan rapat.',
+      points: [
+        'Urutan Prioritas Imam (HR. Muslim): Yang paling fasih & banyak hafalan Al-Qur\'annya, lalu yang paling alim tentang sunnah, paling dahulu hijrah/taqwa, lalu yang paling tua usianya.',
+        'Meluruskan Shaf: Nabi SAW menegaskan agar bahu dan kaki dirapatkan dengan shaf yang lurus agar hati tidak berselisih.',
+        'Posisi Makmum: Jika hanya berdua (imam + 1 makmum laki-laki), makmum berdiri tepat di sebelah kanan sejajar atau sedikit di belakang tumit imam; jika 2 orang atau lebih, berdiri di belakang imam.',
+        'Tidak Mendahului Imam: Haram hukumnya rukuk atau sujud mendahului imam; makmum mengikuti gerak imam tepat setelah imam selesai berpindah.'
+      ],
+      practice: 'Saat masuk shaf masjid, pastikan bahu sejajar dan merapat mengisi celah kosong di depan sebelum memulai takbiratul ihram.',
+      source: hadith(645)
+    },
+    {
+      id: 'panduan-makmum-masbuq',
+      title: 'Panduan Lengkap Makmum Masbuq (Terlambat)',
+      category: 'Shalat Berjamaah',
+      summary: 'Makmum masbuq langsung bertakbir mengikuti posisi terakhir imam, dan hanya terhitung mendapat rakaat jika sempat rukuk bersama imam.',
+      points: [
+        'Masuk Sesuai Posisi Imam: Jika imam sedang sujud atau duduk tasyahud, langsung takbiratul ihram berdiri lalu ikuti sujud/duduknya imam (tanpa menunggu berdiri lagi).',
+        'Kapan Terhitung Dapat Rakaat?: Jika makmum masih sempat rukuk dengan thuma\'ninah sebelum imam bangun i\'tidal, rakaat tersebut sah terhitung.',
+        'Menyempurnakan Rakaat: Setelah imam salam kedua, makmum masbuq berdiri dengan takbir lalu menambah jumlah rakaat yang tertinggal.',
+        'Ketinggalan Al-Fatihah saat Rakaat Berjalan: Jika imam sudah rukuk, kewajiban Al-Fatihah makmum masbuq ditanggung imam.'
+      ],
+      practice: 'Jangan tergesa-gesa berlari mengejar shalat jamaah; berjalanlah dengan tenang (HR. Bukhari) lalu langsung ikuti posisi imam.',
+      source: hadith(636)
+    },
+    {
+      id: 'sujud-sahwi-lupa',
+      title: 'Sujud Sahwi: Mengatasi Lupa & Ragu dalam Shalat',
+      category: 'Sujud Khusus',
+      summary: 'Sujud sahwi dilakukan 2 kali sebelum salam (atau sesudah salam jika kelebihan rakaat) untuk menambal kekurangan, kelebihan, atau keraguan rakaat.',
+      points: [
+        'Sebab Sujud Sahwi: Kelebihan gerakan/rakaat karena lupa, kekurangan sunnah ab\'ad (seperti lupa tasyahud awal atau qunut bagi yang mengamalkan), atau ragu jumlah rakaat.',
+        'Cara Memutus Keraguan: Jika ragu apakah sudah 3 atau 4 rakaat, ambil jumlah yang paling yakin (yang paling sedikit = 3), tambah 1 rakaat, lalu sujud sahwi 2x sebelum salam (HR. Muslim).',
+        'Jika Lupa Rukun (misal lupa rukuk/sujud): Tidak cukup sujud sahwi — wajib kembali melakukan rukun yang tertinggal (atau menambah 1 rakaat jika sudah masuk rakaat berikutnya), baru sujud sahwi.',
+        'Bacaan Sujud Sahwi: Boleh membaca tasbih sujud biasa ("Subhana rabbiyal a\'la") atau doa "Subhana man la yanamu wa la yashu" menurut sebagian ulama.'
+      ],
+      practice: 'Latih ketenangan jika suatu saat lupa jumlah rakaat: ambil angka terkecil yang diyakini lalu sujud sahwi 2 kali sebelum salam.',
+      source: hadith(1224)
+    },
+    {
+      id: 'sujud-tilawah-syukur',
+      title: 'Sujud Tilawah & Sujud Syukur',
+      category: 'Sujud Khusus',
+      summary: 'Sujud tilawah dikerjakan 1 kali saat membaca/mendengar ayat sajdah; sujud syukur dikerjakan 1 kali saat menerima nikmat besar atau terhindar musibah.',
+      points: [
+        'Sujud Tilawah (15 Ayat Sajdah di Al-Qur\'an): Hukumnya sunnah; boleh dikerjakan di dalam shalat (imam & makmum sujud 1x lalu bangun melanjutkan bacaan) atau di luar shalat (disunnahkan berwudhu dan menghadap kiblat).',
+        'Doa Sujud Tilawah (HR. Tirmidzi): "Sajada wajhiya lilladzi khalaqahu wa shawwarahu wa syaqqa sam\'ahu wa basharahu bihaulihi wa quwwatihi..."',
+        'Sujud Syukur: Dilakukan spontan 1 kali di luar shalat saat mendapat kabar gembira atau selamat dari bahaya (seperti sujud syukur Ka\'ab bin Malik saat taubatnya diterima).',
+        'Tidak Perlu Takbiratul Ihram Khusus (Sujud Syukur): Cukup langsung bersujud menghadap kiblat jika memungkinkan dan mengucap hamdalah serta tasbih.'
+      ],
+      practice: 'Kenali simbol sajadah (۩) di mushaf Anda agar siap melakukan sujud tilawah saat bertemu ayat sajdah.',
+      source: hadith(1077)
+    }
+  ]
+};
+
+export const kisahPilihanQuran: Course = {
+  id: 'kisah-pilihan-quran',
+  title: 'Kisah Pilihan Al-Qur\'an (Selain Nabi)',
+  description: 'Pelajaran hidup dari kisah Ashabul Kahfi, Dzulqarnain, Luqmanul Hakim, Maryam binti Imran, dan Ashabul Ukhdud.',
+  note: '"Sungguh pada kisah-kisah mereka itu terdapat pengajaran bagi orang-orang yang mempunyai akal" (QS. Yusuf: 111).',
+  lessons: [
+    {
+      id: 'ashabul-kahfi-pemuda',
+      title: 'Ashabul Kahfi: Keteguhan Iman Para Pemuda di Era Fitnah',
+      category: 'QS. Al-Kahfi',
+      summary: 'Tujuh pemuda beriman meninggalkan istana dan kemewahan demi menyelamatkan akidah, lalu Allah tidurkan 309 tahun dan jadikan teladan abadi.',
+      points: [
+        'Berani Berbeda Demi Akidah: Di tengah masyarakat penyembah berhala dan raja zalim, para pemuda berdiri menyatakan tauhid (QS. 18:13–14).',
+        'Strategi Hijrah & Doa: Saat tidak mampu mengubah keadaan secara terbuka, mereka menyelamatkan iman ke gua sambil berdoa "Rabbana atina min ladunka rahmah..."',
+        'Pertolongan Tak Terduga: Allah menjaga tubuh mereka dengan membolak-balikkan posisi tidur dan menumbuhkan rasa segan lewat anjing penjaga di pintu gua.',
+        'Etika Muamalah yang Halus: Saat bangun dan mengirim utusan ke pasar, mereka berpesan "walyatalaththaf" — bersikaplah lembut dan menjaga kehalalan makanan (azka tha\'aman).'
+      ],
+      practice: 'Bagi anak muda: hafalkan doa Ashabul Kahfi (QS. Al-Kahfi: 10) saat mencari petunjuk di tengah tekanan pergaulan.',
+      source: quran('18/13')
+    },
+    {
+      id: 'dzulqarnain-pemimpin',
+      title: 'Dzulqarnain: Pemimpin Tangguh, Adil, & Rendah Hati',
+      category: 'QS. Al-Kahfi',
+      summary: 'Raja saleh yang menguasai timur dan barat bumi namun tetap bersikap adil, memberdayakan rakyat, dan mengembalikan semua prestasi kepada Allah.',
+      points: [
+        'Kekuasaan Berlandaskan Iman & Sebab (Ikhtiar): Allah memberinya kekuasaan dan sarana teknologi, namun ia selalu mengedepankan keadilan — menghukum yang zalim dan memuliakan orang beriman.',
+        'Kepemimpinan Partisipatif: Saat diminta membangun tembok penghalang Ya\'juj dan Ma\'juj, ia menolak upah harta namun mengajak rakyat bergotong royong ("fa\'inuni biquwwatin").',
+        'Inovasi Teknologi Besi & Tembaga: Membangun benteng logam cair yang kokoh untuk melindungi peradaban manusia.',
+        'Puncak Kerendahan Hati: Setelah proyek raksasa selesai, ia berkata "Hadza rahmatun min Rabbi" — ini adalah rahmat Tuhanku, bukan kesombongan diri.'
+      ],
+      practice: 'Setiap kali proyek atau target kerja berhasil, biasakan mengucap "Hadza min fadhli Rabbi" agar terhindar dari ujub.',
+      source: quran('18/98')
+    },
+    {
+      id: 'luqman-al-hakim',
+      title: 'Luqmanul Hakim: Kurikulum Pendidikan Keluarga dalam Al-Qur\'an',
+      category: 'QS. Luqman',
+      summary: 'Luqman bukan seorang nabi, melainkan ayah bijak yang nasihatnya kepada sang anak diabadikan Allah sebagai kurikulum parenting terbaik.',
+      points: [
+        'Prioritas 1 — Tauhid Murni: "Wahai anakku tersayang (Ya bunayya), janganlah engkau menyekutukan Allah!" (QS. 31:13).',
+        'Prioritas 2 — Kesadaran Muraqabah: Allah mengetahui amal sekecil biji sawi di dalam batu karang sekalipun (QS. 31:16).',
+        'Prioritas 3 — Pilar Amal & Dakwah: Dirikan shalat, ajak pada kebaikan, cegah kemungkaran, dan bersabar atas ujiannya (QS. 31:17).',
+        'Prioritas 4 — Etika Sosial & Suara: Jangan memalingkan muka dengan sombong dan lunakkanlah suaramu (QS. 31:18–19).'
+      ],
+      practice: 'Panggil anak atau adik Anda dengan panggilan kasih sayang ("anakku sayang") sebelum memberi nasihat sebagaimana gaya Luqman.',
+      source: quran('31/13')
+    },
+    {
+      id: 'maryam-dan-ashabul-ukhdud',
+      title: 'Maryam binti Imran & Ashabul Ukhdud: Kesucian & Keteguhan',
+      category: 'Keteladanan Iman',
+      summary: 'Sayyidah Maryam dimuliakan satu surat penuh atas kesucian & ketaatannya; pemuda Ashabul Ukhdud memilih mempertahankan tauhid meski diuji parit api.',
+      points: [
+        'Maryam binti Imran: Wanita terbaik di zamannya (QS. 3:42), menjaga kehormatan diri dan tekun beribadah di mihrab hingga Allah anugerahkan kelahiran mukjizat Nabi Isa AS.',
+        'Ashabul Ukhdud (QS. Al-Buruj): Rakyat beriman bersama seorang pemuda saleh tetap teguh beriman di hadapan raja zalim yang menggali parit api — membuktikan kemenangan sejati adalah selamatnya iman.',
+        'Pelajaran dari Qarun (QS. Al-Qashash): Kebalikan dari mukmin di atas, Qarun menyombongkan harta ("ini berkat ilmuku semata") hingga ditelan bumi bersama istananya.'
+      ],
+      practice: 'Jaga kehormatan diri saat sendiri maupun di keramaian, serta hindari kesombongan Qarun saat rezeki sedang lapang.',
+      source: quran('3/42')
+    }
+  ]
+};
+
+export const sejarahDinastiIslam: Course = {
+  id: 'sejarah-dinasti-islam',
+  title: 'Sejarah Dinasti Islam: Umayyah, Abbasiyah, & Utsmani',
+  description: 'Jejak peradaban kekhalifahan Umayyah di Damaskus & Andalusia, Abbasiyah di Baghdad, hingga Utsmani di Konstantinopel.',
+  note: 'Memahami pasang surut dinasti Islam mengajarkan kita bahwa kejayaan lahir dari ilmu dan persatuan, sedangkan keruntuhan dipicu perpecahan dan cinta dunia.',
+  lessons: [
+    {
+      id: 'dinasti-umayyah-damaskus-andalusia',
+      title: 'Bani Umayyah (661–750 M) & Cahaya Ilmu di Andalusia',
+      category: 'Era Umayyah',
+      summary: 'Bani Umayyah memperluas wilayah Islam hingga Spanyol (Andalusia) dan Asia Tengah, serta menyatukan bahasa administrasi Arab dan mata uang dinar.',
+      points: [
+        'Berdirinya Damaskus sebagai Pusat Pemerintahan: Dimulai oleh Mu\'awiyah bin Abi Sufyan setelah peristiwa \'Amul Jama\'ah (tahun persatuan ketika Hasan bin Ali berdamai demi mencegah pertumpahan darah).',
+        'Ekspansi Timur & Barat: Thariq bin Ziyad menyeberangi Selat Gibraltar (Jabal Thariq, 711 M) membuka Andalusia; Muhammad bin Qasim membuka wilayah Sindh (India).',
+        'Keemasan Cordoba (Andalusia): Ketika Eropa masih dalam masa kegelapan, Cordoba memiliki ratusan ribu buku perpustakaan, lampu jalanan, rumah sakit, dan melahirkan Ibnu Rusyd serta Az-Zahrawi.'
+      ],
+      practice: 'Pelajari kisah damainya Hasan bin Ali menyerahkan kepemimpinan demi menyelamatkan nyawa umat sebagai teladan mengutamakan persatuan.',
+      source: quran('3/103')
+    },
+    {
+      id: 'dinasti-abbasiyah-baghdad',
+      title: 'Bani Abbasiyah (750–1258 M): Puncak Zaman Keemasan Baghdad',
+      category: 'Era Abbasiyah',
+      summary: 'Kota Baghdad menjadi pusat riset dunia melalui Baitul Hikmah; melahirkan ulama hadits, imam madzhab, dan ilmuwan sains terkemuka.',
+      points: [
+        'Baitul Hikmah (Rumah Kebijaksanaan): Didirikan Harun ar-Rasyid dan Al-Ma\'mun sebagai perpustakaan, pusat penerjemahan, dan laboratorium riset ilmuwan Muslim, Kristen, dan Yahudi.',
+        'Lahirnya Raksasa Sains & Fikih: Al-Khawarizmi (aljabar & algoritma), Ibnu Sina (kedokteran), Al-Biruni, sekaligus zaman kodifikasi kitab-kitab hadits Kutubus Sittah dan 4 Imam Madzhab.',
+        'Tragedi 1258 M: Konflik internal dan serangan tentara Mongol (Hulagu Khan) menghancurkan Baghdad, lalu peradaban ilmu dilanjutkan oleh Dinasti Mamluk di Mesir dan Utsmani.'
+      ],
+      practice: 'Ingat bahwa kemajuan sains modern berhutang besar pada etos riset para ilmuwan Muslim era Abbasiyah yang menganggap mencari ilmu sebagai ibadah.',
+      source: quran('96/1')
+    },
+    {
+      id: 'dinasti-utsmani-konstantinopel',
+      title: 'Kesultanan Utsmani (1299–1924) & Penaklukan Konstantinopel',
+      category: 'Era Utsmani',
+      summary: 'Sultan Muhammad Al-Fatih menaklukkan Konstantinopel pada usia 21 tahun (1453 M), memadukan strategi militer cerdas, teknologi meriam, dan ketakwaan.',
+      points: [
+        'Bisyarah Nabi SAW: Rasulullah SAW telah mengabarkan akan dibebaskannya Konstantinopel oleh sebaik-baik pemimpin dan sebaik-baik pasukan (HR. Ahmad).',
+        'Strategi Muhammad Al-Fatih (1453 M): Memindahkan puluhan kapal perang melintasi daratan bukit Galata dalam satu malam dan menjamin kebebasan beribadah penduduk Kristen setelah kota dibuka.',
+        'Puncak Kejayaan (Sulaiman Al-Qanuni): Menata hukum negara, arsitektur megah oleh Mimar Sinan, dan melindungi jalur perdagangan serta jamaah haji dari Andalusia hingga Aceh (hubungan erat Utsmani–Aceh).'
+      ],
+      practice: 'Teladani persiapan Muhammad Al-Fatih: menguasai banyak bahasa, ilmu teknik, dan tidak pernah meninggalkan shalat rawatib sejak baligh.',
+      source: hadith(1818)
+    },
+    {
+      id: 'ibrah-bangkit-runtuh',
+      title: 'Ibrah Sejarah: Sebab Kejayaan & Keruntuhan Peradaban',
+      category: 'Hikmah Sejarah',
+      summary: 'Sejarah membuktikan umat Islam mulia ketika memadukan iman, keadilan, dan penguasaan ilmu, serta melemah saat terpecah dan tertinggal inovasi.',
+      points: [
+        'Faktor Kejayaan: Pemimpin adil & berilmu, kebebasan riset ilmiah, kemakmuran wakaf, serta persaudaraan lintas suku.',
+        'Faktor Keruntuhan: Perebutan takhta internal, kemewahan pejabat, kemandekan ijtihad/riset sains, dan hilangnya amanah.',
+        'Pesan untuk Generasi Kini: Tugas kita bukan sekadar bernostalgia dengan masa lalu, melainkan membangun kembali etos ilmu, akhlak, dan kontribusi nyata hari ini.'
+      ],
+      practice: 'Ambil satu bidang keahlian Anda hari ini dan niatkan untuk berkontribusi membangun kemajuan umat dengan standar profesional terbaik.',
+      source: quran('3/140')
+    }
+  ]
+};
+
+export const panduanMuallaf: Course = {
+  id: 'panduan-muallaf',
+  title: 'Panduan Muallaf & Langkah Awal Hijrah',
+  description: 'Panduan praktis bagi saudara baru atau pemula yang baru mulai belajar Islam: syahadat, shalat bertahap, dan adab keluarga.',
+  note: 'Islam menghapus seluruh dosa masa lalu saat seseorang bersyahadat dengan tulus; Allah membimbing hamba-Nya langkah demi langkah.',
+  lessons: [
+    {
+      id: 'makna-syahadat-mandi',
+      title: 'Memahami Dua Kalimat Syahadat & Awal Masuk Islam',
+      category: 'Fondasi Iman',
+      summary: 'Mengucap dua kalimat syahadat dengan sadar adalah pintu gerbang menjadi Muslim; seluruh dosa masa lalu diampuni dan lembaran baru dimulai.',
+      points: [
+        'Dua Kalimat Syahadat: "Asyhadu alla ilaha illallah" (tidak ada Tuhan yang berhak disembah selain Allah) dan "wa asyhadu anna Muhammadar Rasulullah" (Nabi Muhammad adalah utusan Allah).',
+        'Penghapus Dosa Masa Lalu (HR. Muslim): Islam menghapus dosa-dosa sebelum seseorang masuk Islam; kebaikan masa lalunya pun tetap dicatat Allah (HR. Bukhari).',
+        'Mandi Besar (Ghusl): Dianjurkan (wajib menurut sebagian ulama) mandi bersuci setelah bersyahadat sebagai simbol lahir baru yang bersih.',
+        'Tidak Wajib Ganti Nama: Nama lahir yang baik maknanya tidak perlu diubah; cukup mengganti nama jika bermakna syirik atau buruk.'
+      ],
+      practice: 'Bagi yang baru masuk Islam atau baru hijrah, rayakan awal baru ini dengan rasa syukur — jangan membebani diri dengan tuntutan sempurna dalam sehari.',
+      source: hadith(121)
+    },
+    {
+      id: 'belajar-shalat-bertahap',
+      title: 'Langkah Pertama Belajar Wudhu & Shalat dari Nol',
+      category: 'Ibadah Dasar',
+      summary: 'Mulailah dengan belajar wudhu yang benar dan rukun shalat; jika belum hafal doa Arab panjang, bacalah dzikir yang sudah dikuasai sambil terus belajar.',
+      points: [
+        'Prioritas Pertama Setelah Syahadat: Menjaga shalat 5 waktu karena shalat adalah tiang agama.',
+        'Belum Hafal Al-Fatihah?: Selama proses belajar, baca ayat yang sudah hafal atau tasbih/tahmid/takbir ("Subhanallah, Alhamdulillah, Allahu Akbar") sebagaimana bimbingan Nabi SAW kepada sahabat baru (HR. Abu Dawud).',
+        'Gunakan Panduan Bergambar: Aplikasi ini menyediakan halaman Praktik Shalat Bergambar dan Panduan 29 Huruf Hijaiyah untuk latihan perlahan.',
+        'Cari Pembimbing Ramah: Bergabunglah dengan masjid atau komunitas muallaf center terpercaya agar tidak belajar sendirian.'
+      ],
+      practice: 'Mulai hafalkan Surat Al-Fatihah satu ayat per hari dan latih tata cara wudhu menggunakan halaman Praktik Wudhu & Shalat.',
+      source: hadith(302)
+    },
+    {
+      id: 'halal-haram-dasar',
+      title: 'Mengenal Batas Halal-Haram Dasar dalam Keseharian',
+      category: 'Gaya Hidup Baru',
+      summary: 'Perubahan bertahap dalam makanan (meninggalkan babi, bangkai, dan alkohol), pergaulan, serta pakaian dilakukan dengan hikmah dan ketenangan.',
+      points: [
+        'Makanan & Minuman: Menghindari daging babi, darah, bangkai, hewan sembelihan tanpa menyebut nama Allah, serta khamar/alkohol (QS. Al-Ma\'idah: 3).',
+        'Pakaian & Aurat: Belajar menutup aurat secara bertahap dengan nyaman dan penuh kesadaran mencintai Allah.',
+        'Penghasilan Halal: Memastikan pekerjaan bebas dari penipuan, judi, dan riba.'
+      ],
+      practice: 'Mulailah membiasakan membaca Basmallah sebelum makan/minum dan mengecek logo halal pada kemasan produk.',
+      source: quran('5/3')
+    },
+    {
+      id: 'menyikapi-keluarga-nonmuslim',
+      title: 'Menjaga Hubungan Baik dengan Keluarga yang Belum Seiman',
+      category: 'Adab Keluarga',
+      summary: 'Masuk Islam tidak memutus ikatan kasih sayang kepada orang tua dan saudara; tunjukkan Islam lewat akhlak paling lembut dan bakti yang lebih baik.',
+      points: [
+        'Tetap Berbakti kepada Orang Tua (QS. Luqman: 15): Perlakuan santun, hadiah, dan perhatian kepada ayah-ibu justru menjadi dakwah paling indah.',
+        'Pernikahan & Waris: Konsultasikan status pernikahan atau urusan keluarga secara tenang kepada ustadz/KUA agar terselesaikan sesuai syariat tanpa konflik kasar.',
+        'Tetap Hadir di Momen Keluarga: Boleh menghadiri acara keluarga selama tidak mengikuti ritual ibadah agama lain dan menjaga makanan halal.'
+      ],
+      practice: 'Tunjukkan perubahan akhlak yang lebih sabar, jujur, dan perhatian kepada keluarga setelah memeluk Islam atau berhijrah.',
+      source: quran('31/15')
+    }
+  ]
+};
+
+export const adabLisanMajelis: Course = {
+  id: 'adab-lisan-majelis',
+  title: 'Adab Lisan, Majelis, & Bertamu',
+  description: 'Menjaga lisan dari ghibah dan namimah, adab bertamu dan menerima tamu, serta etika musyawarah.',
+  note: '"Barangsiapa beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam" (HR. Bukhari-Muslim).',
+  lessons: [
+    {
+      id: 'bahaya-ghibah-namimah',
+      title: 'Menjaga Lisan dari Ghibah, Namimah, & Fitnah',
+      category: 'Penjagaan Lisan',
+      summary: 'Ghibah (membicarakan aib orang lain walau benar) diibaratkan Allah seperti memakan daging saudara sendiri yang sudah mati (QS. Al-Hujurat: 12).',
+      points: [
+        'Bedakan Ghibah vs Fitnah (Buhtan): Jika hal yang dibicarakan benar ada pada dirinya itu ghibah; jika tidak benar itu fitnah/dusta yang dosanya lebih besar (HR. Muslim).',
+        'Namimah (Adu Domba): Menyampaikan ucapan seseorang kepada pihak lain untuk merusak hubungan — pelakunya diancam tidak masuk surga (HR. Bukhari-Muslim).',
+        '6 Ghibah yang Dibolehkan Syariat (Imam Nawawi): Mengadukan kezaliman ke hakim, meminta bantuan menghentikan kemungkaran, meminta fatwa, memperingatkan bahaya penipu, menyebut pelaku maksiat terang-terangan, dan mengenalkan julukan fisik yang maklum tanpa niat menghina.',
+        'Kaffarah Ghibah: Berhenti seketika, istighfar, dan mendoakan kebaikan serta menyebut kebaikan orang yang pernah kita ghibahi.'
+      ],
+      practice: 'Setiap kali obrolan mulai bergeser membicarakan keburukan orang lain, alihkan topik dengan lembut atau ingatkan dengan senyum.',
+      source: quran('49/12')
+    },
+    {
+      id: 'adab-bertamu-menerima-tamu',
+      title: 'Adab Bertamu & Memuliakan Tamu',
+      category: 'Adab Sosial',
+      summary: 'Tamu masuk meminta izin maksimal 3 kali dan menjaga pandangan; tuan rumah memuliakan tamu dengan wajah ramah dan hidangan terbaik semampunya.',
+      points: [
+        'Meminta Izin Maksimal 3 Kali (HR. Bukhari-Muslim): Jika setelah 3 kali mengetuk/salam belum ada jawaban, hendaknya pulang dengan lapang dada tanpa marah.',
+        'Jaga Pandangan & Waktu: Tidak berdiri tepat di depan pintu terbuka yang menampakkan dalam rumah; hindari bertamu di waktu istirahat/makan tanpa janji terlebih dahulu.',
+        'Memuliakan Tamu (QS. Adz-Dzariyat: 24–27): Meneladani Nabi Ibrahim AS yang segera menghidangkan jamuan terbaik dengan hangat tanpa merasa terbebani.',
+        'Batas Jamuan Wajib & Sunnah: Menjamu tamu secara istimewa pada hari pertama, dan tamu tidak boleh menginap terlalu lama hingga menyusahkan tuan rumah (maksimal 3 hari kecuali diminta).'
+      ],
+      practice: 'Selalu kirim pesan konfirmasi terlebih dahulu sebelum bertamu ke rumah saudara atau sahabat.',
+      source: quran('24/27')
+    },
+    {
+      id: 'adab-majelis-musyawarah',
+      title: 'Adab Majelis Ilmu, Rapat, & Musyawarah',
+      category: 'Adab Majelis',
+      summary: 'Al-Qur\'an memuji orang beriman yang urusannya diputuskan lewat musyawarah (QS. Asy-Syura: 38), melapangkan tempat duduk, dan menutup majelis dengan doa.',
+      points: [
+        'Melapangkan Tempat Duduk (QS. Al-Mujadilah: 11): Jangan enggan bergeser memberi ruang bagi orang yang baru datang ke majelis.',
+        'Dilarang Bisik-Bisik Berdua di Tengah Tiga Orang (HR. Bukhari): Agar tidak menimbulkan prasangka dan perasaan tersisih pada orang ketiga.',
+        'Etika Musyawarah (QS. Ali \'Imran: 159): Sampaikan usulan dengan lembut, dengarkan argumen orang lain sampai tuntas, dan tawakal setelah keputusan bersama disepakati.',
+        'Doa Kafaratul Majelis: Tutup setiap pertemuan dengan "Subhanakallahumma wa bihamdika asyhadu alla ilaha illa anta astaghfiruka wa atubu ilaik."'
+      ],
+      practice: 'Biasakan membaca Doa Kafaratul Majelis setiap kali selesai rapat kerja, nongkrong, maupun pengajian.',
+      source: quran('58/11')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -5639,4 +5943,9 @@ export const courseLinks = [
   { href: '/birrul-walidain', title: birrulWalidain.title, description: birrulWalidain.description },
   { href: '/baitul-maqdis', title: baitulMaqdis.title, description: baitulMaqdis.description },
   { href: '/khulafaur-rasyidin', title: khulafaurRasyidin.title, description: khulafaurRasyidin.description },
+  { href: '/fiqh-jamaah-sujud', title: fiqhJamaahSujud.title, description: fiqhJamaahSujud.description },
+  { href: '/kisah-pilihan-quran', title: kisahPilihanQuran.title, description: kisahPilihanQuran.description },
+  { href: '/sejarah-dinasti-islam', title: sejarahDinastiIslam.title, description: sejarahDinastiIslam.description },
+  { href: '/panduan-muallaf', title: panduanMuallaf.title, description: panduanMuallaf.description },
+  { href: '/adab-lisan-majelis', title: adabLisanMajelis.title, description: adabLisanMajelis.description },
 ];
