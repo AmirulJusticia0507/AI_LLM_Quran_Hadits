@@ -1,20 +1,42 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { courseLinks } from '@/data/learning';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function LearningPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [descExpanded, setDescExpanded] = useState(false);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
       <header className="rounded-3xl bg-linear-to-br from-emerald-800 to-teal-950 p-8 sm:p-12 text-white space-y-4">
         <p className="text-sm text-emerald-200">{t("belajar.subtitle")}</p>
         <h1 className="text-3xl sm:text-4xl font-bold">{t("belajar.title")}</h1>
-        <p className="text-emerald-100 leading-relaxed max-w-2xl">
-          {t("belajar.description")}
-        </p>
+        <div className="max-w-2xl space-y-2">
+          <p
+            onClick={() => setDescExpanded((prev) => !prev)}
+            className={`text-emerald-100 leading-relaxed cursor-pointer transition-all ${
+              descExpanded ? '' : 'line-clamp-3'
+            }`}
+          >
+            {t("belajar.description")}
+          </p>
+          <button
+            type="button"
+            onClick={() => setDescExpanded((prev) => !prev)}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-200 hover:text-white underline underline-offset-4 cursor-pointer"
+          >
+            {descExpanded
+              ? language === 'en'
+                ? 'Show less ▲'
+                : 'Tampilkan lebih sedikit ▲'
+              : language === 'en'
+                ? 'Read more ▼'
+                : 'Selengkapnya ▼'}
+          </button>
+        </div>
       </header>
 
       <div className="grid sm:grid-cols-2 gap-5">
