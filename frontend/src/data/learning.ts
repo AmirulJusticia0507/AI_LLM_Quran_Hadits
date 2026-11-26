@@ -3675,6 +3675,870 @@ export const adabIkhtilaf: Course = {
   ]
 };
 
+export const zakatKontemporer: Course = {
+  id: 'zakat-kontemporer',
+  title: 'Fiqh Zakat Kontemporer',
+  description: 'Panduan zakat era modern: gaji, saham, kripto, perusahaan, dan penyaluran digital sesuai fatwa MUI.',
+  note: 'Zakat bukan sekadar kewajiban, melainkan instrumen keadilan sosial Islam.',
+  lessons: [
+    {
+      id: 'zakat-penghasilan',
+      title: 'Zakat Penghasilan & Profesi',
+      category: 'Zakat Modern',
+      summary: 'Zakat gaji dan profesi diqiyaskan pada zakat perdagangan dengan nisab 85 gram emas dan kadar 2,5%.',
+      points: [
+        'Dasar hukum: QS. Al-Baqarah: 267 — "Nafkahkanlah (di jalan Allah) sebagian dari hasil usahamu yang baik-baik."',
+        'Nisab: Setara 85 gram emas (~Rp 85 juta/tahun atau ~Rp 7 juta/bulan tergantung harga emas).',
+        'Kadar: 2,5% dari penghasilan bersih (neto setelah kebutuhan pokok) atau bruto (fatwa MUI 2003).',
+        'Waktu: Boleh dibayar per bulan saat menerima gaji (haul dihitung akumulasi 1 tahun).',
+        'Platform digital: Baznas, Dompet Dhuafa, LAZ resmi terpercaya untuk penyaluran online.'
+      ],
+      practice: 'Hitung penghasilan bersih Anda bulan ini dan sisihkan 2,5% untuk zakat profesi sebelum pengeluaran lain.',
+      source: quran('2/267')
+    },
+    {
+      id: 'zakat-saham',
+      title: 'Zakat Saham & Investasi',
+      category: 'Zakat Modern',
+      summary: 'Saham diperlakukan sebagai aset dagang; zakat dikenakan atas nilai pasar saham + dividen yang telah haul.',
+      points: [
+        'Objek zakat: nilai saham (harga pasar × jumlah lembar) + dividen yang diterima selama setahun.',
+        'Nisab & kadar: Sama dengan zakat perdagangan — 85 gram emas, 2,5%.',
+        'Metode: Nilai saham dihitung pada akhir haul (1 tahun hijriyah), bukan saat beli.',
+        'Saham syariah: Pastikan saham di DES (Daftar Efek Syariah) OJK agar investasi bersih dari riba.',
+        'Reksa dana: Dihitung dari NAB (Nilai Aktiva Bersih) dikurangi biaya, dikalikan 2,5%.'
+      ],
+      practice: 'Catat total nilai portofolio saham Anda hari ini dan hitung zakat 2,5% jika sudah mencapai nisab dan haul.',
+      source: quran('2/267')
+    },
+    {
+      id: 'zakat-kripto',
+      title: 'Zakat Aset Kripto',
+      category: 'Zakat Modern',
+      summary: 'Kripto diqiyaskan pada emas/perak sebagai alat tukar; wajib zakat jika nilainya mencapai nisab selama setahun.',
+      points: [
+        'Status: Fatwa DSN-MUI membolehkan kripto sebagai aset (bukan alat tukar resmi), sehingga termasuk zakat mal.',
+        'Objek zakat: Total nilai market kripto yang dimiliki (BTC, ETH, dll) dihitung dalam rupiah.',
+        'Nisab: 85 gram emas; Kadar: 2,5% dari nilai total pada akhir haul.',
+        'Volatilitas: Dihitung pada satu titik waktu tertentu (misalnya, awal Ramadan atau tanggal zakat ditetapkan).',
+        'Kehati-hatian: Jika ragu kehalalannya, bayar zakat sebagai bentuk tawakkal dan bersihkan harta.'
+      ],
+      practice: 'Konversi nilai aset kripto Anda ke rupiah hari ini, bandingkan dengan nisab, dan bayar 2,5% jika sudah haul.',
+      source: hadith(1455)
+    },
+    {
+      id: 'zakat-perusahaan',
+      title: 'Zakat Perusahaan & UMKM',
+      category: 'Zakat Modern',
+      summary: 'Perusahaan wajib zakat atas aset lancar dikurangi kewajiban jangka pendek jika mencapai nisab.',
+      points: [
+        'Dasar: Perusahaan diqiyaskan pada pedagang; pemilik/pemegang saham memiliki kewajiban zakat.',
+        'Formula: (Aset Lancar - Kewajiban Jangka Pendek) × 2,5% jika ≥ nisab 85 gram emas.',
+        'UMKM: Laba bersih tahunan dihitung; jika ≥ nisab, bayar 2,5% atau 10% (dari hasil pertanian jika ladang).',
+        'CSR vs Zakat: Zakat perusahaan wajib secara agama dan bisa dikreditkan sebagai pengurang pajak (UU Zakat No.23/2011).',
+        'Lembaga: Bisa disalurkan melalui UPZ (Unit Pengumpul Zakat) atau LAZ mitra perusahaan.'
+      ],
+      practice: 'Jika Anda pemilik usaha, hitung aset lancar dikurangi utang jangka pendek; bayar 2,5% sebagai zakat perdagangan.',
+      source: hadith(1455)
+    },
+    {
+      id: 'nisab-haul',
+      title: 'Memahami Nisab & Haul',
+      category: 'Prinsip Zakat',
+      summary: 'Nisab adalah batas minimum harta yang wajib dizakati; haul adalah syarat berlalunya waktu satu tahun hijriyah.',
+      points: [
+        'Nisab emas: 85 gram emas murni (24 karat) — acuan paling umum untuk zakat mal.',
+        'Nisab perak: 595 gram perak — lebih rendah, digunakan untuk memudahkan muzakki berpenghasilan menengah.',
+        'Haul: 354 hari (kalender hijriyah) atau 365 hari (kalender masehi, pendapat sebagian ulama).',
+        'Pengecualian haul: Zakat pertanian/panen dan zakat fitrah tidak memerlukan haul.',
+        'Harta campuran: Jika nisab tercapai di pertengahan tahun, haul dihitung mulai saat itu.'
+      ],
+      practice: 'Catat tanggal pertama kali harta Anda mencapai nisab; tandai sebagai awal haul untuk pengingat zakat tahun depan.',
+      source: hadith(1455)
+    },
+    {
+      id: 'penyaluran-zakat',
+      title: 'Mustahiq & Penyaluran Zakat',
+      category: 'Prinsip Zakat',
+      summary: 'Delapan asnaf mustahiq zakat sesuai QS. At-Taubah: 60 dan model penyaluran produktif modern.',
+      points: [
+        '8 Asnaf (QS. 9:60): Fakir, miskin, amil, muallaf, riqab (budak/terlilit utang), gharim (berutang), fisabilillah, ibnu sabil.',
+        'Prioritas: Fakir dan miskin di sekitar muzakki diprioritaskan sebelum disalurkan ke tempat lain.',
+        'Zakat Produktif: Zakat diberikan sebagai modal usaha (bukan konsumtif) agar mustahiq naik ke kelas muzakki.',
+        'LAZ Terpercaya: Baznas, DD, YBM PLN, Lazismu, Lazisnu — pastikan terdaftar dan diaudit Kemenag RI.',
+        'Zakat Online: Sah secara syariah; niat di hati tetap wajib meski penyalurannya digital.'
+      ],
+      practice: 'Identifikasi satu mustahiq di sekitar Anda (tetangga kurang mampu, siswa yatim) dan salurkan zakat secara langsung.',
+      source: quran('9/60')
+    },
+    {
+      id: 'zakat-fitrah',
+      title: 'Zakat Fitrah: Hukum & Tata Cara',
+      category: 'Zakat Ibadah',
+      summary: 'Zakat fitrah wajib bagi setiap Muslim yang mampu, dibayar sebelum shalat Idul Fitri sebesar 2,5 kg makanan pokok.',
+      points: [
+        'Dasar: HR. Bukhari-Muslim — Rasulullah SAW mewajibkan zakat fitrah sebesar 1 sha\' kurma atau 1 sha\' gandum.',
+        'Kadar: 1 sha\' ≈ 2,5–3 kg makanan pokok daerah setempat (beras, gandum, jagung).',
+        'Boleh uang: Fatwa MUI membolehkan membayar dengan uang senilai harga beras untuk kemudahan distribusi.',
+        'Waktu terbaik: 1–2 hari sebelum Idul Fitri agar amil bisa mendistribusikan sebelum shalat Ied.',
+        'Tujuan: Menyucikan jiwa orang yang berpuasa dan menyenangkan kaum fakir miskin di hari raya.'
+      ],
+      practice: 'Hitung jumlah jiwa dalam keluarga Anda dan persiapkan zakat fitrah minimal 3 hari sebelum Idul Fitri.',
+      source: hadith(1503)
+    }
+  ]
+};
+
+export const wakaf: Course = {
+  id: 'wakaf',
+  title: 'Fiqh Wakaf & Wakaf Produktif',
+  description: 'Pahami rukun wakaf, wakaf uang, wakaf produktif, dan peran wakaf dalam pemberdayaan ekonomi umat.',
+  note: 'Wakaf adalah sedekah jariyah yang pahalanya mengalir hingga hari kiamat.',
+  lessons: [
+    {
+      id: 'rukun-wakaf',
+      title: 'Rukun & Syarat Wakaf',
+      category: 'Dasar Wakaf',
+      summary: 'Wakaf sah dengan empat rukun: wakif (pemberi), mauquf (harta), mauquf alaih (penerima manfaat), dan sighat (ikrar).',
+      points: [
+        'Wakif: Muslim, berakal, baligh, merdeka, dan pemilik sah harta yang diwakafkan.',
+        'Mauquf (harta wakaf): Harta yang bermanfaat, tahan lama, dan tidak habis saat digunakan (aset produktif).',
+        'Mauquf Alaih: Pihak penerima manfaat — masjid, sekolah, rumah sakit, fakir miskin, atau umat Islam umumnya.',
+        'Sighat: Ikrar wakaf secara lisan atau tertulis di hadapan Pejabat Pembuat Akta Ikrar Wakaf (PPAIW/KUA).',
+        'Irrevocable: Harta wakaf tidak boleh ditarik kembali, dijual, diwariskan, atau dihibahkan.'
+      ],
+      practice: 'Kunjungi KUA terdekat untuk mengetahui prosedur ikrar wakaf jika Anda berniat mewakafkan tanah atau bangunan.',
+      source: hadith(1631)
+    },
+    {
+      id: 'wakaf-uang',
+      title: 'Wakaf Uang (Cash Waqf)',
+      category: 'Wakaf Modern',
+      summary: 'Wakaf uang memungkinkan setiap Muslim berwakaf mulai dari Rp 10.000 melalui rekening BWI atau platform digital.',
+      points: [
+        'Fatwa MUI 2002: Wakaf uang hukumnya jawaz (boleh); uang pokok dijaga, hanya hasilnya yang dimanfaatkan.',
+        'Mekanisme: Uang diinvestasikan ke instrumen syariah (sukuk, deposito syariah); keuntungannya disalurkan ke mauquf alaih.',
+        'CWLS (Cash Waqf Linked Sukuk): Instrumen negara untuk wakaf uang yang diinvestasikan dalam Sukuk Negara, diterbitkan Kemenkeu.',
+        'Platform: BWI (Badan Wakaf Indonesia), wakaf.id, Kitabisa Wakaf, Tokopedia Wakaf — minimal Rp 10.000.',
+        'Keunggulan: Menjangkau muzakki dengan modal kecil; uang pokok terlindungi secara hukum wakaf.'
+      ],
+      practice: 'Wakafkan Rp 50.000–100.000 melalui platform wakaf digital terpercaya sebagai jariyah pertama Anda.',
+      source: hadith(1631)
+    },
+    {
+      id: 'wakaf-produktif',
+      title: 'Wakaf Produktif & Pemberdayaan Ekonomi',
+      category: 'Wakaf Modern',
+      summary: 'Harta wakaf dikelola secara produktif (kos, pertokoan, pertanian) agar menghasilkan keuntungan yang dialirkan ke sosial.',
+      points: [
+        'Definisi: Wakaf produktif adalah pengelolaan aset wakaf secara bisnis untuk menghasilkan surplus ekonomi.',
+        'Contoh: Rumah kos wakaf, pertokoan wakaf, kebun sawit wakaf, hotel wakaf (seperti Grand Wakaf Hotel Solo).',
+        'Nadzir Profesional: UU No.41/2004 mensyaratkan nadzir bersertifikat yang diawasi BWI untuk wakaf produktif.',
+        'Surplus: Keuntungan bersih dialirkan ke mauquf alaih — beasiswa, klinik gratis, pengembangan pesantren.',
+        'Replikasi Global: Wakaf produktif ala Turki Utsmani (imaroh) dan Wakaf Azhar Mesir adalah contoh sukses berabad-abad.'
+      ],
+      practice: 'Pelajari laporan tahunan BWI untuk melihat portofolio wakaf produktif Indonesia dan dampak sosialnya.',
+      source: hadith(1631)
+    },
+    {
+      id: 'wakaf-online',
+      title: 'Wakaf Online & Regulasi Indonesia',
+      category: 'Wakaf Modern',
+      summary: 'Regulasi wakaf di Indonesia: UU No.41/2004, PP No.42/2006, dan peran BWI sebagai regulator nasional.',
+      points: [
+        'UU Wakaf No.41/2004: Landasan hukum nasional; memperkuat posisi wakaf sebagai instrumen ekonomi Islam.',
+        'Sertifikasi Tanah Wakaf: KUA menerbitkan AIW (Akta Ikrar Wakaf); BPN menerbitkan sertifikat tanah wakaf.',
+        'BWI: Badan Wakaf Indonesia — lembaga negara yang membina nadzir dan mengembangkan wakaf nasional.',
+        'Wakaf Online Sah: OJK dan MUI mengizinkan wakaf via platform digital dengan akad yang tercatat.',
+        'Tantangan: Banyak tanah wakaf belum bersertifikat; program sertifikasi massal terus dijalankan Kemenag.'
+      ],
+      practice: 'Cek status sertifikasi tanah masjid atau mushola di lingkungan Anda; bantu proses jika belum bersertifikat.',
+      source: hadith(1631)
+    },
+    {
+      id: 'wakaf-jariyah',
+      title: 'Sedekah Jariyah & Keutamaan Wakaf',
+      category: 'Keutamaan Wakaf',
+      summary: 'Rasulullah SAW menyebut tiga amalan yang pahalanya terus mengalir setelah wafat; wakaf adalah yang paling nyata.',
+      points: [
+        'HR. Muslim: "Jika seseorang wafat, terputuslah amalnya kecuali tiga: sedekah jariyah, ilmu yang bermanfaat, anak shaleh yang mendoakan."',
+        'Wakaf sebagai Jariyah: Sumur, masjid, sekolah yang diwakafkan terus memberikan pahala selama manfaatnya ada.',
+        'Contoh Sahabat: Utsman bin Affan mewakafkan Sumur Ruma untuk seluruh penduduk Madinah (HR. Nasai).',
+        'Wakaf Umar: Tanah Khaibar diwakafkan atas saran Nabi SAW; hasilnya disalurkan ke fakir dan ibnu sabil (HR. Bukhari).',
+        'Motivasi: Setiap rupiah yang Anda wakafkan terus bekerja menghasilkan pahala bahkan saat Anda tidur.'
+      ],
+      practice: 'Niatkan satu aset (meski kecil — buku, Al-Qur\'an, peralatan masjid) sebagai wakaf jariyah dalam hidup Anda.',
+      source: hadith(1631)
+    }
+  ]
+};
+
+export const jenazahPraktis: Course = {
+  id: 'jenazah-praktis',
+  title: 'Panduan Lengkap Pengurusan Jenazah',
+  description: 'Tata cara memandikan, mengkafani, menshalatkan, dan menguburkan jenazah sesuai sunnah Nabi SAW.',
+  note: 'Mengurus jenazah adalah fardhu kifayah — kewajiban kolektif yang gugur jika sudah ada yang mengerjakannya.',
+  lessons: [
+    {
+      id: 'hukum-jenazah',
+      title: 'Hukum & Adab Menghadapi Kematian',
+      category: 'Dasar Jenazah',
+      summary: 'Kematian adalah kepastian; Islam mengajarkan talqin, menutup mata, dan segera mengurus jenazah.',
+      points: [
+        'Fardhu Kifayah: Memandikan, mengkafani, menshalatkan, dan menguburkan jenazah Muslim.',
+        'Talqin: Anjurkan yang sekarat mengucap "Laa ilaaha illallaah" (HR. Muslim — "Labikkan orang yang hampir mati dengan laa ilaaha illallaah").',
+        'Menutup Mata: Sunnah menutup mata mayit dan mendoakan: "Allahummaghfir li-fulan warfa\' darajatah" (HR. Muslim).',
+        'Segera Dikuburkan: "Bersegeralah dalam mengurus jenazah; jika ia shaleh, maka kebaikan yang kalian dahulukan; jika tidak, maka keburukan yang kalian singkirkan." (HR. Bukhari-Muslim).',
+        'Larangan: Tidak boleh meratap berlebihan, merobek baju, atau mencakar wajah — termasuk dosa besar.'
+      ],
+      practice: 'Hafalkanlah doa ta\'ziyah: "Inna lillahi wa inna ilaihi raji\'un, Allahumma\'jur fi mushibatihi wa akhlif lahu khairan minha."',
+      source: hadith(2141)
+    },
+    {
+      id: 'memandikan-jenazah',
+      title: 'Tata Cara Memandikan Jenazah',
+      category: 'Praktik Jenazah',
+      summary: 'Jenazah dimandikan minimal sekali dengan air suci; dianjurkan ganjil (3, 5, atau 7 kali) dengan campuran daun bidara dan kapur barus.',
+      points: [
+        'Yang memandikan: Sesama jenis; suami boleh memandikan istri dan sebaliknya (HR. Abu Dawud).',
+        'Alat: Air suci, daun bidara/sabun, kapur barus untuk mandi terakhir, kain penutup aurat.',
+        'Urutan: Niatkan, basuh anggota wudhu, miringkan ke kiri (basuh sisi kanan), miringkan ke kanan (basuh sisi kiri), siramkan air dari kepala hingga kaki.',
+        'Mandi Ganjil: Minimal 1x, disunahkan 3x, 5x, atau 7x; mandi terakhir dicampur kapur barus.',
+        'Merahasiakan Aib: Jika memandikan melihat aib, wajib dirahasiakan — ini amanah sakral.'
+      ],
+      practice: 'Daftarkan diri ke pelatihan jenazah di masjid atau Baznas terdekat; ini keterampilan wajib setiap Muslim.',
+      source: hadith(1253)
+    },
+    {
+      id: 'mengkafani',
+      title: 'Mengkafani Jenazah',
+      category: 'Praktik Jenazah',
+      summary: 'Laki-laki dikafani 3 helai kain; perempuan 5 helai; kain putih polos yang bersih dan menutup seluruh tubuh.',
+      points: [
+        'Laki-laki: 3 helai kain putih (izar, gamis, lifafah/pembungkus luar) — tidak ada baju dan sorban khusus.',
+        'Perempuan: 5 helai (sarung, baju, tutup kepala, selendang, pembungkus luar).',
+        'Kain: Putih, bersih, sederhana — tidak mewah. Rasulullah SAW dikafani 3 helai kain Yaman (HR. Bukhari).',
+        'Wewangian: Kain boleh diberi wewangian (kapur barus, cendana); tidak boleh menggunakan kain batik motif.',
+        'Ikat: Diikat di kepala dan kaki; dibuka setelah dimasukkan ke liang lahat.'
+      ],
+      practice: 'Latihan mengkafani dengan boneka atau kain latihan di pelatihan jenazah — praktikkan bersama keluarga.',
+      source: hadith(1253)
+    },
+    {
+      id: 'shalat-jenazah',
+      title: 'Shalat Jenazah: Rukun & Tata Cara',
+      category: 'Praktik Jenazah',
+      summary: 'Shalat jenazah: 4 takbir, tanpa rukuk dan sujud, diakhiri salam; membaca Al-Fatihah, shalawat, dan doa jenazah.',
+      points: [
+        'Rukun: Niat, berdiri (jika mampu), 4 takbir, membaca Al-Fatihah setelah takbir pertama, shalawat setelah takbir kedua, doa jenazah setelah takbir ketiga, salam.',
+        'Doa Jenazah: "Allahummaghfir lahu warhamhu wa \'afihi wa\'fu \'anhu..." (HR. Muslim).',
+        'Posisi Imam: Sejajar kepala jenazah laki-laki; sejajar pinggang jenazah perempuan.',
+        'Shalat Ghaib: Boleh dishalatkan meski jenazah tidak ada di tempat (seperti Nabi SAW menshalatkan Najasyi).',
+        'Minimal: Tiga orang sudah cukup untuk menggugurkan fardhu kifayah shalat jenazah.'
+      ],
+      practice: 'Hafalkanlah doa setelah takbir ketiga: "Allahummaghfir lihayyina wa mayyitina..." untuk kesiapan sewaktu-waktu.',
+      source: hadith(1980)
+    },
+    {
+      id: 'menguburkan',
+      title: 'Menguburkan Jenazah',
+      category: 'Praktik Jenazah',
+      summary: 'Jenazah dikuburkan dalam liang lahat sedalam dada orang, menghadap kiblat, tanpa peti (menurut mayoritas ulama).',
+      points: [
+        'Liang Lahat: Jenis syaq (parit di tengah) atau lahd (ceruk di dinding); lahd lebih dianjurkan.',
+        'Kedalaman: Setidaknya sampai dada; cukup untuk mencegah bau dan galian binatang.',
+        'Tanpa Peti (Mayoritas): Tubuh langsung menyentuh tanah; peti boleh jika tanah berpasir atau kondisi darurat.',
+        'Menghadap Kiblat: Miring ke kanan menghadap kiblat; tali kafan dilepas saat di liang lahat.',
+        'Talqin: Disunahkan membacakan talqin setelah penguburan; ulama berbeda pendapat tentang hukumnya.',
+        'Berdoa: Setelah penguburan, berdiri sebentar mendoakan jenazah; Rasulullah SAW menyuruh para sahabat berdoa untuk keteguhan jenazah.'
+      ],
+      practice: 'Ikut menyaksikan atau membantu proses pemakaman di lingkungan Anda sebagai ibrah dan pembelajaran.',
+      source: hadith(2041)
+    },
+    {
+      id: 'ta-ziyah-do-a',
+      title: 'Ta\'ziyah, Ziarah, & Doa untuk Jenazah',
+      category: 'Adab Jenazah',
+      summary: 'Ta\'ziyah adalah menghibur keluarga jenazah; ziarah kubur dianjurkan untuk mengingatkan kematian dan mendoakan.',
+      points: [
+        'Ta\'ziyah: Hukum sunnah; dilakukan 3 hari setelah wafat; bawa makanan untuk meringankan beban keluarga.',
+        'Doa ta\'ziyah: "Innaa lillahi wa inna ilaihi raji\'un, Allahumma\'jur fi mushibatihi wa akhlif lahu khairan minha."',
+        'Ziarah Kubur: Dianjurkan bagi laki-laki (HR. Muslim); perempuan boleh menurut mayoritas ulama.',
+        'Doa di Kubur: "Assalamu \'alaikum ahlad-diyar minal mu\'minina wal muslimin... nas\'alullaaha lana wa lakumul \'afiyah."',
+        'Larangan: Tidak boleh meminta doa kepada ahli kubur, mengusap-usap kuburan untuk berkah, atau bernadzar kepada kubur.'
+      ],
+      practice: 'Ziarah kubur orang tua atau kerabat minggu ini; bacakan Al-Fatihah dan doa sunnah ziarah kubur.',
+      source: hadith(2041)
+    }
+  ]
+};
+
+export const ilmuTafsir: Course = {
+  id: 'ilmu-tafsir',
+  title: 'Ilmu Tafsir Al-Qur\'an: Metode & Tokoh',
+  description: 'Pelajari metode-metode penafsiran Al-Qur\'an dan para mufassir berpengaruh dari era klasik hingga kontemporer.',
+  note: 'Tafsir adalah upaya manusia memahami firman Allah — kerendahan hati ilmiah adalah syarat utamanya.',
+  lessons: [
+    {
+      id: 'pengantar-tafsir',
+      title: 'Pengantar Ilmu Tafsir',
+      category: 'Dasar Tafsir',
+      summary: 'Ilmu tafsir mempelajari cara memahami Al-Qur\'an dari aspek bahasa, asbabun nuzul, nasikh-mansukh, dan qira\'at.',
+      points: [
+        'Definisi: Tafsir = keterangan/penjelasan makna ayat Al-Qur\'an dari aspek bahasa, konteks turun, dan kandungan hukum.',
+        'Syarat Mufassir: Menguasai bahasa Arab (nahwu, sharaf, balaghah), ushul tafsir, ilmu hadits, aqidah yang lurus.',
+        'Asbabun Nuzul: Mengetahui sebab turunnya ayat sangat krusial untuk memahami konteks dan penerapan hukum.',
+        'Nasikh-Mansukh: Ilmu tentang ayat yang menghapus (nasikh) dan ayat yang dihapus hukumnya (mansukh).',
+        'Muhkam-Mutasyabih: Ayat muhkam (jelas maknanya) dan mutasyabih (maknanya hanya Allah yang tahu) — keduanya ada dalam Al-Qur\'an (QS. 3:7).'
+      ],
+      practice: 'Mulailah membaca kitab tafsir ringkas seperti Tafsir Ibnu Katsir edisi terjemah atau Tafsir Al-Muyassar untuk satu juz per minggu.',
+      source: quran('3/7')
+    },
+    {
+      id: 'tafsir-bil-matsur',
+      title: 'Tafsir bil-Ma\'tsur (Riwayat)',
+      category: 'Metode Tafsir',
+      summary: 'Al-Qur\'an ditafsirkan dengan Al-Qur\'an, lalu sunnah Nabi, lalu pendapat sahabat — metode paling otoritatif.',
+      points: [
+        'Prinsip: Al-Qur\'an yufassiru ba\'dhuhu ba\'dhan (sebagian Al-Qur\'an menafsirkan sebagian yang lain).',
+        'Hierarki: Al-Qur\'an → Sunnah → Atsar Sahabat → Atsar Tabi\'in.',
+        'Contoh: QS. Al-Fatihah: 7 — "orang yang dinikmatkan" → ditafsirkan QS. An-Nisa: 69 (nabi, shiddiq, syuhada, shalih).',
+        'Kitab Referensi: Tafsir Ibnu Katsir, Tafsir Ath-Thabari (Jami\' al-Bayan), Tafsir Ad-Durrul Mantsur (As-Suyuthi).',
+        'Keunggulan: Paling aman dari penafsiran hawa nafsu karena bersandar pada dalil naqli.'
+      ],
+      practice: 'Ambil satu ayat yang sering dibaca (misal: Al-Baqarah: 2) dan lacak penjelasannya di Tafsir Ibnu Katsir.',
+      source: quran('3/7')
+    },
+    {
+      id: 'tafsir-bir-rayi',
+      title: 'Tafsir bir-Ra\'yi (Akal)',
+      category: 'Metode Tafsir',
+      summary: 'Penafsiran menggunakan ijtihad dan analisis rasional; sah jika berlandaskan kaidah bahasa Arab dan ushul tafsir.',
+      points: [
+        'Definisi: Penafsiran menggunakan ijtihad dengan mengandalkan pemahaman bahasa Arab dan kaidah ushul.',
+        'Ra\'yi Mahmudah (Terpuji): Jika sesuai kaidah bahasa Arab, tidak bertentangan riwayat shahih, dan mufassir alim.',
+        'Ra\'yi Madzmumah (Tercela): Penafsiran tanpa ilmu, mengikuti hawa nafsu, atau memaksakan makna ideologis.',
+        'Kitab Referensi: Tafsir Al-Kasysyaf (Zamakhsyari — mu\'tazilah), Mafatih al-Ghaib (Ar-Razi), Al-Jalalain.',
+        'Prinsip Kehati-hatian: Imam Syafi\'i berkata, "Aku takut berbicara tentang Al-Qur\'an tanpa ilmu."'
+      ],
+      practice: 'Bandingkan tafsir Al-Jalalain dan Ibnu Katsir untuk satu ayat — perhatikan perbedaan pendekatan dan kesimpulannya.',
+      source: quran('3/7')
+    },
+    {
+      id: 'tafsir-maudhui',
+      title: 'Tafsir Maudhui (Tematik)',
+      category: 'Metode Tafsir',
+      summary: 'Mengumpulkan semua ayat bertema sama, mengurutkannya secara kronologis, lalu merumuskan kesimpulan komprehensif.',
+      points: [
+        'Definisi: Metode tematik — mengambil satu tema (misalnya "keadilan", "perempuan", "jihad") lalu mengumpulkan semua ayatnya.',
+        'Langkah: Tentukan tema → kumpulkan semua ayat → susun kronologis → pahami asbabun nuzul → rumuskan pandangan Al-Qur\'an.',
+        'Keunggulan: Menghasilkan pandangan Al-Qur\'an yang holistik; cocok menjawab isu kontemporer.',
+        'Tokoh: Syaikh Ahmad Sayyid Al-Kumi (pencetus), Dr. Mustafa Muslim (Mabahits fit-Tafsir al-Maudhui).',
+        'Contoh: Tema "syura/musyawarah" — mengumpulkan QS. 2:233, 3:159, 42:38 dan merumuskan sistem musyawarah Islam.'
+      ],
+      practice: 'Pilih satu tema (contoh: "sabar") dan kumpulkan minimal 10 ayat tentangnya; buat mind map hubungan antar ayat.',
+      source: quran('3/7')
+    },
+    {
+      id: 'mufassir-klasik',
+      title: 'Para Mufassir Klasik Berpengaruh',
+      category: 'Tokoh Tafsir',
+      summary: 'Ibnu Katsir, Ath-Thabari, Al-Qurthubi, As-Suyuthi — raksasa ilmu tafsir yang karyanya masih menjadi rujukan utama.',
+      points: [
+        'Ibnu Jarir Ath-Thabari (w.310H): Jami\' al-Bayan — ensiklopedi tafsir bil-ma\'tsur terlengkap; 30 jilid.',
+        'Ibnu Katsir (w.774H): Tafsir Al-Qur\'an Al-\'Adzim — paling populer di kalangan ahlus sunnah; komprehensif dan autentik.',
+        'Al-Qurthubi (w.671H): Al-Jami\' li Ahkam Al-Qur\'an — spesialis hukum fiqh dalam Al-Qur\'an; 20 jilid.',
+        'As-Suyuthi (w.911H): Ad-Durrul Mantsur — tafsir bil-ma\'tsur; juga menulis Al-Itqan (ilmu Al-Qur\'an).',
+        'Fakhrur Razi (w.606H): Mafatih al-Ghaib — tafsir filosofis dan teologi; 32 jilid; pendekatan kalam Asy\'ari.'
+      ],
+      practice: 'Download PDF Tafsir Ibnu Katsir edisi ringkasan; mulai dari Juz Amma untuk membangun kebiasaan membaca tafsir.',
+      source: quran('3/7')
+    },
+    {
+      id: 'mufassir-kontemporer',
+      title: 'Mufassir Kontemporer & Tafsir Nusantara',
+      category: 'Tokoh Tafsir',
+      summary: 'Sayyid Quthb, Ibnu \'Asyur, Hamka, Quraish Shihab — mufassir modern yang menghadirkan Al-Qur\'an untuk tantangan zaman.',
+      points: [
+        'Sayyid Quthb (w.1966): Fi Zhilalil Qur\'an — tafsir harakah dengan bahasa sastra yang menggugah jiwa.',
+        'Ibnu \'Asyur (w.1973): At-Tahrir wat-Tanwir — tafsir linguistik-fiqh terlengkap abad 20; 30 jilid.',
+        'Hamka (w.1981): Tafsir Al-Azhar — tafsir pertama lengkap 30 juz berbahasa Indonesia; perspektif Nusantara.',
+        'Quraish Shihab (kontemporer): Tafsir Al-Misbah — tafsir 30 juz Indonesia modern; bahasa lugas; perspektif sosial.',
+        'Muhammad Abduh & Rashid Ridha: Tafsir Al-Manar — tafsir reformis-modern; pengaruh besar pemikiran Islam kontemporer.'
+      ],
+      practice: 'Baca satu halaman Tafsir Al-Misbah atau Al-Azhar setiap hari; bandingkan pendekatan keduanya pada ayat yang sama.',
+      source: quran('3/7')
+    }
+  ]
+};
+
+export const nahwuDasar: Course = {
+  id: 'nahwu-dasar',
+  title: 'Ilmu Nahwu Dasar',
+  description: 'Pelajari kaidah bahasa Arab dasar: pembagian kata, i\'rob, jumlah ismiyah dan fi\'liyah untuk memahami Al-Qur\'an.',
+  note: 'Nahwu adalah kunci membaca Al-Qur\'an dan kitab kuning dengan pemahaman yang benar.',
+  lessons: [
+    {
+      id: 'pembagian-kata',
+      title: 'Tiga Pembagian Kata (Isim, Fi\'il, Harf)',
+      category: 'Dasar Nahwu',
+      summary: 'Semua kata Arab terbagi tiga: isim (nomina), fi\'il (verba), harf (partikel); masing-masing punya ciri khas.',
+      points: [
+        'Isim (اِسْم): Kata benda/sifat; bisa didahului "al" (ال), berharakat tanwin, boleh didahului huruf jar. Contoh: كِتَابٌ (kitabun = buku).',
+        'Fi\'il (فِعْل): Kata kerja; terbagi fi\'il madhi (lampau), mudhari\' (sekarang/akan), amar (perintah). Contoh: كَتَبَ (kataba = menulis).',
+        'Harf (حَرْف): Partikel; tidak bisa berdiri sendiri, maknanya jelas saat bersanding isim/fi\'il. Contoh: فِي (fi = di dalam), وَ (wa = dan).',
+        'Ciri Isim: Tanwin (ـٌـٍـً), "al" (الـ), didahului huruf jar, bisa disandarkan (idhafah).',
+        'Ciri Fi\'il: Ta\' ta\'nits sakinah (ـتْ), ya\' mukhatabah (يَـ), nun taukid (ـنَّ).'
+      ],
+      practice: 'Buka Al-Qur\'an Surat Al-Fatihah; tandai setiap kata dan kategorikan apakah isim, fi\'il, atau harf.',
+      source: quran('1/1')
+    },
+    {
+      id: 'irob-dasar',
+      title: 'I\'rob: Perubahan Harakat Ujung Kata',
+      category: 'Dasar Nahwu',
+      summary: 'I\'rob adalah perubahan baris akhir kata Arab sesuai fungsinya dalam kalimat: rafa\', nashab, jar, jazm.',
+      points: [
+        'Rafa\' (ضَمَّة): Fungsi mubtada\', khabar, fa\'il, naibul fa\'il — tanda: dhammah (ُـ), wawu, alif.',
+        'Nashab (فَتْحَة): Fungsi maf\'ul bih, khabar kana, isim inna — tanda: fathah (َـ), ya\', alif.',
+        'Jar (كَسْرَة): Setelah huruf jar atau dalam idhafah — tanda: kasrah (ِـ), ya\'.',
+        'Jazm (سُكُون): Hanya untuk fi\'il mudhari\' — tanda: sukun (ْـ), membuang huruf illat.',
+        'Bina\' vs I\'rob: Kata mabni tidak berubah harakatnya (seperti dhamir); kata mu\'rab berubah sesuai fungsi.'
+      ],
+      practice: 'Ambil QS. Al-Baqarah: 1–5; tandai harakat akhir setiap isim dan tentukan apakah rafa\', nashab, atau jar.',
+      source: quran('2/1')
+    },
+    {
+      id: 'jumlah-ismiyah',
+      title: 'Jumlah Ismiyah (Kalimat Nominal)',
+      category: 'Struktur Kalimat',
+      summary: 'Kalimat nominal dimulai isim; terdiri dari mubtada\' (subjek, rafa\') dan khabar (predikat, rafa\').',
+      points: [
+        'Pola dasar: مُبْتَدَأٌ + خَبَرٌ — keduanya rafa\'. Contoh: اللهُ كَبِيرٌ (Allah Maha Besar).',
+        'Mubtada\': Harus ma\'rifah (definit) atau nakirah dengan konteks khusus; selalu rafa\'.',
+        'Khabar: Menerangkan mubtada\'; bisa berupa isim, jumlah fi\'liyah, jumlah ismiyah, atau syibhul jumlah (zharaf/huruf jar).',
+        'Khabar Jar Majrur: اللهُ فِي السَّمَاءِ — "di langit" adalah khabar berupa syibhul jumlah.',
+        'Mubtada\' Tanpa Khabar (Khusus): Jika dimasuki kana, inna, dll — terjadi perubahan nama dan harakat.'
+      ],
+      practice: 'Buat 5 kalimat ismiyah sederhana tentang sifat Allah; gunakan kamus Arab-Indonesia jika perlu.',
+      source: quran('2/255')
+    },
+    {
+      id: 'jumlah-fi-liyah',
+      title: 'Jumlah Fi\'liyah (Kalimat Verbal)',
+      category: 'Struktur Kalimat',
+      summary: 'Kalimat verbal dimulai fi\'il; terdiri dari fi\'il + fa\'il (subjek rafa\') + maf\'ul bih (objek nashab) jika ada.',
+      points: [
+        'Pola dasar: فِعْلٌ + فَاعِلٌ — fi\'il madhi + fa\'il rafa\'. Contoh: كَتَبَ الطَّالِبُ (Sang pelajar menulis).',
+        'Fa\'il: Selalu rafa\'; bisa isim zhahir (nyata) atau dhamir (tersembunyi/muttashil).',
+        'Maf\'ul Bih: Objek yang dikenai pekerjaan; selalu nashab. Contoh: كَتَبَ الطَّالِبُ الدَّرْسَ (menulis pelajaran).',
+        'Kesesuaian Gender: Fi\'il madhi + fa\'il muannats → tambah ta\' ta\'nits. Contoh: كَتَبَتِ الطَّالِبَةُ.',
+        'Fi\'il Majhul: Jika fa\'il tidak disebutkan, fi\'il diubah ke bentuk majhul (pasif) dan fa\'il → naibul fa\'il (rafa\').'
+      ],
+      practice: 'Ambil 5 ayat Al-Qur\'an berisi fi\'il; identifikasi fi\'il, fa\'il, dan maf\'ul bih-nya; tentukan harakat masing-masing.',
+      source: quran('2/30')
+    },
+    {
+      id: 'huruf-jar',
+      title: 'Huruf Jar & Maknanya',
+      category: 'Alat Nahwu',
+      summary: 'Huruf jar menjadikan isim sesudahnya berharakat kasrah; masing-masing punya makna spesifik.',
+      points: [
+        'مِنْ (min): Dari, sebagian. Contoh: مِنَ الْمَسْجِدِ (dari masjid). QS. 17:1.',
+        'إِلَى (ila): Ke, menuju. Contoh: إِلَى الْمَسْجِدِ الْأَقْصَى. QS. 17:1.',
+        'عَنْ (\'an): Dari (sumber/asal), tentang. Contoh: عَنِ الصَّلَاةِ (tentang shalat).',
+        'عَلَى (\'ala): Di atas, atas. Contoh: عَلَى الْعَرْشِ اسْتَوَى (QS. 20:5).',
+        'فِي (fi): Di dalam. Contoh: فِي السَّمَاوَاتِ (di langit-langit). QS. 2:255.',
+        'بِ (bi): Dengan, menggunakan. Contoh: بِسْمِ اللهِ (dengan nama Allah).',
+        'لِ (li): Untuk, milik. Contoh: لِلَّهِ مَا فِي السَّمَاوَاتِ (QS. 2:284).'
+      ],
+      practice: 'Buka Al-Qur\'an halaman mana saja; temukan 7 huruf jar berbeda dan terjemahkan frasa yang mengikutinya.',
+      source: quran('17/1')
+    },
+    {
+      id: 'mufrad-mutsanna-jamak',
+      title: 'Mufrad, Mutsanna & Jamak',
+      category: 'Morfologi',
+      summary: 'Isim Arab berubah bentuk sesuai jumlah: tunggal (mufrad), ganda (mutsanna), jamak (jamak).',
+      points: [
+        'Mufrad (tunggal): Bentuk dasar. Contoh: مُسْلِمٌ (satu Muslim laki-laki).',
+        'Mutsanna (ganda): Tambah ـَانِ (rafa\') atau ـَيْنِ (nashab/jar). Contoh: مُسْلِمَانِ (dua Muslim — rafa\').',
+        'Jamak Muzakkar Salim: Tambah ـُونَ (rafa\') atau ـِينَ (nashab/jar). Contoh: مُسْلِمُونَ (para Muslim).',
+        'Jamak Muannats Salim: Tambah ـَاتٌ (rafa\'), ـَاتٍ (jar), ـَاتٍ (nashab). Contoh: مُسْلِمَاتٌ.',
+        'Jamak Taksir: Perubahan tidak beraturan (broken plural); harus dihafal. Contoh: كِتَابٌ → كُتُبٌ, رَجُلٌ → رِجَالٌ.'
+      ],
+      practice: 'Buat tabel perubahan 10 isim dari mufrad ke mutsanna ke jamak; bandingkan perubahan harakatnya.',
+      source: quran('2/1')
+    }
+  ]
+};
+
+export const adabProfesi: Course = {
+  id: 'adab-profesi',
+  title: 'Akhlak & Adab Profesi Muslim',
+  description: 'Panduan etika Islam untuk berbagai profesi: dokter, guru, pedagang, PNS, dan profesional teknologi.',
+  note: 'Setiap pekerjaan halal adalah ibadah jika dilakukan dengan niat ikhlas dan akhlak mulia.',
+  lessons: [
+    {
+      id: 'etika-kerja-islam',
+      title: 'Etos Kerja & Etika Profesi dalam Islam',
+      category: 'Dasar Adab Profesi',
+      summary: 'Islam mendorong kerja keras, profesionalisme, dan amanah sebagai bentuk ibadah dan kontribusi sosial.',
+      points: [
+        'Kerja sebagai Ibadah: "Tidaklah seseorang memakan makanan yang lebih baik dari hasil tangannya sendiri." (HR. Bukhari — Nabi Dawud AS menafkahi diri dari kerajinan tangan).',
+        'Itqan (Profesional): "Sesungguhnya Allah mencintai jika seseorang mengerjakan suatu pekerjaan, ia melakukannya dengan itqan (sungguh-sungguh dan sempurna)." (HR. Baihaqi).',
+        'Amanah: Pegawai yang melaksanakan tugas dengan jujur dan transparan memenuhi salah satu sifat mukmin sejati (QS. 23:8).',
+        'Niat: "Sesungguhnya amal itu tergantung niatnya" (HR. Bukhari-Muslim) — bekerja diniatkan untuk ibadah dan maslahah.',
+        'Larangan: Korupsi, manipulasi data, plagiarisme, dan penipuan dalam pekerjaan adalah haram dan merusak keberkahan rezeki.'
+      ],
+      practice: 'Tuliskan niat kerja Anda hari ini: "Saya bekerja untuk menafkahi keluarga, memberi manfaat, dan beribadah kepada Allah." Tempelkan di meja kerja.',
+      source: hadith(2072)
+    },
+    {
+      id: 'adab-dokter-nakes',
+      title: 'Adab Dokter & Tenaga Kesehatan Muslim',
+      category: 'Profesi Kesehatan',
+      summary: 'Dokter Muslim adalah waris para nabi dalam membantu penyembuhan; wajib menggabungkan kompetensi medis dan akhlak Islami.',
+      points: [
+        'Niat Mulia: Profesi medis adalah fardhu kifayah — kewajiban kolektif umat; dokter Muslim menanggung tanggung jawab spiritual.',
+        'Informed Consent: Islam mewajibkan kejujuran (shidq) kepada pasien tentang diagnosis dan risiko pengobatan.',
+        'Ikhtiar & Tawakal: "Berobatlah, karena Allah tidak menciptakan penyakit kecuali ada obatnya, selain penyakit tua." (HR. Abu Dawud).',
+        'Rahasia Medis: Menjaga rahasia pasien adalah amanah (wajib); melanggarnya haram kecuali darurat hukum.',
+        'Obat Haram: Wajib mencari alternatif halal; boleh menggunakan bahan haram hanya dalam kondisi darurat medis yang nyata.'
+      ],
+      practice: 'Bagi tenaga kesehatan: bacalah Basmallah sebelum memeriksa pasien dan doakan kesembuhan mereka dalam hati.',
+      source: hadith(2041)
+    },
+    {
+      id: 'adab-guru-pengajar',
+      title: 'Adab Guru & Pengajar Muslim',
+      category: 'Profesi Pendidikan',
+      summary: 'Guru adalah pewaris nabi dalam menyebarkan ilmu; tanggung jawabnya sangat besar di hadapan Allah.',
+      points: [
+        'Keutamaan: "Barangsiapa yang menempuh jalan untuk mencari ilmu, Allah akan memudahkan baginya jalan ke surga." (HR. Muslim).',
+        'Niat Ikhlas: Mengajar hanya karena Allah — bukan untuk pujian, viral, atau materi semata (QS. 36:21).',
+        'Sabar: Imam Ibnu Qayyim: "Guru yang baik adalah yang bisa bersabar atas kebodohan murid."',
+        'Keteladanan: "Ilmu tanpa amal seperti pohon tanpa buah" — guru harus menjadi contoh nyata dari ilmu yang diajarkan.',
+        'Keadilan: Tidak pilih kasih antara murid; memberi perhatian lebih pada yang kesulitan adalah sunnah Rasulullah SAW.'
+      ],
+      practice: 'Jika Anda mengajar, tutup sesi dengan doa: "Allahumma infa\'na bima \'allamtana wa \'allimna ma yanfa\'una."',
+      source: hadith(1631)
+    },
+    {
+      id: 'adab-pedagang',
+      title: 'Adab Pedagang & Pengusaha Muslim',
+      category: 'Profesi Bisnis',
+      summary: 'Pedagang jujur di surga bersama para nabi dan syuhada; kejujuran dan menghindari sumpah palsu adalah kunci.',
+      points: [
+        'Keutamaan: "Pedagang yang jujur dan amanah akan bersama para nabi, shiddiqin, dan syuhada." (HR. Tirmidzi).',
+        'Larangan Penipuan: "Barangsiapa yang menipu, bukan golongan kami." (HR. Muslim) — cacat produk wajib diinformasikan.',
+        'Jual Beli Halal: Hindari riba, gharar (ketidakjelasan), maisir (spekulasi) dalam transaksi bisnis.',
+        'Sumpah Palsu: Dilarang keras bersumpah palsu untuk mendongkrak penjualan — menghapus keberkahan (HR. Bukhari).',
+        'Pasar yang Berkah: Memberi takaran penuh (QS. 11:85); menolak monopoli harga; mendoakan pembeli.'
+      ],
+      practice: 'Pastikan setiap produk yang Anda jual dijelaskan kondisinya secara jujur; hapus deskripsi yang menyesatkan.',
+      source: hadith(2072)
+    },
+    {
+      id: 'adab-pns-asn',
+      title: 'Adab PNS/ASN Muslim',
+      category: 'Profesi Pemerintahan',
+      summary: 'PNS Muslim adalah pelayan rakyat; amanah jabatan, menolak suap, dan pelayanan prima adalah kewajiban agama.',
+      points: [
+        'Amanah Jabatan: "Sesungguhnya amanah itu kelak di hari kiamat akan menjadi kehinaan dan penyesalan, kecuali bagi orang yang mengambilnya dengan benar dan menunaikan kewajibannya." (HR. Muslim).',
+        'Larangan Suap: "Allah melaknat penyuap dan yang disuap." (HR. Tirmidzi) — gratifikasi termasuk suap.',
+        'Disiplin Waktu: Masuk kerja tepat waktu adalah bentuk amanah; pulang sebelum jam adalah khianat pada rakyat.',
+        'Pelayanan Prima: Memudahkan urusan masyarakat adalah ibadah; mempersulit adalah dosa.',
+        'Netralitas Politik: ASN wajib netral dalam pilkada/pemilu; berpihak menggunakan jabatan adalah penyalahgunaan amanah.'
+      ],
+      practice: 'Evaluasi: apakah ada "gratifikasi kecil" yang Anda terima di pekerjaan? Kembalikan atau laporkan sebagai bentuk amanah.',
+      source: hadith(3681)
+    },
+    {
+      id: 'adab-programmer-teknologi',
+      title: 'Adab Profesional Teknologi & Programmer Muslim',
+      category: 'Profesi Teknologi',
+      summary: 'Programmer dan profesional teknologi Muslim bertanggung jawab atas dampak sosial produk digitalnya.',
+      points: [
+        'Amanah Data: Menjaga keamanan data pengguna adalah amanah — kebocoran data karena kelalaian adalah dosa profesional.',
+        'Produk Halal: Hindari membangun sistem untuk judi online, pornografi, riba digital, atau penipuan — haram meski dibayar mahal.',
+        'Open Source & Ilmu: Berbagi kode bermanfaat adalah sedekah ilmu — pahala jariyah bagi programmer.',
+        'AI & Etika Islam: Membangun AI yang adil, tidak bias, dan menghormati privasi sesuai prinsip maslahah dan menghindari mafsadah.',
+        'Digital Fatigue: Produktivitas kerja bukan mengorbankan shalat — atur notifikasi agar tidak terganggu waktu ibadah.'
+      ],
+      practice: 'Audit satu proyek yang sedang Anda kerjakan: apakah ada fitur yang berdampak negatif? Ajukan perbaikan ke tim.',
+      source: hadith(2072)
+    }
+  ]
+};
+
+export const hukumKeluargaIndonesia: Course = {
+  id: 'hukum-keluarga-indonesia',
+  title: 'Hukum Keluarga Islam di Indonesia',
+  description: 'Kompilasi Hukum Islam (KHI), pernikahan di KUA, itsbat nikah, perceraian di PA, dan perlindungan anak.',
+  note: 'Hukum keluarga Islam Indonesia memadukan fikih klasik dan regulasi negara untuk kemaslahatan umat.',
+  lessons: [
+    {
+      id: 'khi-uu-perkawinan',
+      title: 'KHI & UU Perkawinan No.1/1974',
+      category: 'Dasar Hukum',
+      summary: 'KHI (Kompilasi Hukum Islam) adalah kodifikasi fiqh pernikahan, warisan, dan wakaf untuk pengadilan agama Indonesia.',
+      points: [
+        'UU No.1/1974: Undang-Undang Perkawinan — mengatur pernikahan sah, hak-kewajiban suami-istri, perceraian secara nasional.',
+        'KHI (Inpres No.1/1991): Panduan teknis hakim Pengadilan Agama; mencakup 229 pasal tentang perkawinan, kewarisan, dan wakaf.',
+        'Batas Usia: UU No.16/2019 mengubah batas usia menikah menjadi minimal 19 tahun untuk laki-laki dan perempuan.',
+        'Perkawinan Campuran: Beda agama tidak diakui negara; perlu prosedur khusus di luar negeri (menurut hukum positif).',
+        'Walimah Wajib: KHI Pasal 63 — pencatatan nikah di KUA adalah kewajiban administrasi (nikah siri tidak diakui negara).'
+      ],
+      practice: 'Unduh buku KHI (tersedia gratis di Badilag.net) dan baca bab I tentang ketentuan umum perkawinan Islam.',
+      source: quran('4/1')
+    },
+    {
+      id: 'pernikahan-kua',
+      title: 'Proses Pernikahan Resmi di KUA',
+      category: 'Administrasi Nikah',
+      summary: 'Langkah-langkah mengurus pernikahan di KUA: pendaftaran, pemeriksaan, kursus pra-nikah, akad, dan pencatatan.',
+      points: [
+        'Pendaftaran: H-10 hari sebelum akad ke KUA domisili calon pengantin perempuan.',
+        'Dokumen: N1 (surat pengantar RT/RW), N2 (keterangan untuk nikah), N4 (iman orang tua), akte kelahiran, KTP, foto.',
+        'Kursus Pra-Nikah: Wajib mengikuti bimbingan perkawinan 16 jam di KUA atau lembaga resmi (Permenag No.34/2016).',
+        'Wali Nikah: Harus hadir secara fisik; jika berhalangan, bisa menggunakan wali hakim (taukil wali) dengan prosedur.',
+        'Mahar: Harus disebutkan dalam akad; bisa dibayar tunai atau ditangguhkan; mahar sederhana lebih dianjurkan sunnah.'
+      ],
+      practice: 'Kunjungi situs SIMKAH (Sistem Informasi Manajemen Nikah) di simkah.kemenag.go.id untuk memulai pendaftaran online.',
+      source: quran('4/4')
+    },
+    {
+      id: 'itsbat-nikah',
+      title: 'Itsbat Nikah: Legalisasi Nikah Siri',
+      category: 'Administrasi Nikah',
+      summary: 'Itsbat nikah adalah penetapan Pengadilan Agama untuk mengesahkan pernikahan yang belum tercatat secara resmi.',
+      points: [
+        'Definisi: Penetapan pengadilan agama bahwa suatu pernikahan siri atau adat telah memenuhi syarat sah nikah Islam.',
+        'Syarat: Pernikahan harus sudah terjadi sebelum UU No.1/1974 berlaku, atau ada alasan khusus (anak, warisan).',
+        'Manfaat: Untuk pengurusan akte kelahiran anak, akses layanan BPJS, hak waris, dan dokumen negara lainnya.',
+        'Prosedur: Ajukan permohonan ke PA setempat → sidang → penetapan → terbitkan buku nikah dari KUA.',
+        'Biaya: Relatif terjangkau; ada layanan pos bantuan hukum gratis (Posbakum) di setiap PA untuk yang tidak mampu.'
+      ],
+      practice: 'Jika ada keluarga yang menikah siri, bantu fasilitasi itsbat nikah di PA setempat untuk melindungi hak anak.',
+      source: quran('4/21')
+    },
+    {
+      id: 'cerai-pa',
+      title: 'Perceraian di Pengadilan Agama',
+      category: 'Perceraian',
+      summary: 'Talak dan khuluk harus diucapkan di hadapan sidang PA; perceraian di luar PA tidak memiliki kekuatan hukum.',
+      points: [
+        'Prinsip: Talak di luar pengadilan agama (nikah siri) tidak diakui negara — anak dan istri tidak punya perlindungan hukum.',
+        'Cerai Talak: Suami mengajukan permohonan ikrar talak ke PA; sidang mediasi dulu sebelum diizinkan bericara.',
+        'Cerai Gugat: Istri mengajukan gugatan cerai jika suami melalaikan kewajiban, berbuat zhalim, atau tidak diketahui keberadaannya.',
+        'Khuluk: Istri meminta cerai dengan mengembalikan mahar — boleh jika memang tidak sanggup hidup bersama.',
+        'Hak Pasca Cerai: Mut\'ah (pemberian layak), iddah (nafkah selama masa tunggu), hak asuh anak.'
+      ],
+      practice: 'Jika ada konflik rumah tangga, manfaatkan mediasi PA atau BP4 (Badan Penasihat Perkawinan) sebelum ke jalur cerai.',
+      source: quran('65/1')
+    },
+    {
+      id: 'perlindungan-anak',
+      title: 'Perlindungan Anak dalam Hukum Islam & Indonesia',
+      category: 'Hak Anak',
+      summary: 'Islam dan UU No.35/2014 sama-sama menekankan hak anak atas nasab, nafkah, pendidikan, dan perlindungan.',
+      points: [
+        'Nasab: Anak berhak atas nasab (keturunan) yang jelas; anak di luar nikah hanya dinasabkan ke ibu secara Islam.',
+        'Nafkah Anak: Kewajiban ayah memberi nafkah anak berlangsung hingga anak mampu mandiri (atau menikah bagi perempuan).',
+        'Hak Asuh (Hadhanah): Ibu lebih berhak mengasuh anak kecil (usia 7 tahun ke bawah); ayah berkewajiban membiayai.',
+        'UU Perlindungan Anak: Larangan kekerasan, eksploitasi, dan perkawinan anak di bawah 19 tahun.',
+        'Warisan Anak: Anak laki-laki mendapat dua bagian, perempuan satu bagian dari harta orang tua (QS. 4:11); anak luar nikah tidak waris dari ayah biologis.'
+      ],
+      practice: 'Buat dokumen sederhana (wasiat/testament) tentang rencana pengasuhan anak jika Anda berhalangan; konsultasikan ke notaris syariah.',
+      source: quran('4/11')
+    }
+  ]
+};
+
+export const ekonomiSyariah: Course = {
+  id: 'ekonomi-syariah',
+  title: 'Ekonomi Syariah Kontemporer',
+  description: 'Prinsip ekonomi Islam, perbankan syariah, asuransi takaful, pasar modal syariah, dan fintech halal.',
+  note: 'Ekonomi syariah bukan sekadar menghindari riba, tetapi membangun sistem ekonomi yang adil dan bermaslahat.',
+  lessons: [
+    {
+      id: 'prinsip-ekonomi-islam',
+      title: 'Prinsip Dasar Ekonomi Islam',
+      category: 'Dasar Ekonomi Syariah',
+      summary: 'Ekonomi Islam berdiri di atas tauhid, keadilan, kebebasan bertanggung jawab, dan larangan riba-gharar-maisir.',
+      points: [
+        'Tauhid: Semua harta adalah milik Allah (QS. 24:33); manusia hanya khalifah/pemegang amanah — mendorong keadilan distribusi.',
+        'Larangan Riba: "Allah menghalalkan jual beli dan mengharamkan riba" (QS. 2:275) — bunga bank konvensional termasuk riba.',
+        'Larangan Gharar: Ketidakjelasan akad, objek, harga, atau waktu — seperti jual beli burung di udara atau ikan di air.',
+        'Larangan Maisir: Judi dan spekulasi murni — kripto tanpa underlying asset nyata bisa masuk kategori ini.',
+        'Zakat sebagai Redistribusi: Zakat adalah instrumen resmi redistributif; mencegah penumpukan modal pada segelintir orang.'
+      ],
+      practice: 'Audit rekening bank Anda: apakah konvensional atau syariah? Pelajari perbedaan akad wadiah, mudharabah, dan murabahah.',
+      source: quran('2/275')
+    },
+    {
+      id: 'perbankan-syariah',
+      title: 'Perbankan Syariah di Indonesia',
+      category: 'Lembaga Keuangan Syariah',
+      summary: 'Bank syariah menggunakan akad mudharabah, murabahah, musyarakah, ijarah — tanpa bunga, tapi bagi hasil/margin.',
+      points: [
+        'BSI (Bank Syariah Indonesia): Merger BRI Syariah, BNI Syariah, Mandiri Syariah — bank syariah terbesar Asia Tenggara.',
+        'Mudharabah: Bagi hasil — bank sebagai shahibul mal, nasabah/debitur sebagai mudharib; keuntungan dibagi sesuai nisbah.',
+        'Murabahah: Jual beli dengan margin transparan — bank beli aset, jual ke nasabah dengan keuntungan yang disepakati.',
+        'Musyarakah: Kemitraan modal — bank dan nasabah sama-sama menyetorkan modal; keuntungan dan kerugian dibagi.',
+        'Pengawasan: Setiap bank syariah wajib memiliki DPS (Dewan Pengawas Syariah) yang diisi ulama bersertifikat DSN-MUI.'
+      ],
+      practice: 'Buka rekening di BSI atau bank syariah lain dengan akad wadiah (titipan) atau mudharabah (investasi) untuk mulai hijrah finansial.',
+      source: quran('2/275')
+    },
+    {
+      id: 'asuransi-takaful',
+      title: 'Asuransi Syariah (Takaful)',
+      category: 'Lembaga Keuangan Syariah',
+      summary: 'Takaful berbasis saling menanggung (ta\'awun) dan dana hibah — berbeda dari asuransi konvensional yang mengandung unsur riba dan gharar.',
+      points: [
+        'Prinsip Ta\'awun: "Dan tolong-menolonglah kamu dalam kebajikan dan takwa" (QS. 5:2) — dasar filosofis takaful.',
+        'Mekanisme: Peserta menghibahkan premi ke Dana Tabarru\'; jika ada klaim, dibayar dari dana kolektif ini.',
+        'Perbedaan: Konvensional = kontrak jual beli risiko (gharar); Takaful = kontrak tolong-menolong dengan bagi hasil surplus.',
+        'Produk: Takaful jiwa, takaful kesehatan, takaful kendaraan, takaful pembiayaan (MRTA syariah).',
+        'Pemain: Allianz Syariah, Prudential Syariah, AIA Syariah, Bumiputera Syariah, Takaful Indonesia — cek DPS-nya.'
+      ],
+      practice: 'Jika punya asuransi konvensional, hubungi agen Anda untuk migrasi ke unit syariah — biasanya produk dan manfaat setara.',
+      source: quran('5/2')
+    },
+    {
+      id: 'pasar-modal-syariah',
+      title: 'Pasar Modal Syariah & Saham Halal',
+      category: 'Investasi Syariah',
+      summary: 'Daftar Efek Syariah (DES) OJK memuat emiten yang sahamnya halal untuk diperjualbelikan oleh investor Muslim.',
+      points: [
+        'DES (Daftar Efek Syariah): Diterbitkan OJK setiap Mei dan November; memuat saham, sukuk, dan reksa dana syariah.',
+        'Kriteria Halal Saham: Bidang usaha halal + rasio hutang berbasis bunga < 45% total aset + pendapatan non-halal < 10%.',
+        'Sukuk Negara: Obligasi syariah pemerintah — instrumen investasi fixed income yang halal; diterbitkan Kemenkeu reguler.',
+        'Reksa Dana Syariah: Dikelola manajer investasi dengan pengawasan DPS; portofolio hanya efek syariah.',
+        'Fatwa DSN-MUI No.40: Membolehkan perdagangan efek yang memenuhi prinsip syariah di pasar modal.'
+      ],
+      practice: 'Buka akun di broker syariah (Mandiri Sekuritas Syariah, BNI Sekuritas Syariah) dan mulai investasi di saham-saham DES OJK.',
+      source: quran('2/275')
+    },
+    {
+      id: 'fintech-syariah',
+      title: 'Fintech Syariah & Ekonomi Digital Islam',
+      category: 'Ekonomi Digital',
+      summary: 'Platform fintech syariah menawarkan P2P lending halal, crowdfunding syariah, dan dompet digital berbasis akad Islam.',
+      points: [
+        'P2P Lending Syariah: Platform pembiayaan berbasis akad mudharabah/musyarakah — terdaftar OJK & memiliki DPS (contoh: Ammana, Alami).',
+        'Crowdfunding Syariah: Urun dana berbasis musyarakah atau qardh — cocok untuk UMKM dan startup halal.',
+        'GoPay/OVO Syariah: Unit usaha syariah dompet digital — akad wadiah untuk saldo yang tersimpan.',
+        'QRIS & Ekonomi Halal: Memudahkan transaksi halal; OJK mendorong merchant halal menggunakan sistem pembayaran syariah.',
+        'Regtech Syariah: Teknologi kepatuhan syariah yang memantau portofolio investasi secara real-time terhadap kriteria DES.'
+      ],
+      practice: 'Coba investasi di fintech syariah terdaftar OJK dengan modal awal Rp 100.000; pelajari akad dan mekanisme bagi hasilnya.',
+      source: quran('2/275')
+    }
+  ]
+};
+
+export const fiqhRamadan: Course = {
+  id: 'fiqh-ramadan',
+  title: 'Fiqh Ramadan Lengkap',
+  description: 'Panduan lengkap ibadah Ramadan: puasa, tarawih, i\'tikaf, lailatul qadar, dan optimalisasi spiritual bulan mulia.',
+  note: 'Ramadan adalah madrasah tahunan jiwa; setiap amalnya dilipatgandakan oleh Allah SWT.',
+  lessons: [
+    {
+      id: 'keutamaan-ramadan',
+      title: 'Keutamaan & Keistimewaan Ramadan',
+      category: 'Ruh Ramadan',
+      summary: 'Ramadan adalah bulan Al-Qur\'an, bulan ampunan, bulan pintu surga dibuka dan pintu neraka ditutup.',
+      points: [
+        'Bulan Al-Qur\'an: "Ramadan adalah bulan diturunkannya Al-Qur\'an sebagai petunjuk bagi manusia..." (QS. 2:185).',
+        'Pintu Surga Dibuka: "Jika Ramadan tiba, pintu-pintu surga dibuka, pintu-pintu neraka ditutup, dan setan-setan dibelenggu." (HR. Bukhari-Muslim).',
+        'Lailatul Qadar: Satu malam lebih baik dari 1000 bulan (QS. 97:3) — tanda kasih sayang Allah yang luar biasa.',
+        'Ampunan Dosa: "Barangsiapa yang berpuasa Ramadan karena iman dan mengharap pahala dari Allah, niscaya diampuni dosa-dosanya yang telah lalu." (HR. Bukhari).',
+        'Bulan Dermawan: Nabi SAW adalah orang paling dermawan, dan paling dermawan saat Ramadan bersama Jibril mengkaji Al-Qur\'an.'
+      ],
+      practice: 'Buat target Ramadan tahun ini: hafalan surat, khatam Al-Qur\'an, sedekah harian, dan konsistensi tarawih + witir.',
+      source: quran('2/185')
+    },
+    {
+      id: 'niat-sahur-buka',
+      title: 'Niat, Sahur, Berbuka, & Hal yang Disunnahkan',
+      category: 'Praktik Puasa',
+      summary: 'Niat di malam hari, sahur sebelum subuh, dan berbuka segera saat adzan Maghrib adalah tiga sunnah utama puasa.',
+      points: [
+        'Niat: Wajib niat di malam hari (sebelum Subuh) untuk puasa wajib; boleh satu niat untuk sebulan penuh di awal Ramadan.',
+        'Sahur: "Bersahurlah kalian, karena dalam sahur ada berkah." (HR. Bukhari-Muslim) — meski hanya seteguk air.',
+        'Berbuka Segera: "Manusia senantiasa dalam kebaikan selama mereka menyegerakan berbuka." (HR. Bukhari-Muslim).',
+        'Doa Berbuka: "Dzahabazh zhama\'u wabtallatil \'uruqu wa tsabatal ajru insyaallah." (HR. Abu Dawud).',
+        'Memperbanyak Ibadah: Puasa bukan alasan malas — Nabi SAW dan sahabat justru lebih aktif ibadah, dakwah, dan jihad di Ramadan.'
+      ],
+      practice: 'Set alarm sahur 30 menit sebelum imsak; manfaatkan waktu setelah sahur hingga Subuh untuk tahajud dan Al-Qur\'an.',
+      source: hadith(1923)
+    },
+    {
+      id: 'pembatal-puasa',
+      title: 'Pembatal Puasa & Hal yang Dibolehkan',
+      category: 'Hukum Puasa',
+      summary: 'Pembatal puasa: makan-minum disengaja, jima\', muntah disengaja, haid/nifas, dan riddah — suntikan & obat tetes ada perinciannya.',
+      points: [
+        'Pembatal Utama: Makan/minum sengaja, jima\' (hubungan intim), muntah disengaja, keluar mani dengan sengaja.',
+        'Haid & Nifas: Puasanya batal; wajib qadha tanpa kaffarah setelah Ramadan.',
+        'Suntikan: Suntikan vitamin/nutrisi lewat pembuluh darah membatalkan puasa (mayoritas ulama); suntikan IM/SC untuk obat tidak membatalkan.',
+        'Obat Tetes: Tetes mata tidak membatalkan; tetes hidung/telinga → khilaf; tetes yang masuk ke tenggorokan membatalkan.',
+        'Tidak Membatalkan: Makan/minum lupa (HR. Bukhari), mimpi basah, muntah tidak sengaja, donor darah (menurut mayoritas).'
+      ],
+      practice: 'Hafalkanlah: lupa makan/minum tidak membatalkan puasa — lanjutkan puasanya. Bagikan info ini ke keluarga.',
+      source: hadith(1933)
+    },
+    {
+      id: 'shalat-tarawih',
+      title: 'Shalat Tarawih: Jumlah & Tata Cara',
+      category: 'Ibadah Ramadan',
+      summary: 'Tarawih 8 rakaat + 3 witir dan 20 rakaat + 3 witir keduanya shahih; yang penting khusyuk dan dikerjakan dengan ilmu.',
+      points: [
+        'Dasar: "Barangsiapa yang mendirikan shalat di bulan Ramadan karena iman dan mengharap pahala, diampuni dosa-dosanya yang lalu." (HR. Bukhari-Muslim).',
+        '8 Rakaat: Dasarnya hadits Aisyah (HR. Muslim) — Nabi SAW shalat malam di Ramadan tidak melebihi 11 rakaat.',
+        '20 Rakaat: Praktik Umar bin Khattab, Utsman, Ali, dan mayoritas sahabat di Madinah (HR. Baihaqi shahih).',
+        'Tidak Perlu Bertengkar: Kedua pendapat shahih; ikuti imam masjid tempat Anda shalat untuk menjaga persatuan.',
+        'Witir: Minimal 1 rakaat, maksimal 11 rakaat — tidak terputus antara tarawih dan witir jika dikerjakan bersama.'
+      ],
+      practice: 'Usahakan ikuti tarawih berjamaah di masjid minimal 15 hari berturut-turut; manfaatkan kultum singkat setelahnya.',
+      source: hadith(2013)
+    },
+    {
+      id: 'itikaf-lailatul-qadar',
+      title: 'I\'tikaf & Mencari Lailatul Qadar',
+      category: 'Ibadah Ramadan',
+      summary: 'I\'tikaf di 10 malam terakhir Ramadan adalah sunnah muakkadah; Lailatul Qadar dicari pada malam-malam ganjil.',
+      points: [
+        'I\'tikaf: Berdiam diri di masjid dengan niat ibadah — sunnah muakkadah, terutama 10 hari terakhir Ramadan.',
+        'Dasar I\'tikaf: "Nabi SAW selalu beri\'tikaf di 10 hari terakhir Ramadan hingga beliau wafat." (HR. Bukhari-Muslim).',
+        'Larangan I\'tikaf: Keluar masjid tanpa kebutuhan mendesak, berjima\', dan terlalu banyak bicara yang tidak bermanfaat.',
+        'Lailatul Qadar: "Carilah Lailatul Qadar pada malam-malam ganjil dari 10 malam terakhir Ramadan." (HR. Bukhari).',
+        'Doa Lailatul Qadar: "Allahumma innaka \'afuwwun tuhibbul \'afwa fa\'fu \'anni." (HR. Tirmidzi — shahih).'
+      ],
+      practice: 'Rencanakan i\'tikaf minimal 3 malam (27, 29, terakhir Ramadan); bawa Al-Qur\'an, buku doa, dan daftar hajat.',
+      source: hadith(2017)
+    },
+    {
+      id: 'tadabbur-ramadan',
+      title: 'Tadabbur Al-Qur\'an & Program Ramadan Produktif',
+      category: 'Ruh Ramadan',
+      summary: 'Ramadan adalah momen terbaik untuk khatam Al-Qur\'an, tadabbur mendalam, dan membangun kebiasaan Islami jangka panjang.',
+      points: [
+        'Target Khatam: 1 juz per hari = khatam dalam 30 hari; baca setelah setiap shalat fardhu (masing-masing 4-5 halaman).',
+        'Tadabbur: Baca terjemah dan tafsir ringkas minimal 1 halaman per hari; catat ayat yang menggugah hati.',
+        'Muhasabah Harian: Luangkan 10 menit sebelum tidur untuk muhasabah — apa dosa yang dilakukan, apa kebaikan yang terlewat.',
+        'Program 30 Hari: Setiap hari punya target — hafalan doa, tadabbur ayat, sedekah, silaturahim, mengurangi maksiat.',
+        'Pasca Ramadan: "Sebaik-baik manusia adalah yang tetap istiqamah beribadah setelah Ramadan sebagaimana ia di dalam Ramadan." (Pesan ulama salaf).'
+      ],
+      practice: 'Buat buku catatan Ramadan: tulis satu pelajaran dari Al-Qur\'an setiap hari, satu target amal, dan satu doa yang ingin dikabulkan.',
+      source: quran('97/1')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -3706,4 +4570,13 @@ export const courseLinks = [
   { href: '/balaghoh', title: balaghoh.title, description: balaghoh.description },
   { href: '/alam-ghaib', title: alamGhaib.title, description: alamGhaib.description },
   { href: '/adab-ikhtilaf', title: adabIkhtilaf.title, description: adabIkhtilaf.description },
+  { href: '/zakat-kontemporer', title: zakatKontemporer.title, description: zakatKontemporer.description },
+  { href: '/wakaf', title: wakaf.title, description: wakaf.description },
+  { href: '/jenazah-praktis', title: jenazahPraktis.title, description: jenazahPraktis.description },
+  { href: '/ilmu-tafsir', title: ilmuTafsir.title, description: ilmuTafsir.description },
+  { href: '/nahwu-dasar', title: nahwuDasar.title, description: nahwuDasar.description },
+  { href: '/adab-profesi', title: adabProfesi.title, description: adabProfesi.description },
+  { href: '/hukum-keluarga-indonesia', title: hukumKeluargaIndonesia.title, description: hukumKeluargaIndonesia.description },
+  { href: '/ekonomi-syariah', title: ekonomiSyariah.title, description: ekonomiSyariah.description },
+  { href: '/fiqh-ramadan', title: fiqhRamadan.title, description: fiqhRamadan.description },
 ];

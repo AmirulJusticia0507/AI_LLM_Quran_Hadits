@@ -51,6 +51,18 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-amber-300 mb-1">Bagan Interaktif</span>
           Silsilah Habaib Ba &apos;Alawi
         </Link>
+        <Link href="/kalkulator-zakat" className="block rounded-2xl bg-linear-to-br from-amber-600 to-orange-700 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-amber-200 mb-1">Alat Hitung</span>
+          Kalkulator Zakat Lengkap
+        </Link>
+        <Link href="/kalkulator-waris" className="block rounded-2xl bg-linear-to-br from-cyan-700 to-blue-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-cyan-200 mb-1">Alat Hitung Faraidh</span>
+          Kalkulator Waris Islam
+        </Link>
+        <Link href="/kuis-islam" className="block rounded-2xl bg-linear-to-br from-purple-700 to-indigo-800 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-purple-200 mb-1">Uji Pemahaman</span>
+          Kuis Islam Harian
+        </Link>
       </div>
 
       <Link

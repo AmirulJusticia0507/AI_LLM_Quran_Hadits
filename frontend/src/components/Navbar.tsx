@@ -151,7 +151,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh", "/musthalah-hadits", "/peradaban", "/parenting", "/ulumul-quran", "/faraidh", "/adab-digital", "/muslimah", "/siyasah", "/fitnah-akhir-zaman", "/kisah-nabi", "/islam-nusantara", "/sahabat-surga", "/lingkungan", "/fiqh-dakwah", "/alam-ghaib", "/adab-ikhtilaf"].includes(pathname));
+              const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh", "/musthalah-hadits", "/peradaban", "/parenting", "/ulumul-quran", "/faraidh", "/adab-digital", "/muslimah", "/siyasah", "/fitnah-akhir-zaman", "/kisah-nabi", "/islam-nusantara", "/sahabat-surga", "/lingkungan", "/fiqh-dakwah", "/alam-ghaib", "/adab-ikhtilaf", "/zakat-kontemporer", "/wakaf", "/jenazah-praktis", "/ilmu-tafsir", "/nahwu-dasar", "/adab-profesi", "/hukum-keluarga-indonesia", "/ekonomi-syariah", "/fiqh-ramadan", "/kalkulator-zakat", "/kalkulator-waris", "/kuis-islam"].includes(pathname));
               return (
                 <Link
                   key={item.href}
@@ -261,7 +261,7 @@ export default function Navbar() {
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-in slide-in-from-top duration-200">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh", "/musthalah-hadits", "/peradaban", "/parenting", "/ulumul-quran", "/faraidh", "/adab-digital", "/muslimah", "/siyasah", "/fitnah-akhir-zaman", "/kisah-nabi", "/islam-nusantara", "/sahabat-surga", "/lingkungan", "/fiqh-dakwah", "/alam-ghaib", "/adab-ikhtilaf"].includes(pathname));
+            const isActive = pathname === item.href || (item.href === "/belajar" && ["/tazkiyah", "/aqidah", "/fiqh", "/munakahat", "/muamalah", "/integritas", "/komparasi", "/sains", "/makanan-halal", "/medis", "/sirah", "/tajweed", "/balaghoh", "/ushul-fiqh", "/musthalah-hadits", "/peradaban", "/parenting", "/ulumul-quran", "/faraidh", "/adab-digital", "/muslimah", "/siyasah", "/fitnah-akhir-zaman", "/kisah-nabi", "/islam-nusantara", "/sahabat-surga", "/lingkungan", "/fiqh-dakwah", "/alam-ghaib", "/adab-ikhtilaf", "/zakat-kontemporer", "/wakaf", "/jenazah-praktis", "/ilmu-tafsir", "/nahwu-dasar", "/adab-profesi", "/hukum-keluarga-indonesia", "/ekonomi-syariah", "/fiqh-ramadan", "/kalkulator-zakat", "/kalkulator-waris", "/kuis-islam"].includes(pathname));
             return (
               <Link
                 key={item.href}
