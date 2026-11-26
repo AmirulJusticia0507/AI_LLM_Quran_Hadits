@@ -91,6 +91,14 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-amber-200 mb-1">Panduan Panitia</span>
           Kalkulator Daging Qurban
         </Link>
+        <Link href="/kalkulator-kaffarah" className="block rounded-2xl bg-linear-to-br from-slate-700 to-emerald-900 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Alat Hitung Fikih</span>
+          Kalkulator Kaffarah
+        </Link>
+        <Link href="/doa-asmaul-husna" className="block rounded-2xl bg-linear-to-br from-teal-700 to-emerald-950 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-teal-200 mb-1">Panduan Berdoa</span>
+          Pemilih Doa &amp; Asmaul Husna
+        </Link>
       </div>
 
       <Link

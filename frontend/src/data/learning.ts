@@ -5888,6 +5888,258 @@ export const adabLisanMajelis: Course = {
   ]
 };
 
+export const tadabburAsmaulHusna: Course = {
+  id: 'tadabbur-asmaul-husna',
+  title: 'Tadabbur Asmaul Husna dalam Doa & Kehidupan',
+  description: 'Memahami makna nama-nama indah Allah, adab berdoa dengannya, dan meneladani sifat kasih sayang serta keadilan.',
+  note: '"Hanya milik Allah Asmaul Husna, maka bermohonlah kepada-Nya dengan menyebut Asmaul Husna itu" (QS. Al-A\'raf: 180).',
+  lessons: [
+    {
+      id: 'adab-berdoa-asmaul-husna',
+      title: 'Kaidah Memahami & Berdoa dengan Asmaul Husna',
+      category: 'Dasar Tauhid Asma',
+      summary: 'Mengenal 99+ nama Allah bukan sekadar menghafal nyanyian, melainkan memahami maknanya, memanggil-Nya sesuai hajat, dan menumbuhkan akhlak mulia.',
+      points: [
+        'Tiga Tingkatan Menghafal (Ihsaha) dalam HR. Bukhari-Muslim: Menghafal lafaznya, memahami maknanya, dan beribadah/berdoa sesuai konsekuensinya.',
+        'Memilih Nama Sesuai Hajat: Memohon ampun dengan Ya Ghaffar, memohon rezeki dengan Ya Razzaq, memohon kesembuhan dengan Ya Syafi, memohon petunjuk dengan Ya Hadi.',
+        'Tidak Menyamakan Allah dengan Makhluk (QS. Asy-Syura: 11): Allah Maha Mendengar namun pendengaran-Nya tidak sama dengan makhluk.',
+        'Doa Pemilik Nama Agung (Ismul A\'zham): Nama seperti Allah, Al-Hayyul Qayyum, dan Dzul Jalali wal Ikram sangat utama mengawali doa.'
+      ],
+      practice: 'Sebelum berdoa malam ini, panggil minimal 2 nama Allah yang paling sesuai dengan permohonan Anda.',
+      source: quran('7/180')
+    },
+    {
+      id: 'nama-kasih-sayang-ampunan',
+      title: 'Ar-Rahman, Ar-Rahim, Al-Ghaffar, & Al-Lathif',
+      category: 'Sifat Jamal (Keindahan)',
+      summary: 'Sifat kasih sayang dan kelembutan Allah melampaui kemurkaan-Nya; mengenal nama ini menyembuhkan putus asa dan menumbuhkan empati.',
+      points: [
+        'Ar-Rahman & Ar-Rahim: Kasih sayang Allah yang umum bagi seluruh makhluk di dunia dan kasih sayang khusus abadi bagi orang beriman.',
+        'Al-Ghaffar & Al-\'Afuww: Allah tidak hanya mengampuni dosa (menutupinya), tetapi juga menghapus bekasnya hingga seolah tak pernah terjadi.',
+        'Al-Lathif (Maha Lembut & Teliti): Allah mengatur takdir lewat jalan halus yang sering baru kita pahami hikmahnya bertahun-tahun kemudian.',
+        'Buah Akhlak: Menjadi pribadi yang pemaaf, lembut bertutur kata, dan penuh kasih kepada keluarga maupun sesama makhluk.'
+      ],
+      practice: 'Maafkan satu kesalahan orang lain hari ini sebagai bentuk meneladani sifat Al-\'Afuww dan Ar-Rahim.',
+      source: quran('59/22')
+    },
+    {
+      id: 'nama-keperkasaan-keadilan',
+      title: 'Al-Malik, Al-\'Aziz, Al-\'Adl, & Al-Hakim',
+      category: 'Sifat Jalal (Keagungan)',
+      summary: 'Mengenal keperkasaan dan keadilan Allah membebaskan hati dari takut berlebihan kepada manusia dan menahan diri dari berbuat zalim.',
+      points: [
+        'Al-Malik & Al-\'Aziz: Raja segala raja dan Maha Perkasa — segala kekuasaan dunia bersifat sementara dan pinjaman.',
+        'Al-Hakim (Maha Bijaksana): Setiap syariat dan takdir Allah pasti memiliki hikmah mendalam meski akal manusia terbatas.',
+        'Al-Bashir, As-Sami\', & Ar-Raqib: Melahirkan kesadaran muraqabah (merasa diawasi Allah) saat bekerja maupun saat sendirian.'
+      ],
+      practice: 'Ketika menghadapi keputusan sulit atau ketidakadilan, ucapkan "Hasbunallahu wa ni\'mal Wakil" dan pegang prinsip kejujuran.',
+      source: quran('59/23')
+    }
+  ]
+};
+
+export const tadabburSuratPilihan: Course = {
+  id: 'tadabbur-surat-pilihan',
+  title: 'Tadabbur Surat-Surat Agung Pilihan',
+  description: 'Membedah intisari, keutamaan, dan pelajaran praktis dari Al-Fatihah, Ayat Kursi, Al-Kahfi, Yasin, Ar-Rahman, dan Al-Mulk.',
+  note: 'Membaca surat-surat pilihan dengan tadabbur mengubah rutinitas lisan menjadi dialog jiwa bersama Allah SWT.',
+  lessons: [
+    {
+      id: 'al-fatihah-dan-ayat-kursi',
+      title: 'Al-Fatihah (Ummul Qur\'an) & Ayat Kursi (Penghulu Ayat)',
+      category: 'Inti Al-Qur\'an',
+      summary: 'Al-Fatihah merangkum dialog hamba dengan Rabbnya dalam setiap rakaat shalat; Ayat Kursi merangkum kemahaesaan dan penjagaan Allah.',
+      points: [
+        'Al-Fatihah sebagai Dialog (HR. Muslim): Setiap ayat dijawab langsung oleh Allah ("Hamidani \'abdi" — hamba-Ku memuji-Ku), hingga permohonan "Ihdinas shirathal mustaqim".',
+        'Iyyaka Na\'budu wa Iyyaka Nasta\'in: Menggabungkan ibadah murni kepada Allah dan pengakuan ketidakberdayaan tanpa pertolongan-Nya.',
+        'Ayat Kursi (QS. Al-Baqarah: 255): Allah Al-Hayyu (Mahahidup) Al-Qayyum (Maha Mengurus makhluk tanpa pernah mengantuk/tidur); penjaga utama pagi, petang, ba\'da shalat, dan sebelum tidur.'
+      ],
+      practice: 'Berhentilah sejenak di setiap akhir ayat Al-Fatihah saat shalat agar merasakan jawaban Allah atas bacaan Anda.',
+      source: quran('1/1')
+    },
+    {
+      id: 'surat-al-kahfi-empat-fitnah',
+      title: 'Surat Al-Kahfi: Benteng dari Empat Fitnah Kehidupan',
+      category: 'Sunnah Jumat',
+      summary: 'Dianjurkan dibaca setiap hari Jumat; merangkum empat kisah penyelamat dari fitnah agama, harta, ilmu, dan kekuasaan.',
+      points: [
+        'Fitnah Agama (Kisah Ashabul Kahfi): Selamatkan iman dengan lingkungan shalih dan doa.',
+        'Fitnah Harta (Kisah Pemilik Dua Kebun): Harta hanyalah titipan; ucapkan "Masya Allah la quwwata illa billah" agar tidak sombong.',
+        'Fitnah Ilmu (Kisah Nabi Musa & Khidir AS): Setinggi apa pun ilmu manusia, tetap harus rendah hati belajar.',
+        'Fitnah Kekuasaan (Kisah Dzulqarnain): Kekuasaan digunakan untuk keadilan dan melindungi yang lemah, bukan menindas.'
+      ],
+      practice: 'Jadikan membaca Surat Al-Kahfi (atau minimal 10 ayat pertama & terakhir) sebagai agenda rutin setiap malam/hari Jumat.',
+      source: quran('18/10')
+    },
+    {
+      id: 'yasin-ar-rahman-al-mulk',
+      title: 'Surat Yasin, Ar-Rahman, Al-Waqi\'ah, & Al-Mulk',
+      category: 'Surat Populer',
+      summary: 'Empat surat yang akrab di tengah masyarakat ini meneguhkan tauhid kebangkitan, syukur nikmat, hakikat rezeki, dan pengawasan alam.',
+      points: [
+        'Surat Yasin: Menguatkan keyakinan akan kebangkitan dan kerasulan Nabi SAW lewat kisah penduduk negeri (Habib an-Najjar) serta tanda-tanda kekuasaan Allah di alam.',
+        'Surat Ar-Rahman: Pengulangan 31 kali "Fabi-ayyi ala-i Rabbikuma tukadzdziban" mengajak manusia dan jin menghitung nikmat Al-Qur\'an hingga alam semesta.',
+        'Surat Al-Waqi\'ah: Mengingatkan tiga golongan manusia di hari kiamat (As-Sabiqun, Ashabul Yamin, Ashabusy Syimal) dan hakikat rezeki dari Allah.',
+        'Surat Al-Mulk (Penyelamat Siksa Kubur — HR. Tirmidzi): Membiasakan membacanya setiap malam menumbuhkan kesadaran bahwa hidup dan mati adalah ujian amal terbaik (QS. 67:2).'
+      ],
+      practice: 'Biasakan membaca Surat Al-Mulk sebelum tidur malam dan merenungi ayat keduanya tentang tujuan penciptaan hidup dan mati.',
+      source: quran('67/2')
+    }
+  ]
+};
+
+export const fiqhSumpahKaffarah: Course = {
+  id: 'fiqh-sumpah-kaffarah',
+  title: 'Fiqh Sumpah, Nadzar, & Kaffarah',
+  description: 'Hukum sumpah, bahaya sumpah palsu, aturan nadzar yang sah, serta tata cara menunaikan berbagai jenis kaffarah.',
+  note: 'Menjaga sumpah dan menepati nadzar adalah tanda kejujuran lisan seorang mukmin di hadapan Allah.',
+  lessons: [
+    {
+      id: 'hukum-sumpah-dan-jenisnya',
+      title: 'Tiga Jenis Sumpah & Bahaya Sumpah Palsu',
+      category: 'Sumpah (Yamin)',
+      summary: 'Hanya sumpah yang disengaja atas nama Allah (Yamin Mun\'aqidah) yang wajib ditepati atau ditebus kaffarah jika dilanggar.',
+      points: [
+        'Larangan Bersumpah Selain Nama Allah (HR. Abu Dawud): Tidak boleh bersumpah demi ayah, ibu, bumi, atau nyawa; cukup "Wallahi / Billahi / Tallahi".',
+        'Yamin Laghw (Sumpah Spontan Tanpa Sengaja): Seperti ucapan "Demi Allah tidak!" dalam obrolan biasa — tidak berdosa dan tidak ada kaffarah (QS. Al-Baqarah: 225).',
+        'Yamin Mun\'aqidah: Sumpah serius untuk melakukan/meninggalkan sesuatu di masa depan — jika dilanggar wajib kaffarah.',
+        'Yamin Ghamus (Sumpah Palsu): Bersumpah dusta untuk mengambil hak orang atau menipu — termasuk dosa besar yang membenamkan pelakunya ke neraka.'
+      ],
+      practice: 'Biasakan berbicara jujur tanpa mudah mengobral kata "Demi Allah" untuk hal-hal sepele.',
+      source: quran('5/89')
+    },
+    {
+      id: 'aturan-nadzar-islam',
+      title: 'Hukum Nadzar Taat, Makruh, & Nadzar Maksiat',
+      category: 'Nadzar',
+      summary: 'Nadzar ketaatan wajib ditunaikan; namun nadzar bersyarat untuk memaksa takdir tidak mengubah ketentuan Allah dan dilarang jika berupa maksiat.',
+      points: [
+        'Pengertian Nadzar: Mewajibkan diri sendiri melakukan amal ibadah yang asalnya sunnah atau mubah.',
+        'Nadzar Taat (Wajib Ditepati): Contoh: "Jika lulus ujian, saya bernadzar puasa Senin-Kamis 3 kali" — wajib ditunaikan setelah syaratnya terjadi (HR. Bukhari).',
+        'Nadzar Maksiat (Haram Ditepati): Contoh bernadzar memutus silaturahim atau berbuat dosa — haram dilaksanakan dan cukup ditebus dengan kaffarah sumpah (HR. Abu Dawud).',
+        'Sebaik-baik Amal Tanpa Nadzar: Ibadah dan sedekah tetap lebih utama dilakukan ikhlas tanpa menunggu janji imbalan duniawi.'
+      ],
+      practice: 'Periksa apakah ada janji/nadzar lama yang pernah Anda ucapkan lalu lupa ditunaikan; segera lunasi secara bertahap.',
+      source: hadith(6696)
+    },
+    {
+      id: 'rincian-berbagai-kaffarah',
+      title: 'Tata Cara Membayar Berbagai Jenis Kaffarah',
+      category: 'Kaffarah',
+      summary: 'Kaffarah sumpah membolehkan memilih memberi makan 10 orang miskin sebelum puasa 3 hari; kaffarah jima\' siang Ramadan wajib berurutan (puasa 2 bulan dulu).',
+      points: [
+        'Kaffarah Sumpah & Nadzar (QS. Al-Ma\'idah: 89): Pilih salah satu: memberi makan 10 orang miskin, memberi pakaian 10 orang miskin, atau memerdekakan budak. Jika tidak mampu ketiganya, baru berpuasa 3 hari.',
+        'Kaffarah Jima\' Siang Ramadan (HR. Bukhari-Muslim): Wajib tartib (berurutan): memerdekakan budak → jika tak mampu, puasa 2 bulan berturut-turut → jika tak mampu juga, memberi makan 60 orang miskin.',
+        'Kaffarah Pembunuhan Tidak Sengaja (QS. An-Nisa: 92): Membayar diyat ke keluarga korban dan memerdekakan budak mukmin atau puasa 2 bulan berturut-turut.',
+        'Mengubah Sumpah Demi Kebaikan: Jika bersumpah melakukan keburukan, batalkan sumpah itu, lakukan yang lebih baik, lalu bayar kaffarah sumpah (HR. Muslim).'
+      ],
+      practice: 'Gunakan fitur Kalkulator Kaffarah di aplikasi ini bila suatu saat perlu menghitung rincian takaran atau estimasi biayanya.',
+      source: quran('5/89')
+    }
+  ]
+};
+
+export const fiqhWasiatHibah: Course = {
+  id: 'fiqh-wasiat-hibah',
+  title: 'Fiqh Wasiat, Hibah, & Harta Anak Yatim',
+  description: 'Membedakan waris, wasiat maksimal 1/3, dan hibah agar bebas sengketa, serta amanah menjaga harta anak yatim.',
+  note: 'Menjelaskan pembagian harta secara adil semasa hidup mencegah perpecahan saudara setelah orang tua wafat.',
+  lessons: [
+    {
+      id: 'beda-waris-wasiat-hibah',
+      title: 'Membedakan Waris, Wasiat, dan Hibah dengan Tegas',
+      category: 'Harta Keluarga',
+      summary: 'Hibah berpindah kepemilikan saat pemberi masih hidup; wasiat berlaku setelah wafat (maksimal 1/3 dan bukan untuk ahli waris); sisanya dibagi lewat faraidh.',
+      points: [
+        'Hibah (Pemberian Semasa Hidup): Sah bila ada ijab-kabul dan serah terima barang (qabdh) saat pemberi masih hidup sehat; jika baru diserahkan setelah wafat, hukumnya berubah menjadi wasiat.',
+        'Keadilan Hibah kepada Anak (HR. Bukhari-Muslim): Orang tua dianjurkan bersikap adil dalam memberi hibah kepada anak-anaknya (jangan pilih kasih tanpa alasan syar\'i).',
+        'Wasiat (Maksimal ⅓ Harta): Berlaku setelah pewaris wafat dan setelah utang dilunasi; hanya untuk pihak non-ahli waris (seperti masjid, anak angkat, atau kerabat jauh yang terhalang waris).',
+        'Aturan "La Washiyyata li Warits" (HR. Tirmidzi): Tidak boleh berwasiat harta tambahan untuk salah satu ahli waris kecuali seluruh ahli waris lain ikhlas mengizinkan.'
+      ],
+      practice: 'Pastikan jika orang tua menghibahkan rumah/tanah semasa hidup, proses serah terima dan pencatatannya dilakukan secara jelas serta diketahui keluarga.',
+      source: hadith(2742)
+    },
+    {
+      id: 'menjaga-harta-anak-yatim',
+      title: 'Amanah Berat Menjaga & Mengelola Harta Anak Yatim',
+      category: 'Perlindungan Yatim',
+      summary: 'Memakan harta anak yatim secara zalim diancam Al-Qur\'an seperti menelan api neraka ke dalam perut (QS. An-Nisa\': 10).',
+      points: [
+        'Siapa Anak Yatim?: Anak yang belum baligh dan ayahnya telah wafat; status yatim berakhir ketika anak mencapai usia baligh dan dewasa/cakap mengelola harta (rusyd).',
+        'Kewajiban Wali Pengelola: Menjaga aset anak yatim, mengembangkannya secara amanah (tidak dibiarkan habis termakan biaya), dan menyerahkan penuh saat mereka dewasa (QS. An-Nisa\': 6).',
+        'Boleh Mengambil Upah Sewajarnya jika Fakir: Pengasuh yang miskin boleh mengambil sekadar kebutuhan wajar sebagai imbalan menjaga; pengasuh yang mampu hendaknya menjaga secara sukarela.',
+        'Adab Pencatatan: Wajib menghadirkan saksi dan mencatat aset saat menyerahkan kembali harta anak yatim.'
+      ],
+      practice: 'Jika dipercaya mengelola santunan atau aset anak yatim, pisahkan rekeningnya dari rekening pribadi agar terhindar dari campur aduk harta.',
+      source: quran('4/10')
+    },
+    {
+      id: 'urutan-penyelesaian-harta-waris',
+      title: '4 Langkah Sebelum Membagi Harta Warisan',
+      category: 'Prosedur Faraidh',
+      summary: 'Harta peninggalan mayit tidak langsung dibagi ke ahli waris sebelum menyelesaikan biaya jenazah, utang, dan wasiat.',
+      points: [
+        'Langkah 1 — Biaya Pengurusan Jenazah: Kain kafan, pemandian, dan pemakaman secukupnya tanpa berlebih-lebihan.',
+        'Langkah 2 — Pelunasan Seluruh Utang: Utang kepada sesama manusia maupun utang agama (zakat yang belum dibayar, nadzar, fidyah).',
+        'Langkah 3 — Penunaian Wasiat: Maksimal ⅓ dari sisa harta bersih setelah dikurangi utang.',
+        'Langkah 4 — Pembagian Faraidh: Barulah seluruh sisa harta menjadi hak penuh para ahli waris sesuai porsi Al-Qur\'an.'
+      ],
+      practice: 'Catat daftar utang, piutang, dan aset Anda dalam dokumen keluarga yang rapi agar tidak menyulitkan ahli waris kelak.',
+      source: quran('4/11')
+    }
+  ]
+};
+
+export const kepemimpinanIslami: Course = {
+  id: 'kepemimpinan-islami',
+  title: 'Kepemimpinan, Organisasi, & Manajemen Konflik Islami',
+  description: 'Prinsip syura, memilih rekan kerja berintegritas, delegasi tugas, dan penyelesaian sengketa (ishlah) dalam organisasi.',
+  note: '"Setiap kalian adalah pemimpin dan setiap kalian akan dimintai pertanggungjawaban atas apa yang dipimpinnya" (HR. Bukhari-Muslim).',
+  lessons: [
+    {
+      id: 'kriteria-pemimpin-al-qawiyyul-amin',
+      title: 'Standar Kepemimpinan: Al-Qawiyyul Amin (Kompeten & Amanah)',
+      category: 'Dasar Kepemimpinan',
+      summary: 'Al-Qur\'an merumuskan dua syarat inti pemegang amanah: kuat/kompeten di bidangnya (qawiyy) dan jujur/terpercaya (amin) — QS. Al-Qashash: 26.',
+      points: [
+        'Kompeten Tanpa Amanah: Melahirkan penyalahgunaan wewenang dan korupsi cerdas.',
+        'Amanah Tanpa Kompetensi: Mengakibatkan organisasi jalan di tempat dan proyek gagal dijalankan dengan baik.',
+        'Larangan Meminta Jabatan karena Ambisi Pribadi (HR. Bukhari-Muslim): Jika jabatan diberikan karena amanah umat, pertolongan Allah menyertai.',
+        'Keteladanan Mendahului Perintah: Pemimpin Muslim memimpin dengan contoh nyata (qudwah hasanah) sebagaimana Nabi SAW ikut menggali parit Khandaq.'
+      ],
+      practice: 'Saat merekrut anggota tim atau memilih pengurus, nilai dua aspek ini seimbang: rekam jejak kejujurannya dan keahlian nyatanya.',
+      source: quran('28/26')
+    },
+    {
+      id: 'syura-delegasi-akuntabilitas',
+      title: 'Syura (Musyawarah), Delegasi, & Akuntabilitas',
+      category: 'Manajemen Organisasi',
+      summary: 'Rasulullah SAW mempraktikkan syura dalam strategi Perang Badar, Uhud, dan Khandaq, lalu mendelegasikan tugas ke sahabat sesuai bakatnya.',
+      points: [
+        'Syura yang Melibatkan Ahli: Nabi SAW menerima usulan Hubab bin Mundzir (lokasi sumur Badar) dan Salman al-Farisi (parit Khandaq) meski berasal dari ide sahabat.',
+        'Delegasi Berbasis Bakat: Khalid bin Walid dipercaya di bidang militer, Zaid bin Tsabit di bidang bahasa & penulisan wahyu, Mu\'adz bin Jabal sebagai hakim & pengajar di Yaman.',
+        'Prinsip "Inna Allah yuhibbu itqan": Pekerjaan dikerjakan dengan standar rapi, terukur, dan dievaluasi secara berkala (muhasabah).'
+      ],
+      practice: 'Dalam rapat tim berikutnya, beri kesempatan anggota termuda berbicara terlebih dahulu agar ide segar tidak tenggelam oleh senioritas.',
+      source: quran('3/159')
+    },
+    {
+      id: 'ishlah-manajemen-konflik',
+      title: 'Manajemen Konflik & Seni Mendamaikan (Ishlah)',
+      category: 'Resolusi Konflik',
+      summary: 'Al-Qur\'an memerintahkan ishlah (mendamaikan) saat dua kelompok berselisih dengan adil, tanpa memihak buta, dan menjaga rahasia masing-masing.',
+      points: [
+        'Tabayyun Sebelum Menilai (QS. Al-Hujurat: 6): Dengarkan kedua belah pihak secara seimbang (audi alteram partem) sebagaimana wasiat Nabi SAW kepada Ali bin Abi Thalib.',
+        'Prinsip Ishlah yang Adil (QS. Al-Hujurat: 9): Menegakkan keadilan di atas empati, bukan membela kerabat yang salah.',
+        'Menjaga Aib Pihak Bertikai: Mediator tidak menyebarkan rahasia konflik ke publik; fokus mencari titik temu maslahah.',
+        'Boleh Mengucap Kata Penyejuk Saat Mendamaikan (HR. Bukhari-Muslim): Menyampaikan kebaikan dari satu pihak kepada pihak lain agar hati kembali lunak.'
+      ],
+      practice: 'Jika melihat dua rekan kerja atau kerabat berselisih, jadilah penengah yang mendengarkan dengan tenang bukan penyebar isu.',
+      source: quran('49/9')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -5948,4 +6200,9 @@ export const courseLinks = [
   { href: '/sejarah-dinasti-islam', title: sejarahDinastiIslam.title, description: sejarahDinastiIslam.description },
   { href: '/panduan-muallaf', title: panduanMuallaf.title, description: panduanMuallaf.description },
   { href: '/adab-lisan-majelis', title: adabLisanMajelis.title, description: adabLisanMajelis.description },
+  { href: '/tadabbur-asmaul-husna', title: tadabburAsmaulHusna.title, description: tadabburAsmaulHusna.description },
+  { href: '/tadabbur-surat-pilihan', title: tadabburSuratPilihan.title, description: tadabburSuratPilihan.description },
+  { href: '/fiqh-sumpah-kaffarah', title: fiqhSumpahKaffarah.title, description: fiqhSumpahKaffarah.description },
+  { href: '/fiqh-wasiat-hibah', title: fiqhWasiatHibah.title, description: fiqhWasiatHibah.description },
+  { href: '/kepemimpinan-islami', title: kepemimpinanIslami.title, description: kepemimpinanIslami.description },
 ];

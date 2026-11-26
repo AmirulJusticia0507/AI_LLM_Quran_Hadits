@@ -17,6 +17,8 @@ const ROUTES = [
   "/baitul-maqdis", "/khulafaur-rasyidin", "/tracker-khatam", "/kalkulator-safar",
   "/fiqh-jamaah-sujud", "/kisah-pilihan-quran", "/sejarah-dinasti-islam", "/panduan-muallaf",
   "/adab-lisan-majelis", "/mutabaah-yaumiyah", "/kalkulator-qurban",
+  "/tadabbur-asmaul-husna", "/tadabbur-surat-pilihan", "/fiqh-sumpah-kaffarah",
+  "/fiqh-wasiat-hibah", "/kepemimpinan-islami", "/kalkulator-kaffarah", "/doa-asmaul-husna",
   "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/about", "/help", "/masukan", "/privacy", "/terms"
 ];
 
