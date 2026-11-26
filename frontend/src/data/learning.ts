@@ -6815,6 +6815,200 @@ export const manajemenWaktuIslami: Course = {
   ]
 };
 
+export const ilmuFalak: Course = {
+  id: 'ilmu-falak',
+  title: 'Ilmu Falak & Astronomi Islam',
+  description: 'Memahami hisab dan rukyatul hilal, kriteria MABIMS, penentuan waktu shalat berdasarkan matahari, dan arah kiblat.',
+  note: '"Dialah yang menjadikan matahari bersinar dan bulan bercahaya dan ditetapkan-Nya manzilah-manzilah (orbit) supaya kamu mengetahui bilangan tahun dan perhitungan waktu" (QS. Yunus: 5).',
+  lessons: [
+    {
+      id: 'hisab-dan-rukyatul-hilal',
+      title: 'Hisab, Rukyatul Hilal, & Penentuan Awal Bulan Hijriah',
+      category: 'Kalender Hijriah',
+      summary: 'Kalender Hijriah berbasis peredaran bulan mengelilingi bumi (29 atau 30 hari per bulan); ulama memadukan pengamatan hilal (rukyat) dan perhitungan astronomi (hisab).',
+      points: [
+        'Rukyatul Hilal: Pengamatan langsung bulan sabit muda sesaat setelah matahari terbenam pada tanggal 29 bulan berjalan (HR. Bukhari-Muslim).',
+        'Hisab Astronomi: Menghitung posisi konjungsi (ijtimak), tinggi hilal, dan jarak sudut bulan-matahari (elongasi) secara presisi.',
+        'Kriteria Imkanur Rukyat MABIMS (Indonesia, Brunei, Malaysia, Singapura): Hilal dianggap mungkin terlihat jika tinggi minimal 3° dan elongasi minimal 6,4°.',
+        'Sikap Dewasa Saat Beda Awal Ramadan/Syawal: Kedua metode (Wujudul Hilal dan Imkanur Rukyat) memiliki dasar ijtihad masing-masing; hormati perbedaan dengan ukhuwah.'
+      ],
+      practice: 'Gunakan fitur Konverter Hijriah di aplikasi ini untuk memantau tanggal Hijriah dan jadwal puasa sunnah bulanan.',
+      source: quran('10/5')
+    },
+    {
+      id: 'posisi-matahari-waktu-shalat',
+      title: 'Posisi Matahari sebagai Penentu Lima Waktu Shalat',
+      category: 'Waktu Shalat',
+      summary: 'Seluruh waktu shalat wajib ditentukan oleh pergerakan semu harian matahari: dari tergelincir tengah hari hingga fajar shadiq.',
+      points: [
+        'Subuh (Fajar Shadiq): Cahaya putih membentang horizontal di ufuk timur (umumnya saat matahari 18°–20° di bawah ufuk) hingga matahari terbit.',
+        'Dzuhur (Zawal): Sesaat setelah matahari bergeser ke barat dari titik puncak kulminasi (tengah hari).',
+        'Ashar: Saat panjang bayangan benda sama dengan tinggi bendanya ditambah bayangan saat zawal (Jumhur) atau dua kali tinggi benda (Hanafi).',
+        'Maghrib & Isya\': Maghrib dimulai tepat saat seluruh piringan matahari terbenam di ufuk barat; Isya\' dimulai saat mega merah (syafaq ahmar) menghilang.'
+      ],
+      practice: 'Buka menu Jadwal Shalat di aplikasi ini dan lihat jadwal akurat berdasarkan koordinat GPS lokasi Anda.',
+      source: quran('17/78')
+    },
+    {
+      id: 'prinsip-arah-kiblat',
+      title: 'Menentukan Arah Kiblat Secara Geografis & Rasdul Kiblat',
+      category: 'Arah Kiblat',
+      summary: 'Kiblat dihitung menggunakan trigonometri bola menuju koordinat Ka\'bah di Makkah; dua kali setahun matahari melintas tepat di atas Ka\'bah (Yaumul Istiwa\').',
+      points: [
+        'Arah Kiblat Indonesia: Umumnya menghadap ke arah Barat Laut (sekitar 290°–295° searah jarum jam dari Utara sejati) mengikuti lengkung terpendek permukaan bumi (great circle).',
+        'Fenomena Rashdul Kiblat (27/28 Mei & 15/16 Juli): Matahari tepat berada di atas Ka\'bah pukul 16.18 WIB / 16.27 WIB — bayangan benda tegak lurus di Indonesia langsung menunjuk garis kiblat.',
+        'Batas Toleransi Arah (Jihatul Ka\'bah): Bagi yang jauh dari Makkah, menghadap ke arah kiblat secara wajar sudah sah.'
+      ],
+      practice: 'Cek arah shalat di rumah atau kantor Anda menggunakan fitur Kompas Kiblat di aplikasi Al-Hikmah AI.',
+      source: quran('2/144')
+    }
+  ]
+};
+
+export const fiqhKetenagakerjaan: Course = {
+  id: 'fiqh-ketenagakerjaan',
+  title: 'Fiqh Ketenagakerjaan: Hak Pekerja & Kontrak Kerja',
+  description: 'Kewajiban membayar upah tepat waktu, kejelasan kontrak ijarah, keadilan bagi karyawan & ART, serta etika kerja amanah.',
+  note: 'Islam meletakkan hubungan majikan dan pekerja di atas prinsip persaudaraan, keadilan kontrak, dan larangan keras mengeksploitasi keringat pekerja.',
+  lessons: [
+    {
+      id: 'kejelasan-kontrak-ijarah',
+      title: 'Kejelasan Akad Kerja (Ijarah) & Hak Upah Tepat Waktu',
+      category: 'Hukum Kerja',
+      summary: 'Nabi SAW melarang mempekerjakan seseorang sebelum menjelaskan besaran upahnya dan memerintahkan membayar upah sebelum keringatnya kering.',
+      points: [
+        'Kejelasan Akad di Awal (HR. Ahmad): Tugas pekerjaan, jam kerja, besaran gaji, dan jadwal pembayaran wajib disepakati jelas di awal agar bebas gharar.',
+        'Bayar Sebelum Keringat Kering (HR. Ibnu Majah): Menunda gaji pekerja padahal perusahaan mampu adalah kezaliman yang dikecam keras.',
+        'Ancaman Bagi Penahan Upah (HR. Bukhari): Allah menjadi musuh langsung di hari kiamat bagi orang yang mempekerjakan buruh hingga selesai namun tidak membayar upahnya.'
+      ],
+      practice: 'Jika Anda mengelola usaha atau mempekerjakan asisten rumah tangga/tukang, buat kesepakatan kerja tertulis yang jelas dan bayar upahnya tepat waktu.',
+      source: hadith(2270)
+    },
+    {
+      id: 'perlakuan-adil-karyawan-art',
+      title: 'Keadilan Bagi Pekerja, Asisten Rumah Tangga (ART), & Beban Kerja',
+      category: 'Hak Pekerja',
+      summary: 'Rasulullah SAW menyebut pekerja dan pembantu sebagai saudara kita; tidak boleh dibebani pekerjaan di luar batas kemampuan tanpa bantuan atau kompensasi.',
+      points: [
+        'Hadits Keadilan Terhadap Pembantu (HR. Bukhari-Muslim): Berilah mereka makanan dan pakaian yang layak, dan jangan membebani pekerjaan melebihi kemampuan; jika berat, bantulah mereka.',
+        'Hak Istirahat, Ibadah, & Cuti: Pengusaha wajib memberi waktu shalat lima waktu, Shalat Jumat, serta hak istirahat yang manusiawi.',
+        'Keselamatan Kerja (K3): Menyediakan alat pelindung kerja dan jaminan kesehatan adalah bagian dari prinsip hifzhun nafs (melindungi jiwa).'
+      ],
+      practice: 'Sapa dan hargai staf kebersihan, satpam, kurir, atau ART di sekitar Anda dengan ucapan terima kasih dan doa kebaikan.',
+      source: hadith(30)
+    },
+    {
+      id: 'amanah-karyawan-dan-etika-resign',
+      title: 'Amanah Pekerja, Jam Kerja, & Etika Pindah Kerja',
+      category: 'Etika Karyawan',
+      summary: 'Karyawan Muslim wajib menjaga amanah jam kerja, rahasia perusahaan, fasilitas kantor, dan berpamitan baik-baik saat mengundurkan diri.',
+      points: [
+        'Korupsi Waktu: Menggunakan jam kerja kantor untuk urusan pribadi atau bisnis sampingan tanpa izin atasan melanggar amanah akad.',
+        'Menjaga Aset & Rahasia Dagang: Dilarang mengambil alat kantor atau membocorkan database klien ke kompetitor.',
+        'Etika Mengundurkan Diri (Resign): Selesaikan serah terima tugas (handover) dengan rapi dan berikan waktu pemberitahuan (notice) yang wajar.'
+      ],
+      practice: 'Audit penggunaan waktu kerja hari ini: pisahkan tegas waktu fokus kerja dari urusan media sosial pribadi.',
+      source: quran('4/58')
+    }
+  ]
+};
+
+export const harmoniRumahTangga: Course = {
+  id: 'harmoni-rumah-tangga',
+  title: 'Harmoni Suami-Istri & Komunikasi Rumah Tangga',
+  description: 'Seni komunikasi pasangan, pembagian peran, manajemen keuangan keluarga, dan penyelesaian konflik meneladani Nabi SAW.',
+  note: '"Sebaik-baik kalian adalah yang paling baik terhadap keluarganya, dan aku adalah yang paling baik terhadap keluargaku" (HR. Tirmidzi).',
+  lessons: [
+    {
+      id: 'komunikasi-lembut-keteladanan-nabi',
+      title: 'Seni Komunikasi Hangat & Romantis Ala Rasulullah SAW',
+      category: 'Komunikasi Pasangan',
+      summary: 'Nabi SAW memanggil Aisyah RA dengan panggilan kasih sayang ("Ya \'Aisy" / "Humaira"), mau mendengar curahan hati istri, dan membantu pekerjaan rumah.',
+      points: [
+        'Membantu Pekerjaan Rumah (HR. Bukhari): Di rumah, Nabi SAW menjahit bajunya sendiri, memerah susu, dan membantu kebutuhan keluarganya sebelum keluar untuk adzan shalat.',
+        'Empati Emosional: Saat Shafiyyah RA menangis karena untanya berjalan lambat di safar, Nabi SAW mengusap air matanya sendiri dengan penuh kelembutan.',
+        'Larangan Menghina & Kekerasan (KDRT): Nabi SAW tidak pernah memukul istri atau pelayan seumur hidupnya (HR. Muslim).'
+      ],
+      practice: 'Ucapkan terima kasih secara spesifik kepada pasangan Anda hari ini atas satu hal baik yang telah ia lakukan untuk keluarga.',
+      source: hadith(676)
+    },
+    {
+      id: 'keuangan-dan-hak-kewajiban-pasangan',
+      title: 'Keseimbangan Hak-Kewajiban & Keterbukaan Keuangan Keluarga',
+      category: 'Manajemen Keluarga',
+      summary: 'Suami berkewajiban memberi nafkah makruf (pangan, sandang, papan, rasa aman); penghasilan istri adalah hak penuh istri kecuali ia ikhlas membantu keluarga.',
+      points: [
+        'Nafkah Suami Bernilai Sedekah (HR. Bukhari-Muslim): Setiap suapan yang diberikan suami kepada istrinya dengan niat mencari ridha Allah dicatat sebagai pahala sedekah.',
+        'Harta Istri Tetap Milik Istri: Suami tidak boleh memaksa mengambil gaji atau warisan istri tanpa kerelaan hatinya; jika istri membantu nafkah dengan ikhlas, pahalanya berlipat.',
+        'Musyawarah Anggaran Rumah Tangga: Diskusikan prioritas kebutuhan pokok, tabungan pendidikan anak, sedekah, dan dana orang tua secara terbuka.'
+      ],
+      practice: 'Jadwalkan obrolan santai bulanan berdua untuk mengevaluasi anggaran keluarga dan target kebaikan bersama.',
+      source: quran('4/19')
+    },
+    {
+      id: 'resolusi-konflik-dan-hakam',
+      title: 'Mengelola Konflik Rumah Tangga Tanpa Merusak Hati',
+      category: 'Resolusi Konflik',
+      summary: 'Rumah tangga Nabi SAW pun sesekali menghadapi selisih paham; kuncinya tidak tidur dalam amarah berkepanjangan, menjaga aib pasangan, dan melibatkan hakam (penengah bijak) jika buntu.',
+      points: [
+        'Jangan Ungkit Masa Lalu & Sebar Aib ke Medsos: Masalah rumah tangga diselesaikan di ruang privat, bukan di status media sosial.',
+        'Aturan Dinginkan Emosi: Jika salah satu sedang marah, yang lain memilih diam sejenak dan menunda diskusi hingga emosi tenang.',
+        'Mediasi Keluarga / Hakam (QS. An-Nisa\': 35): Jika perselisihan berat tak terselesaikan berdua, hadirkan penengah yang bijak dan adil dari kedua keluarga untuk ishlah.'
+      ],
+      practice: 'Buat kesepakatan bersama pasangan: tidak membawa pertengkaran keesokan hari dan tidak pernah mengucap kata cerai saat marah.',
+      source: quran('4/35')
+    }
+  ]
+};
+
+export const sejarahPendidikanIslam: Course = {
+  id: 'sejarah-pendidikan-islam',
+  title: 'Sejarah Pendidikan Islam & Tradisi Pesantren',
+  description: 'Perjalanan lembaga pendidikan Islam dari Darul Arqam, Suffah Nabawi, Madrasah Nizhamiyah, hingga Pesantren Nusantara.',
+  note: 'Peradaban Islam selalu berdiri di atas ekosistem pendidikan gratis yang memuliakan guru, pelajar, dan sanad keilmuan.',
+  lessons: [
+    {
+      id: 'darul-arqam-dan-suffah-nabawi',
+      title: 'Darul Arqam & Ahlu Suffah: Kampus Pertama Islam',
+      category: 'Era Nabi SAW',
+      summary: 'Pendidikan Islam bermula dari halaqah rahasia di rumah Arqam bin Abil Arqam di Makkah, lalu berkembang menjadi asrama pelajar Ahlu Suffah di serambi Masjid Nabawi.',
+      points: [
+        'Darul Arqam (Makkah): Pusat kaderisasi akidah dan Al-Qur\'an pertama sebelum hijrah.',
+        'Ahlu Suffah (Madinah): Sekitar 70–400 sahabat yang tinggal di serambi Masjid Nabawi fokus belajar Al-Qur\'an & Hadits siang-malam (seperti Abu Hurairah RA); kebutuhan makan mereka ditanggung bersama oleh komunitas Madinah.',
+        'Kuttab (Sekolah Dasar Baca-Tulis): Nabi SAW membebaskan tawanan Perang Badar yang pandai membaca jika mereka bersedia mengajari 10 anak Madinah membaca dan menulis.'
+      ],
+      practice: 'Dukung program beasiswa santri dan anak yatim sebagai bentuk melanjutkan tradisi kepedulian Madinah terhadap Ahlu Suffah.',
+      source: quran('9/122')
+    },
+    {
+      id: 'universitas-al-qarawiyyin-dan-nizhamiyah',
+      title: 'Al-Qarawiyyin, Al-Azhar, & Madrasah Nizhamiyah',
+      category: 'Era Klasik',
+      summary: 'Universitas tertua di dunia yang masih beroperasi (Al-Qarawiyyin di Maroko, 859 M) didirikan oleh seorang muslimah dermawan bernama Fatimah al-Fihri.',
+      points: [
+        'Universitas Al-Qarawiyyin (Fez, Maroko — 859 M): Didirikan Fatimah al-Fihri dari harta wakaf warisannya; diakui UNESCO sebagai lembaga pendidikan tinggi tertua yang terus aktif.',
+        'Madrasah Nizhamiyah (Baghdad — 1065 M): Mengembangkan sistem asrama beasiswa penuh bagi pelajar dan tempat Imam Al-Ghazali mengajar.',
+        'Tradisi Ijazah & Sanad: Kelulusan tidak sekadar nilai ujian kertas, melainkan pengakuan otoritas keilmuan (ijazah) dan silsilah guru yang bersambung.'
+      ],
+      practice: 'Kenali kisah Fatimah al-Fihri sebagai inspirasi betapa besarnya dampak wakaf di bidang pendidikan.',
+      source: quran('58/11')
+    },
+    {
+      id: 'tradisi-pesantren-nusantara',
+      title: 'Pesantren Nusantara: Benteng Akhlak & Kitab Kuning',
+      category: 'Pendidikan Nusantara',
+      summary: 'Pondok pesantren memadukan pengajaran kitab kuning (turas), pembentukan adab 24 jam, kemandirian santri, serta semangat cinta tanah air.',
+      points: [
+        'Akar Sejarah: Berawal dari padepokan dakwah Walisongo (seperti Sunan Ampel di Surabaya dan Sunan Giri di Gresik) yang membina kader ulama.',
+        'Panca Jiwa Pesantren: Keikhlasan, kesederhanaan, kemandirian (berdikari), ukhuwah Islamiyah, dan kebebasan yang bertanggung jawab.',
+        'Harmoni Agama & Kebangsaan: Resolusi Jihad 1945 yang dicetuskan KH. Hasyim Asy\'ari menunjukkan pesantren adalah benteng ilmu sekaligus penjaga kemerdekaan bangsa.'
+      ],
+      practice: 'Luangkan waktu mengunjungi pesantren atau majelis taklim terdekat untuk bersilaturahim dan menyerap keteladanan adab para guru.',
+      source: quran('9/122')
+    }
+  ]
+};
+
 export const courseLinks = [
   { href: '/tazkiyah', title: tazkiyah.title, description: tazkiyah.description },
   { href: '/aqidah', title: aqidah.title, description: aqidah.description },
@@ -6894,4 +7088,8 @@ export const courseLinks = [
   { href: '/fiqh-sosial-kemanusiaan', title: fiqhSosialKemanusiaan.title, description: fiqhSosialKemanusiaan.description },
   { href: '/takhrij-hadits', title: takhrijHadits.title, description: takhrijHadits.description },
   { href: '/manajemen-waktu-islami', title: manajemenWaktuIslami.title, description: manajemenWaktuIslami.description },
+  { href: '/ilmu-falak', title: ilmuFalak.title, description: ilmuFalak.description },
+  { href: '/fiqh-ketenagakerjaan', title: fiqhKetenagakerjaan.title, description: fiqhKetenagakerjaan.description },
+  { href: '/harmoni-rumah-tangga', title: harmoniRumahTangga.title, description: harmoniRumahTangga.description },
+  { href: '/sejarah-pendidikan-islam', title: sejarahPendidikanIslam.title, description: sejarahPendidikanIslam.description },
 ];

@@ -9,7 +9,7 @@ const pages = [
   ['/quran', 'Al-Qur’an & Terjemahan', 'Baca surah, ayat, terjemahan, dan dengarkan murottal Al-Qur’an.', 'quran qur an surat tafsir audio'],
   ['/hadith', 'Hadits', 'Telusuri koleksi kitab hadits dan baca riwayat beserta terjemahannya.', 'hadis hadith bukhari muslim tirmidzi abu dawud nasai ibnu majah ahmad malik darimi'],
   ['/rujukan', 'Jelajah Rujukan', 'Telusuri koleksi sumber Al-Qur’an, hadits, doa, dan materi Al-Hikmah AI.', 'sumber dalil referensi rujukan verifikasi koleksi kitab'],
-  ['/belajar', 'Pusat Belajar Islam', '78 modul interaktif (fiqh, aqidah, tafsir, sirah, tajwid, nahwu, sharaf, tahfidz, sejarah Islam, mantik, sains, hadits) dan 14 alat bantu Islami.', 'pelajaran modul belajar'],
+  ['/belajar', 'Pusat Belajar Islam', '82 modul interaktif (fiqh, aqidah, tafsir, sirah, tajwid, nahwu, sharaf, tahfidz, sejarah Islam, falak, mantik, sains, hadits) dan 14 alat bantu Islami.', 'pelajaran modul belajar'],
   ['/kalkulator-zakat', 'Kalkulator Zakat Lengkap', 'Hitung zakat penghasilan, tabungan, emas, saham, dan zakat fitrah sesuai nisab.', 'zakat mal profesi fitrah nisab haul'],
   ['/kalkulator-waris', 'Kalkulator Waris (Faraidh)', 'Hitung pembagian harta waris Islam sesuai Al-Qur’an dan mazhab Syafi’i.', 'waris faraidh ahli waris harta'],
   ['/kuis-islam', 'Kuis Islam Harian', 'Uji wawasan keislaman dengan soal harian interaktif.', 'kuis quiz pertanyaan islam'],

@@ -23,6 +23,7 @@ const ROUTES = [
   "/kaligrafi-islam", "/simulasi-murabahah", "/panduan-haid",
   "/fiqh-pasien", "/fiqh-sembelihan-halal", "/masjid-bersejarah", "/ilmu-mantik-munazharah",
   "/fiqh-jinayat-hudud", "/aqidah-ahlussunnah", "/fiqh-sosial-kemanusiaan", "/takhrij-hadits", "/manajemen-waktu-islami",
+  "/ilmu-falak", "/fiqh-ketenagakerjaan", "/harmoni-rumah-tangga", "/sejarah-pendidikan-islam",
   "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/about", "/help", "/masukan", "/privacy", "/terms"
 ];
 
