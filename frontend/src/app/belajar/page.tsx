@@ -1,13 +1,70 @@
 "use client";
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { Search, X } from 'lucide-react';
 import { courseLinks } from '@/data/learning';
 import { useLanguage } from '@/context/LanguageContext';
+
+type CategoryKey =
+  | 'Semua'
+  | 'Aqidah & Hati'
+  | 'Al-Qur\'an & Bahasa'
+  | 'Fiqh & Ibadah'
+  | 'Muamalah & Sosial'
+  | 'Sejarah & Tokoh'
+  | 'Keluarga & Adab';
+
+const CATEGORIES: CategoryKey[] = [
+  'Semua',
+  'Aqidah & Hati',
+  'Al-Qur\'an & Bahasa',
+  'Fiqh & Ibadah',
+  'Muamalah & Sosial',
+  'Sejarah & Tokoh',
+  'Keluarga & Adab',
+];
+
+function getCourseCategory(href: string): CategoryKey {
+  if (['/aqidah', '/aqidah-ahlussunnah', '/tazkiyah', '/tadabbur-asmaul-husna', '/alam-ghaib', '/fitnah-akhir-zaman', '/komparasi', '/psikologi-islam'].includes(href)) {
+    return 'Aqidah & Hati';
+  }
+  if (['/ulumul-quran', '/ilmu-tafsir', '/ilmu-qiraat', '/tajweed', '/metode-tahfidz', '/tadabbur-juz-amma', '/tadabbur-surat-pilihan', '/kisah-pilihan-quran', '/nahwu-dasar', '/sharaf-dasar', '/balaghoh', '/kaligrafi-islam', '/sains'].includes(href)) {
+    return 'Al-Qur\'an & Bahasa';
+  }
+  if (['/fiqh', '/ushul-fiqh', '/fiqh-jamaah-sujud', '/fiqh-safar', '/fiqh-ramadan', '/fiqh-hari-raya', '/zakat-kontemporer', '/fiqh-haji-umrah', '/fiqh-qurban-aqiqah', '/jenazah-praktis', '/fiqh-pasien', '/fiqh-darah-wanita', '/fiqh-sumpah-kaffarah', '/fiqh-sembelihan-halal', '/makanan-halal', '/medis', '/ilmu-falak'].includes(href)) {
+    return 'Fiqh & Ibadah';
+  }
+  if (['/muamalah', '/ekonomi-syariah', '/wakaf', '/fiqh-properti-gadai', '/fiqh-ketenagakerjaan', '/fiqh-kontemporer', '/fiqh-jinayat-hudud', '/fiqh-sosial-kemanusiaan', '/siyasah', '/integritas', '/lingkungan', '/kepemimpinan-islami', '/lembaga-islam-indonesia'].includes(href)) {
+    return 'Muamalah & Sosial';
+  }
+  if (['/sirah', '/kisah-nabi', '/sahabat-surga', '/khulafaur-rasyidin', '/sejarah-dinasti-islam', '/peradaban', '/imam-madzhab', '/ilmuwan-muslim', '/sejarah-pendidikan-islam', '/baitul-maqdis', '/masjid-bersejarah', '/islam-nusantara', '/musthalah-hadits', '/takhrij-hadits', '/ilmu-mantik-munazharah'].includes(href)) {
+    return 'Sejarah & Tokoh';
+  }
+  return 'Keluarga & Adab';
+}
 
 export default function LearningPage() {
   const { t, language } = useLanguage();
   const [descExpanded, setDescExpanded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('Semua');
+
+  const filteredCourses = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return courseLinks
+      .map((course, idx) => ({ ...course, originalIndex: idx + 1, category: getCourseCategory(course.href) }))
+      .filter((course) => {
+        const matchCat = selectedCategory === 'Semua' || course.category === selectedCategory;
+        if (!matchCat) return false;
+        if (!q) return true;
+        return (
+          course.title.toLowerCase().includes(q) ||
+          course.description.toLowerCase().includes(q) ||
+          course.category.toLowerCase().includes(q)
+        );
+      });
+  }, [searchQuery, selectedCategory]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
@@ -39,21 +96,102 @@ export default function LearningPage() {
         </div>
       </header>
 
-      <div className="grid sm:grid-cols-2 gap-5">
-        {courseLinks.map((course, index) => (
-          <Link
-            key={course.href}
-            href={course.href}
-            className="group rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-7 hover:border-emerald-500 focus-visible:outline-emerald-500 transition-colors"
+      {/* Search & Category Filter */}
+      <section className="space-y-4">
+        <div className="relative">
+          <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={language === 'en' ? `Search ${courseLinks.length} learning modules...` : `Cari dari ${courseLinks.length} modul pembelajaran...`}
+            className="w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pl-11 pr-10 py-3 text-sm focus:outline-emerald-500 shadow-xs"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              aria-label="Hapus pencarian"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                selectedCategory === cat
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:border-emerald-400'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Menampilkan <strong className="text-emerald-700 dark:text-emerald-400">{filteredCourses.length}</strong> dari {courseLinks.length} modul pembelajaran
+        </p>
+      </section>
+
+      {filteredCourses.length > 0 ? (
+        <div className="grid sm:grid-cols-2 gap-5">
+          {filteredCourses.map((course) => (
+            <Link
+              key={course.href}
+              href={course.href}
+              className="group rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-7 hover:border-emerald-500 focus-visible:outline-emerald-500 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                  {String(course.originalIndex).padStart(2, '0')}
+                </span>
+                <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                  {course.category}
+                </span>
+              </div>
+              <h2 className="text-xl font-bold mt-4 mb-3">{course.title}</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{course.description}</p>
+              <p className="mt-6 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{t("belajar.start")}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-10 text-center space-y-3">
+          <p className="text-slate-600 dark:text-slate-300 text-sm">
+            Tidak ada modul yang cocok dengan kata kunci &ldquo;{searchQuery}&rdquo;.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('Semua');
+            }}
+            className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 cursor-pointer"
           >
-            <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <h2 className="text-xl font-bold mt-4 mb-3">{course.title}</h2>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{course.description}</p>
-            <p className="mt-6 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{t("belajar.start")}</p>
-          </Link>
-        ))}
+            Tampilkan Semua Modul
+          </button>
+        </div>
+      )}
+
+      <div className="pt-4 space-y-4">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+            {language === 'en' ? 'Interactive Islamic Tools & Visual Guides' : 'Alat Bantu Islami & Panduan Interaktif'}
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {language === 'en'
+              ? 'Practical calculators, trackers, flashcards, and illustrated worship guides.'
+              : 'Kalkulator fikih, tracker ibadah, flashcard Al-Qur\'an, dan panduan praktik bergambar.'}
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

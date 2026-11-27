@@ -12,18 +12,21 @@ export default function TrackerKhatam() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed.completedJuz)) setCompletedJuz(parsed.completedJuz);
-        if (typeof parsed.halamanHarian === 'number') setHalamanHarian(parsed.halamanHarian);
+    const timer = setTimeout(() => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed.completedJuz)) setCompletedJuz(parsed.completedJuz);
+          if (typeof parsed.halamanHarian === 'number') setHalamanHarian(parsed.halamanHarian);
+        }
+      } catch {
+        // Abaikan error localStorage
+      } finally {
+        setLoaded(true);
       }
-    } catch {
-      // Abaikan error localStorage
-    } finally {
-      setLoaded(true);
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

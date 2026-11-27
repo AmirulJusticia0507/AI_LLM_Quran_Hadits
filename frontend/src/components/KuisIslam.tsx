@@ -88,7 +88,7 @@ export default function KuisIslam() {
       <header className="rounded-3xl bg-linear-to-br from-indigo-800 to-purple-950 text-white p-8 space-y-2">
         <p className="text-xs uppercase tracking-widest text-indigo-200">Al-Hikmah • Kuis Harian</p>
         <h1 className="text-3xl font-bold">Kuis Islam Harian</h1>
-        <p className="text-indigo-100 text-sm">5 soal pilihan ganda seputar Al-Qur'an, Hadits, Fiqh, Sirah & Aqidah.</p>
+        <p className="text-indigo-100 text-sm">5 soal pilihan ganda seputar Al-Qur&apos;an, Hadits, Fiqh, Sirah &amp; Aqidah.</p>
       </header>
 
       {!finished ? (

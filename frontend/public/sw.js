@@ -12,7 +12,7 @@
  * - Pages fall back to the cached copy, then to /offline.html.
  */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL_CACHE = `alhikmah-shell-${VERSION}`;
 const PAGE_CACHE = `alhikmah-pages-${VERSION}`;
 const QURAN_CACHE = `alhikmah-quran-${VERSION}`;
@@ -21,6 +21,7 @@ const OFFLINE_URL = "/offline.html";
 
 const SHELL_ASSETS = [
   "/quran",
+  "/belajar",
   OFFLINE_URL,
   "/manifest.json",
   "/icon-192.png",

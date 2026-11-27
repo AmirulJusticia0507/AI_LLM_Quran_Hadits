@@ -33,19 +33,22 @@ export default function MutabaahYaumiyah() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.date === todayKey && Array.isArray(parsed.checked)) {
-          setChecked(parsed.checked);
+    const timer = setTimeout(() => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.date === todayKey && Array.isArray(parsed.checked)) {
+            setChecked(parsed.checked);
+          }
         }
+      } catch {
+        // Abaikan error localStorage
+      } finally {
+        setLoaded(true);
       }
-    } catch {
-      // Abaikan error localStorage
-    } finally {
-      setLoaded(true);
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [todayKey]);
 
   useEffect(() => {
