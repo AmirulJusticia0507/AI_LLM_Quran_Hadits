@@ -2,7 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import { BookOpen, Check, Copy, Search, Sparkles, X } from 'lucide-react';
-import { kamusData, type JenisKata } from '@/data/kamus-arab';
+import { kamusData, type JenisKata, type KategoriKamus } from '@/data/kamus-arab';
+
+const KATEGORI_LIST: { value: 'semua' | KategoriKamus; label: string }[] = [
+  { value: 'semua', label: 'Semua Topik' },
+  { value: 'sehari-hari', label: 'Komunikasi Sehari-hari' },
+  { value: 'islami', label: 'Al-Qur\u2019an & Islam' },
+];
 
 const JENIS_LIST: ('Semua' | JenisKata)[] = [
   'Semua',
@@ -41,6 +47,7 @@ function normalizeText(value: string): string {
 
 export default function KamusArab() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedKategori, setSelectedKategori] = useState<'semua' | KategoriKamus>('semua');
   const [selectedJenis, setSelectedJenis] = useState<'Semua' | JenisKata>('Semua');
   const [sortMode, setSortMode] = useState<'default' | 'latin' | 'arab'>('default');
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -48,6 +55,10 @@ export default function KamusArab() {
   const filteredEntries = useMemo(() => {
     const q = normalizeText(searchQuery);
     const list = kamusData.filter((entry) => {
+      const entryKategori: KategoriKamus = entry.kategori ?? 'islami';
+      if (selectedKategori !== 'semua' && entryKategori !== selectedKategori) {
+        return false;
+      }
       if (selectedJenis !== 'Semua' && entry.jenis !== selectedJenis) {
         return false;
       }
@@ -68,7 +79,7 @@ export default function KamusArab() {
       return [...list].sort((a, b) => normalizeText(a.arab).localeCompare(normalizeText(b.arab), 'ar'));
     }
     return list;
-  }, [searchQuery, selectedJenis, sortMode]);
+  }, [searchQuery, selectedKategori, selectedJenis, sortMode]);
 
   const handleCopy = async (id: string, arab: string) => {
     try {
@@ -91,12 +102,29 @@ export default function KamusArab() {
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold">Kamus Bahasa Arab</h1>
         <p className="text-emerald-100 text-sm sm:text-base max-w-2xl leading-relaxed">
-          Telusuri {kamusData.length} kosakata penting Al-Qur&apos;an, Hadits, dan istilah keislaman lengkap dengan harakat, transliterasi, akar kata 3 huruf, jenis kata, dan contoh ayat.
+          Telusuri {kamusData.length} kosakata &amp; ungkapan bahasa Arab untuk komunikasi sehari-hari serta pemahaman Al-Qur&apos;an &amp; Hadits, lengkap dengan harakat, transliterasi, akar kata, dan contoh kalimat.
         </p>
       </header>
 
       {/* Pencarian & Filter */}
       <section className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 space-y-4">
+        {/* Filter Kategori Utama */}
+        <div className="flex flex-wrap gap-2">
+          {KATEGORI_LIST.map((kat) => (
+            <button
+              key={kat.value}
+              type="button"
+              onClick={() => setSelectedKategori(kat.value)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                selectedKategori === kat.value
+                  ? 'bg-linear-to-r from-emerald-600 to-teal-600 text-white shadow-sm'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
+              }`}
+            >
+              {kat.label}
+            </button>
+          ))}
+        </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -244,6 +272,7 @@ export default function KamusArab() {
             type="button"
             onClick={() => {
               setSearchQuery('');
+              setSelectedKategori('semua');
               setSelectedJenis('Semua');
             }}
             className="px-4 py-2 rounded-xl bg-emerald-700 text-white text-xs font-semibold hover:bg-emerald-800 cursor-pointer"
