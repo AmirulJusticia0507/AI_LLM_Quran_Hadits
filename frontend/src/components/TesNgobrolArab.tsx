@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { ArrowLeft, Award, CheckCircle2, Eye, EyeOff, MessageCircle, RotateCcw, XCircle } from 'lucide-react';
+import { ArrowLeft, Award, Check, CheckCircle2, Eye, EyeOff, MessageCircle, RotateCcw, XCircle } from 'lucide-react';
 import { hiwarScenarios, type HiwarOption, type HiwarScenario } from '@/data/hiwar-tes';
 
 interface CompletedTurn {
@@ -23,6 +23,7 @@ export default function TesNgobrolArab({ onClose }: TesNgobrolArabProps) {
   const [showHelperText, setShowHelperText] = useState(true);
   const [history, setHistory] = useState<CompletedTurn[]>([]);
   const [finished, setFinished] = useState(false);
+  const [completedScenarios, setCompletedScenarios] = useState<string[]>([]);
 
   const currentTurn = activeScenario.turns[turnIndex];
   const score = history.filter((item) => item.chosen.isCorrect).length;
@@ -59,6 +60,9 @@ export default function TesNgobrolArab({ onClose }: TesNgobrolArabProps) {
       setTurnIndex((prev) => prev + 1);
     } else {
       setFinished(true);
+      setCompletedScenarios((prev) =>
+        prev.includes(activeScenario.id) ? prev : [...prev, activeScenario.id]
+      );
     }
   };
 
@@ -102,21 +106,30 @@ export default function TesNgobrolArab({ onClose }: TesNgobrolArabProps) {
         </div>
 
         {/* Pilihan Skenario */}
-        <div className="flex flex-wrap gap-2">
-          {hiwarScenarios.map((scenario) => (
-            <button
-              key={scenario.id}
-              type="button"
-              onClick={() => resetScenario(scenario)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-                activeScenario.id === scenario.id
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
-              }`}
-            >
-              {scenario.title} ({scenario.level})
-            </button>
-          ))}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+            Pilih skenario percakapan ({hiwarScenarios.length} topik tersedia • selesai {completedScenarios.length}/{hiwarScenarios.length}):
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {hiwarScenarios.map((scenario) => {
+              const isDone = completedScenarios.includes(scenario.id);
+              return (
+                <button
+                  key={scenario.id}
+                  type="button"
+                  onClick={() => resetScenario(scenario)}
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                    activeScenario.id === scenario.id
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
+                  }`}
+                >
+                  {isDone && <Check className="w-3.5 h-3.5" />}
+                  {scenario.title} ({scenario.level})
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
