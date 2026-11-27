@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify": "node scripts/verify-modules.cjs"
   },
   "dependencies": {
     "lucide-react": "^1.37.0",
