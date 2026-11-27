@@ -8,6 +8,8 @@ import { readChatStream, type ChatStreamEvent } from "@/lib/chat-stream";
 import { ensureMessageIds, makeMessage, type Message, type Reference } from "@/lib/chat-message";
 import { extractReferences } from "@/lib/references";
 import ReferencePanel from "@/components/ReferencePanel";
+import OfflineModePanel from "@/components/OfflineModePanel";
+import { useWebLLM } from "@/hooks/useWebLLM";
 import { useLanguage } from "@/context/LanguageContext";
 import {
   Send,
@@ -302,6 +304,8 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [llmStatus, setLlmStatus] = useState<"checking" | "online" | "offline">("checking");
+  const [dismissOfflineBanner, setDismissOfflineBanner] = useState(false);
+  const webLLM = useWebLLM();
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -704,6 +708,40 @@ export default function ChatPage() {
     ]);
   };
 
+  const runOfflineGenerate = async (userMessage: string) => {
+    assistantContentRef.current = "";
+    const placeholder = makeMessage("assistant", "", getCurrentTime());
+    updateMessages((prev) => [...prev, placeholder]);
+
+    const history = messages
+      .filter((m) => m.content.trim().length > 0)
+      .slice(-8)
+      .map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
+    history.push({ role: "user", content: userMessage });
+
+    await webLLM.generate(
+      history,
+      (chunk) => {
+        assistantContentRef.current += chunk;
+        appendAssistantMessage(assistantContentRef.current);
+      },
+      () => {
+        const references = extractReferences(assistantContentRef.current);
+        if (references.length) {
+          updateMessages((prev) => {
+            const updated = [...prev];
+            const last = updated.at(-1);
+            if (last?.role === "assistant") updated.splice(-1, 1, { ...last, references });
+            return updated;
+          });
+        }
+      }
+    );
+  };
+
   const handleSend = async (textToSend?: string) => {
     const userMessage = (textToSend ?? input).trim();
     if (!userMessage || loading) return;
@@ -720,6 +758,12 @@ export default function ChatPage() {
     setLoading(true);
 
     try {
+      // Jika backend offline dan WebLLM sudah siap, langsung proses di browser
+      if (llmStatus === "offline" && webLLM.isReady) {
+        await runOfflineGenerate(userMessage);
+        return;
+      }
+
       const res = await fetch(`${API_URL}/api/chat/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -733,6 +777,15 @@ export default function ChatPage() {
         await handleRegularResponse(res);
       }
     } catch (err: unknown) {
+      // Fallback otomatis ke WebLLM jika tersedia saat koneksi backend gagal
+      if (webLLM.isReady) {
+        setLlmStatus("offline");
+        await runOfflineGenerate(userMessage);
+        return;
+      }
+
+      setLlmStatus("offline");
+      setDismissOfflineBanner(false);
       const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan koneksi";
       updateMessages((prev) => {
         const last = prev.at(-1);
@@ -743,8 +796,8 @@ export default function ChatPage() {
       });
       Swal.fire({
         icon: "error",
-        title: "Gagal Mengirim",
-        text: errorMessage,
+        title: "Backend Tidak Terjangkau",
+        text: `${errorMessage}. Kamu bisa mengaktifkan Mode Offline (WebLLM) di panel atas untuk chat langsung di browser.`,
         confirmButtonColor: "#059669",
         customClass: {
           popup: "rounded-2xl dark:bg-slate-900 dark:text-white border dark:border-slate-800"
@@ -909,13 +962,26 @@ export default function ChatPage() {
               <span>{isEn ? "Islamic AI Chatbot" : "Chatbot AI Keislaman"}</span>
               <button
                 onClick={() => {
+                  if (llmStatus === "offline") setDismissOfflineBanner(false);
                   loadProviders();
                   setShowProviders((v) => !v);
                 }}
-                title={activeProvider ? `Model: ${activeProvider} — klik untuk ganti` : "Klik untuk pilih model AI"}
-                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 cursor-pointer transition-all active:scale-95 ${statusClass(llmStatus)}`}
+                title={
+                  webLLM.isReady
+                    ? "Mode Offline (WebLLM) aktif di browser"
+                    : activeProvider
+                      ? `Model: ${activeProvider} — klik untuk ganti`
+                      : "Klik untuk pilih model AI"
+                }
+                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 cursor-pointer transition-all active:scale-95 ${
+                  webLLM.isReady && llmStatus === "offline"
+                    ? "bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-300/50 dark:border-amber-700/50"
+                    : statusClass(llmStatus)
+                }`}
               >
-                {statusText(llmStatus, activeProvider)}
+                {webLLM.isReady && llmStatus === "offline"
+                  ? "● Offline AI (WebLLM)"
+                  : statusText(llmStatus, activeProvider)}
               </button>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
@@ -1064,6 +1130,22 @@ export default function ChatPage() {
               </button>
             );
           })}
+        </div>
+      )}
+
+      {/* Offline WebLLM Mode Panel */}
+      {(webLLM.isReady || webLLM.isLoading || webLLM.isGenerating || (llmStatus === "offline" && !dismissOfflineBanner)) && (
+        <div className="mb-3">
+          <OfflineModePanel
+            status={webLLM.status}
+            loadProgress={webLLM.loadProgress}
+            loadText={webLLM.loadText}
+            loadedModel={webLLM.loadedModel}
+            error={webLLM.error}
+            onLoad={webLLM.loadModel}
+            onUnload={webLLM.unload}
+            onDismiss={() => setDismissOfflineBanner(true)}
+          />
         </div>
       )}
 
