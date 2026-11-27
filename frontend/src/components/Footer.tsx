@@ -139,29 +139,15 @@ export default function Footer() {
               <li><Link href="/fiqh" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Ibadah</Link></li>
               <li><Link href="/tajweed" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tajwid &amp; Makhraj Huruf</Link></li>
               <li><Link href="/ulumul-quran" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ulumul Qur&apos;an &amp; Tafsir</Link></li>
-              <li><Link href="/kisah-nabi" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kisah 25 Nabi, Rasul &amp; Khidir AS</Link></li>
-              <li><Link href="/musthalah-hadits" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Musthalah Hadits</Link></li>
-              <li><Link href="/peradaban" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Sejarah Peradaban Islam</Link></li>
-              <li><Link href="/munakahat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Pernikahan</Link></li>
-              <li><Link href="/muamalah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Muamalah &amp; Bisnis</Link></li>
-              <li><Link href="/zakat-kontemporer" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Zakat Kontemporer</Link></li>
-              <li><Link href="/fiqh-ramadan" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fiqh Ramadan Lengkap</Link></li>
-              <li><Link href="/ekonomi-syariah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ekonomi Syariah</Link></li>
               <li><Link href="/kalkulator-zakat" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Zakat</Link></li>
               <li><Link href="/kalkulator-waris" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Waris</Link></li>
-              <li><Link href="/kalkulator-fidyah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Fidyah</Link></li>
-              <li><Link href="/flashcard-quran" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Flashcard Al-Qur&apos;an</Link></li>
-              <li><Link href="/kalender-hijriah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalender Hijriah</Link></li>
-              <li><Link href="/tracker-khatam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tracker Khatam 30 Juz</Link></li>
-              <li><Link href="/kalkulator-safar" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Safar</Link></li>
-              <li><Link href="/mutabaah-yaumiyah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Mutaba&apos;ah Yaumiyah</Link></li>
-              <li><Link href="/kalkulator-qurban" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Qurban</Link></li>
-              <li><Link href="/kalkulator-kaffarah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kalkulator Kaffarah</Link></li>
-              <li><Link href="/doa-asmaul-husna" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Doa &amp; Asmaul Husna</Link></li>
-              <li><Link href="/simulasi-murabahah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Simulasi Murabahah</Link></li>
-              <li><Link href="/panduan-haid" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Panduan Haid &amp; Nifas</Link></li>
               <li><Link href="/kamus-arab" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kamus Bahasa Arab</Link></li>
               <li><Link href="/kuis-islam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kuis Islam Harian</Link></li>
+              <li className="pt-1">
+                <Link href="/belajar" className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+                  Lihat semua modul &amp; kalkulator →
+                </Link>
+              </li>
             </ul>
           </div>
 
