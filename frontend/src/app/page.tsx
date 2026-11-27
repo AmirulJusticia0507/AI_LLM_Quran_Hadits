@@ -425,7 +425,99 @@ export default function ChatPage() {
     stop: () => void;
   }
   const [listening, setListening] = useState(false);
+  const [interimText, setInterimText] = useState("");
+  const [recordSeconds, setRecordSeconds] = useState(0);
+  const [audioBars, setAudioBars] = useState<number[]>(() => Array(20).fill(18));
   const recognitionRef = useRef<SpeechInstance | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const recordTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopAudioVisualizer = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    if (recordTimerRef.current !== null) {
+      clearInterval(recordTimerRef.current);
+      recordTimerRef.current = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      mediaStreamRef.current = null;
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close().catch(() => {});
+      audioContextRef.current = null;
+    }
+    setAudioBars(Array(20).fill(18));
+    setRecordSeconds(0);
+    setInterimText("");
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      stopAudioVisualizer();
+    };
+  }, [stopAudioVisualizer]);
+
+  const startAudioVisualizer = async () => {
+    setRecordSeconds(0);
+    recordTimerRef.current = setInterval(() => {
+      setRecordSeconds((prev) => prev + 1);
+    }, 1000);
+
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AudioCtx();
+      audioContextRef.current = ctx;
+
+      const source = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.75;
+      source.connect(analyser);
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      const updateBars = () => {
+        analyser.getByteFrequencyData(dataArray);
+        const bars: number[] = [];
+        for (let i = 0; i < 20; i++) {
+          const val = dataArray[i % dataArray.length] ?? 0;
+          // Skala tinggi bar 16% - 100% agar tetap terlihat responsif
+          bars.push(Math.max(16, Math.min(100, Math.round((val / 255) * 100) + 16)));
+        }
+        setAudioBars(bars);
+        rafRef.current = requestAnimationFrame(updateBars);
+      };
+
+      rafRef.current = requestAnimationFrame(updateBars);
+    } catch {
+      // Fallback animasi halus jika izin getUserMedia tidak tersedia
+      let tick = 0;
+      const fallbackAnimate = () => {
+        tick += 0.12;
+        const bars = Array.from({ length: 20 }, (_, i) =>
+          Math.round(35 + Math.sin(tick + i * 0.6) * 28 + Math.cos(tick * 1.4 + i) * 15)
+        );
+        setAudioBars(bars);
+        rafRef.current = requestAnimationFrame(fallbackAnimate);
+      };
+      rafRef.current = requestAnimationFrame(fallbackAnimate);
+    }
+  };
+
+  const formatRecordTime = (sec: number) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
 
   const toggleListening = () => {
     const w = window as unknown as {
@@ -446,29 +538,43 @@ export default function ChatPage() {
     }
     if (listening) {
       recognitionRef.current?.stop();
+      stopAudioVisualizer();
+      setListening(false);
       return;
     }
     const rec = new SR();
     rec.lang = isEn ? "en-US" : "id-ID";
-    rec.interimResults = false;
+    rec.interimResults = true;
     rec.onresult = (ev) => {
-      let chunk = "";
+      let finalChunk = "";
+      let interimChunk = "";
       for (let i = ev.resultIndex; i < ev.results.length; i++) {
-        if (ev.results[i].isFinal) chunk += ev.results[i][0].transcript;
+        if (ev.results[i].isFinal) finalChunk += ev.results[i][0].transcript;
+        else interimChunk += ev.results[i][0].transcript;
       }
-      if (chunk.trim()) {
-        setInput((prev) => (prev ? prev + " " : "") + chunk.trim());
-        // Tunggu render lalu sesuaikan tinggi
+      setInterimText(interimChunk.trim());
+      if (finalChunk.trim()) {
+        setInput((prev) => (prev ? prev + " " : "") + finalChunk.trim());
+        setInterimText("");
         setTimeout(() => autoResizeTextarea(), 0);
       }
     };
-    rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
+    rec.onend = () => {
+      setListening(false);
+      stopAudioVisualizer();
+    };
+    rec.onerror = () => {
+      setListening(false);
+      stopAudioVisualizer();
+    };
     recognitionRef.current = rec;
     try {
       rec.start();
       setListening(true);
-    } catch {}
+      void startAudioVisualizer();
+    } catch {
+      stopAudioVisualizer();
+    }
   };
 
   // --- Chat Pro: feedback jawaban AI (tersimpan lokal) ---
@@ -1190,7 +1296,57 @@ export default function ChatPage() {
       )}
 
       {/* Input Form Bar */}
-      <div className="mt-3 sm:mt-4">
+      <div className="mt-3 sm:mt-4 space-y-2">
+        {listening && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl bg-red-50/90 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 px-4 py-3 shadow-sm animate-in fade-in">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="relative flex h-3 w-3 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+              </span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-red-700 dark:text-red-300">
+                    {isEn ? "Listening..." : "Mendengarkan suara..."}
+                  </span>
+                  <span className="text-xs font-mono font-semibold text-red-600 dark:text-red-400">
+                    {formatRecordTime(recordSeconds)}
+                  </span>
+                </div>
+                {interimText && (
+                  <p className="text-xs text-slate-600 dark:text-slate-300 truncate italic mt-0.5">
+                    &ldquo;{interimText}&rdquo;
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between sm:justify-end gap-3">
+              {/* Grafik Gelombang Suara Real-time */}
+              <div
+                aria-hidden="true"
+                className="flex items-center gap-1 h-8 px-2"
+              >
+                {audioBars.map((height, idx) => (
+                  <span
+                    key={idx}
+                    style={{ height: `${height}%` }}
+                    className="w-1 rounded-full bg-linear-to-t from-red-500 to-emerald-500 transition-[height] duration-75"
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={toggleListening}
+                className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition-colors shrink-0 cursor-pointer"
+              >
+                {isEn ? "Stop" : "Selesai"}
+              </button>
+            </div>
+          </div>
+        )}
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
