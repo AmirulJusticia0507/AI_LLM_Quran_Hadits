@@ -25,7 +25,7 @@ const ROUTES = [
   "/fiqh-jinayat-hudud", "/aqidah-ahlussunnah", "/fiqh-sosial-kemanusiaan", "/takhrij-hadits", "/manajemen-waktu-islami",
   "/ilmu-falak", "/fiqh-ketenagakerjaan", "/harmoni-rumah-tangga", "/sejarah-pendidikan-islam",
   "/fiqh-hari-raya", "/adab-jalan-raya", "/lembaga-islam-indonesia",
-  "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/about", "/help", "/masukan", "/privacy", "/terms"
+  "/hijaiyah", "/praktik-ibadah", "/panduan-ibadah", "/silsilah-habaib", "/kamus-arab", "/about", "/help", "/masukan", "/privacy", "/terms"
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

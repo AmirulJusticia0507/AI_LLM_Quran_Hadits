@@ -160,6 +160,7 @@ export default function Footer() {
               <li><Link href="/doa-asmaul-husna" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Doa &amp; Asmaul Husna</Link></li>
               <li><Link href="/simulasi-murabahah" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Simulasi Murabahah</Link></li>
               <li><Link href="/panduan-haid" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Panduan Haid &amp; Nifas</Link></li>
+              <li><Link href="/kamus-arab" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kamus Bahasa Arab</Link></li>
               <li><Link href="/kuis-islam" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Kuis Islam Harian</Link></li>
             </ul>
           </div>

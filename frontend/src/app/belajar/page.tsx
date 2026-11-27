@@ -267,6 +267,10 @@ export default function LearningPage() {
           <span className="block text-xs uppercase tracking-wider text-rose-200 mb-1">Fiqh Muslimah</span>
           Panduan Haid &amp; Istihadhah
         </Link>
+        <Link href="/kamus-arab" className="block rounded-2xl bg-linear-to-br from-emerald-700 to-teal-950 p-6 text-white font-semibold shadow-sm hover:scale-[1.01] transition-transform">
+          <span className="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Bahasa Arab</span>
+          Kamus Bahasa Arab
+        </Link>
       </div>
 
       <Link
